@@ -229,8 +229,8 @@
 <div id="toast"></div>
 
 <script>
-const TOKEN = 'am_us_237687733d6087d5e2e5c3956f651883c8b190d38b855ebdbcf85f6780a8c3c9';
-const INBOX = 'wildroseautomations@agentmail.to';
+const N8N_WEBHOOK = 'https://jackwilde.app.n8n.cloud/webhook/wildrose-send-email';
+const N8N_LOCAL = 'http://localhost:5678/webhook/wildrose-send-email';
 const DATA_URL = 'https://jack108510.github.io/jsw-dashboard/wildrose-pending-leads.json';
 
 let leads = [];
@@ -412,14 +412,11 @@ async function sendEmail(lead) {
   const subject = `${lead.business_name} — quick question`;
   toast('⏳ Sending...', 6000);
   try {
-    const r = await fetch(
-      `https://api.agentmail.to/v0/inboxes/${encodeURIComponent(INBOX)}/messages/send`,
-      {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${TOKEN}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: lead.email, subject, text: body })
-      }
-    );
+    const r = await fetch(N8N_LOCAL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to: lead.email, subject, text: body })
+    });
     if (r.ok) {
       lead.status = 'sent';
       lead.sent_at = new Date().toISOString();
