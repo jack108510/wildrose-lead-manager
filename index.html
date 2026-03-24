@@ -229,8 +229,7 @@
 <div id="toast"></div>
 
 <script>
-const N8N_WEBHOOK = 'https://jackwilde.app.n8n.cloud/webhook/wildrose-send-email';
-const N8N_LOCAL = 'http://localhost:5678/webhook/wildrose-send-email';
+const N8N_WEBHOOK = 'https://n8n.wildeautomations.com/webhook/wildrose-send-email';
 const DATA_URL = 'https://jack108510.github.io/jsw-dashboard/wildrose-pending-leads.json';
 
 let leads = [];
@@ -412,7 +411,7 @@ async function sendEmail(lead) {
   const subject = `${lead.business_name} — quick question`;
   toast('⏳ Sending...', 6000);
   try {
-    const r = await fetch(N8N_LOCAL, {
+    const r = await fetch(N8N_WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ to: lead.email, subject, text: body })
