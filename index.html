@@ -2,1581 +2,461 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Wildrose Lead Manager</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #F9FAFB;
-      --card: #FFFFFF;
-      --accent: #2563EB;
-      --accent-hover: #1D4ED8;
-      --text: #111827;
-      --text-muted: #6B7280;
-      --border: #E5E7EB;
-      --pending: #F59E0B;
-      --approved: #10B981;
-      --rejected: #6B7280;
-      --followup: #F97316;
-      --danger: #EF4444;
-      --reply-blue: #3B82F6;
+      --bg: #0d0d0d;
+      --card: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #f0f0f0;
+      --muted: #777;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #eab308;
+      --blue: #3b82f6;
     }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: var(--bg);
       color: var(--text);
-      min-height: 100vh;
-      font-size: 14px;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
-
-    /* ── HEADER ── */
     header {
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
+      padding: 16px 20px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      height: 52px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .logo {
-      display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
     }
+    header h1 { font-size: 1.1rem; font-weight: 700; }
+    #counter { font-size: 0.85rem; color: var(--muted); }
 
-    .logo-icon {
-      width: 28px;
-      height: 28px;
-      background: var(--accent);
-      border-radius: 6px;
+    #stack {
+      flex: 1;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      padding: 16px;
+      overflow: hidden;
     }
 
-    .header-stats {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .header-stat {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .header-stat strong {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .header-stat.pending strong { color: var(--pending); }
-    .header-stat.approved strong { color: var(--approved); }
-    .header-stat.followup strong { color: var(--followup); }
-
-    /* ── SYNC REPLIES BUTTON ── */
-    .btn-sync-replies {
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
+    .card {
+      position: absolute;
+      width: 100%;
+      max-width: 420px;
       background: var(--card);
-      color: var(--reply-blue);
-      font-size: 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 22px 20px;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      will-change: transform;
+    }
+    .card:active { cursor: grabbing; }
+    .card.behind {
+      transform: scale(0.95) translateY(14px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .card.top { z-index: 10; }
+
+    .swipe-label {
+      position: absolute;
+      font-size: 1.3rem;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 8px;
+      border: 3px solid;
+      opacity: 0;
+      pointer-events: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: opacity 0.08s;
+    }
+    .label-nope { top: 24px; left: 18px; color: var(--red); border-color: var(--red); transform: rotate(-12deg); }
+    .label-send { top: 24px; right: 18px; color: var(--green); border-color: var(--green); transform: rotate(12deg); }
+    .label-save { bottom: 24px; left: 50%; transform: translateX(-50%); color: var(--yellow); border-color: var(--yellow); }
+
+    .card-type {
+      display: inline-block;
+      font-size: 0.68rem;
       font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.12s;
-      white-space: nowrap;
-    }
-    .btn-sync-replies:hover { border-color: var(--reply-blue); background: #EFF6FF; }
-    .btn-sync-replies:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    /* ── BANNER ── */
-    #followup-banner {
-      display: none;
-      background: #FFFBEB;
-      border-bottom: 1px solid #FDE68A;
-      padding: 8px 24px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #92400E;
-      align-items: center;
-      gap: 8px;
-    }
-
-    #followup-banner.show { display: flex; }
-
-    /* ── PENDING LEADS BANNER ── */
-    #pending-leads-banner {
-      display: none;
-      background: #EFF6FF;
-      border-bottom: 1px solid #BFDBFE;
-      padding: 8px 24px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #1E40AF;
-      align-items: center;
-      gap: 10px;
-      justify-content: space-between;
-    }
-    #pending-leads-banner.show { display: flex; }
-    #pending-leads-banner .dismiss-btn {
-      font-size: 12px;
-      cursor: pointer;
-      color: #2563EB;
-      background: none;
-      border: 1px solid #93C5FD;
-      border-radius: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      background: #222;
       padding: 3px 10px;
-      font-weight: 600;
-      transition: background 0.12s;
-    }
-    #pending-leads-banner .dismiss-btn:hover { background: #DBEAFE; }
-
-    /* ── NEW BADGE ── */
-    .new-badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: #2563EB;
-      color: #fff;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    /* ── MAIN ── */
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 24px;
-    }
-
-    /* ── FILTERS ── */
-    .filters {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-
-    .filter-btn {
-      padding: 6px 14px;
       border-radius: 20px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.12s;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
+      margin-bottom: 12px;
     }
-
-    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-    .filter-count {
-      background: rgba(0,0,0,0.08);
-      border-radius: 10px;
-      padding: 1px 6px;
-      font-size: 11px;
-    }
-
-    .filter-btn.active .filter-count { background: rgba(255,255,255,0.25); }
-
-    /* ── CARDS GRID ── */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 12px;
-    }
-
-    /* ── LEAD CARD ── */
-    .lead-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      transition: box-shadow 0.12s;
-    }
-
-    .lead-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-    .lead-card.followup-due { border-left: 3px solid var(--followup); }
-    .lead-card.status-approved { border-left: 3px solid var(--approved); }
-    .lead-card.status-rejected { opacity: 0.55; }
-
-    /* card top row */
-    .card-header {
-      padding: 14px 14px 10px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .card-title-group { flex: 1; min-width: 0; }
-
-    .business-top {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 3px;
-      flex-wrap: wrap;
-    }
-
-    .business-name {
-      font-size: 15px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .type-badge {
-      font-size: 11px;
-      font-weight: 500;
-      padding: 2px 8px;
-      border-radius: 4px;
-      background: #EFF6FF;
-      color: var(--accent);
-      border: 1px solid #BFDBFE;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .business-city {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .card-header-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 5px;
-      flex-shrink: 0;
-    }
-
-    .status-badge {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 9px;
-      border-radius: 20px;
-      white-space: nowrap;
-    }
-
-    .badge-pending { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
-    .badge-approved { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
-    .badge-rejected { background: #F3F4F6; color: #4B5563; border: 1px solid #D1D5DB; }
-    .badge-followup { background: #FFF7ED; color: #9A3412; border: 1px solid #FDBA74; }
-
-    /* ── REPLY BADGE ── */
-    .reply-badge {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 9px;
-      border-radius: 20px;
-      background: #EFF6FF;
-      color: var(--reply-blue);
-      border: 1px solid #BFDBFE;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.12s;
-    }
-    .reply-badge:hover { background: #DBEAFE; border-color: var(--reply-blue); }
-    .reply-badge.has-new {
-      background: #2563EB;
-      color: #fff;
-      border-color: #2563EB;
-    }
-
-    /* card info rows */
-    .card-info {
-      padding: 0 14px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .info-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .info-row a { color: var(--accent); text-decoration: none; }
-    .info-row a:hover { text-decoration: underline; }
-
-    .info-icon { width: 14px; text-align: center; font-size: 11px; }
-
-    .automation-angle {
-      margin: 0 14px 10px;
-      font-size: 12px;
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    /* followup date */
-    .followup-date {
-      font-size: 11px;
-      color: var(--followup);
-      padding: 0 14px 8px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* email section */
-    .email-section {
-      border-top: 1px solid var(--border);
-      padding: 10px 14px;
-    }
-
-    .email-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      font-size: 12px;
-      color: var(--text-muted);
-      user-select: none;
-    }
-
-    .email-toggle:hover { color: var(--accent); }
-    .email-toggle-label { font-weight: 500; display: flex; align-items: center; gap: 5px; }
-
-    .chevron { transition: transform 0.2s; display: inline-block; font-size: 10px; }
-    .email-expanded .chevron { transform: rotate(180deg); }
-
-    .email-body { display: none; margin-top: 10px; }
-    .email-body.open { display: block; }
-
-    .email-subject-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .email-subject-label {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--text-muted);
-      white-space: nowrap;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .email-subject-input {
-      flex: 1;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      padding: 5px 8px;
-      color: var(--text);
-      font-size: 12px;
-      outline: none;
-    }
-
-    .email-subject-input:focus { border-color: var(--accent); }
-
-    .email-textarea {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      padding: 8px;
-      color: var(--text);
-      font-size: 12px;
-      font-family: inherit;
+    .card-name { font-size: 1.45rem; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
+    .card-city { font-size: 0.88rem; color: var(--muted); margin-bottom: 14px; }
+    .card-email { font-size: 0.92rem; color: var(--blue); margin-bottom: 8px; word-break: break-all; }
+    .card-website { font-size: 0.82rem; color: var(--muted); margin-bottom: 14px; word-break: break-all; }
+    .card-angle {
+      font-size: 0.85rem;
+      color: #aaa;
+      background: #111;
+      border-left: 3px solid #333;
+      padding: 9px 12px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 16px;
       line-height: 1.5;
-      resize: vertical;
-      min-height: 120px;
-      outline: none;
     }
-
-    .email-textarea:focus { border-color: var(--accent); }
-
-    /* card actions */
-    .card-actions {
-      padding: 10px 14px;
-      display: flex;
-      gap: 6px;
-      border-top: 1px solid var(--border);
-    }
-
-    .btn {
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid transparent;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.12s;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-    }
-
-    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-
-    .btn-approve {
-      background: var(--accent);
-      color: #fff;
-      flex: 1;
-    }
-    .btn-approve:hover:not(:disabled) { background: var(--accent-hover); }
-
-    .btn-reject {
-      background: var(--card);
-      color: var(--text-muted);
-      border-color: var(--border);
-    }
-    .btn-reject:hover:not(:disabled) { border-color: var(--rejected); color: var(--rejected); }
-
-    .btn-followup {
-      background: var(--card);
-      color: var(--followup);
-      border-color: #FDBA74;
-    }
-    .btn-followup:hover:not(:disabled) { background: #FFF7ED; }
-
-    /* ── REPLIES SECTION ── */
-    .replies-section {
-      border-top: 1px solid var(--border);
-    }
-
-    .replies-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      font-size: 12px;
-      color: var(--reply-blue);
-      font-weight: 500;
-      padding: 10px 14px;
-      user-select: none;
-    }
-    .replies-toggle:hover { background: #F0F7FF; }
-    .replies-toggle-label { display: flex; align-items: center; gap: 5px; }
-
-    .replies-panel { display: none; padding: 0 14px 12px; }
-    .replies-panel.open { display: block; }
-
-    .reply-thread {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-
-    .thread-msg {
-      border-radius: 6px;
-      padding: 8px 10px;
-      font-size: 12px;
-    }
-
-    .thread-msg.sent {
-      background: #EFF6FF;
-      border-left: 3px solid var(--accent);
-    }
-
-    .thread-msg.received {
-      background: #F0FDF4;
-      border-left: 3px solid var(--approved);
-    }
-
-    .thread-msg-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 3px;
-    }
-
-    .thread-msg-direction {
-      font-weight: 600;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-    .thread-msg.sent .thread-msg-direction { color: var(--accent); }
-    .thread-msg.received .thread-msg-direction { color: var(--approved); }
-
-    .thread-msg-date {
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    .thread-msg-subject {
-      font-weight: 600;
-      font-size: 11px;
-      color: var(--text);
-      margin-bottom: 2px;
-    }
-
-    .thread-msg-preview {
-      color: var(--text-muted);
-      font-size: 11px;
-      line-height: 1.4;
+    .email-preview {
+      background: #111;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.78rem;
+      color: #999;
+      line-height: 1.6;
+      max-height: 150px;
+      overflow-y: auto;
+      margin-bottom: 12px;
       white-space: pre-wrap;
-      word-break: break-word;
-      max-height: 60px;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
-
-    .thread-empty {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-align: center;
-      padding: 12px 0;
-      font-style: italic;
-    }
-
-    /* compose box */
-    .compose-trigger-btn {
-      padding: 5px 10px;
-      border-radius: 5px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--reply-blue);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.12s;
-    }
-    .compose-trigger-btn:hover { border-color: var(--reply-blue); background: #EFF6FF; }
-
-    .compose-box {
-      display: none;
-      margin-top: 8px;
-    }
-    .compose-box.open { display: block; }
-
-    .compose-subject-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .compose-subject-label {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--text-muted);
-      white-space: nowrap;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .compose-subject-input {
-      flex: 1;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      padding: 5px 8px;
-      color: var(--text);
-      font-size: 12px;
-      outline: none;
-    }
-    .compose-subject-input:focus { border-color: var(--reply-blue); }
-
-    .compose-textarea {
+    .btn-regen {
       width: 100%;
-      background: var(--bg);
+      background: #222;
       border: 1px solid var(--border);
-      border-radius: 5px;
-      padding: 8px;
       color: var(--text);
-      font-size: 12px;
-      font-family: inherit;
-      line-height: 1.5;
-      resize: vertical;
-      min-height: 80px;
-      outline: none;
+      padding: 9px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      cursor: pointer;
     }
-    .compose-textarea:focus { border-color: var(--reply-blue); }
+    .btn-regen:hover { background: #2a2a2a; }
 
-    .compose-actions {
+    #hints {
       display: flex;
-      gap: 6px;
-      margin-top: 6px;
+      justify-content: center;
+      gap: 48px;
+      padding: 0 20px 8px;
+      flex-shrink: 0;
     }
+    .hint { font-size: 0.7rem; color: var(--muted); text-align: center; }
 
-    .btn-send-reply {
-      background: var(--reply-blue);
-      color: #fff;
-      padding: 6px 14px;
-      border-radius: 5px;
+    #actions {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      padding: 12px 20px 28px;
+      flex-shrink: 0;
+    }
+    .action-btn {
+      width: 62px; height: 62px;
+      border-radius: 50%;
       border: none;
-      font-size: 12px;
-      font-weight: 600;
       cursor: pointer;
-      display: inline-flex;
+      font-size: 1.45rem;
+      display: flex;
       align-items: center;
-      gap: 4px;
-      transition: background 0.12s;
+      justify-content: center;
+      transition: transform 0.15s;
     }
-    .btn-send-reply:hover:not(:disabled) { background: #1D4ED8; }
-    .btn-send-reply:disabled { opacity: 0.5; cursor: not-allowed; }
+    .action-btn:hover { transform: scale(1.1); }
+    .action-btn:active { transform: scale(0.95); }
+    .btn-nope { background: rgba(239,68,68,0.15); color: var(--red); }
+    .btn-save { background: rgba(234,179,8,0.15); color: var(--yellow); }
+    .btn-send { background: rgba(34,197,94,0.15); color: var(--green); }
 
-    .btn-cancel-reply {
-      background: var(--card);
-      color: var(--text-muted);
-      padding: 6px 10px;
-      border-radius: 5px;
-      border: 1px solid var(--border);
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .btn-cancel-reply:hover { border-color: var(--text-muted); }
-
-    /* empty state */
-    .empty-state {
+    #empty {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 14px;
+      color: var(--muted);
       text-align: center;
-      padding: 80px 20px;
-      color: var(--text-muted);
     }
+    #empty .icon { font-size: 3rem; }
 
-    .empty-state-icon { font-size: 40px; margin-bottom: 14px; }
-    .empty-state h3 { font-size: 16px; margin-bottom: 6px; color: var(--text); }
-    .empty-state p { font-size: 13px; }
-
-    /* toast */
     #toast {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 10px 22px;
+      border-radius: 20px;
+      font-size: 0.84rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
       z-index: 999;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      white-space: nowrap;
     }
-
-    .toast-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 13px;
-      max-width: 300px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      animation: slideIn 0.18s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text);
-    }
-
-    .toast-success { border-left: 3px solid var(--approved); }
-    .toast-error { border-left: 3px solid var(--danger); }
-    .toast-info { border-left: 3px solid var(--accent); }
-
-    @keyframes slideIn {
-      from { transform: translateX(30px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    /* spinner */
-    .spinner {
-      width: 12px;
-      height: 12px;
-      border: 2px solid rgba(255,255,255,0.4);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-      display: inline-block;
-    }
-
-    .spinner-blue {
-      width: 12px;
-      height: 12px;
-      border: 2px solid rgba(37,99,235,0.3);
-      border-top-color: var(--reply-blue);
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-      display: inline-block;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* responsive */
-    @media (max-width: 600px) {
-      main { padding: 14px 16px; }
-      .cards-grid { grid-template-columns: 1fr; }
-      header { padding: 0 16px; }
-      .header-stats { gap: 12px; }
-    }
-
-    @media (max-width: 420px) {
-      .header-stat:last-child { display: none; }
-    }
+    #toast.show { opacity: 1; }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">
-    <div class="logo-icon">🌹</div>
-    Wildrose Lead Manager
-  </div>
-  <div class="header-stats">
-    <div class="header-stat pending">
-      <strong id="stat-pending">0</strong> Pending
-    </div>
-    <div class="header-stat approved">
-      <strong id="stat-approved">0</strong> Sent
-    </div>
-    <div class="header-stat followup">
-      <strong id="stat-followup">0</strong> Due
-    </div>
-    <button class="btn-sync-replies" id="sync-replies-btn" onclick="syncReplies()">
-      💬 Sync Replies
-    </button>
-  </div>
+  <h1>🌹 Lead Manager</h1>
+  <span id="counter">Loading...</span>
 </header>
 
-<div id="followup-banner">
-  🔔 <span id="followup-count-text"></span>
-</div>
-
-<div id="pending-leads-banner">
-  <span>📥 <strong id="pending-leads-count-text">0</strong> new leads ready for review</span>
-  <button class="dismiss-btn" onclick="dismissPendingBanner()">View Now</button>
-</div>
-
-<main>
-  <div class="filters" id="filters"></div>
-  <div class="cards-grid" id="cards-grid"></div>
-  <div id="empty-state" style="display:none" class="empty-state">
-    <div class="empty-state-icon">📭</div>
-    <h3>No leads here</h3>
-    <p>Try a different filter.</p>
+<div id="stack">
+  <div id="empty">
+    <div class="icon">🎉</div>
+    <p>All caught up — no pending leads</p>
   </div>
-</main>
+</div>
+
+<div id="hints">
+  <div class="hint">← Skip</div>
+  <div class="hint">↑ Save</div>
+  <div class="hint">→ Send ✉</div>
+</div>
+
+<div id="actions">
+  <button class="action-btn btn-nope" onclick="swipeAction('left')" title="Skip">✕</button>
+  <button class="action-btn btn-save" onclick="swipeAction('up')" title="Save for later">🔖</button>
+  <button class="action-btn btn-send" onclick="swipeAction('right')" title="Send email">✉</button>
+</div>
 
 <div id="toast"></div>
 
 <script>
-// ─── EMAIL TEMPLATES ──────────────────────────────────────────────────────────
+const TOKEN = 'am_us_237687733d6087d5e2e5c3956f651883c8b190d38b855ebdbcf85f6780a8c3c9';
+const INBOX = 'wildroseautomations@agentmail.to';
+const DATA_URL = 'https://jack108510.github.io/jsw-dashboard/wildrose-pending-leads.json';
 
-const TEMPLATES = {
-  Cleaning: {
-    subject: 'We Help Cleaning Companies Get More Bookings on Autopilot',
-    body: (name, biz) =>
-`Hi ${name},
+let leads = [];
 
-I came across ${biz} and noticed you're doing great work in Edmonton. We help cleaning companies automate their booking process, send follow-up reminders to leads, and collect Google reviews automatically — without any extra staff.
-
-Most of our clients see a 30% increase in booked jobs within 60 days.
-
-Would you be open to a quick 15-minute call this week?
-
-Best,
-Wildrose Automations Team
-wildroseautomations.com`
-  },
-  HVAC: {
-    subject: 'Stop Losing HVAC Leads to Slow Follow-Ups',
-    body: (name, biz) =>
-`Hi ${name},
-
-${biz} came up while I was looking at top HVAC companies in Edmonton. We build automated systems that follow up with quotes instantly, remind customers about seasonal maintenance, and fill your schedule — all on autopilot.
-
-Worth a quick chat?
-
-Best,
-Wildrose Automations Team
-wildroseautomations.com`
-  },
-  'Car Detailing': {
-    subject: "Automate Your Detail Shop's Bookings & Reviews",
-    body: (name, biz) =>
-`Hi ${name},
-
-I found ${biz} while researching detail shops in Calgary. We help detailers automate their quote responses, appointment reminders, and Google review requests — so you spend less time on admin and more time detailing.
-
-Interested in a free demo?
-
-Best,
-Wildrose Automations Team
-wildroseautomations.com`
-  },
-  Moving: {
-    subject: 'Never Miss Another Moving Lead',
-    body: (name, biz) =>
-`Hi ${name},
-
-I came across ${biz} and think there's a big opportunity to automate your lead follow-up process. Most moving companies lose 40-60% of leads just from slow responses. We fix that with instant auto-replies, quote follow-ups, and booking confirmations.
-
-Open to a 15-min call?
-
-Best,
-Wildrose Automations Team
-wildroseautomations.com`
-  },
-  Landscaping: {
-    subject: 'Automate Your Landscaping Quotes & Seasonal Reminders',
-    body: (name, biz) =>
-`Hi ${name},
-
-Found ${biz} while looking at top landscaping companies in Edmonton. We help landscapers automate seasonal outreach, quote follow-ups, and job scheduling reminders so nothing falls through the cracks.
-
-Would love to show you how it works.
-
-Best,
-Wildrose Automations Team
-wildroseautomations.com`
-  },
-  'Property Mgmt': {
-    subject: 'Automate Your Tenant Communications',
-    body: (name, biz) =>
-`Hi ${name},
-
-I came across ${biz} and wanted to reach out. We help property managers automate tenant communications, maintenance request tracking, and lease renewal reminders — saving hours every week.
-
-Worth a quick conversation?
-
-Best,
-Wildrose Automations Team
-wildroseautomations.com`
-  },
-  default: {
-    subject: (biz) => `Automate the Admin — Grow ${biz} Faster`,
-    body: (name, biz) =>
-`Hi ${name},
-
-I found ${biz} while researching businesses in Edmonton/Calgary. We build AI automation systems that handle follow-ups, bookings, reminders, and more — so you can focus on the work.
-
-Would you be open to a free 15-min call?
-
-Best,
-Wildrose Automations Team
-wildroseautomations.com`
-  }
-};
-
-function getTemplate(type) {
-  return TEMPLATES[type] || TEMPLATES.default;
+function toast(msg, ms = 2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), ms);
 }
 
-function getEmailDraft(lead) {
-  const tmpl = getTemplate(lead.type);
-  const firstName = lead.name.split(' ')[0];
-  return {
-    subject: typeof tmpl.subject === 'function' ? tmpl.subject(lead.name) : tmpl.subject,
-    body: tmpl.body(firstName, lead.name)
+function getTemplate(lead) {
+  const name = lead.first_name || 'there';
+  const biz = lead.business_name || 'your business';
+  const type = (lead.type || '').toLowerCase();
+  const city = lead.city || 'Edmonton';
+  const templates = {
+    cleaning: `Hi ${name},\n\nMost cleaning companies in ${city} are losing 3–5 bookings a week and don't even realize it — leads come in through the website, no one follows up fast enough, and they book someone else.\n\nWe built an automation system specifically for cleaning companies that responds to new leads in under 60 seconds, answers their questions, and books the job — without anyone on your team lifting a finger.\n\nA residential cleaning company in Calgary using this added $3,800/month in booked jobs within their first 30 days.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
+    hvac: `Hi ${name},\n\nMost HVAC companies in ${city} are losing 3–5 service calls a week and don't even realize it — quote requests come in after hours, no one gets back to them, and they call the next company on the list.\n\nWe built an automation system specifically for HVAC companies that responds to new leads in under 60 seconds, qualifies the job, and gets it booked — even while your team is on a call or off the clock.\n\nAn HVAC company in Calgary using this recovered $5,200/month in jobs they were previously losing to slower competitors.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
+    painting: `Hi ${name},\n\nMost painting contractors in ${city} are losing 3–5 quotes a week and don't even realize it — someone fills out the form, doesn't hear back fast enough, and goes with whoever responds first.\n\nWe built an automation system specifically for painters and contractors that responds to new quote requests in under 60 seconds, asks the qualifying questions, and locks in the appointment — without you doing a thing.\n\nA painting company in Edmonton using this added $4,200/month in new jobs within 30 days of turning it on.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
+    detailing: `Hi ${name},\n\nMost detail shops in ${city} are losing 3–5 bookings a week without realizing it — people reach out, get no quick response, and book somewhere else.\n\nWe built an automation system for detail shops that responds to new inquiries in under 60 seconds, handles the back-and-forth, and locks in the booking automatically.\n\nA mobile detailing company using this added $2,900/month in new bookings within the first month.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
+    landscaping: `Hi ${name},\n\nMost landscaping companies in ${city} lose work every season the same way — quote requests pile up, follow-up is slow, and the client goes with whoever gets back to them first.\n\nWe built an automation system for landscaping companies that responds to new leads instantly, sends quote reminders automatically, and keeps your schedule full — without the admin work.\n\nA lawn care company using this added $3,500/month in recurring clients within 30 days.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
+    moving: `Hi ${name},\n\nMost moving companies in ${city} lose 40–50% of their leads to one thing: slow response time. Someone requests a quote, doesn't hear back within an hour, and books the next company.\n\nWe built an automation system for movers that responds to every quote request in under 60 seconds, qualifies the move, and gets the booking confirmed — automatically.\n\nA ${city} moving company using this recovered $4,800/month in jobs they were losing to faster competitors.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
   };
+  return templates[type] || `Hi ${name},\n\nMost local service businesses in ${city} are losing jobs every week the same way — leads come in, follow-up is too slow, and the customer books someone else.\n\nWe build automation systems that respond to new leads in under 60 seconds, handle the qualifying questions, and lock in the booking — without anyone on your team doing the work.\n\nClients typically recover 3–5 lost jobs per week within the first 30 days.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`;
 }
 
-// ─── LEADS DATA ───────────────────────────────────────────────────────────────
-
-const INITIAL_LEADS = [
-  { id: 1, name: 'Green Clean Edmonton', city: 'Edmonton', type: 'Cleaning', email: 'info@greenclean.ca', website: 'greenclean.ca', angle: 'Automate booking + follow-ups' },
-  { id: 2, name: 'Elite Detail Calgary', city: 'Calgary', type: 'Car Detailing', email: 'hello@elitedetailcalgary.ca', website: 'elitedetailcalgary.ca', angle: 'Automate quote responses + review requests' },
-  { id: 3, name: 'Prairie Lawn Care', city: 'Edmonton', type: 'Landscaping', email: 'contact@prairielawncare.ca', website: 'prairielawncare.ca', angle: 'Automate seasonal reminders + quotes' },
-  { id: 4, name: 'Rocky Mountain HVAC', city: 'Edmonton', type: 'HVAC', email: 'info@rockymtnhvac.ca', website: 'rockymtnhvac.ca', angle: 'Automate maintenance reminders + quote follow-ups' },
-  { id: 5, name: 'Swift Move YEG', city: 'Edmonton', type: 'Moving', email: 'quotes@swiftmoveyeg.ca', website: 'swiftmoveyeg.ca', angle: 'Automate quote pipeline + confirmation emails' },
-  { id: 6, name: 'Clear Out Junk Edmonton', city: 'Edmonton', type: 'Junk Removal', email: 'hello@clearoutjunk.ca', website: 'clearoutjunk.ca', angle: 'Automate booking + SMS confirmations' },
-  { id: 7, name: 'Skyline Property Management', city: 'Calgary', type: 'Property Mgmt', email: 'admin@skylinepm.ca', website: 'skylinepm.ca', angle: 'Automate tenant communications + maintenance requests' },
-  { id: 8, name: 'Iron City Gym', city: 'Edmonton', type: 'Gym', email: 'info@ironcitygym.ca', website: 'ironcitygym.ca', angle: 'Automate member onboarding + class reminders' },
-  { id: 9, name: 'Sharp Cuts Barbershop', city: 'Edmonton', type: 'Barbershop', email: 'bookings@sharpcuts.ca', website: 'sharpcuts.ca', angle: 'Automate appointment reminders + rebooking' },
-  { id: 10, name: 'Peak Painters Edmonton', city: 'Edmonton', type: 'Painters', email: 'hello@peakpainters.ca', website: 'peakpainters.ca', angle: 'Automate quote follow-ups + project updates' },
-];
-
-// ─── STATE ────────────────────────────────────────────────────────────────────
-
-const STORAGE_KEY = 'wildrose_leads_v1';
-const REPLIES_STORAGE_KEY = 'wildrose_replies_v1';
-
-function loadLeads() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
-  } catch(e) {}
-  return INITIAL_LEADS.map(l => ({ ...l, status: 'pending', followupDate: null, emailDraft: getEmailDraft(l) }));
+function saveLocal(lead) {
+  let all = JSON.parse(localStorage.getItem('wrl') || '[]');
+  const i = all.findIndex(l => l.id === lead.id);
+  if (i >= 0) all[i] = lead; else all.push(lead);
+  localStorage.setItem('wrl', JSON.stringify(all));
 }
 
-function saveLeads() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+function updateCounter() {
+  const p = leads.filter(l => !l.status || l.status === 'pending').length;
+  document.getElementById('counter').textContent = `${p} pending`;
 }
 
-// replies stored as { [leadId]: [ { direction: 'sent'|'received', date, subject, body, id } ] }
-function loadReplies() {
-  try {
-    const stored = localStorage.getItem(REPLIES_STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
-  } catch(e) {}
-  return {};
+function pending() {
+  return leads.filter(l => !l.status || l.status === 'pending');
 }
 
-function saveReplies() {
-  localStorage.setItem(REPLIES_STORAGE_KEY, JSON.stringify(replies));
-}
-
-let leads = loadLeads();
-let replies = loadReplies();
-let activeFilter = 'all';
-
-// ─── AGENTMAIL ────────────────────────────────────────────────────────────────
-
-const AGENTMAIL_INBOX = 'https://api.agentmail.to/v0/inboxes/wildroseautomations%40agentmail.to/messages';
-const AGENTMAIL_SEND = 'https://api.agentmail.to/v0/inboxes/wildroseautomations%40agentmail.to/messages/send';
-const AGENTMAIL_KEY = 'am_us_237687733d6087d5e2e5c3956f651883c8b190d38b855ebdbcf85f6780a8c3c9';
-
-async function fetchInboxMessages() {
-  const resp = await fetch(AGENTMAIL_INBOX, {
-    headers: { 'Authorization': `Bearer ${AGENTMAIL_KEY}` }
-  });
-  if (!resp.ok) throw new Error(`API error ${resp.status}`);
-  const data = await resp.json();
-  // API may return array or { messages: [...] }
-  return Array.isArray(data) ? data : (data.messages || data.items || []);
-}
-
-async function sendEmail(to, subject, text) {
-  const resp = await fetch(AGENTMAIL_SEND, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${AGENTMAIL_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ to, subject, text }),
-  });
-  if (!resp.ok) {
-    const err = await resp.text();
-    throw new Error(`API error ${resp.status}: ${err}`);
-  }
-  return resp;
-}
-
-// ─── REPLY SYNC ───────────────────────────────────────────────────────────────
-
-function normalizeEmail(e) {
-  if (!e) return '';
-  // extract bare address from "Name <addr>" format
-  const m = e.match(/<(.+?)>/);
-  return (m ? m[1] : e).toLowerCase().trim();
-}
-
-async function syncReplies(silent = false) {
-  const btn = document.getElementById('sync-replies-btn');
-  if (btn) {
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-blue"></span> Syncing…';
-  }
-
-  try {
-    const messages = await fetchInboxMessages();
-    let newCount = 0;
-
-    messages.forEach(msg => {
-      const fromEmail = normalizeEmail(msg.from || msg.from_address || '');
-      if (!fromEmail) return;
-
-      const lead = leads.find(l => normalizeEmail(l.email) === fromEmail);
-      if (!lead) return;
-
-      const msgId = msg.id || msg.message_id || (msg.date + fromEmail);
-      const leadReplies = replies[lead.id] || [];
-
-      // avoid duplicates
-      if (leadReplies.some(r => r.id === msgId)) return;
-
-      const msgDate = msg.date || msg.created_at || msg.received_at || new Date().toISOString();
-      const msgSubject = msg.subject || '(no subject)';
-      const msgBody = msg.text || msg.body || msg.snippet || msg.preview || '';
-
-      leadReplies.push({
-        id: msgId,
-        direction: 'received',
-        date: msgDate,
-        subject: msgSubject,
-        body: msgBody,
-      });
-
-      replies[lead.id] = leadReplies;
-      newCount++;
-    });
-
-    saveReplies();
-    render();
-
-    if (!silent) {
-      if (newCount > 0) {
-        toast(`${newCount} new repl${newCount === 1 ? 'y' : 'ies'} synced!`, 'success', '💬');
-      } else {
-        toast('No new replies found.', 'info', '💬');
-      }
-    } else if (newCount > 0) {
-      toast(`${newCount} new repl${newCount === 1 ? 'y' : 'ies'}!`, 'info', '💬');
-    }
-  } catch(err) {
-    if (!silent) toast(`Sync failed: ${err.message}`, 'error', '✕');
-    console.error('Reply sync error:', err);
-  } finally {
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = '💬 Sync Replies';
-    }
-  }
-}
-
-// Auto-poll every 60 seconds (silent)
-setInterval(() => syncReplies(true), 60000);
-
-// ─── TOAST ────────────────────────────────────────────────────────────────────
-
-function toast(msg, type = 'info', icon = '✓') {
-  const container = document.getElementById('toast');
-  const item = document.createElement('div');
-  item.className = `toast-item toast-${type}`;
-  item.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
-  container.appendChild(item);
-  setTimeout(() => {
-    item.style.opacity = '0';
-    item.style.transform = 'translateX(30px)';
-    item.style.transition = 'all 0.2s';
-    setTimeout(() => item.remove(), 200);
-  }, 4000);
-}
-
-// ─── FILTER / STATS ───────────────────────────────────────────────────────────
-
-function getTodayISO() {
-  return new Date().toISOString().split('T')[0];
-}
-
-function isFollowupDue(lead) {
-  if (lead.status !== 'followup' && lead.status !== 'approved') return false;
-  if (!lead.followupDate) return false;
-  return lead.followupDate <= getTodayISO();
-}
-
-function countByStatus(status) {
-  return leads.filter(l => l.status === status).length;
-}
-
-function countFollowupDue() {
-  return leads.filter(l => isFollowupDue(l)).length;
-}
-
-function filteredLeads() {
-  if (activeFilter === 'all') return leads.filter(l => l.status !== 'rejected');
-  if (activeFilter === 'pending') return leads.filter(l => l.status === 'pending');
-  if (activeFilter === 'approved') return leads.filter(l => l.status === 'approved');
-  if (activeFilter === 'rejected') return leads.filter(l => l.status === 'rejected');
-  if (activeFilter === 'followup') return leads.filter(l => isFollowupDue(l));
-  return leads;
-}
-
-// ─── RENDER ───────────────────────────────────────────────────────────────────
-
-function renderFilters() {
-  const container = document.getElementById('filters');
-  const dueCount = countFollowupDue();
-  const filters = [
-    { id: 'all', label: 'All Active', count: leads.filter(l => l.status !== 'rejected').length },
-    { id: 'pending', label: 'Pending', count: countByStatus('pending') },
-    { id: 'approved', label: 'Sent', count: countByStatus('approved') },
-    { id: 'rejected', label: 'Rejected', count: countByStatus('rejected') },
-    { id: 'followup', label: '⏰ Follow-up Due', count: dueCount },
-  ];
-
-  container.innerHTML = filters.map(f => `
-    <button class="filter-btn ${activeFilter === f.id ? 'active' : ''}" onclick="setFilter('${f.id}')">
-      ${f.label} <span class="filter-count">${f.count}</span>
-    </button>
-  `).join('');
-}
-
-function renderStats() {
-  document.getElementById('stat-pending').textContent = countByStatus('pending');
-  document.getElementById('stat-approved').textContent = countByStatus('approved');
-  document.getElementById('stat-followup').textContent = countFollowupDue();
-}
-
-function renderBanner() {
-  const due = countFollowupDue();
-  const banner = document.getElementById('followup-banner');
-  if (due > 0) {
-    banner.classList.add('show');
-    document.getElementById('followup-count-text').textContent =
-      `${due} lead${due !== 1 ? 's' : ''} need${due === 1 ? 's' : ''} follow-up today`;
-  } else {
-    banner.classList.remove('show');
-  }
-}
-
-function formatDate(iso) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  if (isNaN(d)) {
-    // try plain ISO date string
-    const [y, m, day] = iso.split('-');
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return `${months[parseInt(m)-1]} ${parseInt(day)}, ${y}`;
-  }
-  return d.toLocaleString('en-CA', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-}
-
-function renderRepliesSection(lead) {
-  const leadReplies = replies[lead.id] || [];
-  const sentEmails = lead.status === 'approved' ? [{
-    id: `sent-${lead.id}`,
-    direction: 'sent',
-    date: lead.sentAt || '',
-    subject: lead.emailDraft ? lead.emailDraft.subject : '',
-    body: lead.emailDraft ? lead.emailDraft.body : '',
-  }] : [];
-
-  // merge sent + received, sort by date
-  const thread = [...sentEmails, ...leadReplies].sort((a, b) => {
-    const da = a.date ? new Date(a.date) : new Date(0);
-    const db = b.date ? new Date(b.date) : new Date(0);
-    return da - db;
-  });
-
-  const threadHtml = thread.length === 0
-    ? `<div class="thread-empty">No messages yet.</div>`
-    : thread.map(msg => `
-      <div class="thread-msg ${msg.direction}">
-        <div class="thread-msg-header">
-          <span class="thread-msg-direction">${msg.direction === 'sent' ? '→ Sent' : '← Reply'}</span>
-          <span class="thread-msg-date">${msg.date ? formatDate(msg.date) : ''}</span>
-        </div>
-        <div class="thread-msg-subject">${escHtml(msg.subject || '')}</div>
-        <div class="thread-msg-preview">${escHtml((msg.body || '').substring(0, 200))}${(msg.body || '').length > 200 ? '…' : ''}</div>
-      </div>
-    `).join('');
-
-  // last reply subject for pre-fill
-  const lastSubject = thread.length > 0 ? (thread[thread.length - 1].subject || '') : '';
-  const reSubject = lastSubject.startsWith('Re:') ? lastSubject : `Re: ${lastSubject}`;
-
-  return `
-    <div class="replies-section" id="replies-section-${lead.id}">
-      <div class="replies-toggle" onclick="toggleReplies(${lead.id})">
-        <span class="replies-toggle-label">💬 Thread (${thread.length})</span>
-        <span class="chevron" id="replies-chevron-${lead.id}">▾</span>
-      </div>
-      <div class="replies-panel" id="replies-panel-${lead.id}">
-        <div class="reply-thread" id="reply-thread-${lead.id}">
-          ${threadHtml}
-        </div>
-        <div style="display:flex; justify-content:flex-end;">
-          <button class="compose-trigger-btn" onclick="toggleCompose(${lead.id})">✏️ Reply</button>
-        </div>
-        <div class="compose-box" id="compose-box-${lead.id}">
-          <div class="compose-subject-row">
-            <span class="compose-subject-label">Subject</span>
-            <input class="compose-subject-input" id="compose-subject-${lead.id}" value="${escHtml(reSubject)}" />
-          </div>
-          <textarea class="compose-textarea" id="compose-body-${lead.id}" placeholder="Write your reply…"></textarea>
-          <div class="compose-actions">
-            <button class="btn-send-reply" id="compose-send-${lead.id}" onclick="sendReply(${lead.id})">📤 Send</button>
-            <button class="btn-cancel-reply" onclick="toggleCompose(${lead.id})">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function renderCard(lead) {
-  const due = isFollowupDue(lead);
-  const classes = [
-    'lead-card',
-    `status-${lead.status}`,
-    due ? 'followup-due' : ''
-  ].filter(Boolean).join(' ');
-
-  const badgeClass = due ? 'badge-followup' :
-    lead.status === 'pending' ? 'badge-pending' :
-    lead.status === 'approved' ? 'badge-approved' :
-    'badge-rejected';
-
-  const badgeText = due ? '⏰ Due' :
-    lead.status === 'pending' ? 'Pending' :
-    lead.status === 'approved' ? '✓ Sent' :
-    'Rejected';
-
-  const draft = lead.emailDraft || getEmailDraft(lead);
-  const isApproved = lead.status === 'approved';
-  const isRejected = lead.status === 'rejected';
-
-  const followupSection = lead.followupDate ? `
-    <div class="followup-date">🗓 Follow-up: ${formatDate(lead.followupDate)}</div>
-  ` : '';
-
-  // reply badge
-  const leadReplies = replies[lead.id] || [];
-  const replyCount = leadReplies.filter(r => r.direction === 'received').length;
-  const replyBadgeHtml = replyCount > 0
-    ? `<span class="reply-badge has-new" onclick="openReplies(${lead.id})" title="View replies">💬 ${replyCount} repl${replyCount === 1 ? 'y' : 'ies'}</span>`
-    : '';
-
-  return `
-    <div class="${classes}" id="card-${lead.id}">
-      <div class="card-header">
-        <div class="card-title-group">
-          <div class="business-top">
-            <div class="business-name">${lead.name}</div>
-            <span class="type-badge">${lead.type}</span>
-            ${lead.isFromApi ? '<span class="new-badge">🆕 New</span>' : ''}
-          </div>
-          <div class="business-city">📍 ${lead.city}</div>
-        </div>
-        <div class="card-header-right">
-          <span class="status-badge ${badgeClass}">${badgeText}</span>
-          ${replyBadgeHtml}
-        </div>
-      </div>
-
-      <div class="card-info">
-        <div class="info-row">
-          <span class="info-icon">✉</span>
-          <a href="mailto:${lead.email}">${lead.email}</a>
-        </div>
-        <div class="info-row">
-          <span class="info-icon">🌐</span>
-          <a href="https://${lead.website}" target="_blank" rel="noopener">${lead.website}</a>
-        </div>
-      </div>
-
-      <div class="automation-angle">⚡ ${lead.angle}</div>
-
-      ${followupSection}
-
-      <div class="email-section">
-        <div class="email-toggle" onclick="toggleEmail(${lead.id})" id="toggle-${lead.id}">
-          <span class="email-toggle-label">✉ Draft Email</span>
-          <span class="chevron">▾</span>
-        </div>
-        <div class="email-body" id="emailbody-${lead.id}">
-          <div class="email-subject-row">
-            <span class="email-subject-label">Subject</span>
-            <input class="email-subject-input" id="subject-${lead.id}" value="${escHtml(draft.subject)}" />
-          </div>
-          <textarea class="email-textarea" id="body-${lead.id}" rows="6">${escHtml(draft.body)}</textarea>
-        </div>
-      </div>
-
-      <div class="card-actions">
-        <button class="btn btn-approve" id="approve-btn-${lead.id}" onclick="approveLead(${lead.id})" ${isApproved ? 'disabled' : ''}>
-          ${isApproved ? '✓ Sent' : '✓ Approve & Send'}
-        </button>
-        <button class="btn btn-followup" onclick="followupLead(${lead.id})" ${isApproved || isRejected ? 'disabled' : ''}>↻ Follow Up</button>
-        <button class="btn btn-reject" onclick="rejectLead(${lead.id})" ${isRejected ? 'disabled' : ''}>✗ Reject</button>
-      </div>
-
-      ${renderRepliesSection(lead)}
-    </div>
-  `;
-}
-
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function render() {
-  renderStats();
-  renderBanner();
-  renderFilters();
-
-  const visible = filteredLeads();
-  const grid = document.getElementById('cards-grid');
-  const empty = document.getElementById('empty-state');
-
-  if (visible.length === 0) {
-    grid.innerHTML = '';
-    empty.style.display = 'block';
-  } else {
-    empty.style.display = 'none';
-    grid.innerHTML = visible.map(renderCard).join('');
-  }
-}
-
-// ─── ACTIONS ──────────────────────────────────────────────────────────────────
-
-function setFilter(f) {
-  activeFilter = f;
-  render();
-}
-
-function toggleEmail(id) {
-  const toggle = document.getElementById(`toggle-${id}`);
-  const body = document.getElementById(`emailbody-${id}`);
-  const isOpen = body.classList.contains('open');
-  if (isOpen) {
-    body.classList.remove('open');
-    toggle.classList.remove('email-expanded');
-  } else {
-    body.classList.add('open');
-    toggle.classList.add('email-expanded');
-  }
-}
-
-function toggleReplies(id) {
-  const panel = document.getElementById(`replies-panel-${id}`);
-  const chevron = document.getElementById(`replies-chevron-${id}`);
-  const isOpen = panel.classList.contains('open');
-  if (isOpen) {
-    panel.classList.remove('open');
-    chevron.style.transform = '';
-  } else {
-    panel.classList.add('open');
-    chevron.style.transform = 'rotate(180deg)';
-  }
-}
-
-function openReplies(id) {
-  const panel = document.getElementById(`replies-panel-${id}`);
-  const chevron = document.getElementById(`replies-chevron-${id}`);
-  if (!panel.classList.contains('open')) {
-    panel.classList.add('open');
-    chevron.style.transform = 'rotate(180deg)';
-  }
-  // scroll into view
-  const card = document.getElementById(`card-${id}`);
-  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function toggleCompose(id) {
-  const box = document.getElementById(`compose-box-${id}`);
-  if (box) box.classList.toggle('open');
-}
-
-async function sendReply(id) {
-  const lead = leads.find(l => l.id === id);
-  if (!lead) return;
-
-  const subjectEl = document.getElementById(`compose-subject-${id}`);
-  const bodyEl = document.getElementById(`compose-body-${id}`);
-  const sendBtn = document.getElementById(`compose-send-${id}`);
-
-  const subject = subjectEl?.value?.trim() || `Re: ${lead.name}`;
-  const text = bodyEl?.value?.trim();
-
-  if (!text) {
-    toast('Please write a reply first.', 'error', '✕');
+function renderStack() {
+  const stack = document.getElementById('stack');
+  stack.querySelectorAll('.card').forEach(c => c.remove());
+  const q = pending();
+  if (q.length === 0) {
+    document.getElementById('empty').style.display = 'flex';
+    document.getElementById('actions').style.display = 'none';
+    document.getElementById('hints').style.display = 'none';
     return;
   }
+  document.getElementById('empty').style.display = 'none';
+  document.getElementById('actions').style.display = 'flex';
+  document.getElementById('hints').style.display = 'flex';
 
-  sendBtn.disabled = true;
-  sendBtn.innerHTML = '<span class="spinner"></span> Sending…';
-
-  try {
-    await sendEmail(lead.email, subject, text);
-
-    // Add to local thread
-    const msgId = `sent-reply-${id}-${Date.now()}`;
-    const newMsg = {
-      id: msgId,
-      direction: 'sent',
-      date: new Date().toISOString(),
-      subject,
-      body: text,
-    };
-    if (!replies[id]) replies[id] = [];
-    replies[id].push(newMsg);
-    saveReplies();
-
-    toast(`Reply sent to ${lead.name}!`, 'success', '✓');
-    render();
-
-    // Re-open replies panel after render
-    requestAnimationFrame(() => openReplies(id));
-  } catch(err) {
-    sendBtn.disabled = false;
-    sendBtn.innerHTML = '📤 Send';
-    toast(`Failed: ${err.message}`, 'error', '✕');
-    console.error(err);
+  // Render back card first (behind)
+  if (q.length > 1) {
+    stack.appendChild(buildCard(q[1], false));
   }
+  // Top card
+  const top = buildCard(q[0], true);
+  stack.appendChild(top);
+  attachDrag(top, q[0]);
 }
 
-async function approveLead(id) {
-  const lead = leads.find(l => l.id === id);
+function buildCard(lead, isTop) {
+  const card = document.createElement('div');
+  card.className = 'card ' + (isTop ? 'top' : 'behind');
+  card.dataset.id = lead.id;
+  const email = getTemplate(lead);
+  card.innerHTML = `
+    <div class="swipe-label label-nope">Skip</div>
+    <div class="swipe-label label-send">Send ✓</div>
+    <div class="swipe-label label-save">Save</div>
+    <div class="card-type">${lead.type || 'business'}</div>
+    <div class="card-name">${lead.business_name || 'Unknown'}</div>
+    <div class="card-city">📍 ${lead.city || 'Edmonton'}</div>
+    <div class="card-email">✉ ${lead.email}</div>
+    ${lead.website ? `<div class="card-website">🌐 ${lead.website}</div>` : ''}
+    ${lead.automation_angle ? `<div class="card-angle">${lead.automation_angle}</div>` : ''}
+    <div class="email-preview" id="ep-${lead.id}">${email}</div>
+    <button class="btn-regen" onclick="regen('${lead.id}')">↻ New Email Draft</button>
+  `;
+  return card;
+}
+
+function regen(id) {
+  const lead = leads.find(l => l.id == id);
   if (!lead) return;
+  const el = document.getElementById('ep-' + id);
+  if (el) el.textContent = getTemplate(lead);
+  toast('Refreshed');
+}
 
-  const subject = document.getElementById(`subject-${id}`)?.value || lead.emailDraft.subject;
-  const body = document.getElementById(`body-${id}`)?.value || lead.emailDraft.body;
+function attachDrag(card, lead) {
+  let sx = 0, sy = 0, cx = 0, cy = 0, dragging = false;
 
-  const btn = document.getElementById(`approve-btn-${id}`);
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Sending…';
-
-  try {
-    await sendEmail(lead.email, subject, body);
-    lead.status = 'approved';
-    lead.sentAt = new Date().toISOString();
-    lead.emailDraft = { subject, body };
-    saveLeads();
-    render();
-    toast(`Email sent to ${lead.name}!`, 'success', '✓');
-
-    // Notify local API if this is a cron-sourced lead
-    if (lead.isFromApi && lead.apiId) {
-      fetch(`${LOCAL_API}/pending-leads/${lead.apiId}/approve`, { method: 'POST' })
-        .catch(e => console.log('API notify failed (ok to ignore):', e.message));
+  function start(e) {
+    dragging = true;
+    const p = e.touches ? e.touches[0] : e;
+    sx = p.clientX; sy = p.clientY;
+    card.style.transition = 'none';
+  }
+  function move(e) {
+    if (!dragging) return;
+    e.preventDefault();
+    const p = e.touches ? e.touches[0] : e;
+    cx = p.clientX - sx; cy = p.clientY - sy;
+    card.style.transform = `translate(${cx}px,${cy}px) rotate(${cx * 0.07}deg)`;
+    const nope = card.querySelector('.label-nope');
+    const send = card.querySelector('.label-send');
+    const save = card.querySelector('.label-save');
+    if (cy < -60 && Math.abs(cx) < 90) {
+      save.style.opacity = Math.min(1, Math.abs(cy)/90);
+      nope.style.opacity = 0; send.style.opacity = 0;
+    } else if (cx > 40) {
+      send.style.opacity = Math.min(1, cx/100);
+      nope.style.opacity = 0; save.style.opacity = 0;
+    } else if (cx < -40) {
+      nope.style.opacity = Math.min(1, Math.abs(cx)/100);
+      send.style.opacity = 0; save.style.opacity = 0;
+    } else {
+      nope.style.opacity = 0; send.style.opacity = 0; save.style.opacity = 0;
     }
-  } catch(err) {
-    btn.disabled = false;
-    btn.innerHTML = '✓ Approve & Send';
-    toast(`Failed to send: ${err.message}`, 'error', '✕');
-    console.error(err);
+  }
+  function end() {
+    if (!dragging) return;
+    dragging = false;
+    card.style.transition = 'transform 0.3s ease';
+    if (cy < -80 && Math.abs(cx) < 100) fly(card, 0, -window.innerHeight, () => act(lead, 'saved'));
+    else if (cx > 100) fly(card, window.innerWidth * 1.5, 0, () => act(lead, 'sent'));
+    else if (cx < -100) fly(card, -window.innerWidth * 1.5, 0, () => act(lead, 'skipped'));
+    else { card.style.transform = ''; card.querySelectorAll('.swipe-label').forEach(l => l.style.opacity = 0); }
+  }
+
+  card.addEventListener('mousedown', start);
+  card.addEventListener('touchstart', start, { passive: true });
+  window.addEventListener('mousemove', move);
+  window.addEventListener('touchmove', move, { passive: false });
+  window.addEventListener('mouseup', end);
+  window.addEventListener('touchend', end);
+}
+
+function fly(card, tx, ty, cb) {
+  card.style.transition = 'transform 0.35s ease';
+  card.style.transform = `translate(${tx}px,${ty}px) rotate(${tx > 0 ? 18 : -18}deg)`;
+  setTimeout(() => { card.remove(); cb(); }, 350);
+}
+
+function swipeAction(dir) {
+  const q = pending();
+  if (!q.length) return;
+  const lead = q[0];
+  const card = document.querySelector('.card.top');
+  if (!card) return;
+  if (dir === 'left') fly(card, -window.innerWidth * 1.5, 0, () => act(lead, 'skipped'));
+  else if (dir === 'right') fly(card, window.innerWidth * 1.5, 0, () => act(lead, 'sent'));
+  else if (dir === 'up') fly(card, 0, -window.innerHeight, () => act(lead, 'saved'));
+}
+
+async function act(lead, action) {
+  if (action === 'sent') {
+    await sendEmail(lead);
+  } else {
+    lead.status = action;
+    saveLocal(lead);
+    leads = leads.map(l => l.id === lead.id ? lead : l);
+    toast(action === 'saved' ? '🔖 Saved for later' : 'Skipped');
+    updateCounter();
+    renderStack();
   }
 }
 
-function rejectLead(id) {
-  const lead = leads.find(l => l.id === id);
-  if (!lead) return;
-  lead.status = 'rejected';
-  lead.followupDate = null;
-  saveLeads();
-  render();
-  toast(`${lead.name} marked as rejected.`, 'info', '✕');
-
-  // Notify local API if this is a cron-sourced lead
-  if (lead.isFromApi && lead.apiId) {
-    fetch(`${LOCAL_API}/pending-leads/${lead.apiId}/reject`, { method: 'POST' })
-      .catch(e => console.log('API notify failed (ok to ignore):', e.message));
-  }
-}
-
-function followupLead(id) {
-  const lead = leads.find(l => l.id === id);
-  if (!lead) return;
-  const date = new Date();
-  date.setDate(date.getDate() + 3);
-  lead.followupDate = date.toISOString().split('T')[0];
-  if (lead.status === 'pending') lead.status = 'followup';
-  saveLeads();
-  render();
-  toast(`Follow-up set for ${lead.name} in 3 days.`, 'info', '🗓');
-}
-
-// ─── PENDING LEADS FROM LOCAL API ────────────────────────────────────────────
-
-const LOCAL_API = 'http://localhost:3457';
-const PENDING_SEEN_KEY = 'wildrose_pending_seen_ids_v1';
-
-function getSeenPendingIds() {
-  try { return new Set(JSON.parse(localStorage.getItem(PENDING_SEEN_KEY) || '[]')); }
-  catch(e) { return new Set(); }
-}
-
-function saveSeenPendingId(id) {
-  const seen = getSeenPendingIds();
-  seen.add(String(id));
-  localStorage.setItem(PENDING_SEEN_KEY, JSON.stringify([...seen]));
-}
-
-// Normalize leads from the cron API to match site's lead schema
-function normalizePendingLead(apiLead) {
-  const typeMap = {
-    cleaning: 'Cleaning', detailing: 'Car Detailing', landscaping: 'Landscaping',
-    hvac: 'HVAC', moving: 'Moving', junk: 'Junk Removal', painting: 'Painters',
-    property: 'Property Mgmt', gym: 'Gym', salon: 'Barbershop', mobile: 'Mobile',
-  };
-  return {
-    id: `api-${apiLead.id}`,
-    name: apiLead.business_name || apiLead.name || 'Unknown',
-    city: apiLead.city || 'Edmonton',
-    type: typeMap[apiLead.type] || apiLead.type || 'Other',
-    email: apiLead.email || '',
-    website: (apiLead.website || '').replace(/^https?:\/\//, ''),
-    angle: apiLead.automation_angle || apiLead.angle || '',
-    status: 'pending',
-    followupDate: null,
-    apiId: String(apiLead.id),
-    isFromApi: true,
-    emailDraft: null,
-  };
-}
-
-async function fetchPendingLeads() {
+async function sendEmail(lead) {
+  const body = document.getElementById('ep-' + lead.id)?.textContent || getTemplate(lead);
+  const subject = `${lead.business_name} — quick question`;
+  toast('⏳ Sending...', 6000);
   try {
-    const resp = await fetch(`${LOCAL_API}/pending-leads`, { signal: AbortSignal.timeout(4000) });
-    if (!resp.ok) return;
-    const apiLeads = await resp.json();
-    if (!Array.isArray(apiLeads)) return;
-
-    const pendingApiLeads = apiLeads.filter(l => l.status === 'pending');
-    const existingIds = new Set(leads.map(l => l.id));
-    const newLeads = [];
-
-    pendingApiLeads.forEach(apiLead => {
-      const normalized = normalizePendingLead(apiLead);
-      if (!existingIds.has(normalized.id)) {
-        normalized.emailDraft = getEmailDraft(normalized);
-        leads.unshift(normalized); // add to top
-        newLeads.push(normalized);
-        existingIds.add(normalized.id);
+    const r = await fetch(
+      `https://api.agentmail.to/v0/inboxes/${encodeURIComponent(INBOX)}/messages/send`,
+      {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${TOKEN}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: lead.email, subject, text: body })
       }
-    });
-
-    if (newLeads.length > 0) {
-      saveLeads();
-      render();
-      // Show banner
-      const banner = document.getElementById('pending-leads-banner');
-      const countEl = document.getElementById('pending-leads-count-text');
-      const newUnseen = newLeads.filter(l => !getSeenPendingIds().has(l.id));
-      if (newUnseen.length > 0 && banner && countEl) {
-        countEl.textContent = newUnseen.length;
-        banner.classList.add('show');
-        toast(`📥 ${newUnseen.length} new lead${newUnseen.length !== 1 ? 's' : ''} ready for review!`, 'info', '📥');
-      }
+    );
+    if (r.ok) {
+      lead.status = 'sent';
+      lead.sent_at = new Date().toISOString();
+      toast('✅ Sent to ' + lead.email);
+    } else {
+      lead.status = 'send_failed';
+      toast('❌ Send failed');
     }
   } catch(e) {
-    // Local API may not be available (e.g. viewing on mobile) — silent fail
-    console.log('Pending leads API unavailable:', e.message);
+    lead.status = 'send_failed';
+    toast('❌ Network error');
   }
+  saveLocal(lead);
+  leads = leads.map(l => l.id === lead.id ? lead : l);
+  updateCounter();
+  renderStack();
 }
 
-function dismissPendingBanner() {
-  const banner = document.getElementById('pending-leads-banner');
-  if (banner) banner.classList.remove('show');
-  // Mark all api leads as seen
-  leads.filter(l => l.isFromApi).forEach(l => saveSeenPendingId(l.id));
-  // Switch to pending filter
-  setFilter('pending');
+async function init() {
+  try {
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
+    if (r.ok) {
+      const fresh = await r.json();
+      const local = JSON.parse(localStorage.getItem('wrl') || '[]');
+      const lmap = {};
+      local.forEach(l => lmap[l.id] = l);
+      leads = fresh.map(l => lmap[l.id] || l);
+      localStorage.setItem('wrl', JSON.stringify(leads));
+    } else throw new Error('fetch failed');
+  } catch(e) {
+    leads = JSON.parse(localStorage.getItem('wrl') || '[]');
+  }
+  updateCounter();
+  renderStack();
 }
 
-// Fetch on load + every 2 minutes
-fetchPendingLeads();
-setInterval(fetchPendingLeads, 2 * 60 * 1000);
-
-// ─── INIT ─────────────────────────────────────────────────────────────────────
-
-render();
+init();
 </script>
 </body>
 </html>
