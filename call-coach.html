@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Wildrose Call Coach</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0a;
+      --card: #141414;
+      --border: #222;
+      --text: #f0f0f0;
+      --muted: #666;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #eab308;
+      --blue: #3b82f6;
+      --purple: #a855f7;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    header h1 { font-size: 1rem; font-weight: 700; }
+    #callStatus {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+    .dot.live { background: var(--green); animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* LEAD SELECTOR */
+    #leadBar {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    #leadBar label { font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+    #leadSelect {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+    }
+    #loadBtn {
+      background: var(--blue);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* CONTEXT PANEL */
+    #contextPanel {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: none;
+      flex-shrink: 0;
+    }
+    #contextPanel.visible { display: block; }
+    .ctx-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 8px; }
+    .ctx-item { }
+    .ctx-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .ctx-value { font-size: 0.88rem; font-weight: 600; }
+    .ctx-angle {
+      font-size: 0.82rem;
+      color: #aaa;
+      border-left: 3px solid var(--purple);
+      padding-left: 10px;
+      line-height: 1.5;
+    }
+
+    /* MAIN COACHING AREA */
+    #main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* BIG COACHING BOX */
+    #coachBox {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+      text-align: center;
+      min-height: 200px;
+    }
+    #coachLabel {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+    #coachText {
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text);
+      max-width: 700px;
+    }
+    #coachText.thinking { color: var(--muted); font-style: italic; font-size: 1rem; }
+    #coachText.objection { color: var(--yellow); }
+    #coachText.close { color: var(--green); }
+
+    /* OBJECTION CHIPS */
+    #objectionBar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0 20px 16px;
+    }
+    .obj-chip {
+      background: #1a1a1a;
+      border: 1px solid var(--border);
+      color: var(--yellow);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .obj-chip:hover { background: #2a2a2a; }
+
+    /* TRANSCRIPT */
+    #transcriptArea {
+      height: 120px;
+      background: #0d0d0d;
+      border-top: 1px solid var(--border);
+      padding: 12px 20px;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    #transcriptArea p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 4px;
+    }
+    #transcriptArea p.interim { color: #444; font-style: italic; }
+    #transcriptArea p.final { color: #888; }
+
+    /* CONTROLS */
+    #controls {
+      padding: 14px 20px;
+      display: flex;
+      gap: 12px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    #micBtn {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    #micBtn.off { background: var(--green); color: #000; }
+    #micBtn.on  { background: var(--red); color: white; }
+    #clearBtn {
+      padding: 14px 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    /* PHASE TRACKER */
+    #phaseBar {
+      display: flex;
+      gap: 0;
+      padding: 0 20px 12px;
+      justify-content: center;
+    }
+    .phase {
+      flex: 1;
+      max-width: 120px;
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--muted);
+      padding: 6px 8px;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+    .phase.active { color: var(--blue); border-color: var(--blue); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📞 Wildrose Call Coach</h1>
+  <div id="callStatus">
+    <div class="dot" id="statusDot"></div>
+    <span id="statusText">Idle</span>
+  </div>
+</header>
+
+<div id="leadBar">
+  <label>Lead:</label>
+  <select id="leadSelect"><option value="">— Select a lead —</option></select>
+  <button id="loadBtn" onclick="loadLead()">Load</button>
+</div>
+
+<div id="contextPanel">
+  <div class="ctx-row">
+    <div class="ctx-item">
+      <div class="ctx-label">Business</div>
+      <div class="ctx-value" id="ctxBiz">—</div>
+    </div>
+    <div class="ctx-item">
+      <div class="ctx-label">Type</div>
+      <div class="ctx-value" id="ctxType">—</div>
+    </div>
+    <div class="ctx-item">
+      <div class="ctx-label">City</div>
+      <div class="ctx-value" id="ctxCity">—</div>
+    </div>
+    <div class="ctx-item">
+      <div class="ctx-label">Contact</div>
+      <div class="ctx-value" id="ctxContact">—</div>
+    </div>
+  </div>
+  <div class="ctx-angle" id="ctxAngle">—</div>
+</div>
+
+<div id="main">
+  <div id="phaseBar">
+    <div class="phase active" data-phase="opener" onclick="setPhase('opener')">Opener</div>
+    <div class="phase" data-phase="discovery" onclick="setPhase('discovery')">Discovery</div>
+    <div class="phase" data-phase="pitch" onclick="setPhase('pitch')">Pitch</div>
+    <div class="phase" data-phase="objection" onclick="setPhase('objection')">Objection</div>
+    <div class="phase" data-phase="close" onclick="setPhase('close')">Close</div>
+  </div>
+
+  <div id="coachBox">
+    <div id="coachLabel">SAY THIS</div>
+    <div id="coachText thinking">Load a lead and start listening to get coached in real time.</div>
+  </div>
+
+  <div id="objectionBar">
+    <div class="obj-chip" onclick="handleObjection('too expensive')">💸 Too expensive</div>
+    <div class="obj-chip" onclick="handleObjection('not interested')">🚫 Not interested</div>
+    <div class="obj-chip" onclick="handleObjection('already have someone')">👤 Have someone</div>
+    <div class="obj-chip" onclick="handleObjection('too busy right now')">⏰ Too busy</div>
+    <div class="obj-chip" onclick="handleObjection('send me more info')">📧 Send info</div>
+    <div class="obj-chip" onclick="handleObjection('how does it work')">❓ How it works</div>
+  </div>
+
+  <div id="transcriptArea">
+    <p class="final" style="color:#333;">Transcript will appear here...</p>
+  </div>
+</div>
+
+<div id="controls">
+  <button id="micBtn" class="off" onclick="toggleMic()">🎙 Start Listening</button>
+  <button id="clearBtn" onclick="clearAll()">Clear</button>
+</div>
+
+<script>
+const GEMINI_KEY = 'AIzaSyCDXNM5Ii5-0nnFLbBuKXQpSJBGmDZ_FTg';
+const LEADS_URL = 'https://jack108510.github.io/jsw-dashboard/wildrose-pending-leads.json';
+
+let leads = [];
+let currentLead = null;
+let currentPhase = 'opener';
+let transcript = [];
+let recognition = null;
+let isListening = false;
+let coachTimer = null;
+let lastCoachTime = 0;
+let pendingTranscript = '';
+
+const WILDROSE_CONTEXT = `You are a real-time sales coach helping Jack Wilde close deals for Wildrose Automations.
+
+ABOUT WILDROSE AUTOMATIONS:
+- We build AI automation systems for local service businesses in Edmonton/Calgary
+- Lead response automation (under 60 seconds), booking automation, follow-up sequences
+- Custom pricing: $500–$2,000/month depending on scope
+- ROI pitch: clients recover 3-5 lost jobs/week, typically $2,900–$6,500/month in new revenue
+- No contracts mentioned upfront — just "let's see if it's a fit"
+
+JACK'S STYLE:
+- Casual, direct, confident but not pushy
+- Uses short sentences
+- Doesn't oversell — lets the value speak
+- Goal: Book a discovery call or next step, not close on the first call`;
+
+const PHASE_PROMPTS = {
+  opener: "We're in the OPENER phase. Jack needs to: introduce himself warmly, reference their email reply, make them feel comfortable, and transition to asking about their business. Give Jack 1-2 sentences to say RIGHT NOW.",
+  discovery: "We're in the DISCOVERY phase. Jack needs to: ask questions to understand their biggest pain point around leads/follow-up, how many jobs they're losing, what their current process is. Give Jack 1 question to ask RIGHT NOW.",
+  pitch: "We're in the PITCH phase. Jack needs to: connect their specific pain point to what Wildrose does, mention a specific dollar result, make it feel obvious. Give Jack 2-3 sentences to say RIGHT NOW.",
+  objection: "We're handling an OBJECTION. Give Jack the perfect response — acknowledge, reframe, redirect. 2-3 sentences max.",
+  close: "We're in the CLOSE phase. Jack needs to: get a commitment — either a follow-up call, a demo, or next steps. Give Jack 1-2 sentences to close RIGHT NOW."
+};
+
+// Load leads
+async function init() {
+  try {
+    const r = await fetch(LEADS_URL + '?t=' + Date.now());
+    if (r.ok) {
+      leads = await r.json();
+    }
+  } catch(e) {
+    leads = JSON.parse(localStorage.getItem('wrl') || '[]');
+  }
+  
+  const sel = document.getElementById('leadSelect');
+  leads.forEach((l, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${l.business_name} (${l.city}) — ${l.type}`;
+    sel.appendChild(opt);
+  });
+}
+
+function loadLead() {
+  const idx = document.getElementById('leadSelect').value;
+  if (idx === '') return;
+  currentLead = leads[parseInt(idx)];
+  
+  document.getElementById('ctxBiz').textContent = currentLead.business_name || '—';
+  document.getElementById('ctxType').textContent = currentLead.type || '—';
+  document.getElementById('ctxCity').textContent = currentLead.city || '—';
+  document.getElementById('ctxContact').textContent = currentLead.first_name || currentLead.email || '—';
+  document.getElementById('ctxAngle').textContent = currentLead.automation_angle || '—';
+  document.getElementById('contextPanel').classList.add('visible');
+  
+  // Set initial coaching for opener
+  setPhase('opener');
+  getCoaching('Call just started. Give Jack his opening line.');
+}
+
+function setPhase(phase) {
+  currentPhase = phase;
+  document.querySelectorAll('.phase').forEach(p => {
+    p.classList.toggle('active', p.dataset.phase === phase);
+  });
+}
+
+function handleObjection(objection) {
+  setPhase('objection');
+  getCoaching(`The prospect just said: "${objection}". Give Jack the perfect response.`);
+}
+
+// Speech Recognition
+function toggleMic() {
+  if (isListening) {
+    stopListening();
+  } else {
+    startListening();
+  }
+}
+
+function startListening() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('Speech recognition not supported. Use Chrome on desktop.');
+    return;
+  }
+  
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = 'en-CA';
+  
+  recognition.onresult = (event) => {
+    let interim = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const res = event.results[i];
+      if (res.isFinal) {
+        const text = res[0].transcript.trim();
+        if (text) {
+          transcript.push(text);
+          pendingTranscript += ' ' + text;
+          addTranscriptLine(text, true);
+          scheduleCoaching();
+        }
+      } else {
+        interim += res[0].transcript;
+      }
+    }
+    if (interim) updateInterim(interim);
+  };
+  
+  recognition.onerror = (e) => {
+    if (e.error !== 'no-speech') {
+      setStatus('Error: ' + e.error, false);
+    }
+  };
+  
+  recognition.onend = () => {
+    if (isListening) recognition.start(); // Keep it running
+  };
+  
+  recognition.start();
+  isListening = true;
+  
+  const btn = document.getElementById('micBtn');
+  btn.className = 'on';
+  btn.textContent = '🔴 Stop Listening';
+  
+  document.getElementById('statusDot').className = 'dot live';
+  setStatus('Listening...', true);
+}
+
+function stopListening() {
+  if (recognition) recognition.stop();
+  isListening = false;
+  
+  const btn = document.getElementById('micBtn');
+  btn.className = 'off';
+  btn.textContent = '🎙 Start Listening';
+  
+  document.getElementById('statusDot').className = 'dot';
+  setStatus('Idle', false);
+}
+
+function setStatus(text) {
+  document.getElementById('statusText').textContent = text;
+}
+
+function addTranscriptLine(text, isFinal) {
+  const area = document.getElementById('transcriptArea');
+  const p = document.createElement('p');
+  p.className = isFinal ? 'final' : 'interim';
+  p.textContent = text;
+  area.appendChild(p);
+  area.scrollTop = area.scrollHeight;
+  
+  // Keep max 30 lines
+  while (area.children.length > 30) area.removeChild(area.firstChild);
+}
+
+function updateInterim(text) {
+  const area = document.getElementById('transcriptArea');
+  let last = area.querySelector('p.interim');
+  if (!last) {
+    last = document.createElement('p');
+    last.className = 'interim';
+    area.appendChild(last);
+  }
+  last.textContent = text + '...';
+  area.scrollTop = area.scrollHeight;
+}
+
+function scheduleCoaching() {
+  // Debounce — get coaching 3 seconds after speech stops
+  clearTimeout(coachTimer);
+  coachTimer = setTimeout(() => {
+    if (pendingTranscript.trim().length > 10) {
+      const text = pendingTranscript.trim();
+      pendingTranscript = '';
+      getCoaching(text);
+    }
+  }, 3000);
+}
+
+async function getCoaching(transcriptChunk) {
+  if (!currentLead) return;
+  
+  const coachEl = document.getElementById('coachText');
+  coachEl.className = 'thinking';
+  coachEl.textContent = '...thinking...';
+  
+  const fullTranscript = transcript.slice(-10).join(' ');
+  
+  const prompt = `${WILDROSE_CONTEXT}
+
+LEAD CONTEXT:
+- Business: ${currentLead.business_name}
+- Type: ${currentLead.type}
+- City: ${currentLead.city}
+- Contact: ${currentLead.first_name || 'unknown'}
+- Automation angle: ${currentLead.automation_angle || 'general'}
+
+CALL PHASE: ${currentPhase.toUpperCase()}
+${PHASE_PROMPTS[currentPhase]}
+
+RECENT TRANSCRIPT:
+${fullTranscript || '(call just started)'}
+
+LAST THING SAID:
+${transcriptChunk}
+
+Respond with ONLY what Jack should say next. No explanation, no labels, no quotes. Just the words. Max 2 sentences. Be direct and natural.`;
+
+  try {
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: 100, temperature: 0.7 }
+        })
+      }
+    );
+    
+    const data = await r.json();
+    const suggestion = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    
+    if (suggestion) {
+      coachEl.className = currentPhase === 'close' ? 'close' : currentPhase === 'objection' ? 'objection' : '';
+      coachEl.textContent = suggestion;
+    }
+  } catch(e) {
+    coachEl.className = '';
+    coachEl.textContent = 'Connection error — check your internet.';
+  }
+}
+
+function clearAll() {
+  transcript = [];
+  pendingTranscript = '';
+  document.getElementById('transcriptArea').innerHTML = '<p class="final" style="color:#333;">Transcript cleared.</p>';
+  document.getElementById('coachText').className = 'thinking';
+  document.getElementById('coachText').textContent = 'Ready. Start talking.';
+}
+
+init();
+</script>
+</body>
+</html>
