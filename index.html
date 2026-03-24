@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wildrose Lead Manager</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #EF4444;
+      --red-dark: #B91C1C;
+      --red-light: #FCA5A5;
+      --bg: #0f0f0f;
+      --bg2: #1a1a1a;
+      --bg3: #242424;
+      --bg4: #2e2e2e;
+      --border: #333;
+      --text: #f0f0f0;
+      --text-muted: #888;
+      --green: #22c55e;
+      --yellow: #eab308;
+      --orange: #f97316;
+      --blue: #3b82f6;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--red);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lead-count {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* BANNER */
+    #followup-banner {
+      display: none;
+      background: linear-gradient(135deg, #92400e, #78350f);
+      border-bottom: 1px solid #d97706;
+      padding: 10px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fde68a;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #followup-banner.show { display: flex; }
+
+    /* MAIN LAYOUT */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* FILTERS */
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { border-color: var(--red); color: var(--text); }
+    .filter-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
+
+    .filter-count {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 11px;
+      margin-left: 4px;
+    }
+
+    /* CARDS GRID */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 16px;
+    }
+
+    /* LEAD CARD */
+    .lead-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .lead-card:hover { border-color: #444; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+    .lead-card.followup-due { border-color: var(--orange); }
+    .lead-card.status-approved { border-color: #166534; }
+    .lead-card.status-rejected { opacity: 0.5; }
+
+    .card-header {
+      padding: 16px 16px 12px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-title-group { flex: 1; min-width: 0; }
+
+    .business-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .business-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .meta-chip {
+      background: var(--bg4);
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+
+    .status-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .badge-pending { background: rgba(234,179,8,0.15); color: var(--yellow); border: 1px solid rgba(234,179,8,0.3); }
+    .badge-approved { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+    .badge-rejected { background: rgba(239,68,68,0.15); color: var(--red-light); border: 1px solid rgba(239,68,68,0.3); }
+    .badge-followup { background: rgba(249,115,22,0.15); color: var(--orange); border: 1px solid rgba(249,115,22,0.3); }
+
+    .card-info {
+      padding: 0 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 13px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+    }
+
+    .info-row a { color: var(--blue); text-decoration: none; }
+    .info-row a:hover { text-decoration: underline; }
+
+    .info-icon { width: 14px; text-align: center; opacity: 0.6; }
+
+    .automation-angle {
+      margin: 4px 16px 12px;
+      background: var(--bg3);
+      border-left: 3px solid var(--red);
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* EMAIL SECTION */
+    .email-section {
+      border-top: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+
+    .email-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-muted);
+      user-select: none;
+      margin-bottom: 0;
+    }
+
+    .email-toggle:hover { color: var(--text); }
+
+    .email-toggle-label { font-weight: 500; display: flex; align-items: center; gap: 6px; }
+
+    .chevron { transition: transform 0.2s; display: inline-block; }
+    .email-expanded .chevron { transform: rotate(180deg); }
+
+    .email-body {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .email-body.open { display: block; }
+
+    .email-subject-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .email-subject-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .email-subject-input {
+      flex: 1;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: var(--text);
+      font-size: 12px;
+      outline: none;
+    }
+
+    .email-subject-input:focus { border-color: var(--red); }
+
+    .email-textarea {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      color: var(--text);
+      font-size: 12px;
+      font-family: inherit;
+      line-height: 1.5;
+      resize: vertical;
+      min-height: 130px;
+      outline: none;
+    }
+
+    .email-textarea:focus { border-color: var(--red); }
+
+    /* CARD ACTIONS */
+    .card-actions {
+      padding: 12px 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border-radius: 7px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-approve {
+      background: var(--green);
+      color: #fff;
+      flex: 1;
+    }
+    .btn-approve:hover:not(:disabled) { background: #16a34a; }
+
+    .btn-reject {
+      background: var(--bg4);
+      color: var(--red-light);
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+    .btn-reject:hover:not(:disabled) { background: rgba(239,68,68,0.15); }
+
+    .btn-followup {
+      background: var(--bg4);
+      color: var(--orange);
+      border: 1px solid rgba(249,115,22,0.3);
+    }
+    .btn-followup:hover:not(:disabled) { background: rgba(249,115,22,0.15); }
+
+    .btn-sending {
+      background: #555;
+      color: #aaa;
+    }
+
+    /* FOLLOWUP DATE */
+    .followup-date {
+      font-size: 11px;
+      color: var(--orange);
+      padding: 0 16px 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-state h3 { font-size: 18px; margin-bottom: 8px; color: var(--text); }
+    .empty-state p { font-size: 14px; }
+
+    /* TOAST */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      max-width: 320px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      animation: slideIn 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast-success { border-left: 3px solid var(--green); }
+    .toast-error { border-left: 3px solid var(--red); }
+    .toast-info { border-left: 3px solid var(--blue); }
+
+    @keyframes slideIn {
+      from { transform: translateX(40px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* SPINNER */
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      flex: 1;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .stat-pending .stat-value { color: var(--yellow); }
+    .stat-approved .stat-value { color: var(--green); }
+    .stat-rejected .stat-value { color: var(--red-light); }
+    .stat-followup .stat-value { color: var(--orange); }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      main { padding: 16px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      header { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🌹</div>
+    Wildrose Lead Manager
+  </div>
+  <div class="header-right">
+    <span class="lead-count" id="lead-count-label"></span>
+  </div>
+</header>
+
+<div id="followup-banner">
+  🔔 <span id="followup-count-text"></span>
+</div>
+
+<main>
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat-item stat-pending">
+      <div class="stat-value" id="stat-pending">0</div>
+      <div class="stat-label">Pending</div>
+    </div>
+    <div class="stat-item stat-approved">
+      <div class="stat-value" id="stat-approved">0</div>
+      <div class="stat-label">Approved</div>
+    </div>
+    <div class="stat-item stat-rejected">
+      <div class="stat-value" id="stat-rejected">0</div>
+      <div class="stat-label">Rejected</div>
+    </div>
+    <div class="stat-item stat-followup">
+      <div class="stat-value" id="stat-followup">0</div>
+      <div class="stat-label">Follow-up Due</div>
+    </div>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="cards-grid" id="cards-grid"></div>
+  <div id="empty-state" style="display:none" class="empty-state">
+    <div class="empty-state-icon">📭</div>
+    <h3>No leads here</h3>
+    <p>Try a different filter or add some leads.</p>
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<script>
+// ─── EMAIL TEMPLATES ──────────────────────────────────────────────────────────
+
+const TEMPLATES = {
+  Cleaning: {
+    subject: 'We Help Cleaning Companies Get More Bookings on Autopilot',
+    body: (name, biz) =>
+`Hi ${name},
+
+I came across ${biz} and noticed you're doing great work in Edmonton. We help cleaning companies automate their booking process, send follow-up reminders to leads, and collect Google reviews automatically — without any extra staff.
+
+Most of our clients see a 30% increase in booked jobs within 60 days.
+
+Would you be open to a quick 15-minute call this week?
+
+Best,
+Wildrose Automations Team
+wildroseautomations.com`
+  },
+  HVAC: {
+    subject: 'Stop Losing HVAC Leads to Slow Follow-Ups',
+    body: (name, biz) =>
+`Hi ${name},
+
+${biz} came up while I was looking at top HVAC companies in Edmonton. We build automated systems that follow up with quotes instantly, remind customers about seasonal maintenance, and fill your schedule — all on autopilot.
+
+Worth a quick chat?
+
+Best,
+Wildrose Automations Team
+wildroseautomations.com`
+  },
+  'Car Detailing': {
+    subject: "Automate Your Detail Shop's Bookings & Reviews",
+    body: (name, biz) =>
+`Hi ${name},
+
+I found ${biz} while researching detail shops in Calgary. We help detailers automate their quote responses, appointment reminders, and Google review requests — so you spend less time on admin and more time detailing.
+
+Interested in a free demo?
+
+Best,
+Wildrose Automations Team
+wildroseautomations.com`
+  },
+  Moving: {
+    subject: 'Never Miss Another Moving Lead',
+    body: (name, biz) =>
+`Hi ${name},
+
+I came across ${biz} and think there's a big opportunity to automate your lead follow-up process. Most moving companies lose 40-60% of leads just from slow responses. We fix that with instant auto-replies, quote follow-ups, and booking confirmations.
+
+Open to a 15-min call?
+
+Best,
+Wildrose Automations Team
+wildroseautomations.com`
+  },
+  Landscaping: {
+    subject: 'Automate Your Landscaping Quotes & Seasonal Reminders',
+    body: (name, biz) =>
+`Hi ${name},
+
+Found ${biz} while looking at top landscaping companies in Edmonton. We help landscapers automate seasonal outreach, quote follow-ups, and job scheduling reminders so nothing falls through the cracks.
+
+Would love to show you how it works.
+
+Best,
+Wildrose Automations Team
+wildroseautomations.com`
+  },
+  'Property Mgmt': {
+    subject: 'Automate Your Tenant Communications',
+    body: (name, biz) =>
+`Hi ${name},
+
+I came across ${biz} and wanted to reach out. We help property managers automate tenant communications, maintenance request tracking, and lease renewal reminders — saving hours every week.
+
+Worth a quick conversation?
+
+Best,
+Wildrose Automations Team
+wildroseautomations.com`
+  },
+  default: {
+    subject: (biz) => `Automate the Admin — Grow ${biz} Faster`,
+    body: (name, biz) =>
+`Hi ${name},
+
+I found ${biz} while researching businesses in Edmonton/Calgary. We build AI automation systems that handle follow-ups, bookings, reminders, and more — so you can focus on the work.
+
+Would you be open to a free 15-min call?
+
+Best,
+Wildrose Automations Team
+wildroseautomations.com`
+  }
+};
+
+function getTemplate(type) {
+  return TEMPLATES[type] || TEMPLATES.default;
+}
+
+function getEmailDraft(lead) {
+  const tmpl = getTemplate(lead.type);
+  const firstName = lead.name.split(' ')[0];
+  return {
+    subject: typeof tmpl.subject === 'function' ? tmpl.subject(lead.name) : tmpl.subject,
+    body: tmpl.body(firstName, lead.name)
+  };
+}
+
+// ─── LEADS DATA ───────────────────────────────────────────────────────────────
+
+const INITIAL_LEADS = [
+  { id: 1, name: 'Green Clean Edmonton', city: 'Edmonton', type: 'Cleaning', email: 'info@greenclean.ca', website: 'greenclean.ca', angle: 'Automate booking + follow-ups' },
+  { id: 2, name: 'Elite Detail Calgary', city: 'Calgary', type: 'Car Detailing', email: 'hello@elitedetailcalgary.ca', website: 'elitedetailcalgary.ca', angle: 'Automate quote responses + review requests' },
+  { id: 3, name: 'Prairie Lawn Care', city: 'Edmonton', type: 'Landscaping', email: 'contact@prairielawncare.ca', website: 'prairielawncare.ca', angle: 'Automate seasonal reminders + quotes' },
+  { id: 4, name: 'Rocky Mountain HVAC', city: 'Edmonton', type: 'HVAC', email: 'info@rockymtnhvac.ca', website: 'rockymtnhvac.ca', angle: 'Automate maintenance reminders + quote follow-ups' },
+  { id: 5, name: 'Swift Move YEG', city: 'Edmonton', type: 'Moving', email: 'quotes@swiftmoveyeg.ca', website: 'swiftmoveyeg.ca', angle: 'Automate quote pipeline + confirmation emails' },
+  { id: 6, name: 'Clear Out Junk Edmonton', city: 'Edmonton', type: 'Junk Removal', email: 'hello@clearoutjunk.ca', website: 'clearoutjunk.ca', angle: 'Automate booking + SMS confirmations' },
+  { id: 7, name: 'Skyline Property Management', city: 'Calgary', type: 'Property Mgmt', email: 'admin@skylinepm.ca', website: 'skylinepm.ca', angle: 'Automate tenant communications + maintenance requests' },
+  { id: 8, name: 'Iron City Gym', city: 'Edmonton', type: 'Gym', email: 'info@ironcitygym.ca', website: 'ironcitygym.ca', angle: 'Automate member onboarding + class reminders' },
+  { id: 9, name: 'Sharp Cuts Barbershop', city: 'Edmonton', type: 'Barbershop', email: 'bookings@sharpcuts.ca', website: 'sharpcuts.ca', angle: 'Automate appointment reminders + rebooking' },
+  { id: 10, name: 'Peak Painters Edmonton', city: 'Edmonton', type: 'Painters', email: 'hello@peakpainters.ca', website: 'peakpainters.ca', angle: 'Automate quote follow-ups + project updates' },
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+
+const STORAGE_KEY = 'wildrose_leads_v1';
+
+function loadLeads() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch(e) {}
+  // Initialize with defaults
+  return INITIAL_LEADS.map(l => ({ ...l, status: 'pending', followupDate: null, emailDraft: getEmailDraft(l) }));
+}
+
+function saveLeads() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+}
+
+let leads = loadLeads();
+let activeFilter = 'all';
+
+// ─── AGENTMAIL ────────────────────────────────────────────────────────────────
+
+const AGENTMAIL_API = 'https://api.agentmail.to/v0/inboxes/wildroseautomations%40agentmail.to/messages/send';
+const AGENTMAIL_KEY = 'am_us_237687733d6087d5e2e5c3956f651883c8b190d38b855ebdbcf85f6780a8c3c9';
+
+async function sendEmail(to, subject, text) {
+  const resp = await fetch(AGENTMAIL_API, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${AGENTMAIL_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ to, subject, text }),
+  });
+  if (!resp.ok) {
+    const err = await resp.text();
+    throw new Error(`API error ${resp.status}: ${err}`);
+  }
+  return resp;
+}
+
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+
+function toast(msg, type = 'info', icon = '✓') {
+  const container = document.getElementById('toast');
+  const item = document.createElement('div');
+  item.className = `toast-item toast-${type}`;
+  item.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
+  container.appendChild(item);
+  setTimeout(() => {
+    item.style.animation = 'none';
+    item.style.opacity = '0';
+    item.style.transform = 'translateX(40px)';
+    item.style.transition = 'all 0.2s';
+    setTimeout(() => item.remove(), 200);
+  }, 4000);
+}
+
+// ─── FILTER / STATS ───────────────────────────────────────────────────────────
+
+function getTodayISO() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function isFollowupDue(lead) {
+  if (lead.status !== 'followup' && lead.status !== 'approved') return false;
+  if (!lead.followupDate) return false;
+  return lead.followupDate <= getTodayISO();
+}
+
+function countByStatus(status) {
+  return leads.filter(l => l.status === status).length;
+}
+
+function countFollowupDue() {
+  return leads.filter(l => isFollowupDue(l)).length;
+}
+
+function filteredLeads() {
+  const today = getTodayISO();
+  if (activeFilter === 'all') return leads.filter(l => l.status !== 'rejected');
+  if (activeFilter === 'pending') return leads.filter(l => l.status === 'pending');
+  if (activeFilter === 'approved') return leads.filter(l => l.status === 'approved');
+  if (activeFilter === 'rejected') return leads.filter(l => l.status === 'rejected');
+  if (activeFilter === 'followup') return leads.filter(l => isFollowupDue(l));
+  return leads;
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+
+function renderFilters() {
+  const container = document.getElementById('filters');
+  const dueCount = countFollowupDue();
+  const filters = [
+    { id: 'all', label: 'All Active', count: leads.filter(l => l.status !== 'rejected').length },
+    { id: 'pending', label: 'Pending', count: countByStatus('pending') },
+    { id: 'approved', label: 'Approved', count: countByStatus('approved') },
+    { id: 'rejected', label: 'Rejected', count: countByStatus('rejected') },
+    { id: 'followup', label: '⏰ Follow-up Due', count: dueCount },
+  ];
+
+  container.innerHTML = filters.map(f => `
+    <button class="filter-btn ${activeFilter === f.id ? 'active' : ''}" onclick="setFilter('${f.id}')">
+      ${f.label} <span class="filter-count">${f.count}</span>
+    </button>
+  `).join('');
+}
+
+function renderStats() {
+  document.getElementById('stat-pending').textContent = countByStatus('pending');
+  document.getElementById('stat-approved').textContent = countByStatus('approved');
+  document.getElementById('stat-rejected').textContent = countByStatus('rejected');
+  document.getElementById('stat-followup').textContent = countFollowupDue();
+
+  const total = leads.length;
+  document.getElementById('lead-count-label').textContent = `${total} lead${total !== 1 ? 's' : ''}`;
+}
+
+function renderBanner() {
+  const due = countFollowupDue();
+  const banner = document.getElementById('followup-banner');
+  if (due > 0) {
+    banner.classList.add('show');
+    document.getElementById('followup-count-text').textContent =
+      `${due} lead${due !== 1 ? 's' : ''} need${due === 1 ? 's' : ''} follow-up today!`;
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${months[parseInt(m)-1]} ${parseInt(d)}, ${y}`;
+}
+
+function renderCard(lead) {
+  const due = isFollowupDue(lead);
+  const classes = [
+    'lead-card',
+    `status-${lead.status}`,
+    due ? 'followup-due' : ''
+  ].filter(Boolean).join(' ');
+
+  const badgeClass = due ? 'badge-followup' :
+    lead.status === 'pending' ? 'badge-pending' :
+    lead.status === 'approved' ? 'badge-approved' :
+    'badge-rejected';
+
+  const badgeText = due ? '⏰ Follow-up Due' :
+    lead.status === 'pending' ? '● Pending' :
+    lead.status === 'approved' ? '✓ Approved' :
+    '✕ Rejected';
+
+  const draft = lead.emailDraft || getEmailDraft(lead);
+
+  const approveDisabled = lead.status === 'approved' ? 'disabled' : '';
+  const rejectDisabled = lead.status === 'rejected' ? 'disabled' : '';
+
+  const followupSection = lead.followupDate ? `
+    <div class="followup-date">🗓 Follow-up: ${formatDate(lead.followupDate)}</div>
+  ` : '';
+
+  return `
+    <div class="${classes}" id="card-${lead.id}">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div class="business-name">${lead.name}</div>
+          <div class="business-meta">
+            <span class="meta-chip">📍 ${lead.city}</span>
+            <span class="meta-chip">🏷 ${lead.type}</span>
+          </div>
+        </div>
+        <span class="status-badge ${badgeClass}">${badgeText}</span>
+      </div>
+
+      <div class="card-info">
+        <div class="info-row">
+          <span class="info-icon">✉</span>
+          <a href="mailto:${lead.email}">${lead.email}</a>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">🌐</span>
+          <a href="https://${lead.website}" target="_blank" rel="noopener">${lead.website}</a>
+        </div>
+      </div>
+
+      <div class="automation-angle">⚡ ${lead.angle}</div>
+
+      ${followupSection}
+
+      <div class="email-section">
+        <div class="email-toggle" onclick="toggleEmail(${lead.id})" id="toggle-${lead.id}">
+          <span class="email-toggle-label">✉ Draft Email</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="email-body" id="emailbody-${lead.id}">
+          <div class="email-subject-row">
+            <span class="email-subject-label">Subject</span>
+            <input class="email-subject-input" id="subject-${lead.id}" value="${escHtml(draft.subject)}" />
+          </div>
+          <textarea class="email-textarea" id="body-${lead.id}" rows="7">${escHtml(draft.body)}</textarea>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn btn-approve" id="approve-btn-${lead.id}" onclick="approveLead(${lead.id})" ${approveDisabled}>
+          ${lead.status === 'approved' ? '✓ Sent' : '✉ Approve & Send'}
+        </button>
+        <button class="btn btn-followup" onclick="followupLead(${lead.id})">🗓 Follow Up</button>
+        <button class="btn btn-reject" onclick="rejectLead(${lead.id})" ${rejectDisabled}>✕ Reject</button>
+      </div>
+    </div>
+  `;
+}
+
+function escHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function render() {
+  renderStats();
+  renderBanner();
+  renderFilters();
+
+  const visible = filteredLeads();
+  const grid = document.getElementById('cards-grid');
+  const empty = document.getElementById('empty-state');
+
+  if (visible.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none';
+    grid.innerHTML = visible.map(renderCard).join('');
+  }
+}
+
+// ─── ACTIONS ──────────────────────────────────────────────────────────────────
+
+function setFilter(f) {
+  activeFilter = f;
+  render();
+}
+
+function toggleEmail(id) {
+  const toggle = document.getElementById(`toggle-${id}`);
+  const body = document.getElementById(`emailbody-${id}`);
+  const isOpen = body.classList.contains('open');
+  if (isOpen) {
+    body.classList.remove('open');
+    toggle.classList.remove('email-expanded');
+  } else {
+    body.classList.add('open');
+    toggle.classList.add('email-expanded');
+  }
+}
+
+async function approveLead(id) {
+  const lead = leads.find(l => l.id === id);
+  if (!lead) return;
+
+  // Read current draft values from DOM
+  const subject = document.getElementById(`subject-${id}`)?.value || lead.emailDraft.subject;
+  const body = document.getElementById(`body-${id}`)?.value || lead.emailDraft.body;
+
+  const btn = document.getElementById(`approve-btn-${id}`);
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Sending…';
+
+  try {
+    await sendEmail(lead.email, subject, body);
+    lead.status = 'approved';
+    lead.emailDraft = { subject, body };
+    saveLeads();
+    render();
+    toast(`Email sent to ${lead.name}! 🎉`, 'success', '✓');
+  } catch(err) {
+    btn.disabled = false;
+    btn.innerHTML = '✉ Approve & Send';
+    toast(`Failed to send: ${err.message}`, 'error', '✕');
+    console.error(err);
+  }
+}
+
+function rejectLead(id) {
+  const lead = leads.find(l => l.id === id);
+  if (!lead) return;
+  lead.status = 'rejected';
+  lead.followupDate = null;
+  saveLeads();
+  render();
+  toast(`${lead.name} marked as rejected.`, 'info', '✕');
+}
+
+function followupLead(id) {
+  const lead = leads.find(l => l.id === id);
+  if (!lead) return;
+  const date = new Date();
+  date.setDate(date.getDate() + 3);
+  lead.followupDate = date.toISOString().split('T')[0];
+  if (lead.status === 'pending') lead.status = 'followup';
+  saveLeads();
+  render();
+  toast(`Follow-up set for ${lead.name} in 3 days.`, 'info', '🗓');
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
+render();
+</script>
+</body>
+</html>
