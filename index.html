@@ -251,6 +251,7 @@ const INBOX='wildroseautomations@agentmail.to';
 const GEMINI='AIzaSyCDXNM5Ii5-0nnFLbBuKXQpSJBGmDZ_FTg';
 const DATA_URL='https://jack108510.github.io/jsw-dashboard/wildrose-pending-leads.json';
 const REPLIES_URL='https://jack108510.github.io/jsw-dashboard/wildrose-replies.json';
+const CALLS_URL='https://jack108510.github.io/jsw-dashboard/wildrose-calls.json';
 
 let leads=[], replies=[], calls=[], knownReplyIds=new Set(), coachLead=null, coachPhase='opener';
 let recognition=null, isListening=false, coachTimer=null, pendingChunk='', coachTx=[];
@@ -288,6 +289,17 @@ async function init(){
     const r=await fetch(REPLIES_URL+'?t='+Date.now());
     if(r.ok){ replies=await r.json(); replies.forEach(m=>knownReplyIds.add(m.id||m.timestamp)); }
   } catch(e){}
+  // Load booked calls from GitHub
+  try {
+    const r=await fetch(CALLS_URL+'?t='+Date.now());
+    if(r.ok){
+      const bookedCalls=await r.json();
+      // Merge with local calls - booked calls take priority
+      const localIds=new Set(calls.map(c=>String(c.id)));
+      bookedCalls.forEach(bc=>{ if(!localIds.has(String(bc.id))) calls.push(bc); });
+      saveCalls();
+    }
+  } catch(e){}
   // Then also poll live inbox
   await fetchReplies(true);
 
@@ -300,13 +312,42 @@ async function init(){
   setInterval(()=>fetchReplies(false),60000);
 }
 
+async function fetchThreadMessages(threadId){
+  try{
+    const r=await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(INBOX)}/threads/${threadId}/messages`,{headers:{Authorization:`Bearer ${TOKEN}`}});
+    if(r.ok){ const d=await r.json(); return d.messages||d.data||[]; }
+  }catch(e){}
+  return [];
+}
+
 async function fetchReplies(initial=false){
   try{
     const r=await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(INBOX)}/messages?limit=50`,{headers:{Authorization:`Bearer ${TOKEN}`}});
     const d=await r.json();
-    const msgs=(d.messages||d.data||[]).filter(m=>{
-      const f=(m.from||'').toLowerCase();
-      return !f.includes('wildroseautomations')&&!f.includes('wildrose sales')&&!f.includes('mailer-daemon');
+    // Group by thread, find threads with inbound messages
+    const allMsgs=d.messages||d.data||[];
+    const threadMap={};
+    allMsgs.forEach(m=>{
+      const tid=m.thread_id||m.message_id;
+      if(!threadMap[tid])threadMap[tid]=[];
+      threadMap[tid].push(m);
+    });
+    // Build reply objects per thread that has inbound
+    const msgs=Object.values(threadMap).filter(threadMsgs=>{
+      return threadMsgs.some(m=>{
+        const f=(m.from||'').toLowerCase();
+        return !f.includes('wildroseautomations')&&!f.includes('wildrose sales')&&!f.includes('mailer-daemon');
+      });
+    }).map(threadMsgs=>{
+      threadMsgs.sort((a,b)=>new Date(a.timestamp||a.created_at)-new Date(b.timestamp||b.created_at));
+      const inbound=threadMsgs.filter(m=>{ const f=(m.from||'').toLowerCase(); return !f.includes('wildroseautomations')&&!f.includes('wildrose sales')&&!f.includes('mailer-daemon'); });
+      const latest=inbound[inbound.length-1];
+      // Build thread array
+      const thread=threadMsgs.map(m=>{
+        const isUs=(m.from||'').toLowerCase().includes('wildroseautomations')||(m.from||'').toLowerCase().includes('wildrose sales');
+        return { from: isUs?'Wildrose Sales Team':m.from, time: m.timestamp||m.created_at, text: m.preview||'' };
+      });
+      return { id: latest.message_id||latest.timestamp, from: latest.from, subject: latest.subject, timestamp: latest.timestamp||latest.created_at, preview: latest.preview, thread_id: latest.thread_id, thread, status:'auto_replied' };
     });
 
     if(initial){
