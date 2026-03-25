@@ -7,15 +7,19 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0d0d0d;
-      --card: #1a1a1a;
-      --border: #2a2a2a;
+      --bg: #080808;
+      --card: #111;
+      --card2: #161616;
+      --border: #1f1f1f;
       --text: #f0f0f0;
-      --muted: #777;
+      --muted: #555;
+      --muted2: #888;
       --green: #22c55e;
       --red: #ef4444;
       --yellow: #eab308;
       --blue: #3b82f6;
+      --purple: #a855f7;
+      --orange: #f97316;
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -26,17 +30,146 @@
       flex-direction: column;
       overflow: hidden;
     }
-    header {
-      padding: 16px 20px;
+
+    /* ── TOP NAV ── */
+    nav {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      height: 52px;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
+      background: var(--bg);
+      position: relative;
+      z-index: 10;
     }
-    header h1 { font-size: 1.1rem; font-weight: 700; }
-    #counter { font-size: 0.85rem; color: var(--muted); }
+    .nav-logo { font-size: 1rem; font-weight: 800; letter-spacing: -0.3px; }
+    .nav-logo span { color: var(--red); }
+    .nav-tabs { display: flex; gap: 2px; }
+    .nav-tab {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted2);
+      cursor: pointer;
+      transition: all 0.15s;
+      border: none;
+      background: none;
+    }
+    .nav-tab.active { background: var(--card2); color: var(--text); }
+    .nav-tab:hover:not(.active) { color: var(--text); }
+    .nav-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--red);
+      color: white;
+      border-radius: 10px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      margin-left: 5px;
+      min-width: 18px;
+    }
 
+    /* ── PAGES ── */
+    .page { display: none; flex: 1; overflow-y: auto; flex-direction: column; }
+    .page.active { display: flex; }
+
+    /* ── DASHBOARD ── */
+    #page-dashboard { padding: 20px; gap: 16px; }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media(min-width:500px){ .stat-grid { grid-template-columns: repeat(4,1fr); } }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 16px;
+    }
+    .stat-label { font-size: 0.7rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+    .stat-value { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+    .stat-sub { font-size: 0.72rem; color: var(--muted2); margin-top: 6px; }
+    .stat-green { color: var(--green); }
+    .stat-blue { color: var(--blue); }
+    .stat-yellow { color: var(--yellow); }
+    .stat-red { color: var(--red); }
+
+    .section-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted2);
+      margin-bottom: 12px;
+    }
+
+    /* Pipeline */
+    .pipeline {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .pipeline-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pipeline-row:last-child { border-bottom: none; }
+    .pipeline-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .pipeline-label { font-size: 0.85rem; flex: 1; }
+    .pipeline-count { font-size: 0.85rem; font-weight: 700; }
+    .pipeline-bar-wrap { flex: 2; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .pipeline-bar { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+
+    /* Recent replies */
+    .reply-preview {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .reply-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .reply-item:last-child { border-bottom: none; }
+    .reply-item:hover { background: var(--card2); }
+    .reply-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .reply-info { flex: 1; min-width: 0; }
+    .reply-name { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
+    .reply-preview-text { font-size: 0.78rem; color: var(--muted2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .reply-time { font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
+    .unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 4px; }
+
+    /* ── SWIPE PAGE ── */
+    #page-swipe {
+      position: relative;
+      overflow: hidden;
+    }
     #stack {
       flex: 1;
       position: relative;
@@ -46,7 +179,6 @@
       padding: 16px;
       overflow: hidden;
     }
-
     .card {
       position: absolute;
       width: 100%;
@@ -61,238 +193,468 @@
       will-change: transform;
     }
     .card:active { cursor: grabbing; }
-    .card.behind {
-      transform: scale(0.95) translateY(14px);
-      z-index: 0;
-      pointer-events: none;
-    }
+    .card.behind { transform: scale(0.95) translateY(14px); z-index: 0; pointer-events: none; }
     .card.top { z-index: 10; }
-
     .swipe-label {
       position: absolute;
-      font-size: 1.3rem;
-      font-weight: 800;
-      padding: 5px 12px;
-      border-radius: 8px;
-      border: 3px solid;
-      opacity: 0;
-      pointer-events: none;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      font-size: 1.2rem; font-weight: 800;
+      padding: 5px 12px; border-radius: 8px; border: 3px solid;
+      opacity: 0; pointer-events: none;
+      text-transform: uppercase; letter-spacing: 1px;
       transition: opacity 0.08s;
     }
     .label-nope { top: 24px; left: 18px; color: var(--red); border-color: var(--red); transform: rotate(-12deg); }
     .label-send { top: 24px; right: 18px; color: var(--green); border-color: var(--green); transform: rotate(12deg); }
     .label-save { bottom: 24px; left: 50%; transform: translateX(-50%); color: var(--yellow); border-color: var(--yellow); }
-
-    .card-type {
-      display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--muted);
-      background: #222;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-    }
-    .card-name { font-size: 1.45rem; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
-    .card-city { font-size: 0.88rem; color: var(--muted); margin-bottom: 14px; }
-    .card-email { font-size: 0.92rem; color: var(--blue); margin-bottom: 8px; word-break: break-all; }
-    .card-website { font-size: 0.82rem; color: var(--muted); margin-bottom: 14px; word-break: break-all; }
-    .card-angle {
-      font-size: 0.85rem;
-      color: #aaa;
-      background: #111;
-      border-left: 3px solid #333;
-      padding: 9px 12px;
-      border-radius: 0 8px 8px 0;
-      margin-bottom: 16px;
-      line-height: 1.5;
-    }
-    .email-preview {
-      background: #111;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 0.78rem;
-      color: #999;
-      line-height: 1.6;
-      max-height: 150px;
-      overflow-y: auto;
-      margin-bottom: 12px;
-      white-space: pre-wrap;
-    }
-    .btn-regen {
-      width: 100%;
-      background: #222;
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 9px;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      cursor: pointer;
-    }
-    .btn-regen:hover { background: #2a2a2a; }
-
-    #hints {
-      display: flex;
-      justify-content: center;
-      gap: 48px;
-      padding: 0 20px 8px;
-      flex-shrink: 0;
-    }
+    .card-type { display: inline-block; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted2); background: #1a1a1a; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+    .card-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
+    .card-city { font-size: 0.85rem; color: var(--muted2); margin-bottom: 12px; }
+    .card-email { font-size: 0.88rem; color: var(--blue); margin-bottom: 6px; word-break: break-all; }
+    .card-website { font-size: 0.8rem; color: var(--muted2); margin-bottom: 12px; word-break: break-all; }
+    .card-angle { font-size: 0.82rem; color: #aaa; background: #0d0d0d; border-left: 3px solid #2a2a2a; padding: 8px 12px; border-radius: 0 8px 8px 0; margin-bottom: 14px; line-height: 1.5; }
+    .email-preview { background: #0a0a0a; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 0.77rem; color: #888; line-height: 1.6; max-height: 140px; overflow-y: auto; margin-bottom: 12px; white-space: pre-wrap; }
+    .btn-regen { width: 100%; background: #1a1a1a; border: 1px solid var(--border); color: var(--text); padding: 8px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; }
+    .btn-regen:hover { background: #222; }
+    #swipe-hints { display: flex; justify-content: center; gap: 48px; padding: 0 20px 8px; flex-shrink: 0; }
     .hint { font-size: 0.7rem; color: var(--muted); text-align: center; }
-
-    #actions {
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      padding: 12px 20px 28px;
-      flex-shrink: 0;
-    }
-    .action-btn {
-      width: 62px; height: 62px;
-      border-radius: 50%;
-      border: none;
-      cursor: pointer;
-      font-size: 1.45rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s;
-    }
+    #swipe-actions { display: flex; justify-content: center; gap: 28px; padding: 12px 20px 24px; flex-shrink: 0; }
+    .action-btn { width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; transition: transform 0.15s; }
     .action-btn:hover { transform: scale(1.1); }
     .action-btn:active { transform: scale(0.95); }
-    .btn-nope { background: rgba(239,68,68,0.15); color: var(--red); }
-    .btn-save { background: rgba(234,179,8,0.15); color: var(--yellow); }
-    .btn-send { background: rgba(34,197,94,0.15); color: var(--green); }
+    .btn-nope { background: rgba(239,68,68,0.12); color: var(--red); }
+    .btn-save { background: rgba(234,179,8,0.12); color: var(--yellow); }
+    .btn-send { background: rgba(34,197,94,0.12); color: var(--green); }
+    #swipe-empty { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 14px; color: var(--muted2); text-align: center; }
+    #swipe-empty .icon { font-size: 3rem; }
 
-    #empty {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      gap: 14px;
-      color: var(--muted);
-      text-align: center;
+    /* ── REPLIES PAGE ── */
+    #page-replies { padding: 16px; gap: 10px; }
+    .reply-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
     }
-    #empty .icon { font-size: 3rem; }
+    .reply-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .reply-card-biz { font-size: 0.95rem; font-weight: 700; }
+    .reply-card-time { font-size: 0.72rem; color: var(--muted2); }
+    .reply-card-msg { font-size: 0.85rem; color: var(--muted2); line-height: 1.6; margin-bottom: 14px; padding: 10px 12px; background: #0d0d0d; border-radius: 8px; border-left: 3px solid var(--green); }
+    .reply-actions { display: flex; gap: 8px; }
+    .reply-btn { flex: 1; padding: 9px; border-radius: 8px; border: 1px solid var(--border); background: #1a1a1a; color: var(--text); font-size: 0.78rem; cursor: pointer; font-weight: 600; transition: background 0.15s; }
+    .reply-btn:hover { background: #222; }
+    .reply-btn.primary { background: var(--blue); border-color: var(--blue); color: white; }
+    .reply-btn.primary:hover { background: #2563eb; }
+    .reply-btn.green { background: rgba(34,197,94,0.15); border-color: var(--green); color: var(--green); }
 
-    #toast {
-      position: fixed;
-      bottom: 130px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #333;
-      color: white;
-      padding: 10px 22px;
-      border-radius: 20px;
-      font-size: 0.84rem;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-      z-index: 999;
-      white-space: nowrap;
+    /* ── ANALYTICS PAGE ── */
+    #page-analytics { padding: 20px; gap: 16px; }
+    .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+    .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 100px; margin-top: 12px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bar { width: 100%; border-radius: 4px 4px 0 0; background: var(--blue); opacity: 0.7; min-height: 4px; transition: height 0.5s ease; }
+    .bar-label { font-size: 0.62rem; color: var(--muted2); }
+    .rate-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .rate-card { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+    .rate-value { font-size: 1.5rem; font-weight: 800; }
+    .rate-label { font-size: 0.7rem; color: var(--muted2); margin-top: 4px; }
+
+    /* ── CALL COACH PAGE ── */
+    #page-coach {
+      overflow: hidden;
     }
+    #coach-lead-bar { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+    #coachLeadSelect { flex: 1; background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; font-size: 0.82rem; }
+    #coachLoadBtn { background: var(--blue); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
+    #coach-ctx { display: none; background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 16px; flex-shrink: 0; }
+    #coach-ctx.visible { display: block; }
+    .ctx-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+    .ctx-item .ctx-lbl { font-size: 0.65rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .ctx-item .ctx-val { font-size: 0.85rem; font-weight: 600; }
+    .ctx-angle { font-size: 0.8rem; color: #aaa; border-left: 3px solid var(--purple); padding-left: 10px; line-height: 1.5; }
+    #coach-phases { display: flex; padding: 0 16px; gap: 0; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .cphase { flex: 1; text-align: center; font-size: 0.65rem; color: var(--muted2); padding: 8px 4px; border-bottom: 2px solid transparent; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    .cphase.active { color: var(--blue); border-color: var(--blue); }
+    #coach-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; overflow: hidden; }
+    #coach-lbl { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--green); margin-bottom: 14px; }
+    #coach-say { font-size: clamp(1rem, 2.5vw, 1.5rem); font-weight: 600; line-height: 1.5; color: var(--text); max-width: 640px; }
+    #coach-say.dim { color: var(--muted); font-style: italic; font-size: 1rem; }
+    #obj-bar { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; padding: 0 16px 12px; flex-shrink: 0; }
+    .obj-chip { background: #111; border: 1px solid var(--border); color: var(--yellow); padding: 5px 12px; border-radius: 20px; font-size: 0.72rem; cursor: pointer; transition: background 0.15s; }
+    .obj-chip:hover { background: #1a1a1a; }
+    #coach-transcript { height: 90px; background: #050505; border-top: 1px solid var(--border); padding: 10px 16px; overflow-y: auto; flex-shrink: 0; }
+    #coach-transcript p { font-size: 0.75rem; color: var(--muted); line-height: 1.6; margin-bottom: 2px; }
+    #coach-transcript p.interim { color: #333; font-style: italic; }
+    #coach-controls { display: flex; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--border); flex-shrink: 0; }
+    #micBtn { flex: 1; padding: 13px; border-radius: 10px; border: none; font-size: 0.9rem; font-weight: 700; cursor: pointer; }
+    #micBtn.off { background: var(--green); color: #000; }
+    #micBtn.on { background: var(--red); color: white; }
+    #clearCoach { padding: 13px 16px; background: var(--card); border: 1px solid var(--border); color: var(--muted2); border-radius: 10px; font-size: 0.82rem; cursor: pointer; }
+
+    /* ── TOAST ── */
+    #toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: #222; color: white; padding: 9px 20px; border-radius: 20px; font-size: 0.82rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; white-space: nowrap; }
     #toast.show { opacity: 1; }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>🌹 Lead Manager</h1>
-  <span id="counter">Loading...</span>
-</header>
+<nav>
+  <div class="nav-logo">Wild<span>rose</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="nav-tab" onclick="showPage('swipe')">Leads</button>
+    <button class="nav-tab" id="repliesTab" onclick="showPage('replies')">Replies <span class="nav-badge" id="replyBadge" style="display:none">0</span></button>
+    <button class="nav-tab" onclick="showPage('analytics')">Analytics</button>
+    <button class="nav-tab" onclick="showPage('coach')">📞 Coach</button>
+  </div>
+</nav>
 
-<div id="stack">
-  <div id="empty">
-    <div class="icon">🎉</div>
-    <p>All caught up — no pending leads</p>
+<!-- DASHBOARD -->
+<div class="page active" id="page-dashboard">
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-label">Emails Sent</div>
+      <div class="stat-value stat-blue" id="statSent">0</div>
+      <div class="stat-sub">Total outreach</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Replies</div>
+      <div class="stat-value stat-green" id="statReplies">0</div>
+      <div class="stat-sub" id="statReplyRate">0% reply rate</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Pending</div>
+      <div class="stat-value stat-yellow" id="statPending">0</div>
+      <div class="stat-sub">Awaiting review</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Saved</div>
+      <div class="stat-value" id="statSaved">0</div>
+      <div class="stat-sub">For follow-up</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-title">Pipeline</div>
+    <div class="pipeline" id="pipelineView"></div>
+  </div>
+
+  <div>
+    <div class="section-title">Recent Replies</div>
+    <div class="reply-preview" id="dashReplies">
+      <div style="padding:20px;text-align:center;color:var(--muted);font-size:0.85rem;">No replies yet</div>
+    </div>
   </div>
 </div>
 
-<div id="hints">
-  <div class="hint">← Skip</div>
-  <div class="hint">↑ Save</div>
-  <div class="hint">→ Send ✉</div>
+<!-- SWIPE -->
+<div class="page" id="page-swipe">
+  <div id="stack">
+    <div id="swipe-empty">
+      <div class="icon">🎉</div>
+      <p>All caught up — no pending leads</p>
+    </div>
+  </div>
+  <div id="swipe-hints">
+    <div class="hint">← Skip</div>
+    <div class="hint">↑ Save</div>
+    <div class="hint">→ Send ✉</div>
+  </div>
+  <div id="swipe-actions">
+    <button class="action-btn btn-nope" onclick="swipeAction('left')">✕</button>
+    <button class="action-btn btn-save" onclick="swipeAction('up')">🔖</button>
+    <button class="action-btn btn-send" onclick="swipeAction('right')">✉</button>
+  </div>
 </div>
 
-<div id="actions">
-  <button class="action-btn btn-nope" onclick="swipeAction('left')" title="Skip">✕</button>
-  <button class="action-btn btn-save" onclick="swipeAction('up')" title="Save for later">🔖</button>
-  <button class="action-btn btn-send" onclick="swipeAction('right')" title="Send email">✉</button>
+<!-- REPLIES -->
+<div class="page" id="page-replies">
+  <div id="repliesContainer" style="display:contents"></div>
+</div>
+
+<!-- ANALYTICS -->
+<div class="page" id="page-analytics">
+  <div>
+    <div class="section-title">Response Rate</div>
+    <div class="rate-grid">
+      <div class="rate-card">
+        <div class="rate-value stat-blue" id="aTotal">0</div>
+        <div class="rate-label">Sent</div>
+      </div>
+      <div class="rate-card">
+        <div class="rate-value stat-green" id="aReplied">0</div>
+        <div class="rate-label">Replied</div>
+      </div>
+      <div class="rate-card">
+        <div class="rate-value stat-yellow" id="aRate">0%</div>
+        <div class="rate-label">Reply Rate</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-title">Emails by Type</div>
+    <div class="chart-card">
+      <div class="bar-chart" id="typeChart"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-title">Status Breakdown</div>
+    <div class="chart-card" id="statusBreakdown"></div>
+  </div>
+</div>
+
+<!-- CALL COACH -->
+<div class="page" id="page-coach">
+  <div id="coach-lead-bar">
+    <select id="coachLeadSelect"><option value="">— Select a lead —</option></select>
+    <button id="coachLoadBtn" onclick="loadCoachLead()">Load</button>
+  </div>
+  <div id="coach-ctx">
+    <div class="ctx-row">
+      <div class="ctx-item"><div class="ctx-lbl">Business</div><div class="ctx-val" id="cCtxBiz">—</div></div>
+      <div class="ctx-item"><div class="ctx-lbl">Type</div><div class="ctx-val" id="cCtxType">—</div></div>
+      <div class="ctx-item"><div class="ctx-lbl">City</div><div class="ctx-val" id="cCtxCity">—</div></div>
+      <div class="ctx-item"><div class="ctx-lbl">Contact</div><div class="ctx-val" id="cCtxContact">—</div></div>
+    </div>
+    <div class="ctx-angle" id="cCtxAngle">—</div>
+  </div>
+  <div id="coach-phases">
+    <div class="cphase active" data-p="opener" onclick="setPhase('opener')">Opener</div>
+    <div class="cphase" data-p="discovery" onclick="setPhase('discovery')">Discovery</div>
+    <div class="cphase" data-p="pitch" onclick="setPhase('pitch')">Pitch</div>
+    <div class="cphase" data-p="objection" onclick="setPhase('objection')">Objection</div>
+    <div class="cphase" data-p="close" onclick="setPhase('close')">Close</div>
+  </div>
+  <div id="coach-main">
+    <div id="coach-lbl">SAY THIS</div>
+    <div id="coach-say" class="dim">Load a lead and start the call.</div>
+  </div>
+  <div id="obj-bar">
+    <div class="obj-chip" onclick="handleObj('too expensive')">💸 Too expensive</div>
+    <div class="obj-chip" onclick="handleObj('not interested')">🚫 Not interested</div>
+    <div class="obj-chip" onclick="handleObj('already have someone')">👤 Have someone</div>
+    <div class="obj-chip" onclick="handleObj('too busy right now')">⏰ Too busy</div>
+    <div class="obj-chip" onclick="handleObj('send me more info')">📧 Send info</div>
+    <div class="obj-chip" onclick="handleObj('how does it work')">❓ How it works</div>
+  </div>
+  <div id="coach-transcript">
+    <p style="color:#2a2a2a;">Transcript appears here...</p>
+  </div>
+  <div id="coach-controls">
+    <button id="micBtn" class="off" onclick="toggleMic()">🎙 Start Listening</button>
+    <button id="clearCoach" onclick="clearCoach()">Clear</button>
+  </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-const N8N_WEBHOOK = 'https://n8n.wildeautomations.com/webhook/wildrose-send-email';
+const TOKEN = 'am_us_237687733d6087d5e2e5c3956f651883c8b190d38b855ebdbcf85f6780a8c3c9';
+const INBOX = 'wildroseautomations@agentmail.to';
+const N8N = 'https://n8n.wildeautomations.com/webhook/wildrose-send-email';
+const GEMINI = 'AIzaSyCDXNM5Ii5-0nnFLbBuKXQpSJBGmDZ_FTg';
 const DATA_URL = 'https://jack108510.github.io/jsw-dashboard/wildrose-pending-leads.json';
 
 let leads = [];
+let replies = [];
+let currentCoachLead = null;
+let coachPhase = 'opener';
+let coachTranscript = [];
+let recognition = null;
+let isListening = false;
+let coachTimer = null;
+let pendingChunk = '';
 
+// ── NAV ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'analytics') renderAnalytics();
+}
+
+// ── TOAST ──
 function toast(msg, ms = 2500) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), ms);
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), ms);
 }
 
-function getTemplate(lead) {
-  const name = lead.first_name || 'there';
-  const biz = lead.business_name || 'your business';
-  const type = (lead.type || '').toLowerCase();
-  const city = lead.city || 'Edmonton';
-  const templates = {
-    cleaning: `Hi ${name},\n\nMost cleaning companies in ${city} are losing 3–5 bookings a week and don't even realize it — leads come in through the website, no one follows up fast enough, and they book someone else.\n\nWe built an automation system specifically for cleaning companies that responds to new leads in under 60 seconds, answers their questions, and books the job — without anyone on your team lifting a finger.\n\nA residential cleaning company in Calgary using this added $3,800/month in booked jobs within their first 30 days.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
-    hvac: `Hi ${name},\n\nMost HVAC companies in ${city} are losing 3–5 service calls a week and don't even realize it — quote requests come in after hours, no one gets back to them, and they call the next company on the list.\n\nWe built an automation system specifically for HVAC companies that responds to new leads in under 60 seconds, qualifies the job, and gets it booked — even while your team is on a call or off the clock.\n\nAn HVAC company in Calgary using this recovered $5,200/month in jobs they were previously losing to slower competitors.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
-    painting: `Hi ${name},\n\nMost painting contractors in ${city} are losing 3–5 quotes a week and don't even realize it — someone fills out the form, doesn't hear back fast enough, and goes with whoever responds first.\n\nWe built an automation system specifically for painters and contractors that responds to new quote requests in under 60 seconds, asks the qualifying questions, and locks in the appointment — without you doing a thing.\n\nA painting company in Edmonton using this added $4,200/month in new jobs within 30 days of turning it on.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
-    detailing: `Hi ${name},\n\nMost detail shops in ${city} are losing 3–5 bookings a week without realizing it — people reach out, get no quick response, and book somewhere else.\n\nWe built an automation system for detail shops that responds to new inquiries in under 60 seconds, handles the back-and-forth, and locks in the booking automatically.\n\nA mobile detailing company using this added $2,900/month in new bookings within the first month.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
-    landscaping: `Hi ${name},\n\nMost landscaping companies in ${city} lose work every season the same way — quote requests pile up, follow-up is slow, and the client goes with whoever gets back to them first.\n\nWe built an automation system for landscaping companies that responds to new leads instantly, sends quote reminders automatically, and keeps your schedule full — without the admin work.\n\nA lawn care company using this added $3,500/month in recurring clients within 30 days.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
-    moving: `Hi ${name},\n\nMost moving companies in ${city} lose 40–50% of their leads to one thing: slow response time. Someone requests a quote, doesn't hear back within an hour, and books the next company.\n\nWe built an automation system for movers that responds to every quote request in under 60 seconds, qualifies the move, and gets the booking confirmed — automatically.\n\nA ${city} moving company using this recovered $4,800/month in jobs they were losing to faster competitors.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`,
-  };
-  return templates[type] || `Hi ${name},\n\nMost local service businesses in ${city} are losing jobs every week the same way — leads come in, follow-up is too slow, and the customer books someone else.\n\nWe build automation systems that respond to new leads in under 60 seconds, handle the qualifying questions, and lock in the booking — without anyone on your team doing the work.\n\nClients typically recover 3–5 lost jobs per week within the first 30 days.\n\nOpen to a 15-minute call this week to see if it's a fit for ${biz}?\n\nJack Wilde\nCEO, Wildrose Automations\nwildroseautomations.com`;
-}
-
+// ── DATA ──
+function getLocal() { return JSON.parse(localStorage.getItem('wrl') || '[]'); }
 function saveLocal(lead) {
-  let all = JSON.parse(localStorage.getItem('wrl') || '[]');
+  let all = getLocal();
   const i = all.findIndex(l => l.id === lead.id);
   if (i >= 0) all[i] = lead; else all.push(lead);
   localStorage.setItem('wrl', JSON.stringify(all));
 }
 
-function updateCounter() {
-  const p = leads.filter(l => !l.status || l.status === 'pending').length;
-  document.getElementById('counter').textContent = `${p} pending`;
+async function init() {
+  try {
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
+    if (r.ok) {
+      const fresh = await r.json();
+      const lmap = {};
+      getLocal().forEach(l => lmap[l.id] = l);
+      leads = fresh.map(l => lmap[l.id] || l);
+      localStorage.setItem('wrl', JSON.stringify(leads));
+    } else throw new Error();
+  } catch(e) {
+    leads = getLocal();
+  }
+
+  await fetchReplies();
+  renderDashboard();
+  renderSwipeStack();
+  renderRepliesPage();
+  populateCoachLeads();
 }
 
-function pending() {
-  return leads.filter(l => !l.status || l.status === 'pending');
+async function fetchReplies() {
+  try {
+    const r = await fetch(
+      `https://api.agentmail.to/v0/inboxes/${encodeURIComponent(INBOX)}/messages?limit=50`,
+      { headers: { Authorization: `Bearer ${TOKEN}` } }
+    );
+    const d = await r.json();
+    const msgs = d.messages || d.data || [];
+    replies = msgs.filter(m => {
+      const f = (m.from || '').toLowerCase();
+      return !f.includes('wildroseautomations') && !f.includes('wildrose sales') && !f.includes('mailer-daemon');
+    });
+  } catch(e) { replies = []; }
 }
 
-function renderStack() {
+// ── EMAIL TEMPLATE ──
+function getTemplate(lead) {
+  const name = lead.first_name || 'there';
+  const biz = lead.business_name || 'your business';
+  const type = (lead.type || '').toLowerCase();
+  const city = lead.city || 'Edmonton';
+  const website = lead.website ? lead.website.replace(/https?:\/\//, '').replace(/\/$/, '') : '';
+
+  const intros = {
+    cleaning: `noticed ${biz} does ${city === 'Calgary' ? 'Calgary' : 'Edmonton'} cleaning`,
+    hvac: `saw ${biz} handles HVAC in ${city}`,
+    landscaping: `came across ${biz} — looks like you do solid landscaping work in ${city}`,
+    moving: `noticed ${biz} is doing moves in ${city}`,
+    detailing: `saw ${biz} does detailing in ${city}`,
+    painting: `came across ${biz} — painting/contracting in ${city}`,
+    gym: `noticed ${biz} is a fitness operation in ${city}`,
+    salon: `saw ${biz} in ${city}`,
+    property: `noticed ${biz} handles property management in ${city}`,
+    junk: `saw ${biz} does junk removal in ${city}`,
+  };
+
+  const intro = intros[type] || `noticed ${biz} operates in ${city}`;
+
+  return `Hey ${name},
+
+${intro.charAt(0).toUpperCase() + intro.slice(1)}. ${website ? `Checked out ${website} — ` : ''}Solid operation.
+
+Quick question — when a new lead comes in after hours or on a weekend, what happens? Does someone follow up the next morning or does it depend on who sees it first?
+
+We help ${type || 'service'} businesses in ${city} automate that gap so no lead sits cold. Most clients recover 3–5 jobs a week they were previously losing to faster competitors.
+
+Worth a 15-minute call to see if it makes sense for ${biz}?
+
+Jack Wilde
+CEO, Wildrose Automations
+wildroseautomations.com`;
+}
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  const all = leads;
+  const sent = all.filter(l => l.status === 'sent').length;
+  const pending = all.filter(l => !l.status || l.status === 'pending').length;
+  const saved = all.filter(l => l.status === 'saved').length;
+  const replyCount = replies.length;
+  const rate = sent > 0 ? ((replyCount / sent) * 100).toFixed(1) : 0;
+
+  document.getElementById('statSent').textContent = sent;
+  document.getElementById('statReplies').textContent = replyCount;
+  document.getElementById('statReplyRate').textContent = `${rate}% reply rate`;
+  document.getElementById('statPending').textContent = pending;
+  document.getElementById('statSaved').textContent = saved;
+
+  // Badge
+  if (replyCount > 0) {
+    document.getElementById('replyBadge').style.display = 'inline-flex';
+    document.getElementById('replyBadge').textContent = replyCount;
+  }
+
+  // Pipeline
+  const pipeline = [
+    { label: 'Pending', count: pending, color: 'var(--yellow)', max: all.length },
+    { label: 'Sent', count: sent, color: 'var(--blue)', max: all.length },
+    { label: 'Replied', count: replyCount, color: 'var(--green)', max: Math.max(sent, 1) },
+    { label: 'Saved', count: saved, color: 'var(--purple)', max: all.length },
+    { label: 'Skipped', count: all.filter(l => l.status === 'skipped').length, color: 'var(--muted)', max: all.length },
+  ];
+  document.getElementById('pipelineView').innerHTML = pipeline.map(p => `
+    <div class="pipeline-row">
+      <div class="pipeline-dot" style="background:${p.color}"></div>
+      <div class="pipeline-label">${p.label}</div>
+      <div class="pipeline-bar-wrap"><div class="pipeline-bar" style="background:${p.color};width:${Math.round((p.count/Math.max(p.max,1))*100)}%"></div></div>
+      <div class="pipeline-count">${p.count}</div>
+    </div>
+  `).join('');
+
+  // Recent replies
+  const container = document.getElementById('dashReplies');
+  if (replies.length === 0) {
+    container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.85rem;">No replies yet</div>';
+  } else {
+    const colors = ['#3b82f6','#22c55e','#f97316','#a855f7','#ef4444'];
+    container.innerHTML = replies.slice(0, 5).map((r, i) => {
+      const initials = (r.from || 'U').split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+      return `<div class="reply-item" onclick="showPage('replies')">
+        <div class="reply-avatar" style="background:${colors[i%colors.length]}22;color:${colors[i%colors.length]}">${initials}</div>
+        <div class="reply-info">
+          <div class="reply-name">${r.from || 'Unknown'}</div>
+          <div class="reply-preview-text">${r.preview || '(no preview)'}</div>
+        </div>
+        <div class="reply-time">${timeAgo(r.timestamp || r.created_at)}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function timeAgo(ts) {
+  if (!ts) return '';
+  const diff = (Date.now() - new Date(ts)) / 1000;
+  if (diff < 3600) return Math.round(diff/60) + 'm';
+  if (diff < 86400) return Math.round(diff/3600) + 'h';
+  return Math.round(diff/86400) + 'd';
+}
+
+// ── SWIPE ──
+function pending() { return leads.filter(l => !l.status || l.status === 'pending'); }
+
+function renderSwipeStack() {
   const stack = document.getElementById('stack');
   stack.querySelectorAll('.card').forEach(c => c.remove());
   const q = pending();
   if (q.length === 0) {
-    document.getElementById('empty').style.display = 'flex';
-    document.getElementById('actions').style.display = 'none';
-    document.getElementById('hints').style.display = 'none';
+    document.getElementById('swipe-empty').style.display = 'flex';
+    document.getElementById('swipe-actions').style.display = 'none';
+    document.getElementById('swipe-hints').style.display = 'none';
     return;
   }
-  document.getElementById('empty').style.display = 'none';
-  document.getElementById('actions').style.display = 'flex';
-  document.getElementById('hints').style.display = 'flex';
-
-  // Render back card first (behind)
-  if (q.length > 1) {
-    stack.appendChild(buildCard(q[1], false));
-  }
-  // Top card
+  document.getElementById('swipe-empty').style.display = 'none';
+  document.getElementById('swipe-actions').style.display = 'flex';
+  document.getElementById('swipe-hints').style.display = 'flex';
+  if (q.length > 1) stack.appendChild(buildCard(q[1], false));
   const top = buildCard(q[0], true);
   stack.appendChild(top);
   attachDrag(top, q[0]);
@@ -314,12 +676,12 @@ function buildCard(lead, isTop) {
     ${lead.website ? `<div class="card-website">🌐 ${lead.website}</div>` : ''}
     ${lead.automation_angle ? `<div class="card-angle">${lead.automation_angle}</div>` : ''}
     <div class="email-preview" id="ep-${lead.id}">${email}</div>
-    <button class="btn-regen" onclick="regen('${lead.id}')">↻ New Email Draft</button>
+    <button class="btn-regen" onclick="regenEmail('${lead.id}')">↻ New Draft</button>
   `;
   return card;
 }
 
-function regen(id) {
+function regenEmail(id) {
   const lead = leads.find(l => l.id == id);
   if (!lead) return;
   const el = document.getElementById('ep-' + id);
@@ -328,128 +690,237 @@ function regen(id) {
 }
 
 function attachDrag(card, lead) {
-  let sx = 0, sy = 0, cx = 0, cy = 0, dragging = false;
-
-  function start(e) {
-    dragging = true;
-    const p = e.touches ? e.touches[0] : e;
-    sx = p.clientX; sy = p.clientY;
-    card.style.transition = 'none';
-  }
-  function move(e) {
-    if (!dragging) return;
-    e.preventDefault();
-    const p = e.touches ? e.touches[0] : e;
-    cx = p.clientX - sx; cy = p.clientY - sy;
-    card.style.transform = `translate(${cx}px,${cy}px) rotate(${cx * 0.07}deg)`;
-    const nope = card.querySelector('.label-nope');
-    const send = card.querySelector('.label-send');
-    const save = card.querySelector('.label-save');
-    if (cy < -60 && Math.abs(cx) < 90) {
-      save.style.opacity = Math.min(1, Math.abs(cy)/90);
-      nope.style.opacity = 0; send.style.opacity = 0;
-    } else if (cx > 40) {
-      send.style.opacity = Math.min(1, cx/100);
-      nope.style.opacity = 0; save.style.opacity = 0;
-    } else if (cx < -40) {
-      nope.style.opacity = Math.min(1, Math.abs(cx)/100);
-      send.style.opacity = 0; save.style.opacity = 0;
-    } else {
-      nope.style.opacity = 0; send.style.opacity = 0; save.style.opacity = 0;
-    }
-  }
-  function end() {
-    if (!dragging) return;
-    dragging = false;
-    card.style.transition = 'transform 0.3s ease';
-    if (cy < -80 && Math.abs(cx) < 100) fly(card, 0, -window.innerHeight, () => act(lead, 'saved'));
-    else if (cx > 100) fly(card, window.innerWidth * 1.5, 0, () => act(lead, 'sent'));
-    else if (cx < -100) fly(card, -window.innerWidth * 1.5, 0, () => act(lead, 'skipped'));
-    else { card.style.transform = ''; card.querySelectorAll('.swipe-label').forEach(l => l.style.opacity = 0); }
-  }
-
-  card.addEventListener('mousedown', start);
-  card.addEventListener('touchstart', start, { passive: true });
-  window.addEventListener('mousemove', move);
-  window.addEventListener('touchmove', move, { passive: false });
-  window.addEventListener('mouseup', end);
-  window.addEventListener('touchend', end);
+  let sx=0,sy=0,cx=0,cy=0,dragging=false;
+  function start(e){ dragging=true; const p=e.touches?e.touches[0]:e; sx=p.clientX;sy=p.clientY; card.style.transition='none'; }
+  function move(e){ if(!dragging)return; e.preventDefault(); const p=e.touches?e.touches[0]:e; cx=p.clientX-sx;cy=p.clientY-sy; card.style.transform=`translate(${cx}px,${cy}px) rotate(${cx*0.07}deg)`; const n=card.querySelector('.label-nope'),s=card.querySelector('.label-send'),v=card.querySelector('.label-save'); if(cy<-60&&Math.abs(cx)<90){v.style.opacity=Math.min(1,Math.abs(cy)/90);n.style.opacity=0;s.style.opacity=0;}else if(cx>40){s.style.opacity=Math.min(1,cx/100);n.style.opacity=0;v.style.opacity=0;}else if(cx<-40){n.style.opacity=Math.min(1,Math.abs(cx)/100);s.style.opacity=0;v.style.opacity=0;}else{n.style.opacity=0;s.style.opacity=0;v.style.opacity=0;} }
+  function end(){ if(!dragging)return;dragging=false;card.style.transition='transform 0.3s ease'; if(cy<-80&&Math.abs(cx)<100)fly(card,0,-window.innerHeight,()=>act(lead,'saved')); else if(cx>100)fly(card,window.innerWidth*1.5,0,()=>act(lead,'sent')); else if(cx<-100)fly(card,-window.innerWidth*1.5,0,()=>act(lead,'skipped')); else{card.style.transform='';card.querySelectorAll('.swipe-label').forEach(l=>l.style.opacity=0);} }
+  card.addEventListener('mousedown',start);card.addEventListener('touchstart',start,{passive:true});
+  window.addEventListener('mousemove',move);window.addEventListener('touchmove',move,{passive:false});
+  window.addEventListener('mouseup',end);window.addEventListener('touchend',end);
 }
 
 function fly(card, tx, ty, cb) {
-  card.style.transition = 'transform 0.35s ease';
-  card.style.transform = `translate(${tx}px,${ty}px) rotate(${tx > 0 ? 18 : -18}deg)`;
-  setTimeout(() => { card.remove(); cb(); }, 350);
+  card.style.transition='transform 0.35s ease';
+  card.style.transform=`translate(${tx}px,${ty}px) rotate(${tx>0?18:-18}deg)`;
+  setTimeout(()=>{card.remove();cb();},350);
 }
 
 function swipeAction(dir) {
-  const q = pending();
-  if (!q.length) return;
-  const lead = q[0];
-  const card = document.querySelector('.card.top');
-  if (!card) return;
-  if (dir === 'left') fly(card, -window.innerWidth * 1.5, 0, () => act(lead, 'skipped'));
-  else if (dir === 'right') fly(card, window.innerWidth * 1.5, 0, () => act(lead, 'sent'));
-  else if (dir === 'up') fly(card, 0, -window.innerHeight, () => act(lead, 'saved'));
+  const q = pending(); if(!q.length)return;
+  const lead=q[0]; const card=document.querySelector('.card.top'); if(!card)return;
+  if(dir==='left')fly(card,-window.innerWidth*1.5,0,()=>act(lead,'skipped'));
+  else if(dir==='right')fly(card,window.innerWidth*1.5,0,()=>act(lead,'sent'));
+  else fly(card,0,-window.innerHeight,()=>act(lead,'saved'));
 }
 
 async function act(lead, action) {
-  if (action === 'sent') {
-    await sendEmail(lead);
-  } else {
-    lead.status = action;
-    saveLocal(lead);
-    leads = leads.map(l => l.id === lead.id ? lead : l);
-    toast(action === 'saved' ? '🔖 Saved for later' : 'Skipped');
-    updateCounter();
-    renderStack();
-  }
+  if(action==='sent') await sendEmail(lead);
+  else { lead.status=action; saveLocal(lead); leads=leads.map(l=>l.id===lead.id?lead:l); toast(action==='saved'?'🔖 Saved':'Skipped'); renderDashboard(); renderSwipeStack(); }
 }
 
 async function sendEmail(lead) {
-  const body = document.getElementById('ep-' + lead.id)?.textContent || getTemplate(lead);
+  const body = document.getElementById('ep-'+lead.id)?.textContent || getTemplate(lead);
   const subject = `${lead.business_name} — quick question`;
-  toast('⏳ Sending...', 6000);
+  toast('⏳ Sending...', 5000);
   try {
-    const r = await fetch(N8N_WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to: lead.email, subject, text: body })
-    });
-    if (r.ok) {
-      lead.status = 'sent';
-      lead.sent_at = new Date().toISOString();
-      toast('✅ Sent to ' + lead.email);
-    } else {
-      lead.status = 'send_failed';
-      toast('❌ Send failed');
-    }
-  } catch(e) {
-    lead.status = 'send_failed';
-    toast('❌ Network error');
-  }
-  saveLocal(lead);
-  leads = leads.map(l => l.id === lead.id ? lead : l);
-  updateCounter();
-  renderStack();
+    const r = await fetch(N8N, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({to:lead.email,subject,text:body}) });
+    lead.status = r.ok ? 'sent' : 'send_failed';
+    lead.sent_at = new Date().toISOString();
+    toast(r.ok ? `✅ Sent to ${lead.email}` : '❌ Send failed');
+  } catch(e) { lead.status='send_failed'; toast('❌ Network error'); }
+  saveLocal(lead); leads=leads.map(l=>l.id===lead.id?lead:l);
+  renderDashboard(); renderSwipeStack();
 }
 
-async function init() {
-  try {
-    const r = await fetch(DATA_URL + '?t=' + Date.now());
-    if (r.ok) {
-      const fresh = await r.json();
-      const local = JSON.parse(localStorage.getItem('wrl') || '[]');
-      const lmap = {};
-      local.forEach(l => lmap[l.id] = l);
-      leads = fresh.map(l => lmap[l.id] || l);
-      localStorage.setItem('wrl', JSON.stringify(leads));
-    } else throw new Error('fetch failed');
-  } catch(e) {
-    leads = JSON.parse(localStorage.getItem('wrl') || '[]');
+// ── REPLIES PAGE ──
+function renderRepliesPage() {
+  const container = document.getElementById('repliesContainer');
+  if (replies.length === 0) {
+    container.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted);font-size:0.9rem;">No replies yet — check back after your emails go out.</div>';
+    return;
   }
-  updateCounter();
-  renderStack();
+  container.innerHTML = replies.map(r => `
+    <div class="reply-card">
+      <div class="reply-card-header">
+        <div>
+          <div class="reply-card-biz">${r.from || 'Unknown'}</div>
+          <div style="font-size:0.72rem;color:var(--muted2)">${r.subject || ''}</div>
+        </div>
+        <div class="reply-card-time">${timeAgo(r.timestamp || r.created_at)}</div>
+      </div>
+      <div class="reply-card-msg">${r.preview || '(no message preview)'}</div>
+      <div class="reply-actions">
+        <button class="reply-btn green" onclick="toast('📞 Opening call coach...');setTimeout(()=>showPage(\\'coach\\'),300)">📞 Call Coach</button>
+        <button class="reply-btn" onclick="toast('📧 Reply drafted')">↩ Reply</button>
+        <button class="reply-btn primary" onclick="toast('📅 Booking link copied!')">📅 Book Call</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── ANALYTICS ──
+function renderAnalytics() {
+  const all = leads;
+  const sent = all.filter(l => l.status === 'sent').length;
+  const replyCount = replies.length;
+  const rate = sent > 0 ? ((replyCount / sent) * 100).toFixed(1) : 0;
+
+  document.getElementById('aTotal').textContent = sent;
+  document.getElementById('aReplied').textContent = replyCount;
+  document.getElementById('aRate').textContent = rate + '%';
+
+  // Bar chart by type
+  const types = {};
+  all.filter(l => l.status === 'sent').forEach(l => { types[l.type||'other'] = (types[l.type||'other']||0)+1; });
+  const maxT = Math.max(...Object.values(types), 1);
+  document.getElementById('typeChart').innerHTML = Object.entries(types).map(([t,c]) => `
+    <div class="bar-col">
+      <div class="bar" style="height:${Math.round((c/maxT)*80)+4}px"></div>
+      <div class="bar-label">${t}</div>
+    </div>
+  `).join('') || '<div style="color:var(--muted);font-size:0.82rem;padding:20px">Send some emails first</div>';
+
+  // Status breakdown
+  const statuses = ['pending','sent','saved','skipped','send_failed'];
+  const colors = { pending: 'var(--yellow)', sent: 'var(--blue)', saved: 'var(--purple)', skipped: 'var(--muted)', send_failed: 'var(--red)' };
+  document.getElementById('statusBreakdown').innerHTML = statuses.map(s => {
+    const count = all.filter(l => (l.status||'pending') === s).length;
+    return `<div class="pipeline-row">
+      <div class="pipeline-dot" style="background:${colors[s]}"></div>
+      <div class="pipeline-label" style="text-transform:capitalize">${s.replace('_',' ')}</div>
+      <div class="pipeline-bar-wrap"><div class="pipeline-bar" style="background:${colors[s]};width:${Math.round((count/Math.max(all.length,1))*100)}%"></div></div>
+      <div class="pipeline-count">${count}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── CALL COACH ──
+function populateCoachLeads() {
+  const sel = document.getElementById('coachLeadSelect');
+  leads.forEach((l, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${l.business_name} (${l.city})`;
+    sel.appendChild(opt);
+  });
+}
+
+function loadCoachLead() {
+  const idx = document.getElementById('coachLeadSelect').value;
+  if (idx === '') return;
+  currentCoachLead = leads[parseInt(idx)];
+  document.getElementById('cCtxBiz').textContent = currentCoachLead.business_name || '—';
+  document.getElementById('cCtxType').textContent = currentCoachLead.type || '—';
+  document.getElementById('cCtxCity').textContent = currentCoachLead.city || '—';
+  document.getElementById('cCtxContact').textContent = currentCoachLead.first_name || currentCoachLead.email || '—';
+  document.getElementById('cCtxAngle').textContent = currentCoachLead.automation_angle || '—';
+  document.getElementById('coach-ctx').classList.add('visible');
+  setPhase('opener');
+  getCoaching('Call just started.');
+}
+
+const PHASE_PROMPTS = {
+  opener: 'OPENER phase. Give Jack a warm, casual opening — introduce himself, mention he got their email reply, make them comfortable. 1-2 sentences.',
+  discovery: 'DISCOVERY phase. Give Jack one good question about their lead follow-up process or how many jobs they lose to slow response. 1 question.',
+  pitch: 'PITCH phase. Connect their pain to Wildrose. Brief, 2-3 sentences. Mention a result. No jargon.',
+  objection: 'OBJECTION phase. Give Jack the perfect response — acknowledge, reframe, redirect. 2-3 sentences.',
+  close: 'CLOSE phase. Get a commitment — call, demo, or next step. 1-2 sentences.'
+};
+
+function setPhase(p) {
+  coachPhase = p;
+  document.querySelectorAll('.cphase').forEach(el => el.classList.toggle('active', el.dataset.p === p));
+}
+
+function handleObj(obj) { setPhase('objection'); getCoaching(`Prospect said: "${obj}". What should Jack say?`); }
+
+async function getCoaching(chunk) {
+  if (!currentCoachLead) return;
+  const el = document.getElementById('coach-say');
+  el.className = 'dim'; el.textContent = '...';
+  const prompt = `You are a real-time sales coach for Jack Wilde, CEO of Wildrose Automations.
+
+ABOUT WILDROSE: We build AI lead response and booking automation for local service businesses in Edmonton/Calgary. Custom pricing $500–$2,000/month. ROI: clients recover 3-5 lost jobs/week.
+
+LEAD: ${currentCoachLead.business_name} | ${currentCoachLead.type} | ${currentCoachLead.city} | ${currentCoachLead.automation_angle || ''}
+
+PHASE: ${coachPhase.toUpperCase()}
+${PHASE_PROMPTS[coachPhase]}
+
+RECENT TRANSCRIPT: ${coachTranscript.slice(-8).join(' ') || '(just started)'}
+LAST SAID: ${chunk}
+
+Reply with ONLY what Jack should say. No labels, no quotes. Max 2 sentences. Natural and direct.`;
+
+  try {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI}`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ contents:[{parts:[{text:prompt}]}], generationConfig:{maxOutputTokens:100,temperature:0.7} })
+    });
+    const d = await r.json();
+    const txt = d.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (txt) { el.className = coachPhase==='close'?'close':coachPhase==='objection'?'objection':''; el.textContent = txt; }
+  } catch(e) { el.className=''; el.textContent='Connection error.'; }
+}
+
+function toggleMic() {
+  if (isListening) stopMic(); else startMic();
+}
+
+function startMic() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { alert('Use Chrome on desktop for speech recognition.'); return; }
+  recognition = new SR();
+  recognition.continuous = true; recognition.interimResults = true; recognition.lang = 'en-CA';
+  recognition.onresult = e => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) { const t = e.results[i][0].transcript.trim(); if(t){coachTranscript.push(t);pendingChunk+=' '+t;addLine(t,true);scheduleCoach();} }
+      else interim += e.results[i][0].transcript;
+    }
+    if (interim) updateInterim(interim);
+  };
+  recognition.onend = () => { if(isListening) recognition.start(); };
+  recognition.start(); isListening = true;
+  const btn = document.getElementById('micBtn');
+  btn.className='on'; btn.textContent='🔴 Stop Listening';
+}
+
+function stopMic() {
+  if(recognition) recognition.stop();
+  isListening = false;
+  const btn = document.getElementById('micBtn');
+  btn.className='off'; btn.textContent='🎙 Start Listening';
+}
+
+function scheduleCoach() {
+  clearTimeout(coachTimer);
+  coachTimer = setTimeout(() => { if(pendingChunk.trim().length>8){const t=pendingChunk.trim();pendingChunk='';getCoaching(t);} }, 3000);
+}
+
+function addLine(text, final) {
+  const area = document.getElementById('coach-transcript');
+  const p = document.createElement('p');
+  p.className = final ? 'final' : 'interim';
+  p.textContent = text;
+  area.appendChild(p);
+  area.scrollTop = area.scrollHeight;
+  while(area.children.length > 25) area.removeChild(area.firstChild);
+}
+
+function updateInterim(text) {
+  const area = document.getElementById('coach-transcript');
+  let last = area.querySelector('p.interim');
+  if(!last){last=document.createElement('p');last.className='interim';area.appendChild(last);}
+  last.textContent = text + '...';
+  area.scrollTop = area.scrollHeight;
+}
+
+function clearCoach() {
+  coachTranscript = []; pendingChunk = '';
+  document.getElementById('coach-transcript').innerHTML = '<p style="color:#2a2a2a">Cleared.</p>';
+  document.getElementById('coach-say').className = 'dim';
+  document.getElementById('coach-say').textContent = 'Ready.';
 }
 
 init();
