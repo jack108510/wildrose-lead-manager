@@ -41,17 +41,27 @@
     .pipe-count{font-size:.82rem;font-weight:700}
 
     /* ── REPLIES ── */
-    #pg-replies{padding:14px;gap:10px}
-    .reply-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;position:relative}
+    #pg-replies{padding:14px;gap:8px}
+    .reply-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
     .reply-card.unread{border-color:var(--blue)}
-    .reply-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-    .reply-from{font-size:.9rem;font-weight:700}
-    .reply-time{font-size:.7rem;color:var(--muted2)}
-    .reply-subj{font-size:.75rem;color:var(--muted2);margin-bottom:8px}
-    .reply-msg{font-size:.83rem;color:#bbb;line-height:1.6;padding:10px 12px;background:#0d0d0d;border-left:3px solid var(--green);border-radius:0 8px 8px 0;margin-bottom:12px}
-    .auto-reply-tag{display:inline-block;font-size:.65rem;background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3);border-radius:20px;padding:2px 8px;margin-bottom:10px}
-    .reply-actions{display:flex;gap:7px}
-    .r-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:#1a1a1a;color:var(--text);font-size:.75rem;cursor:pointer;font-weight:600;transition:background .15s;text-align:center}
+    .reply-card.read{border-color:var(--border);opacity:.85}
+    .reply-row{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none}
+    .reply-row:hover{background:var(--card2)}
+    .unread-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0}
+    .read-dot{width:8px;height:8px;border-radius:50%;background:transparent;border:1px solid var(--muted);flex-shrink:0}
+    .reply-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex-shrink:0}
+    .reply-snippet{flex:1;min-width:0}
+    .reply-from{font-size:.86rem;font-weight:700;margin-bottom:1px}
+    .reply-preview-line{font-size:.75rem;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .reply-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+    .reply-time{font-size:.68rem;color:var(--muted2)}
+    .reply-chevron{font-size:.7rem;color:var(--muted);transition:transform .2s}
+    .reply-chevron.open{transform:rotate(180deg)}
+    .reply-body{display:none;padding:0 14px 14px}
+    .reply-body.open{display:block}
+    .auto-reply-tag{display:inline-block;font-size:.62rem;background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3);border-radius:20px;padding:2px 8px;margin-bottom:10px}
+    .reply-actions{display:flex;gap:7px;margin-top:12px}
+    .r-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:#1a1a1a;color:var(--text);font-size:.73rem;cursor:pointer;font-weight:600;transition:background .15s;text-align:center}
     .r-btn:hover{background:#222}
     .r-btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
     .r-btn.green{background:rgba(34,197,94,.12);border-color:var(--green);color:var(--green)}
@@ -168,10 +178,35 @@
 <div class="page" id="pg-calls">
   <div class="add-call-bar">
     <input class="call-input" id="callName" placeholder="Company name..." />
-    <input class="call-input" id="callTime" placeholder="When? (e.g. Thurs after 6)" style="max-width:200px"/>
+    <input class="call-input" id="callTime" placeholder="When? (e.g. Thurs after 6)" style="max-width:180px"/>
+    <input class="call-input" id="callPhone" placeholder="Phone" style="max-width:130px"/>
     <button class="add-btn" onclick="addCall()">+ Add</button>
   </div>
   <div id="callList" style="display:contents"></div>
+  <!-- BLOCKED TIMES -->
+  <div style="padding:4px 0 6px"><div class="sec-title" style="padding:0">🚫 Blocked Times</div></div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px">
+    <div style="font-size:.78rem;color:var(--muted2);line-height:1.5">Block times when the AI should not try to schedule calls (e.g. evenings, weekends).</div>
+    <div class="add-call-bar" style="flex-wrap:wrap">
+      <input class="call-input" id="blockLabel" placeholder="Label (e.g. Evenings)" style="max-width:160px"/>
+      <input class="call-input" id="blockStart" type="time" style="max-width:110px"/>
+      <input class="call-input" id="blockEnd" type="time" style="max-width:110px"/>
+      <select class="call-input" id="blockDays" style="max-width:140px">
+        <option value="all">Every day</option>
+        <option value="weekdays">Weekdays only</option>
+        <option value="weekends">Weekends only</option>
+        <option value="mon">Monday</option>
+        <option value="tue">Tuesday</option>
+        <option value="wed">Wednesday</option>
+        <option value="thu">Thursday</option>
+        <option value="fri">Friday</option>
+        <option value="sat">Saturday</option>
+        <option value="sun">Sunday</option>
+      </select>
+      <button class="add-btn" onclick="addBlock()">+ Block</button>
+    </div>
+    <div id="blockList"></div>
+  </div>
 </div>
 
 <!-- ANALYTICS -->
@@ -253,9 +288,10 @@ const DATA_URL='https://jack108510.github.io/jsw-dashboard/wildrose-pending-lead
 const REPLIES_URL='https://jack108510.github.io/jsw-dashboard/wildrose-replies.json';
 const CALLS_URL='https://jack108510.github.io/jsw-dashboard/wildrose-calls.json';
 
-let leads=[], replies=[], calls=[], knownReplyIds=new Set(), coachLead=null, coachPhase='opener';
+let leads=[], replies=[], calls=[], blocks=[], knownReplyIds=new Set(), coachLead=null, coachPhase='opener';
 let recognition=null, isListening=false, coachTimer=null, pendingChunk='', coachTx=[];
 let popupReply=null;
+let readIds=new Set(JSON.parse(localStorage.getItem('wrl_read')||'[]'));
 
 function nav(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -281,8 +317,9 @@ async function init(){
     else throw new Error();
   }catch(e){leads=getLocal();}
 
-  // Load calls
+  // Load calls and blocks
   calls=getCalls();
+  blocks=JSON.parse(localStorage.getItem('wrl_blocks')||'[]');
 
   // Load static replies file first (has full threads)
   try {
@@ -306,6 +343,7 @@ async function init(){
   renderDashboard();
   renderRepliesPage();
   renderCalls();
+  renderBlocks();
   populateCoachLeads();
 
   // Poll for new replies every 60 seconds
@@ -368,11 +406,11 @@ async function fetchReplies(initial=false){
       }
     }
 
-    // Update badge
-    if(replies.length>0){
-      document.getElementById('replyBadge').style.display='inline-flex';
-      document.getElementById('replyBadge').textContent=replies.length;
-    }
+    // Update badge — show unread count
+    const unread=replies.filter(r=>!readIds.has(String(r.id||r.message_id||r.timestamp))).length;
+    const badge=document.getElementById('replyBadge');
+    if(unread>0){badge.style.display='inline-flex';badge.textContent=unread;}
+    else badge.style.display='none';
   }catch(e){}
 }
 
@@ -442,38 +480,66 @@ function renderDashboard(){
 }
 
 // REPLIES PAGE
+function markRead(id){ readIds.add(id); localStorage.setItem('wrl_read',JSON.stringify([...readIds])); }
+
+function toggleReply(id){
+  const body=document.getElementById('rb-'+id);
+  const chev=document.getElementById('rc-'+id);
+  const card=document.getElementById('rcard-'+id);
+  if(!body)return;
+  const open=body.classList.toggle('open');
+  if(chev)chev.classList.toggle('open',open);
+  if(open){
+    markRead(id);
+    if(card){card.classList.remove('unread');card.classList.add('read');}
+    // Update badge
+    const unread=replies.filter(r=>!readIds.has(r.id||r.message_id||r.timestamp)).length;
+    const badge=document.getElementById('replyBadge');
+    if(unread>0){badge.style.display='inline-flex';badge.textContent=unread;}
+    else badge.style.display='none';
+  }
+}
+
 function renderRepliesPage(){
   const c=document.getElementById('repliesContainer');
   if(!replies.length){c.innerHTML='<div class="empty-state">No replies yet.<br><br>Emails go out automatically at 8 AM every morning.</div>';return;}
-  c.innerHTML=replies.map(r=>{
+  const colors=['#3b82f6','#22c55e','#f97316','#a855f7','#ef4444'];
+  c.innerHTML=replies.map((r,i)=>{
+    const rid=r.id||r.message_id||r.timestamp||i;
+    const isUnread=!readIds.has(String(rid));
     const thread=r.thread||[];
+    const initials=(r.from||'U').replace(/<.*>/,'').trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const col=colors[i%5];
     const threadHtml=thread.map(msg=>{
-      const isUs=msg.from&&(msg.from.includes('Wildrose')||msg.from.includes('wildrose'));
-      return `<div style="margin-bottom:10px">
-        <div style="font-size:.68rem;color:${isUs?'var(--blue)':'var(--green)'};font-weight:700;margin-bottom:3px">${isUs?'📤 Wildrose':'📥 '+msg.from} · ${timeAgo(msg.time)}</div>
-        <div style="font-size:.8rem;color:#bbb;line-height:1.6;padding:8px 10px;background:#0a0a0a;border-left:3px solid ${isUs?'var(--blue)':'var(--green)'};border-radius:0 6px 6px 0;white-space:pre-wrap">${msg.text}</div>
+      const isUs=msg.from&&(msg.from.toLowerCase().includes('wildrose')||msg.from.toLowerCase().includes('wildroseautomations'));
+      return `<div style="margin-bottom:8px">
+        <div style="font-size:.65rem;color:${isUs?'var(--blue)':'var(--green)'};font-weight:700;margin-bottom:2px">${isUs?'📤 Wildrose':'📥 '+(msg.from||'').replace(/<.*>/,'').trim()} · ${timeAgo(msg.time)}</div>
+        <div style="font-size:.78rem;color:#bbb;line-height:1.6;padding:7px 10px;background:#0a0a0a;border-left:2px solid ${isUs?'var(--blue)':'var(--green)'};border-radius:0 6px 6px 0;white-space:pre-wrap">${(msg.text||'').slice(0,500)}</div>
       </div>`;
     }).join('');
 
-    return `<div class="reply-card">
-      <div class="reply-header">
-        <div>
-          <div class="reply-from">${r.from||'Unknown'}</div>
-          <div class="reply-subj">${r.subject||''}</div>
-          ${r.phone?`<div style="font-size:.78rem;color:var(--green);margin-top:3px">📞 ${r.phone}</div>`:''}
+    return `<div class="reply-card ${isUnread?'unread':'read'}" id="rcard-${rid}">
+      <div class="reply-row" onclick="toggleReply('${rid}')">
+        <div class="${isUnread?'unread-dot':'read-dot'}"></div>
+        <div class="reply-avatar" style="background:${col}22;color:${col}">${initials}</div>
+        <div class="reply-snippet">
+          <div class="reply-from">${(r.from||'Unknown').replace(/<.*>/,'').trim()}</div>
+          <div class="reply-preview-line">${r.preview||r.subject||''}</div>
         </div>
-        <div class="reply-time">${timeAgo(r.timestamp||r.created_at)}</div>
+        <div class="reply-meta">
+          <div class="reply-time">${timeAgo(r.timestamp||r.created_at)}</div>
+          ${r.status==='auto_replied'?'<div style="font-size:.6rem;color:var(--green)">✅ AI replied</div>':''}
+          <div class="reply-chevron" id="rc-${rid}">▾</div>
+        </div>
       </div>
-      ${r.status==='auto_replied'?'<div class="auto-reply-tag">✅ Auto-replied by AI</div>':''}
-      ${thread.length?`
-        <div style="margin-bottom:12px">
-          <div style="font-size:.68rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:700">Full Conversation</div>
-          ${threadHtml}
-        </div>`:`<div class="reply-msg">${r.preview||'(no preview)'}</div>`}
-      <div class="reply-actions">
-        <button class="r-btn green" onclick="nav('coach',document.querySelector('.tab:last-child'))">📞 Call Coach</button>
-        <button class="r-btn blue" onclick="scheduleFromReply('${encodeURIComponent(r.from||'')}','${encodeURIComponent(r.phone||'')}')">📅 Schedule Call</button>
-        <button class="r-btn" onclick="toast('📧 Opening reply...')">↩ Reply</button>
+      <div class="reply-body" id="rb-${rid}">
+        ${r.phone?`<div style="font-size:.78rem;color:var(--green);margin-bottom:8px">📞 ${r.phone}</div>`:''}
+        ${thread.length?`<div style="margin-bottom:2px">${threadHtml}</div>`:`<div style="font-size:.8rem;color:#bbb;padding:8px 10px;background:#0a0a0a;border-left:2px solid var(--green);border-radius:0 6px 6px 0;margin-bottom:10px">${r.preview||'(no preview)'}</div>`}
+        <div class="reply-actions">
+          <button class="r-btn green" onclick="nav('coach',document.querySelector('.tab:last-child'))">📞 Coach</button>
+          <button class="r-btn blue" onclick="scheduleFromReply('${encodeURIComponent(r.from||'')}','${encodeURIComponent(r.phone||'')}')">📅 Schedule</button>
+          <button class="r-btn" onclick="toast('📧 Reply...')">↩ Reply</button>
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -510,12 +576,53 @@ function renderCalls(){
 function addCall(){
   const name=document.getElementById('callName').value.trim();
   const time=document.getElementById('callTime').value.trim();
+  const phone=document.getElementById('callPhone').value.trim();
   if(!name)return;
-  calls.unshift({id:Date.now(),name,time:time||'TBD',done:false});
+  calls.unshift({id:Date.now(),name,time:time||'TBD',phone,done:false});
   saveCalls();renderCalls();
   document.getElementById('callName').value='';
   document.getElementById('callTime').value='';
+  document.getElementById('callPhone').value='';
   toast('📅 Call added');
+}
+
+// BLOCKED TIMES
+function addBlock(){
+  const label=document.getElementById('blockLabel').value.trim()||'Blocked';
+  const start=document.getElementById('blockStart').value;
+  const end=document.getElementById('blockEnd').value;
+  const days=document.getElementById('blockDays').value;
+  if(!start||!end){toast('Set start and end time');return;}
+  blocks.push({id:Date.now(),label,start,end,days});
+  localStorage.setItem('wrl_blocks',JSON.stringify(blocks));
+  renderBlocks();
+  document.getElementById('blockLabel').value='';
+  document.getElementById('blockStart').value='';
+  document.getElementById('blockEnd').value='';
+  toast('🚫 Time blocked');
+}
+
+function deleteBlock(id){
+  blocks=blocks.filter(b=>b.id!==id);
+  localStorage.setItem('wrl_blocks',JSON.stringify(blocks));
+  renderBlocks();
+}
+
+function renderBlocks(){
+  const c=document.getElementById('blockList');
+  if(!c)return;
+  if(!blocks.length){c.innerHTML='<div style="font-size:.78rem;color:var(--muted2);text-align:center;padding:8px 0">No blocked times</div>';return;}
+  c.innerHTML=blocks.map(b=>`
+    <div class="call-card" style="margin-bottom:6px">
+      <div style="font-size:1rem">🚫</div>
+      <div class="call-info">
+        <div class="call-name">${b.label}</div>
+        <div class="call-detail">${b.start} – ${b.end} · ${b.days}</div>
+      </div>
+      <div class="call-actions">
+        <button class="call-act" onclick="deleteBlock(${b.id})" style="color:var(--red);border-color:var(--red)">✕</button>
+      </div>
+    </div>`).join('');
 }
 
 function markCallDone(id){calls=calls.map(c=>c.id===id?{...c,done:true}:c);saveCalls();renderCalls();renderDashboard();}
