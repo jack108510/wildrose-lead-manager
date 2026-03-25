@@ -1,927 +1,536 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
   <title>Wildrose Lead Manager</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #080808;
-      --card: #111;
-      --card2: #161616;
-      --border: #1f1f1f;
-      --text: #f0f0f0;
-      --muted: #555;
-      --muted2: #888;
-      --green: #22c55e;
-      --red: #ef4444;
-      --yellow: #eab308;
-      --blue: #3b82f6;
-      --purple: #a855f7;
-      --orange: #f97316;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#080808;--card:#111;--card2:#161616;--border:#1e1e1e;
+      --text:#f0f0f0;--muted:#555;--muted2:#888;
+      --green:#22c55e;--red:#ef4444;--yellow:#eab308;
+      --blue:#3b82f6;--purple:#a855f7;--orange:#f97316;
     }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    /* ── TOP NAV ── */
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      height: 52px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-      background: var(--bg);
-      position: relative;
-      z-index: 10;
-    }
-    .nav-logo { font-size: 1rem; font-weight: 800; letter-spacing: -0.3px; }
-    .nav-logo span { color: var(--red); }
-    .nav-tabs { display: flex; gap: 2px; }
-    .nav-tab {
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--muted2);
-      cursor: pointer;
-      transition: all 0.15s;
-      border: none;
-      background: none;
-    }
-    .nav-tab.active { background: var(--card2); color: var(--text); }
-    .nav-tab:hover:not(.active) { color: var(--text); }
-    .nav-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--red);
-      color: white;
-      border-radius: 10px;
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 1px 6px;
-      margin-left: 5px;
-      min-width: 18px;
-    }
-
-    /* ── PAGES ── */
-    .page { display: none; flex: 1; overflow-y: auto; flex-direction: column; }
-    .page.active { display: flex; }
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:50px;border-bottom:1px solid var(--border);flex-shrink:0;position:relative;z-index:10}
+    .logo{font-size:1rem;font-weight:800;letter-spacing:-.3px}.logo span{color:var(--red)}
+    .tabs{display:flex;gap:2px}
+    .tab{padding:6px 12px;border-radius:8px;font-size:0.76rem;font-weight:600;color:var(--muted2);cursor:pointer;border:none;background:none;transition:all .15s}
+    .tab.active{background:var(--card2);color:var(--text)}
+    .badge{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:#fff;border-radius:10px;font-size:.62rem;font-weight:700;padding:1px 5px;margin-left:4px;min-width:16px}
+    .page{display:none;flex:1;overflow-y:auto;flex-direction:column}
+    .page.active{display:flex}
 
     /* ── DASHBOARD ── */
-    #page-dashboard { padding: 20px; gap: 16px; }
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    @media(min-width:500px){ .stat-grid { grid-template-columns: repeat(4,1fr); } }
-    .stat-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px 16px;
-    }
-    .stat-label { font-size: 0.7rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
-    .stat-value { font-size: 1.8rem; font-weight: 800; line-height: 1; }
-    .stat-sub { font-size: 0.72rem; color: var(--muted2); margin-top: 6px; }
-    .stat-green { color: var(--green); }
-    .stat-blue { color: var(--blue); }
-    .stat-yellow { color: var(--yellow); }
-    .stat-red { color: var(--red); }
+    #pg-dash{padding:16px;gap:14px}
+    .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media(min-width:480px){.stat-grid{grid-template-columns:repeat(4,1fr)}}
+    .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
+    .stat-lbl{font-size:.68rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+    .stat-val{font-size:1.7rem;font-weight:800;line-height:1}
+    .stat-sub{font-size:.7rem;color:var(--muted2);margin-top:5px}
+    .sec-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted2);margin-bottom:10px}
+    .pipeline{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+    .pipe-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+    .pipe-row:last-child{border-bottom:none}
+    .pipe-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .pipe-lbl{font-size:.82rem;flex:1}
+    .pipe-bar-wrap{flex:2;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+    .pipe-bar{height:100%;border-radius:3px;transition:width .5s}
+    .pipe-count{font-size:.82rem;font-weight:700}
 
-    .section-title {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--muted2);
-      margin-bottom: 12px;
-    }
+    /* ── REPLIES ── */
+    #pg-replies{padding:14px;gap:10px}
+    .reply-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;position:relative}
+    .reply-card.unread{border-color:var(--blue)}
+    .reply-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+    .reply-from{font-size:.9rem;font-weight:700}
+    .reply-time{font-size:.7rem;color:var(--muted2)}
+    .reply-subj{font-size:.75rem;color:var(--muted2);margin-bottom:8px}
+    .reply-msg{font-size:.83rem;color:#bbb;line-height:1.6;padding:10px 12px;background:#0d0d0d;border-left:3px solid var(--green);border-radius:0 8px 8px 0;margin-bottom:12px}
+    .auto-reply-tag{display:inline-block;font-size:.65rem;background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3);border-radius:20px;padding:2px 8px;margin-bottom:10px}
+    .reply-actions{display:flex;gap:7px}
+    .r-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:#1a1a1a;color:var(--text);font-size:.75rem;cursor:pointer;font-weight:600;transition:background .15s;text-align:center}
+    .r-btn:hover{background:#222}
+    .r-btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
+    .r-btn.green{background:rgba(34,197,94,.12);border-color:var(--green);color:var(--green)}
+    .empty-state{padding:40px;text-align:center;color:var(--muted2);font-size:.88rem}
 
-    /* Pipeline */
-    .pipeline {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-    }
-    .pipeline-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .pipeline-row:last-child { border-bottom: none; }
-    .pipeline-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .pipeline-label { font-size: 0.85rem; flex: 1; }
-    .pipeline-count { font-size: 0.85rem; font-weight: 700; }
-    .pipeline-bar-wrap { flex: 2; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
-    .pipeline-bar { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+    /* ── CALL SCHEDULE ── */
+    #pg-calls{padding:14px;gap:12px}
+    .add-call-bar{display:flex;gap:8px;align-items:center}
+    .call-input{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:10px;font-size:.85rem}
+    .call-input::placeholder{color:var(--muted)}
+    .add-btn{background:var(--blue);color:#fff;border:none;padding:10px 18px;border-radius:10px;font-size:.82rem;cursor:pointer;font-weight:600;white-space:nowrap}
+    .call-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px}
+    .call-card.done{opacity:.5}
+    .call-dot{width:10px;height:10px;border-radius:50%;background:var(--yellow);flex-shrink:0}
+    .call-dot.done{background:var(--green)}
+    .call-info{flex:1}
+    .call-name{font-size:.9rem;font-weight:700;margin-bottom:2px}
+    .call-detail{font-size:.75rem;color:var(--muted2)}
+    .call-actions{display:flex;gap:6px}
+    .call-act{background:none;border:1px solid var(--border);color:var(--muted2);padding:5px 10px;border-radius:6px;font-size:.72rem;cursor:pointer}
+    .call-act:hover{background:var(--card2);color:var(--text)}
+    .call-act.done-btn{color:var(--green);border-color:var(--green)}
 
-    /* Recent replies */
-    .reply-preview {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-    .reply-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      transition: background 0.1s;
-    }
-    .reply-item:last-child { border-bottom: none; }
-    .reply-item:hover { background: var(--card2); }
-    .reply-avatar {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.85rem;
-      flex-shrink: 0;
-    }
-    .reply-info { flex: 1; min-width: 0; }
-    .reply-name { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
-    .reply-preview-text { font-size: 0.78rem; color: var(--muted2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .reply-time { font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
-    .unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 4px; }
+    /* ── ANALYTICS ── */
+    #pg-analytics{padding:16px;gap:14px}
+    .rate-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .rate-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+    .rate-val{font-size:1.5rem;font-weight:800}
+    .rate-lbl{font-size:.68rem;color:var(--muted2);margin-top:4px}
+    .chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+    .bar-chart{display:flex;align-items:flex-end;gap:6px;height:90px;margin-top:10px}
+    .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+    .bar{width:100%;border-radius:4px 4px 0 0;background:var(--blue);opacity:.7;min-height:3px;transition:height .5s}
+    .bar-lbl{font-size:.6rem;color:var(--muted2);text-align:center}
+    .status-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+    .status-row:last-child{border-bottom:none}
 
-    /* ── SWIPE PAGE ── */
-    #page-swipe {
-      position: relative;
-      overflow: hidden;
-    }
-    #stack {
-      flex: 1;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      overflow: hidden;
-    }
-    .card {
-      position: absolute;
-      width: 100%;
-      max-width: 420px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px 22px 20px;
-      cursor: grab;
-      user-select: none;
-      touch-action: none;
-      will-change: transform;
-    }
-    .card:active { cursor: grabbing; }
-    .card.behind { transform: scale(0.95) translateY(14px); z-index: 0; pointer-events: none; }
-    .card.top { z-index: 10; }
-    .swipe-label {
-      position: absolute;
-      font-size: 1.2rem; font-weight: 800;
-      padding: 5px 12px; border-radius: 8px; border: 3px solid;
-      opacity: 0; pointer-events: none;
-      text-transform: uppercase; letter-spacing: 1px;
-      transition: opacity 0.08s;
-    }
-    .label-nope { top: 24px; left: 18px; color: var(--red); border-color: var(--red); transform: rotate(-12deg); }
-    .label-send { top: 24px; right: 18px; color: var(--green); border-color: var(--green); transform: rotate(12deg); }
-    .label-save { bottom: 24px; left: 50%; transform: translateX(-50%); color: var(--yellow); border-color: var(--yellow); }
-    .card-type { display: inline-block; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted2); background: #1a1a1a; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
-    .card-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
-    .card-city { font-size: 0.85rem; color: var(--muted2); margin-bottom: 12px; }
-    .card-email { font-size: 0.88rem; color: var(--blue); margin-bottom: 6px; word-break: break-all; }
-    .card-website { font-size: 0.8rem; color: var(--muted2); margin-bottom: 12px; word-break: break-all; }
-    .card-angle { font-size: 0.82rem; color: #aaa; background: #0d0d0d; border-left: 3px solid #2a2a2a; padding: 8px 12px; border-radius: 0 8px 8px 0; margin-bottom: 14px; line-height: 1.5; }
-    .email-preview { background: #0a0a0a; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 0.77rem; color: #888; line-height: 1.6; max-height: 140px; overflow-y: auto; margin-bottom: 12px; white-space: pre-wrap; }
-    .btn-regen { width: 100%; background: #1a1a1a; border: 1px solid var(--border); color: var(--text); padding: 8px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; }
-    .btn-regen:hover { background: #222; }
-    #swipe-hints { display: flex; justify-content: center; gap: 48px; padding: 0 20px 8px; flex-shrink: 0; }
-    .hint { font-size: 0.7rem; color: var(--muted); text-align: center; }
-    #swipe-actions { display: flex; justify-content: center; gap: 28px; padding: 12px 20px 24px; flex-shrink: 0; }
-    .action-btn { width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; transition: transform 0.15s; }
-    .action-btn:hover { transform: scale(1.1); }
-    .action-btn:active { transform: scale(0.95); }
-    .btn-nope { background: rgba(239,68,68,0.12); color: var(--red); }
-    .btn-save { background: rgba(234,179,8,0.12); color: var(--yellow); }
-    .btn-send { background: rgba(34,197,94,0.12); color: var(--green); }
-    #swipe-empty { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 14px; color: var(--muted2); text-align: center; }
-    #swipe-empty .icon { font-size: 3rem; }
+    /* ── CALL COACH ── */
+    #pg-coach{overflow:hidden}
+    .coach-lead-bar{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-shrink:0}
+    .coach-select{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:.82rem}
+    .coach-load{background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;white-space:nowrap}
+    .coach-ctx{display:none;background:var(--card);border-bottom:1px solid var(--border);padding:12px 14px;flex-shrink:0}
+    .coach-ctx.on{display:block}
+    .ctx-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:7px}
+    .ctx-lbl{font-size:.62rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+    .ctx-val{font-size:.84rem;font-weight:600}
+    .ctx-angle{font-size:.78rem;color:#aaa;border-left:3px solid var(--purple);padding-left:9px;line-height:1.5}
+    .coach-phases{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+    .cphase{flex:1;text-align:center;font-size:.62rem;color:var(--muted2);padding:8px 2px;border-bottom:2px solid transparent;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+    .cphase.active{color:var(--blue);border-color:var(--blue)}
+    .coach-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;overflow:hidden}
+    .coach-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--green);margin-bottom:12px}
+    .coach-say{font-size:clamp(1rem,2.5vw,1.45rem);font-weight:600;line-height:1.5;color:var(--text);max-width:620px}
+    .coach-say.dim{color:var(--muted);font-style:italic;font-size:.95rem}
+    .obj-bar{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:0 14px 10px;flex-shrink:0}
+    .obj-chip{background:#111;border:1px solid var(--border);color:var(--yellow);padding:5px 11px;border-radius:20px;font-size:.7rem;cursor:pointer}
+    .obj-chip:hover{background:#1a1a1a}
+    .coach-tx{height:85px;background:#050505;border-top:1px solid var(--border);padding:9px 14px;overflow-y:auto;flex-shrink:0}
+    .coach-tx p{font-size:.73rem;color:var(--muted);line-height:1.6;margin-bottom:2px}
+    .coach-tx p.interim{color:#2a2a2a;font-style:italic}
+    .coach-ctrl{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border);flex-shrink:0}
+    #micBtn{flex:1;padding:12px;border-radius:10px;border:none;font-size:.88rem;font-weight:700;cursor:pointer}
+    #micBtn.off{background:var(--green);color:#000}
+    #micBtn.on{background:var(--red);color:#fff}
+    #clrBtn{padding:12px 14px;background:var(--card);border:1px solid var(--border);color:var(--muted2);border-radius:10px;font-size:.8rem;cursor:pointer}
 
-    /* ── REPLIES PAGE ── */
-    #page-replies { padding: 16px; gap: 10px; }
-    .reply-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-    }
-    .reply-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-    .reply-card-biz { font-size: 0.95rem; font-weight: 700; }
-    .reply-card-time { font-size: 0.72rem; color: var(--muted2); }
-    .reply-card-msg { font-size: 0.85rem; color: var(--muted2); line-height: 1.6; margin-bottom: 14px; padding: 10px 12px; background: #0d0d0d; border-radius: 8px; border-left: 3px solid var(--green); }
-    .reply-actions { display: flex; gap: 8px; }
-    .reply-btn { flex: 1; padding: 9px; border-radius: 8px; border: 1px solid var(--border); background: #1a1a1a; color: var(--text); font-size: 0.78rem; cursor: pointer; font-weight: 600; transition: background 0.15s; }
-    .reply-btn:hover { background: #222; }
-    .reply-btn.primary { background: var(--blue); border-color: var(--blue); color: white; }
-    .reply-btn.primary:hover { background: #2563eb; }
-    .reply-btn.green { background: rgba(34,197,94,0.15); border-color: var(--green); color: var(--green); }
+    /* REPLY POPUP */
+    #popup{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:none;align-items:flex-end;justify-content:center;padding:0 0 0 0}
+    #popup.show{display:flex}
+    .popup-card{background:#111;border:1px solid var(--border);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:20px;max-height:80vh;overflow-y:auto}
+    .popup-title{font-size:1rem;font-weight:700;margin-bottom:4px}
+    .popup-sub{font-size:.78rem;color:var(--muted2);margin-bottom:14px}
+    .popup-msg{font-size:.85rem;color:#bbb;line-height:1.6;padding:12px;background:#0a0a0a;border-radius:8px;margin-bottom:14px;border-left:3px solid var(--green)}
+    .popup-actions{display:flex;gap:8px}
+    .popup-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted2);font-size:1.3rem;cursor:pointer}
 
-    /* ── ANALYTICS PAGE ── */
-    #page-analytics { padding: 20px; gap: 16px; }
-    .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
-    .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 100px; margin-top: 12px; }
-    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .bar { width: 100%; border-radius: 4px 4px 0 0; background: var(--blue); opacity: 0.7; min-height: 4px; transition: height 0.5s ease; }
-    .bar-label { font-size: 0.62rem; color: var(--muted2); }
-    .rate-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
-    .rate-card { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
-    .rate-value { font-size: 1.5rem; font-weight: 800; }
-    .rate-label { font-size: 0.7rem; color: var(--muted2); margin-top: 4px; }
-
-    /* ── CALL COACH PAGE ── */
-    #page-coach {
-      overflow: hidden;
-    }
-    #coach-lead-bar { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
-    #coachLeadSelect { flex: 1; background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; font-size: 0.82rem; }
-    #coachLoadBtn { background: var(--blue); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
-    #coach-ctx { display: none; background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 16px; flex-shrink: 0; }
-    #coach-ctx.visible { display: block; }
-    .ctx-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
-    .ctx-item .ctx-lbl { font-size: 0.65rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-    .ctx-item .ctx-val { font-size: 0.85rem; font-weight: 600; }
-    .ctx-angle { font-size: 0.8rem; color: #aaa; border-left: 3px solid var(--purple); padding-left: 10px; line-height: 1.5; }
-    #coach-phases { display: flex; padding: 0 16px; gap: 0; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-    .cphase { flex: 1; text-align: center; font-size: 0.65rem; color: var(--muted2); padding: 8px 4px; border-bottom: 2px solid transparent; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
-    .cphase.active { color: var(--blue); border-color: var(--blue); }
-    #coach-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; overflow: hidden; }
-    #coach-lbl { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--green); margin-bottom: 14px; }
-    #coach-say { font-size: clamp(1rem, 2.5vw, 1.5rem); font-weight: 600; line-height: 1.5; color: var(--text); max-width: 640px; }
-    #coach-say.dim { color: var(--muted); font-style: italic; font-size: 1rem; }
-    #obj-bar { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; padding: 0 16px 12px; flex-shrink: 0; }
-    .obj-chip { background: #111; border: 1px solid var(--border); color: var(--yellow); padding: 5px 12px; border-radius: 20px; font-size: 0.72rem; cursor: pointer; transition: background 0.15s; }
-    .obj-chip:hover { background: #1a1a1a; }
-    #coach-transcript { height: 90px; background: #050505; border-top: 1px solid var(--border); padding: 10px 16px; overflow-y: auto; flex-shrink: 0; }
-    #coach-transcript p { font-size: 0.75rem; color: var(--muted); line-height: 1.6; margin-bottom: 2px; }
-    #coach-transcript p.interim { color: #333; font-style: italic; }
-    #coach-controls { display: flex; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--border); flex-shrink: 0; }
-    #micBtn { flex: 1; padding: 13px; border-radius: 10px; border: none; font-size: 0.9rem; font-weight: 700; cursor: pointer; }
-    #micBtn.off { background: var(--green); color: #000; }
-    #micBtn.on { background: var(--red); color: white; }
-    #clearCoach { padding: 13px 16px; background: var(--card); border: 1px solid var(--border); color: var(--muted2); border-radius: 10px; font-size: 0.82rem; cursor: pointer; }
-
-    /* ── TOAST ── */
-    #toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: #222; color: white; padding: 9px 20px; border-radius: 20px; font-size: 0.82rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; white-space: nowrap; }
-    #toast.show { opacity: 1; }
-
-    /* scrollbar */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+    #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:9px 20px;border-radius:20px;font-size:.82rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
+    #toast.show{opacity:1}
+    ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
   </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo">Wild<span>rose</span></div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('dashboard')">Dashboard</button>
-    <button class="nav-tab" onclick="showPage('swipe')">Leads</button>
-    <button class="nav-tab" id="repliesTab" onclick="showPage('replies')">Replies <span class="nav-badge" id="replyBadge" style="display:none">0</span></button>
-    <button class="nav-tab" onclick="showPage('analytics')">Analytics</button>
-    <button class="nav-tab" onclick="showPage('coach')">📞 Coach</button>
+  <div class="logo">Wild<span>rose</span></div>
+  <div class="tabs">
+    <button class="tab active" onclick="nav('dash',this)">Dashboard</button>
+    <button class="tab" onclick="nav('replies',this)">Replies <span class="badge" id="replyBadge" style="display:none">0</span></button>
+    <button class="tab" onclick="nav('calls',this)">Calls</button>
+    <button class="tab" onclick="nav('analytics',this)">Analytics</button>
+    <button class="tab" onclick="nav('coach',this)">📞</button>
   </div>
 </nav>
 
 <!-- DASHBOARD -->
-<div class="page active" id="page-dashboard">
+<div class="page active" id="pg-dash">
   <div class="stat-grid">
-    <div class="stat-card">
-      <div class="stat-label">Emails Sent</div>
-      <div class="stat-value stat-blue" id="statSent">0</div>
-      <div class="stat-sub">Total outreach</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Replies</div>
-      <div class="stat-value stat-green" id="statReplies">0</div>
-      <div class="stat-sub" id="statReplyRate">0% reply rate</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Pending</div>
-      <div class="stat-value stat-yellow" id="statPending">0</div>
-      <div class="stat-sub">Awaiting review</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Saved</div>
-      <div class="stat-value" id="statSaved">0</div>
-      <div class="stat-sub">For follow-up</div>
-    </div>
+    <div class="stat"><div class="stat-lbl">Sent Today</div><div class="stat-val" style="color:var(--blue)" id="sSent">0</div><div class="stat-sub">Total outreach</div></div>
+    <div class="stat"><div class="stat-lbl">Replies</div><div class="stat-val" style="color:var(--green)" id="sReplies">0</div><div class="stat-sub" id="sRate">0% reply rate</div></div>
+    <div class="stat"><div class="stat-lbl">Calls Booked</div><div class="stat-val" style="color:var(--yellow)" id="sCalls">0</div><div class="stat-sub">Scheduled</div></div>
+    <div class="stat"><div class="stat-lbl">Auto-Replied</div><div class="stat-val" style="color:var(--purple)" id="sAuto">—</div><div class="stat-sub">By AI</div></div>
   </div>
-
-  <div>
-    <div class="section-title">Pipeline</div>
-    <div class="pipeline" id="pipelineView"></div>
-  </div>
-
-  <div>
-    <div class="section-title">Recent Replies</div>
-    <div class="reply-preview" id="dashReplies">
-      <div style="padding:20px;text-align:center;color:var(--muted);font-size:0.85rem;">No replies yet</div>
-    </div>
-  </div>
-</div>
-
-<!-- SWIPE -->
-<div class="page" id="page-swipe">
-  <div id="stack">
-    <div id="swipe-empty">
-      <div class="icon">🎉</div>
-      <p>All caught up — no pending leads</p>
-    </div>
-  </div>
-  <div id="swipe-hints">
-    <div class="hint">← Skip</div>
-    <div class="hint">↑ Save</div>
-    <div class="hint">→ Send ✉</div>
-  </div>
-  <div id="swipe-actions">
-    <button class="action-btn btn-nope" onclick="swipeAction('left')">✕</button>
-    <button class="action-btn btn-save" onclick="swipeAction('up')">🔖</button>
-    <button class="action-btn btn-send" onclick="swipeAction('right')">✉</button>
-  </div>
+  <div><div class="sec-title">Pipeline</div><div class="pipeline" id="pipelineView"></div></div>
+  <div><div class="sec-title">Recent Replies</div><div id="dashReplies" class="pipeline"><div class="empty-state">No replies yet</div></div></div>
 </div>
 
 <!-- REPLIES -->
-<div class="page" id="page-replies">
+<div class="page" id="pg-replies">
   <div id="repliesContainer" style="display:contents"></div>
 </div>
 
+<!-- CALLS -->
+<div class="page" id="pg-calls">
+  <div class="add-call-bar">
+    <input class="call-input" id="callName" placeholder="Company name..." />
+    <input class="call-input" id="callTime" placeholder="When? (e.g. Thurs after 6)" style="max-width:200px"/>
+    <button class="add-btn" onclick="addCall()">+ Add</button>
+  </div>
+  <div id="callList" style="display:contents"></div>
+</div>
+
 <!-- ANALYTICS -->
-<div class="page" id="page-analytics">
-  <div>
-    <div class="section-title">Response Rate</div>
+<div class="page" id="pg-analytics">
+  <div><div class="sec-title">Response Rate</div>
     <div class="rate-grid">
-      <div class="rate-card">
-        <div class="rate-value stat-blue" id="aTotal">0</div>
-        <div class="rate-label">Sent</div>
-      </div>
-      <div class="rate-card">
-        <div class="rate-value stat-green" id="aReplied">0</div>
-        <div class="rate-label">Replied</div>
-      </div>
-      <div class="rate-card">
-        <div class="rate-value stat-yellow" id="aRate">0%</div>
-        <div class="rate-label">Reply Rate</div>
-      </div>
+      <div class="rate-card"><div class="rate-val" style="color:var(--blue)" id="aSent">0</div><div class="rate-lbl">Sent</div></div>
+      <div class="rate-card"><div class="rate-val" style="color:var(--green)" id="aReplied">0</div><div class="rate-lbl">Replied</div></div>
+      <div class="rate-card"><div class="rate-val" style="color:var(--yellow)" id="aRate">0%</div><div class="rate-lbl">Reply Rate</div></div>
     </div>
   </div>
-
-  <div>
-    <div class="section-title">Emails by Type</div>
-    <div class="chart-card">
-      <div class="bar-chart" id="typeChart"></div>
-    </div>
-  </div>
-
-  <div>
-    <div class="section-title">Status Breakdown</div>
-    <div class="chart-card" id="statusBreakdown"></div>
-  </div>
+  <div><div class="sec-title">By Business Type</div><div class="chart-card"><div class="bar-chart" id="typeChart"></div></div></div>
+  <div><div class="sec-title">Status Breakdown</div><div class="pipeline" id="statusBreak"></div></div>
 </div>
 
 <!-- CALL COACH -->
-<div class="page" id="page-coach">
-  <div id="coach-lead-bar">
-    <select id="coachLeadSelect"><option value="">— Select a lead —</option></select>
-    <button id="coachLoadBtn" onclick="loadCoachLead()">Load</button>
+<div class="page" id="pg-coach">
+  <div class="coach-lead-bar">
+    <select class="coach-select" id="coachSel"><option value="">— Select lead —</option></select>
+    <button class="coach-load" onclick="loadCoach()">Load</button>
   </div>
-  <div id="coach-ctx">
+  <div class="coach-ctx" id="coachCtx">
     <div class="ctx-row">
-      <div class="ctx-item"><div class="ctx-lbl">Business</div><div class="ctx-val" id="cCtxBiz">—</div></div>
-      <div class="ctx-item"><div class="ctx-lbl">Type</div><div class="ctx-val" id="cCtxType">—</div></div>
-      <div class="ctx-item"><div class="ctx-lbl">City</div><div class="ctx-val" id="cCtxCity">—</div></div>
-      <div class="ctx-item"><div class="ctx-lbl">Contact</div><div class="ctx-val" id="cCtxContact">—</div></div>
+      <div><div class="ctx-lbl">Business</div><div class="ctx-val" id="cBiz">—</div></div>
+      <div><div class="ctx-lbl">Type</div><div class="ctx-val" id="cType">—</div></div>
+      <div><div class="ctx-lbl">City</div><div class="ctx-val" id="cCity">—</div></div>
+      <div><div class="ctx-lbl">Contact</div><div class="ctx-val" id="cContact">—</div></div>
     </div>
-    <div class="ctx-angle" id="cCtxAngle">—</div>
+    <div class="ctx-angle" id="cAngle">—</div>
   </div>
-  <div id="coach-phases">
+  <div class="coach-phases">
     <div class="cphase active" data-p="opener" onclick="setPhase('opener')">Opener</div>
     <div class="cphase" data-p="discovery" onclick="setPhase('discovery')">Discovery</div>
     <div class="cphase" data-p="pitch" onclick="setPhase('pitch')">Pitch</div>
     <div class="cphase" data-p="objection" onclick="setPhase('objection')">Objection</div>
     <div class="cphase" data-p="close" onclick="setPhase('close')">Close</div>
   </div>
-  <div id="coach-main">
-    <div id="coach-lbl">SAY THIS</div>
-    <div id="coach-say" class="dim">Load a lead and start the call.</div>
+  <div class="coach-main">
+    <div class="coach-lbl">SAY THIS</div>
+    <div class="coach-say dim" id="coachSay">Load a lead to start.</div>
   </div>
-  <div id="obj-bar">
-    <div class="obj-chip" onclick="handleObj('too expensive')">💸 Too expensive</div>
+  <div class="obj-bar">
+    <div class="obj-chip" onclick="handleObj('too expensive')">💸 Price</div>
     <div class="obj-chip" onclick="handleObj('not interested')">🚫 Not interested</div>
     <div class="obj-chip" onclick="handleObj('already have someone')">👤 Have someone</div>
     <div class="obj-chip" onclick="handleObj('too busy right now')">⏰ Too busy</div>
-    <div class="obj-chip" onclick="handleObj('send me more info')">📧 Send info</div>
+    <div class="obj-chip" onclick="handleObj('send me more info')">📧 Info</div>
     <div class="obj-chip" onclick="handleObj('how does it work')">❓ How it works</div>
   </div>
-  <div id="coach-transcript">
-    <p style="color:#2a2a2a;">Transcript appears here...</p>
-  </div>
-  <div id="coach-controls">
+  <div class="coach-tx" id="coachTx"><p style="color:#222">Transcript...</p></div>
+  <div class="coach-ctrl">
     <button id="micBtn" class="off" onclick="toggleMic()">🎙 Start Listening</button>
-    <button id="clearCoach" onclick="clearCoach()">Clear</button>
+    <button id="clrBtn" onclick="clearCoach()">Clear</button>
+  </div>
+</div>
+
+<!-- REPLY POPUP -->
+<div id="popup">
+  <div class="popup-card" style="position:relative">
+    <button class="popup-close" onclick="closePopup()">×</button>
+    <div class="popup-title" id="popupTitle">New Reply</div>
+    <div class="popup-sub" id="popupSub"></div>
+    <div class="popup-msg" id="popupMsg"></div>
+    <div class="popup-actions">
+      <button class="r-btn green" onclick="closePopup();nav('coach',document.querySelector('.tabs .tab:last-child'))">📞 Call Coach</button>
+      <button class="r-btn blue" onclick="addCallFromPopup()">📅 Schedule Call</button>
+      <button class="r-btn" onclick="closePopup()">Dismiss</button>
+    </div>
   </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-const TOKEN = 'am_us_237687733d6087d5e2e5c3956f651883c8b190d38b855ebdbcf85f6780a8c3c9';
-const INBOX = 'wildroseautomations@agentmail.to';
-const N8N = 'https://n8n.wildeautomations.com/webhook/wildrose-send-email';
-const GEMINI = 'AIzaSyCDXNM5Ii5-0nnFLbBuKXQpSJBGmDZ_FTg';
-const DATA_URL = 'https://jack108510.github.io/jsw-dashboard/wildrose-pending-leads.json';
+const TOKEN='am_us_237687733d6087d5e2e5c3956f651883c8b190d38b855ebdbcf85f6780a8c3c9';
+const INBOX='wildroseautomations@agentmail.to';
+const GEMINI='AIzaSyCDXNM5Ii5-0nnFLbBuKXQpSJBGmDZ_FTg';
+const DATA_URL='https://jack108510.github.io/jsw-dashboard/wildrose-pending-leads.json';
 
-let leads = [];
-let replies = [];
-let currentCoachLead = null;
-let coachPhase = 'opener';
-let coachTranscript = [];
-let recognition = null;
-let isListening = false;
-let coachTimer = null;
-let pendingChunk = '';
+let leads=[], replies=[], calls=[], knownReplyIds=new Set(), coachLead=null, coachPhase='opener';
+let recognition=null, isListening=false, coachTimer=null, pendingChunk='', coachTx=[];
+let popupReply=null;
 
-// ── NAV ──
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  event.target.classList.add('active');
-  if (id === 'analytics') renderAnalytics();
+function nav(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('pg-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='analytics')renderAnalytics();
 }
 
-// ── TOAST ──
-function toast(msg, ms = 2500) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._t);
-  t._t = setTimeout(() => t.classList.remove('show'), ms);
-}
+function toast(msg,ms=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),ms);}
 
-// ── DATA ──
-function getLocal() { return JSON.parse(localStorage.getItem('wrl') || '[]'); }
-function saveLocal(lead) {
-  let all = getLocal();
-  const i = all.findIndex(l => l.id === lead.id);
-  if (i >= 0) all[i] = lead; else all.push(lead);
-  localStorage.setItem('wrl', JSON.stringify(all));
-}
+// DATA
+function getLocal(){return JSON.parse(localStorage.getItem('wrl')||'[]');}
+function saveLocal(lead){let all=getLocal();const i=all.findIndex(l=>l.id===lead.id);if(i>=0)all[i]=lead;else all.push(lead);localStorage.setItem('wrl',JSON.stringify(all));}
+function getCalls(){return JSON.parse(localStorage.getItem('wrl_calls')||'[]');}
+function saveCalls(){localStorage.setItem('wrl_calls',JSON.stringify(calls));}
 
-async function init() {
-  try {
-    const r = await fetch(DATA_URL + '?t=' + Date.now());
-    if (r.ok) {
-      const fresh = await r.json();
-      const lmap = {};
-      getLocal().forEach(l => lmap[l.id] = l);
-      leads = fresh.map(l => lmap[l.id] || l);
-      localStorage.setItem('wrl', JSON.stringify(leads));
-    } else throw new Error();
-  } catch(e) {
-    leads = getLocal();
-  }
+async function init(){
+  // Load leads
+  try{
+    const r=await fetch(DATA_URL+'?t='+Date.now());
+    if(r.ok){const fresh=await r.json();const lmap={};getLocal().forEach(l=>lmap[l.id]=l);leads=fresh.map(l=>lmap[l.id]||l);localStorage.setItem('wrl',JSON.stringify(leads));}
+    else throw new Error();
+  }catch(e){leads=getLocal();}
 
-  await fetchReplies();
+  // Load calls
+  calls=getCalls();
+
+  // Load replies and seed known IDs (don't popup on initial load)
+  await fetchReplies(true);
+
   renderDashboard();
-  renderSwipeStack();
   renderRepliesPage();
+  renderCalls();
   populateCoachLeads();
+
+  // Poll for new replies every 60 seconds
+  setInterval(()=>fetchReplies(false),60000);
 }
 
-async function fetchReplies() {
-  try {
-    const r = await fetch(
-      `https://api.agentmail.to/v0/inboxes/${encodeURIComponent(INBOX)}/messages?limit=50`,
-      { headers: { Authorization: `Bearer ${TOKEN}` } }
-    );
-    const d = await r.json();
-    const msgs = d.messages || d.data || [];
-    replies = msgs.filter(m => {
-      const f = (m.from || '').toLowerCase();
-      return !f.includes('wildroseautomations') && !f.includes('wildrose sales') && !f.includes('mailer-daemon');
+async function fetchReplies(initial=false){
+  try{
+    const r=await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(INBOX)}/messages?limit=50`,{headers:{Authorization:`Bearer ${TOKEN}`}});
+    const d=await r.json();
+    const msgs=(d.messages||d.data||[]).filter(m=>{
+      const f=(m.from||'').toLowerCase();
+      return !f.includes('wildroseautomations')&&!f.includes('wildrose sales')&&!f.includes('mailer-daemon');
     });
-  } catch(e) { replies = []; }
+
+    if(initial){
+      msgs.forEach(m=>knownReplyIds.add(m.message_id||m.timestamp));
+      replies=msgs;
+    } else {
+      const newOnes=msgs.filter(m=>!knownReplyIds.has(m.message_id||m.timestamp));
+      newOnes.forEach(m=>knownReplyIds.add(m.message_id||m.timestamp));
+      if(newOnes.length>0){
+        replies=msgs;
+        renderDashboard();
+        renderRepliesPage();
+        // Show popup for the first new reply
+        showPopup(newOnes[0]);
+        // Update badge
+        document.getElementById('replyBadge').style.display='inline-flex';
+        document.getElementById('replyBadge').textContent=replies.length;
+      }
+    }
+
+    // Update badge
+    if(replies.length>0){
+      document.getElementById('replyBadge').style.display='inline-flex';
+      document.getElementById('replyBadge').textContent=replies.length;
+    }
+  }catch(e){}
 }
 
-// ── EMAIL TEMPLATE ──
-function getTemplate(lead) {
-  const name = lead.first_name || 'there';
-  const biz = lead.business_name || 'your business';
-  const type = (lead.type || '').toLowerCase();
-  const city = lead.city || 'Edmonton';
-  const website = lead.website ? lead.website.replace(/https?:\/\//, '').replace(/\/$/, '') : '';
-
-  const intros = {
-    cleaning: `noticed ${biz} does ${city === 'Calgary' ? 'Calgary' : 'Edmonton'} cleaning`,
-    hvac: `saw ${biz} handles HVAC in ${city}`,
-    landscaping: `came across ${biz} — looks like you do solid landscaping work in ${city}`,
-    moving: `noticed ${biz} is doing moves in ${city}`,
-    detailing: `saw ${biz} does detailing in ${city}`,
-    painting: `came across ${biz} — painting/contracting in ${city}`,
-    gym: `noticed ${biz} is a fitness operation in ${city}`,
-    salon: `saw ${biz} in ${city}`,
-    property: `noticed ${biz} handles property management in ${city}`,
-    junk: `saw ${biz} does junk removal in ${city}`,
-  };
-
-  const intro = intros[type] || `noticed ${biz} operates in ${city}`;
-
-  return `Hey ${name},
-
-${intro.charAt(0).toUpperCase() + intro.slice(1)}. ${website ? `Checked out ${website} — ` : ''}Solid operation.
-
-Quick question — when a new lead comes in after hours or on a weekend, what happens? Does someone follow up the next morning or does it depend on who sees it first?
-
-We help ${type || 'service'} businesses in ${city} automate that gap so no lead sits cold. Most clients recover 3–5 jobs a week they were previously losing to faster competitors.
-
-Worth a 15-minute call to see if it makes sense for ${biz}?
-
-Jack Wilde
-CEO, Wildrose Automations
-wildroseautomations.com`;
+// POPUP
+function showPopup(reply){
+  popupReply=reply;
+  document.getElementById('popupTitle').textContent='🔔 New Reply!';
+  document.getElementById('popupSub').textContent=reply.from+' · '+timeAgo(reply.timestamp||reply.created_at);
+  document.getElementById('popupMsg').textContent=reply.preview||(reply.subject||'(no preview)');
+  document.getElementById('popup').classList.add('show');
+}
+function closePopup(){document.getElementById('popup').classList.remove('show');}
+function addCallFromPopup(){
+  if(!popupReply)return;
+  const name=popupReply.from.split('<')[0].trim()||'Unknown';
+  calls.unshift({id:Date.now(),name,time:'TBD',done:false,from:popupReply.from});
+  saveCalls();renderCalls();
+  toast('📅 Added to call schedule');
+  closePopup();
+  nav('calls',document.querySelector('.tab:nth-child(3)'));
 }
 
-// ── DASHBOARD ──
-function renderDashboard() {
-  const all = leads;
-  const sent = all.filter(l => l.status === 'sent').length;
-  const pending = all.filter(l => !l.status || l.status === 'pending').length;
-  const saved = all.filter(l => l.status === 'saved').length;
-  const replyCount = replies.length;
-  const rate = sent > 0 ? ((replyCount / sent) * 100).toFixed(1) : 0;
+// DASHBOARD
+function timeAgo(ts){if(!ts)return'';const d=(Date.now()-new Date(ts))/1000;if(d<3600)return Math.round(d/60)+'m';if(d<86400)return Math.round(d/3600)+'h';return Math.round(d/86400)+'d';}
 
-  document.getElementById('statSent').textContent = sent;
-  document.getElementById('statReplies').textContent = replyCount;
-  document.getElementById('statReplyRate').textContent = `${rate}% reply rate`;
-  document.getElementById('statPending').textContent = pending;
-  document.getElementById('statSaved').textContent = saved;
+function renderDashboard(){
+  const sent=leads.filter(l=>l.status==='sent').length;
+  const replyCount=replies.length;
+  const callCount=calls.filter(c=>!c.done).length;
+  const rate=sent>0?((replyCount/sent)*100).toFixed(1):0;
 
-  // Badge
-  if (replyCount > 0) {
-    document.getElementById('replyBadge').style.display = 'inline-flex';
-    document.getElementById('replyBadge').textContent = replyCount;
-  }
+  document.getElementById('sSent').textContent=sent;
+  document.getElementById('sReplies').textContent=replyCount;
+  document.getElementById('sRate').textContent=rate+'% reply rate';
+  document.getElementById('sCalls').textContent=callCount;
+  document.getElementById('sAuto').textContent=replyCount+'↩';
 
   // Pipeline
-  const pipeline = [
-    { label: 'Pending', count: pending, color: 'var(--yellow)', max: all.length },
-    { label: 'Sent', count: sent, color: 'var(--blue)', max: all.length },
-    { label: 'Replied', count: replyCount, color: 'var(--green)', max: Math.max(sent, 1) },
-    { label: 'Saved', count: saved, color: 'var(--purple)', max: all.length },
-    { label: 'Skipped', count: all.filter(l => l.status === 'skipped').length, color: 'var(--muted)', max: all.length },
+  const p=[
+    {l:'Sent',c:sent,col:'var(--blue)'},
+    {l:'Replied',c:replyCount,col:'var(--green)'},
+    {l:'Calls Booked',c:calls.length,col:'var(--yellow)'},
+    {l:'Saved',c:leads.filter(l=>l.status==='saved').length,col:'var(--purple)'},
+    {l:'Skipped',c:leads.filter(l=>l.status==='skipped').length,col:'var(--muted)'},
   ];
-  document.getElementById('pipelineView').innerHTML = pipeline.map(p => `
-    <div class="pipeline-row">
-      <div class="pipeline-dot" style="background:${p.color}"></div>
-      <div class="pipeline-label">${p.label}</div>
-      <div class="pipeline-bar-wrap"><div class="pipeline-bar" style="background:${p.color};width:${Math.round((p.count/Math.max(p.max,1))*100)}%"></div></div>
-      <div class="pipeline-count">${p.count}</div>
-    </div>
-  `).join('');
+  const maxP=Math.max(...p.map(x=>x.c),1);
+  document.getElementById('pipelineView').innerHTML=p.map(x=>`
+    <div class="pipe-row">
+      <div class="pipe-dot" style="background:${x.col}"></div>
+      <div class="pipe-lbl">${x.l}</div>
+      <div class="pipe-bar-wrap"><div class="pipe-bar" style="background:${x.col};width:${Math.round((x.c/maxP)*100)}%"></div></div>
+      <div class="pipe-count">${x.c}</div>
+    </div>`).join('');
 
-  // Recent replies
-  const container = document.getElementById('dashReplies');
-  if (replies.length === 0) {
-    container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.85rem;">No replies yet</div>';
-  } else {
-    const colors = ['#3b82f6','#22c55e','#f97316','#a855f7','#ef4444'];
-    container.innerHTML = replies.slice(0, 5).map((r, i) => {
-      const initials = (r.from || 'U').split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
-      return `<div class="reply-item" onclick="showPage('replies')">
-        <div class="reply-avatar" style="background:${colors[i%colors.length]}22;color:${colors[i%colors.length]}">${initials}</div>
-        <div class="reply-info">
-          <div class="reply-name">${r.from || 'Unknown'}</div>
-          <div class="reply-preview-text">${r.preview || '(no preview)'}</div>
-        </div>
-        <div class="reply-time">${timeAgo(r.timestamp || r.created_at)}</div>
-      </div>`;
-    }).join('');
-  }
-}
-
-function timeAgo(ts) {
-  if (!ts) return '';
-  const diff = (Date.now() - new Date(ts)) / 1000;
-  if (diff < 3600) return Math.round(diff/60) + 'm';
-  if (diff < 86400) return Math.round(diff/3600) + 'h';
-  return Math.round(diff/86400) + 'd';
-}
-
-// ── SWIPE ──
-function pending() { return leads.filter(l => !l.status || l.status === 'pending'); }
-
-function renderSwipeStack() {
-  const stack = document.getElementById('stack');
-  stack.querySelectorAll('.card').forEach(c => c.remove());
-  const q = pending();
-  if (q.length === 0) {
-    document.getElementById('swipe-empty').style.display = 'flex';
-    document.getElementById('swipe-actions').style.display = 'none';
-    document.getElementById('swipe-hints').style.display = 'none';
-    return;
-  }
-  document.getElementById('swipe-empty').style.display = 'none';
-  document.getElementById('swipe-actions').style.display = 'flex';
-  document.getElementById('swipe-hints').style.display = 'flex';
-  if (q.length > 1) stack.appendChild(buildCard(q[1], false));
-  const top = buildCard(q[0], true);
-  stack.appendChild(top);
-  attachDrag(top, q[0]);
-}
-
-function buildCard(lead, isTop) {
-  const card = document.createElement('div');
-  card.className = 'card ' + (isTop ? 'top' : 'behind');
-  card.dataset.id = lead.id;
-  const email = getTemplate(lead);
-  card.innerHTML = `
-    <div class="swipe-label label-nope">Skip</div>
-    <div class="swipe-label label-send">Send ✓</div>
-    <div class="swipe-label label-save">Save</div>
-    <div class="card-type">${lead.type || 'business'}</div>
-    <div class="card-name">${lead.business_name || 'Unknown'}</div>
-    <div class="card-city">📍 ${lead.city || 'Edmonton'}</div>
-    <div class="card-email">✉ ${lead.email}</div>
-    ${lead.website ? `<div class="card-website">🌐 ${lead.website}</div>` : ''}
-    ${lead.automation_angle ? `<div class="card-angle">${lead.automation_angle}</div>` : ''}
-    <div class="email-preview" id="ep-${lead.id}">${email}</div>
-    <button class="btn-regen" onclick="regenEmail('${lead.id}')">↻ New Draft</button>
-  `;
-  return card;
-}
-
-function regenEmail(id) {
-  const lead = leads.find(l => l.id == id);
-  if (!lead) return;
-  const el = document.getElementById('ep-' + id);
-  if (el) el.textContent = getTemplate(lead);
-  toast('Refreshed');
-}
-
-function attachDrag(card, lead) {
-  let sx=0,sy=0,cx=0,cy=0,dragging=false;
-  function start(e){ dragging=true; const p=e.touches?e.touches[0]:e; sx=p.clientX;sy=p.clientY; card.style.transition='none'; }
-  function move(e){ if(!dragging)return; e.preventDefault(); const p=e.touches?e.touches[0]:e; cx=p.clientX-sx;cy=p.clientY-sy; card.style.transform=`translate(${cx}px,${cy}px) rotate(${cx*0.07}deg)`; const n=card.querySelector('.label-nope'),s=card.querySelector('.label-send'),v=card.querySelector('.label-save'); if(cy<-60&&Math.abs(cx)<90){v.style.opacity=Math.min(1,Math.abs(cy)/90);n.style.opacity=0;s.style.opacity=0;}else if(cx>40){s.style.opacity=Math.min(1,cx/100);n.style.opacity=0;v.style.opacity=0;}else if(cx<-40){n.style.opacity=Math.min(1,Math.abs(cx)/100);s.style.opacity=0;v.style.opacity=0;}else{n.style.opacity=0;s.style.opacity=0;v.style.opacity=0;} }
-  function end(){ if(!dragging)return;dragging=false;card.style.transition='transform 0.3s ease'; if(cy<-80&&Math.abs(cx)<100)fly(card,0,-window.innerHeight,()=>act(lead,'saved')); else if(cx>100)fly(card,window.innerWidth*1.5,0,()=>act(lead,'sent')); else if(cx<-100)fly(card,-window.innerWidth*1.5,0,()=>act(lead,'skipped')); else{card.style.transform='';card.querySelectorAll('.swipe-label').forEach(l=>l.style.opacity=0);} }
-  card.addEventListener('mousedown',start);card.addEventListener('touchstart',start,{passive:true});
-  window.addEventListener('mousemove',move);window.addEventListener('touchmove',move,{passive:false});
-  window.addEventListener('mouseup',end);window.addEventListener('touchend',end);
-}
-
-function fly(card, tx, ty, cb) {
-  card.style.transition='transform 0.35s ease';
-  card.style.transform=`translate(${tx}px,${ty}px) rotate(${tx>0?18:-18}deg)`;
-  setTimeout(()=>{card.remove();cb();},350);
-}
-
-function swipeAction(dir) {
-  const q = pending(); if(!q.length)return;
-  const lead=q[0]; const card=document.querySelector('.card.top'); if(!card)return;
-  if(dir==='left')fly(card,-window.innerWidth*1.5,0,()=>act(lead,'skipped'));
-  else if(dir==='right')fly(card,window.innerWidth*1.5,0,()=>act(lead,'sent'));
-  else fly(card,0,-window.innerHeight,()=>act(lead,'saved'));
-}
-
-async function act(lead, action) {
-  if(action==='sent') await sendEmail(lead);
-  else { lead.status=action; saveLocal(lead); leads=leads.map(l=>l.id===lead.id?lead:l); toast(action==='saved'?'🔖 Saved':'Skipped'); renderDashboard(); renderSwipeStack(); }
-}
-
-async function sendEmail(lead) {
-  const body = document.getElementById('ep-'+lead.id)?.textContent || getTemplate(lead);
-  const subject = `${lead.business_name} — quick question`;
-  toast('⏳ Sending...', 5000);
-  try {
-    const r = await fetch(N8N, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({to:lead.email,subject,text:body}) });
-    lead.status = r.ok ? 'sent' : 'send_failed';
-    lead.sent_at = new Date().toISOString();
-    toast(r.ok ? `✅ Sent to ${lead.email}` : '❌ Send failed');
-  } catch(e) { lead.status='send_failed'; toast('❌ Network error'); }
-  saveLocal(lead); leads=leads.map(l=>l.id===lead.id?lead:l);
-  renderDashboard(); renderSwipeStack();
-}
-
-// ── REPLIES PAGE ──
-function renderRepliesPage() {
-  const container = document.getElementById('repliesContainer');
-  if (replies.length === 0) {
-    container.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted);font-size:0.9rem;">No replies yet — check back after your emails go out.</div>';
-    return;
-  }
-  container.innerHTML = replies.map(r => `
-    <div class="reply-card">
-      <div class="reply-card-header">
-        <div>
-          <div class="reply-card-biz">${r.from || 'Unknown'}</div>
-          <div style="font-size:0.72rem;color:var(--muted2)">${r.subject || ''}</div>
-        </div>
-        <div class="reply-card-time">${timeAgo(r.timestamp || r.created_at)}</div>
-      </div>
-      <div class="reply-card-msg">${r.preview || '(no message preview)'}</div>
-      <div class="reply-actions">
-        <button class="reply-btn green" onclick="toast('📞 Opening call coach...');setTimeout(()=>showPage(\\'coach\\'),300)">📞 Call Coach</button>
-        <button class="reply-btn" onclick="toast('📧 Reply drafted')">↩ Reply</button>
-        <button class="reply-btn primary" onclick="toast('📅 Booking link copied!')">📅 Book Call</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ── ANALYTICS ──
-function renderAnalytics() {
-  const all = leads;
-  const sent = all.filter(l => l.status === 'sent').length;
-  const replyCount = replies.length;
-  const rate = sent > 0 ? ((replyCount / sent) * 100).toFixed(1) : 0;
-
-  document.getElementById('aTotal').textContent = sent;
-  document.getElementById('aReplied').textContent = replyCount;
-  document.getElementById('aRate').textContent = rate + '%';
-
-  // Bar chart by type
-  const types = {};
-  all.filter(l => l.status === 'sent').forEach(l => { types[l.type||'other'] = (types[l.type||'other']||0)+1; });
-  const maxT = Math.max(...Object.values(types), 1);
-  document.getElementById('typeChart').innerHTML = Object.entries(types).map(([t,c]) => `
-    <div class="bar-col">
-      <div class="bar" style="height:${Math.round((c/maxT)*80)+4}px"></div>
-      <div class="bar-label">${t}</div>
-    </div>
-  `).join('') || '<div style="color:var(--muted);font-size:0.82rem;padding:20px">Send some emails first</div>';
-
-  // Status breakdown
-  const statuses = ['pending','sent','saved','skipped','send_failed'];
-  const colors = { pending: 'var(--yellow)', sent: 'var(--blue)', saved: 'var(--purple)', skipped: 'var(--muted)', send_failed: 'var(--red)' };
-  document.getElementById('statusBreakdown').innerHTML = statuses.map(s => {
-    const count = all.filter(l => (l.status||'pending') === s).length;
-    return `<div class="pipeline-row">
-      <div class="pipeline-dot" style="background:${colors[s]}"></div>
-      <div class="pipeline-label" style="text-transform:capitalize">${s.replace('_',' ')}</div>
-      <div class="pipeline-bar-wrap"><div class="pipeline-bar" style="background:${colors[s]};width:${Math.round((count/Math.max(all.length,1))*100)}%"></div></div>
-      <div class="pipeline-count">${count}</div>
+  // Recent replies on dash
+  const dr=document.getElementById('dashReplies');
+  if(!replies.length){dr.innerHTML='<div class="empty-state">No replies yet — check back after 8 AM</div>';return;}
+  const colors=['#3b82f6','#22c55e','#f97316','#a855f7','#ef4444'];
+  dr.innerHTML=replies.slice(0,4).map((r,i)=>{
+    const init=(r.from||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    return `<div class="pipe-row" style="cursor:pointer" onclick="nav('replies',document.querySelector('.tab:nth-child(2)'))">
+      <div style="width:32px;height:32px;border-radius:50%;background:${colors[i%5]}22;color:${colors[i%5]};display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0">${init}</div>
+      <div style="flex:1;min-width:0"><div style="font-size:.85rem;font-weight:600">${r.from||'Unknown'}</div><div style="font-size:.75rem;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.preview||''}</div></div>
+      <div style="font-size:.7rem;color:var(--muted2)">${timeAgo(r.timestamp||r.created_at)}</div>
     </div>`;
   }).join('');
 }
 
-// ── CALL COACH ──
-function populateCoachLeads() {
-  const sel = document.getElementById('coachLeadSelect');
-  leads.forEach((l, i) => {
-    const opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = `${l.business_name} (${l.city})`;
-    sel.appendChild(opt);
-  });
+// REPLIES PAGE
+function renderRepliesPage(){
+  const c=document.getElementById('repliesContainer');
+  if(!replies.length){c.innerHTML='<div class="empty-state">No replies yet.<br><br>Emails go out automatically at 8 AM every morning.</div>';return;}
+  c.innerHTML=replies.map(r=>`
+    <div class="reply-card">
+      <div class="reply-header">
+        <div><div class="reply-from">${r.from||'Unknown'}</div><div class="reply-subj">${r.subject||''}</div></div>
+        <div class="reply-time">${timeAgo(r.timestamp||r.created_at)}</div>
+      </div>
+      <div class="auto-reply-tag">✅ Auto-replied by AI</div>
+      <div class="reply-msg">${r.preview||'(no preview)'}</div>
+      <div class="reply-actions">
+        <button class="r-btn green" onclick="nav('coach',document.querySelector('.tab:last-child'))">📞 Call Coach</button>
+        <button class="r-btn blue" onclick="scheduleFromReply('${encodeURIComponent(r.from||'')}')">📅 Schedule Call</button>
+        <button class="r-btn" onclick="toast('📧 Opening reply...')">↩ Reply</button>
+      </div>
+    </div>`).join('');
 }
 
-function loadCoachLead() {
-  const idx = document.getElementById('coachLeadSelect').value;
-  if (idx === '') return;
-  currentCoachLead = leads[parseInt(idx)];
-  document.getElementById('cCtxBiz').textContent = currentCoachLead.business_name || '—';
-  document.getElementById('cCtxType').textContent = currentCoachLead.type || '—';
-  document.getElementById('cCtxCity').textContent = currentCoachLead.city || '—';
-  document.getElementById('cCtxContact').textContent = currentCoachLead.first_name || currentCoachLead.email || '—';
-  document.getElementById('cCtxAngle').textContent = currentCoachLead.automation_angle || '—';
-  document.getElementById('coach-ctx').classList.add('visible');
-  setPhase('opener');
-  getCoaching('Call just started.');
+function scheduleFromReply(encodedFrom){
+  const from=decodeURIComponent(encodedFrom);
+  const name=from.split('<')[0].trim()||from;
+  calls.unshift({id:Date.now(),name,time:'TBD',done:false});
+  saveCalls();renderCalls();
+  toast('📅 Added to schedule');
+  nav('calls',document.querySelector('.tab:nth-child(3)'));
 }
 
-const PHASE_PROMPTS = {
-  opener: 'OPENER phase. Give Jack a warm, casual opening — introduce himself, mention he got their email reply, make them comfortable. 1-2 sentences.',
-  discovery: 'DISCOVERY phase. Give Jack one good question about their lead follow-up process or how many jobs they lose to slow response. 1 question.',
-  pitch: 'PITCH phase. Connect their pain to Wildrose. Brief, 2-3 sentences. Mention a result. No jargon.',
-  objection: 'OBJECTION phase. Give Jack the perfect response — acknowledge, reframe, redirect. 2-3 sentences.',
-  close: 'CLOSE phase. Get a commitment — call, demo, or next step. 1-2 sentences.'
+// CALL SCHEDULE
+function renderCalls(){
+  const c=document.getElementById('callList');
+  if(!calls.length){c.innerHTML='<div class="empty-state">No calls scheduled yet.<br>Replies come in → click Schedule Call.</div>';return;}
+  c.innerHTML=calls.map(call=>`
+    <div class="call-card ${call.done?'done':''}">
+      <div class="call-dot ${call.done?'done':''}"></div>
+      <div class="call-info">
+        <div class="call-name">${call.name}</div>
+        <div class="call-detail">📅 ${call.time||'TBD'} ${call.phone?'· 📞 '+call.phone:''}</div>
+      </div>
+      <div class="call-actions">
+        ${!call.done?`<button class="call-act done-btn" onclick="markCallDone(${call.id})">✓ Done</button>`:''}
+        <button class="call-act" onclick="deleteCall(${call.id})">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function addCall(){
+  const name=document.getElementById('callName').value.trim();
+  const time=document.getElementById('callTime').value.trim();
+  if(!name)return;
+  calls.unshift({id:Date.now(),name,time:time||'TBD',done:false});
+  saveCalls();renderCalls();
+  document.getElementById('callName').value='';
+  document.getElementById('callTime').value='';
+  toast('📅 Call added');
+}
+
+function markCallDone(id){calls=calls.map(c=>c.id===id?{...c,done:true}:c);saveCalls();renderCalls();renderDashboard();}
+function deleteCall(id){calls=calls.filter(c=>c.id!==id);saveCalls();renderCalls();}
+
+// ANALYTICS
+function renderAnalytics(){
+  const all=leads;
+  const sent=all.filter(l=>l.status==='sent').length;
+  const replyCount=replies.length;
+  const rate=sent>0?((replyCount/sent)*100).toFixed(1):0;
+  document.getElementById('aSent').textContent=sent;
+  document.getElementById('aReplied').textContent=replyCount;
+  document.getElementById('aRate').textContent=rate+'%';
+  // By type
+  const types={};all.filter(l=>l.status==='sent').forEach(l=>{types[l.type||'other']=(types[l.type||'other']||0)+1;});
+  const maxT=Math.max(...Object.values(types),1);
+  document.getElementById('typeChart').innerHTML=Object.entries(types).length?Object.entries(types).map(([t,c])=>`<div class="bar-col"><div class="bar" style="height:${Math.round((c/maxT)*76)+4}px"></div><div class="bar-lbl">${t}</div></div>`).join(''):'<div style="color:var(--muted);font-size:.82rem">No data yet</div>';
+  // Status
+  const statuses=[['pending','var(--yellow)'],['sent','var(--blue)'],['saved','var(--purple)'],['skipped','var(--muted)'],['send_failed','var(--red)']];
+  document.getElementById('statusBreak').innerHTML=statuses.map(([s,col])=>{
+    const count=all.filter(l=>(l.status||'pending')===s).length;
+    return `<div class="status-row"><div class="pipe-dot" style="background:${col}"></div><div class="pipe-lbl" style="text-transform:capitalize">${s.replace('_',' ')}</div><div class="pipe-bar-wrap"><div class="pipe-bar" style="background:${col};width:${Math.round((count/Math.max(all.length,1))*100)}%"></div></div><div class="pipe-count">${count}</div></div>`;
+  }).join('');
+}
+
+// CALL COACH
+function populateCoachLeads(){
+  const sel=document.getElementById('coachSel');
+  leads.forEach((l,i)=>{const o=document.createElement('option');o.value=i;o.textContent=`${l.business_name} (${l.city})`;sel.appendChild(o);});
+}
+function loadCoach(){
+  const idx=document.getElementById('coachSel').value;if(idx==='')return;
+  coachLead=leads[parseInt(idx)];
+  document.getElementById('cBiz').textContent=coachLead.business_name||'—';
+  document.getElementById('cType').textContent=coachLead.type||'—';
+  document.getElementById('cCity').textContent=coachLead.city||'—';
+  document.getElementById('cContact').textContent=coachLead.first_name||coachLead.email||'—';
+  document.getElementById('cAngle').textContent=coachLead.automation_angle||'—';
+  document.getElementById('coachCtx').classList.add('on');
+  setPhase('opener');getCoaching('Call just started.');
+}
+const PHASES={
+  opener:'OPENER. Give Jack a warm casual opening — introduce himself, mention the email reply, make them comfortable. 1-2 sentences.',
+  discovery:'DISCOVERY. Give Jack one sharp question about their lead follow-up process. 1 question.',
+  pitch:'PITCH. Connect their pain to Wildrose. 2-3 sentences, mention a result. No jargon.',
+  objection:'OBJECTION. Acknowledge, reframe, redirect. 2-3 sentences.',
+  close:'CLOSE. Get a commitment — call, demo, or next step. 1-2 sentences.'
 };
-
-function setPhase(p) {
-  coachPhase = p;
-  document.querySelectorAll('.cphase').forEach(el => el.classList.toggle('active', el.dataset.p === p));
+function setPhase(p){coachPhase=p;document.querySelectorAll('.cphase').forEach(el=>el.classList.toggle('active',el.dataset.p===p));}
+function handleObj(obj){setPhase('objection');getCoaching(`Prospect said: "${obj}"`);}
+async function getCoaching(chunk){
+  if(!coachLead)return;
+  const el=document.getElementById('coachSay');el.className='dim';el.textContent='...';
+  const prompt=`Real-time sales coach for Jack Wilde, CEO of Wildrose Automations.
+Wildrose builds AI lead response and booking automation for local service businesses. Custom pricing $500-$2k/month. Clients recover 3-5 lost jobs/week.
+Lead: ${coachLead.business_name} | ${coachLead.type} | ${coachLead.city} | ${coachLead.automation_angle||''}
+Phase: ${coachPhase.toUpperCase()} — ${PHASES[coachPhase]}
+Transcript: ${coachTx.slice(-6).join(' ')||'(just started)'}
+Last: ${chunk}
+Reply ONLY with what Jack should say. No labels. Max 2 sentences. Natural and direct.`;
+  try{
+    const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:100,temperature:.7}})});
+    const d=await r.json();const txt=d.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if(txt){el.className='';el.textContent=txt;}
+  }catch(e){el.className='';el.textContent='Connection error.';}
 }
-
-function handleObj(obj) { setPhase('objection'); getCoaching(`Prospect said: "${obj}". What should Jack say?`); }
-
-async function getCoaching(chunk) {
-  if (!currentCoachLead) return;
-  const el = document.getElementById('coach-say');
-  el.className = 'dim'; el.textContent = '...';
-  const prompt = `You are a real-time sales coach for Jack Wilde, CEO of Wildrose Automations.
-
-ABOUT WILDROSE: We build AI lead response and booking automation for local service businesses in Edmonton/Calgary. Custom pricing $500–$2,000/month. ROI: clients recover 3-5 lost jobs/week.
-
-LEAD: ${currentCoachLead.business_name} | ${currentCoachLead.type} | ${currentCoachLead.city} | ${currentCoachLead.automation_angle || ''}
-
-PHASE: ${coachPhase.toUpperCase()}
-${PHASE_PROMPTS[coachPhase]}
-
-RECENT TRANSCRIPT: ${coachTranscript.slice(-8).join(' ') || '(just started)'}
-LAST SAID: ${chunk}
-
-Reply with ONLY what Jack should say. No labels, no quotes. Max 2 sentences. Natural and direct.`;
-
-  try {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI}`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ contents:[{parts:[{text:prompt}]}], generationConfig:{maxOutputTokens:100,temperature:0.7} })
-    });
-    const d = await r.json();
-    const txt = d.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-    if (txt) { el.className = coachPhase==='close'?'close':coachPhase==='objection'?'objection':''; el.textContent = txt; }
-  } catch(e) { el.className=''; el.textContent='Connection error.'; }
+function toggleMic(){isListening?stopMic():startMic();}
+function startMic(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Use Chrome on desktop.');return;}
+  recognition=new SR();recognition.continuous=true;recognition.interimResults=true;recognition.lang='en-CA';
+  recognition.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal){const t=e.results[i][0].transcript.trim();if(t){coachTx.push(t);pendingChunk+=' '+t;addLine(t,true);scheduleCoach();}}else interim+=e.results[i][0].transcript;}if(interim)updateInterim(interim);};
+  recognition.onend=()=>{if(isListening)recognition.start();};
+  recognition.start();isListening=true;
+  const b=document.getElementById('micBtn');b.className='on';b.textContent='🔴 Stop Listening';
 }
-
-function toggleMic() {
-  if (isListening) stopMic(); else startMic();
-}
-
-function startMic() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { alert('Use Chrome on desktop for speech recognition.'); return; }
-  recognition = new SR();
-  recognition.continuous = true; recognition.interimResults = true; recognition.lang = 'en-CA';
-  recognition.onresult = e => {
-    let interim = '';
-    for (let i = e.resultIndex; i < e.results.length; i++) {
-      if (e.results[i].isFinal) { const t = e.results[i][0].transcript.trim(); if(t){coachTranscript.push(t);pendingChunk+=' '+t;addLine(t,true);scheduleCoach();} }
-      else interim += e.results[i][0].transcript;
-    }
-    if (interim) updateInterim(interim);
-  };
-  recognition.onend = () => { if(isListening) recognition.start(); };
-  recognition.start(); isListening = true;
-  const btn = document.getElementById('micBtn');
-  btn.className='on'; btn.textContent='🔴 Stop Listening';
-}
-
-function stopMic() {
-  if(recognition) recognition.stop();
-  isListening = false;
-  const btn = document.getElementById('micBtn');
-  btn.className='off'; btn.textContent='🎙 Start Listening';
-}
-
-function scheduleCoach() {
-  clearTimeout(coachTimer);
-  coachTimer = setTimeout(() => { if(pendingChunk.trim().length>8){const t=pendingChunk.trim();pendingChunk='';getCoaching(t);} }, 3000);
-}
-
-function addLine(text, final) {
-  const area = document.getElementById('coach-transcript');
-  const p = document.createElement('p');
-  p.className = final ? 'final' : 'interim';
-  p.textContent = text;
-  area.appendChild(p);
-  area.scrollTop = area.scrollHeight;
-  while(area.children.length > 25) area.removeChild(area.firstChild);
-}
-
-function updateInterim(text) {
-  const area = document.getElementById('coach-transcript');
-  let last = area.querySelector('p.interim');
-  if(!last){last=document.createElement('p');last.className='interim';area.appendChild(last);}
-  last.textContent = text + '...';
-  area.scrollTop = area.scrollHeight;
-}
-
-function clearCoach() {
-  coachTranscript = []; pendingChunk = '';
-  document.getElementById('coach-transcript').innerHTML = '<p style="color:#2a2a2a">Cleared.</p>';
-  document.getElementById('coach-say').className = 'dim';
-  document.getElementById('coach-say').textContent = 'Ready.';
-}
+function stopMic(){if(recognition)recognition.stop();isListening=false;const b=document.getElementById('micBtn');b.className='off';b.textContent='🎙 Start Listening';}
+function scheduleCoach(){clearTimeout(coachTimer);coachTimer=setTimeout(()=>{if(pendingChunk.trim().length>8){const t=pendingChunk.trim();pendingChunk='';getCoaching(t);}},3000);}
+function addLine(text,final){const a=document.getElementById('coachTx');const p=document.createElement('p');p.className=final?'final':'interim';p.textContent=text;a.appendChild(p);a.scrollTop=a.scrollHeight;while(a.children.length>20)a.removeChild(a.firstChild);}
+function updateInterim(text){const a=document.getElementById('coachTx');let l=a.querySelector('p.interim');if(!l){l=document.createElement('p');l.className='interim';a.appendChild(l);}l.textContent=text+'...';a.scrollTop=a.scrollHeight;}
+function clearCoach(){coachTx=[];pendingChunk='';document.getElementById('coachTx').innerHTML='<p style="color:#222">Cleared.</p>';document.getElementById('coachSay').className='dim';document.getElementById('coachSay').textContent='Ready.';}
 
 init();
 </script>
