@@ -250,6 +250,7 @@ const TOKEN='am_us_237687733d6087d5e2e5c3956f651883c8b190d38b855ebdbcf85f6780a8c
 const INBOX='wildroseautomations@agentmail.to';
 const GEMINI='AIzaSyCDXNM5Ii5-0nnFLbBuKXQpSJBGmDZ_FTg';
 const DATA_URL='https://jack108510.github.io/jsw-dashboard/wildrose-pending-leads.json';
+const REPLIES_URL='https://jack108510.github.io/jsw-dashboard/wildrose-replies.json';
 
 let leads=[], replies=[], calls=[], knownReplyIds=new Set(), coachLead=null, coachPhase='opener';
 let recognition=null, isListening=false, coachTimer=null, pendingChunk='', coachTx=[];
@@ -282,7 +283,12 @@ async function init(){
   // Load calls
   calls=getCalls();
 
-  // Load replies and seed known IDs (don't popup on initial load)
+  // Load static replies file first (has full threads)
+  try {
+    const r=await fetch(REPLIES_URL+'?t='+Date.now());
+    if(r.ok){ replies=await r.json(); replies.forEach(m=>knownReplyIds.add(m.id||m.timestamp)); }
+  } catch(e){}
+  // Then also poll live inbox
   await fetchReplies(true);
 
   renderDashboard();
@@ -398,26 +404,45 @@ function renderDashboard(){
 function renderRepliesPage(){
   const c=document.getElementById('repliesContainer');
   if(!replies.length){c.innerHTML='<div class="empty-state">No replies yet.<br><br>Emails go out automatically at 8 AM every morning.</div>';return;}
-  c.innerHTML=replies.map(r=>`
-    <div class="reply-card">
+  c.innerHTML=replies.map(r=>{
+    const thread=r.thread||[];
+    const threadHtml=thread.map(msg=>{
+      const isUs=msg.from&&(msg.from.includes('Wildrose')||msg.from.includes('wildrose'));
+      return `<div style="margin-bottom:10px">
+        <div style="font-size:.68rem;color:${isUs?'var(--blue)':'var(--green)'};font-weight:700;margin-bottom:3px">${isUs?'📤 Wildrose':'📥 '+msg.from} · ${timeAgo(msg.time)}</div>
+        <div style="font-size:.8rem;color:#bbb;line-height:1.6;padding:8px 10px;background:#0a0a0a;border-left:3px solid ${isUs?'var(--blue)':'var(--green)'};border-radius:0 6px 6px 0;white-space:pre-wrap">${msg.text}</div>
+      </div>`;
+    }).join('');
+
+    return `<div class="reply-card">
       <div class="reply-header">
-        <div><div class="reply-from">${r.from||'Unknown'}</div><div class="reply-subj">${r.subject||''}</div></div>
+        <div>
+          <div class="reply-from">${r.from||'Unknown'}</div>
+          <div class="reply-subj">${r.subject||''}</div>
+          ${r.phone?`<div style="font-size:.78rem;color:var(--green);margin-top:3px">📞 ${r.phone}</div>`:''}
+        </div>
         <div class="reply-time">${timeAgo(r.timestamp||r.created_at)}</div>
       </div>
-      <div class="auto-reply-tag">✅ Auto-replied by AI</div>
-      <div class="reply-msg">${r.preview||'(no preview)'}</div>
+      ${r.status==='auto_replied'?'<div class="auto-reply-tag">✅ Auto-replied by AI</div>':''}
+      ${thread.length?`
+        <div style="margin-bottom:12px">
+          <div style="font-size:.68rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:700">Full Conversation</div>
+          ${threadHtml}
+        </div>`:`<div class="reply-msg">${r.preview||'(no preview)'}</div>`}
       <div class="reply-actions">
         <button class="r-btn green" onclick="nav('coach',document.querySelector('.tab:last-child'))">📞 Call Coach</button>
-        <button class="r-btn blue" onclick="scheduleFromReply('${encodeURIComponent(r.from||'')}')">📅 Schedule Call</button>
+        <button class="r-btn blue" onclick="scheduleFromReply('${encodeURIComponent(r.from||'')}','${encodeURIComponent(r.phone||'')}')">📅 Schedule Call</button>
         <button class="r-btn" onclick="toast('📧 Opening reply...')">↩ Reply</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
-function scheduleFromReply(encodedFrom){
+function scheduleFromReply(encodedFrom, encodedPhone){
   const from=decodeURIComponent(encodedFrom);
+  const phone=decodeURIComponent(encodedPhone||'');
   const name=from.split('<')[0].trim()||from;
-  calls.unshift({id:Date.now(),name,time:'TBD',done:false});
+  calls.unshift({id:Date.now(),name,time:'TBD',done:false,phone});
   saveCalls();renderCalls();
   toast('📅 Added to schedule');
   nav('calls',document.querySelector('.tab:nth-child(3)'));
