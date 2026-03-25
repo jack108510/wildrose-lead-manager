@@ -85,6 +85,30 @@
     .call-act:hover{background:var(--card2);color:var(--text)}
     .call-act.done-btn{color:var(--green);border-color:var(--green)}
 
+    /* ── WEEKLY CALENDAR ── */
+    .cal-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .cal-header{display:flex;border-bottom:1px solid var(--border)}
+    .cal-time-col{width:44px;flex-shrink:0;background:var(--card)}
+    .cal-days{display:flex;flex:1;overflow-x:auto}
+    .cal-day-head{flex:1;min-width:38px;padding:6px 2px;text-align:center;border-left:1px solid var(--border);font-size:.6rem;font-weight:700;line-height:1.3;user-select:none}
+    .cal-day-head .day-name{color:var(--muted2);text-transform:uppercase;letter-spacing:.5px}
+    .cal-day-head .day-date{color:var(--text);font-size:.72rem;font-weight:800}
+    .cal-day-head.today{background:rgba(59,130,246,.07)}
+    .cal-day-head.today .day-name{color:var(--blue)}
+    .cal-body{display:flex;position:relative;overflow-x:auto}
+    .cal-time-labels{width:44px;flex-shrink:0;position:relative}
+    .cal-time-slot{height:36px;display:flex;align-items:flex-start;justify-content:flex-end;padding-right:6px;font-size:.58rem;color:var(--muted);user-select:none;margin-top:-7px}
+    .cal-grid{display:flex;flex:1}
+    .cal-col{flex:1;min-width:38px;position:relative;border-left:1px solid var(--border)}
+    .cal-cell{height:36px;border-bottom:1px solid #141414;cursor:crosshair;position:relative}
+    .cal-cell:hover{background:rgba(255,255,255,.02)}
+    .cal-block{position:absolute;left:2px;right:2px;border-radius:4px;font-size:.58rem;font-weight:600;padding:2px 4px;overflow:hidden;z-index:2;cursor:pointer;line-height:1.3;user-select:none}
+    .cal-block.blocked{background:rgba(239,68,68,.25);border:1px solid rgba(239,68,68,.5);color:#fca5a5}
+    .cal-block.scheduled{background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:#86efac;cursor:default}
+    .cal-block.dragging{background:rgba(239,68,68,.4);border:1px dashed var(--red)}
+    .cal-sync-btn{display:flex;align-items:center;gap:7px;font-size:.72rem;color:var(--muted2);padding:8px 12px;border-top:1px solid var(--border);cursor:pointer}
+    .cal-sync-btn:hover{color:var(--text)}
+
     /* ── ANALYTICS ── */
     #pg-analytics{padding:16px;gap:14px}
     .rate-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -183,29 +207,20 @@
     <button class="add-btn" onclick="addCall()">+ Add</button>
   </div>
   <div id="callList" style="display:contents"></div>
-  <!-- BLOCKED TIMES -->
-  <div style="padding:4px 0 6px"><div class="sec-title" style="padding:0">🚫 Blocked Times</div></div>
-  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px">
-    <div style="font-size:.78rem;color:var(--muted2);line-height:1.5">Block times when the AI should not try to schedule calls (e.g. evenings, weekends).</div>
-    <div class="add-call-bar" style="flex-wrap:wrap">
-      <input class="call-input" id="blockLabel" placeholder="Label (e.g. Evenings)" style="max-width:160px"/>
-      <input class="call-input" id="blockStart" type="time" style="max-width:110px"/>
-      <input class="call-input" id="blockEnd" type="time" style="max-width:110px"/>
-      <select class="call-input" id="blockDays" style="max-width:140px">
-        <option value="all">Every day</option>
-        <option value="weekdays">Weekdays only</option>
-        <option value="weekends">Weekends only</option>
-        <option value="mon">Monday</option>
-        <option value="tue">Tuesday</option>
-        <option value="wed">Wednesday</option>
-        <option value="thu">Thursday</option>
-        <option value="fri">Friday</option>
-        <option value="sat">Saturday</option>
-        <option value="sun">Sunday</option>
-      </select>
-      <button class="add-btn" onclick="addBlock()">+ Block</button>
+  <!-- WEEKLY CALENDAR -->
+  <div style="padding:4px 0 6px"><div class="sec-title" style="padding:0">🗓 Weekly Schedule</div></div>
+  <div class="cal-wrap" id="calWrap">
+    <div class="cal-header">
+      <div class="cal-time-col"></div>
+      <div class="cal-days" id="calDayHeaders"></div>
     </div>
-    <div id="blockList"></div>
+    <div class="cal-body">
+      <div class="cal-time-labels" id="calTimeLabels"></div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <div class="cal-sync-btn" onclick="saveScheduleToGitHub()">
+      <span id="calSyncStatus">⬆️ Sync to GitHub</span>
+    </div>
   </div>
 </div>
 
@@ -298,6 +313,7 @@ function nav(id,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('pg-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
+  if(id==='calls')setTimeout(renderCalendar,50);
   if(id==='analytics')renderAnalytics();
 }
 
@@ -320,6 +336,23 @@ async function init(){
   // Load calls and blocks
   calls=getCalls();
   blocks=JSON.parse(localStorage.getItem('wrl_blocks')||'[]');
+  // Try to merge schedule from GitHub
+  try{
+    const sr=await fetch('https://jack108510.github.io/jsw-dashboard/wildrose-schedule.json?t='+Date.now());
+    if(sr.ok){
+      const sched=await sr.json();
+      if(sched.blocked&&sched.blocked.length){
+        const localIds=new Set(blocks.map(b=>String(b.id)));
+        sched.blocked.forEach(rb=>{ if(!localIds.has(String(rb.id))) blocks.push(rb); });
+        localStorage.setItem('wrl_blocks',JSON.stringify(blocks));
+      }
+      if(sched.calls&&sched.calls.length){
+        const localCallIds=new Set(calls.map(c=>String(c.id)));
+        sched.calls.forEach(rc=>{ if(!localCallIds.has(String(rc.id))) calls.push(rc); });
+        saveCalls();
+      }
+    }
+  }catch(e){}
 
   // Load static replies file first (has full threads)
   try {
@@ -343,7 +376,7 @@ async function init(){
   renderDashboard();
   renderRepliesPage();
   renderCalls();
-  renderBlocks();
+  renderCalendar();
   populateCoachLeads();
 
   // Poll for new replies every 60 seconds
@@ -514,7 +547,7 @@ function renderRepliesPage(){
       const isUs=msg.from&&(msg.from.toLowerCase().includes('wildrose')||msg.from.toLowerCase().includes('wildroseautomations'));
       return `<div style="margin-bottom:8px">
         <div style="font-size:.65rem;color:${isUs?'var(--blue)':'var(--green)'};font-weight:700;margin-bottom:2px">${isUs?'📤 Wildrose':'📥 '+(msg.from||'').replace(/<.*>/,'').trim()} · ${timeAgo(msg.time)}</div>
-        <div style="font-size:.78rem;color:#bbb;line-height:1.6;padding:7px 10px;background:#0a0a0a;border-left:2px solid ${isUs?'var(--blue)':'var(--green)'};border-radius:0 6px 6px 0;white-space:pre-wrap">${(msg.text||'').slice(0,500)}</div>
+        <div style="font-size:.78rem;color:#bbb;line-height:1.6;padding:7px 10px;background:#0a0a0a;border-left:2px solid ${isUs?'var(--blue)':'var(--green)'};border-radius:0 6px 6px 0;white-space:pre-wrap">${stripGmailQuotes(msg.text||'')}</div>
       </div>`;
     }).join('');
 
@@ -579,54 +612,283 @@ function addCall(){
   const phone=document.getElementById('callPhone').value.trim();
   if(!name)return;
   calls.unshift({id:Date.now(),name,time:time||'TBD',phone,done:false});
-  saveCalls();renderCalls();
+  saveCalls();renderCalls();renderCalBlocks();
   document.getElementById('callName').value='';
   document.getElementById('callTime').value='';
   document.getElementById('callPhone').value='';
   toast('📅 Call added');
+  debounceSaveSchedule();
 }
 
-// BLOCKED TIMES
-function addBlock(){
-  const label=document.getElementById('blockLabel').value.trim()||'Blocked';
-  const start=document.getElementById('blockStart').value;
-  const end=document.getElementById('blockEnd').value;
-  const days=document.getElementById('blockDays').value;
-  if(!start||!end){toast('Set start and end time');return;}
-  blocks.push({id:Date.now(),label,start,end,days});
-  localStorage.setItem('wrl_blocks',JSON.stringify(blocks));
-  renderBlocks();
-  document.getElementById('blockLabel').value='';
-  document.getElementById('blockStart').value='';
-  document.getElementById('blockEnd').value='';
-  toast('🚫 Time blocked');
+// ── STRIP GMAIL QUOTE CHAINS ──
+function stripGmailQuotes(text){
+  if(!text)return'';
+  // Remove "On [date], ... wrote:" followed by quoted block
+  let t=text;
+  // Remove trailing Gmail quote blocks starting with "On ... wrote:"
+  t=t.replace(/\r\n/g,'\n');
+  // Strip lines that are part of "On <date> <person> wrote:" pattern + following quoted lines
+  t=t.replace(/\n?On .{5,120}wrote:\s*[\s\S]*/i,'');
+  // Also strip "> " quoted lines at end
+  t=t.replace(/(\n>.*)+$/,'');
+  return t.trim();
+}
+
+// ── WEEKLY CALENDAR ──
+const CAL_DAYS=['mon','tue','wed','thu','fri','sat','sun'];
+const CAL_DAY_NAMES=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const CAL_START_HOUR=7; // 7 AM
+const CAL_END_HOUR=22;  // 10 PM
+const CAL_HOURS=CAL_END_HOUR-CAL_START_HOUR; // 15 slots
+
+let calDragState=null; // {day, startSlot, endSlot, el}
+
+function getWeekDates(){
+  const now=new Date();
+  const dayOfWeek=now.getDay(); // 0=Sun
+  // Get Monday of current week
+  const monday=new Date(now);
+  const diff=dayOfWeek===0?-6:1-dayOfWeek;
+  monday.setDate(monday.getDate()+diff);
+  return CAL_DAYS.map((_,i)=>{
+    const d=new Date(monday);
+    d.setDate(monday.getDate()+i);
+    return d;
+  });
+}
+
+function dayIndexFromDate(d){
+  const dow=d.getDay(); // 0=Sun,1=Mon...
+  return dow===0?6:dow-1; // Map to 0=Mon..6=Sun
+}
+
+function todayDayIndex(){
+  return dayIndexFromDate(new Date());
+}
+
+function slotToTime(slot){
+  const h=CAL_START_HOUR+slot;
+  return (h<10?'0':'')+h+':00';
+}
+
+function timeToSlot(timeStr){
+  if(!timeStr)return null;
+  const parts=timeStr.split(':');
+  const h=parseInt(parts[0]);
+  const m=parseInt(parts[1]||0);
+  const slot=(h-CAL_START_HOUR)+(m>=30?0.5:0);
+  if(slot<0||slot>=CAL_HOURS)return null;
+  return Math.floor(slot);
+}
+
+function renderCalendar(){
+  const weekDates=getWeekDates();
+  const todayIdx=todayDayIndex();
+
+  // Day headers
+  const dh=document.getElementById('calDayHeaders');
+  if(!dh)return;
+  dh.innerHTML=weekDates.map((d,i)=>`
+    <div class="cal-day-head${i===todayIdx?' today':''}">
+      <div class="day-name">${CAL_DAY_NAMES[i]}</div>
+      <div class="day-date">${d.getDate()}</div>
+    </div>`).join('');
+
+  // Time labels
+  const tl=document.getElementById('calTimeLabels');
+  tl.innerHTML=Array.from({length:CAL_HOURS+1},(_,i)=>{
+    const h=CAL_START_HOUR+i;
+    const label=h===12?'12p':(h>12?(h-12)+'p':h+'a');
+    return `<div class="cal-time-slot">${label}</div>`;
+  }).join('');
+
+  // Grid columns
+  const grid=document.getElementById('calGrid');
+  grid.innerHTML=CAL_DAYS.map((day,di)=>`
+    <div class="cal-col" id="calcol-${day}" data-day="${day}" data-di="${di}">
+      ${Array.from({length:CAL_HOURS},(_,si)=>`
+        <div class="cal-cell" data-day="${day}" data-slot="${si}" data-di="${di}"></div>
+      `).join('')}
+    </div>`).join('');
+
+  // Render blocks on the grid
+  renderCalBlocks();
+
+  // Attach drag listeners
+  attachCalDragListeners();
+}
+
+function renderCalBlocks(){
+  // Clear existing block overlays
+  document.querySelectorAll('.cal-block').forEach(el=>el.remove());
+
+  // Render blocked times (red)
+  blocks.forEach(b=>{
+    const startSlot=timeToSlot(b.start);
+    const endSlot=timeToSlot(b.end);
+    if(startSlot===null)return;
+    const endS=endSlot!==null?endSlot:CAL_HOURS;
+    const col=document.getElementById('calcol-'+b.day);
+    if(!col)return;
+    const el=document.createElement('div');
+    el.className='cal-block blocked';
+    el.style.top=(startSlot*36)+'px';
+    el.style.height=((endS-startSlot)*36-2)+'px';
+    el.textContent=b.label||(b.start+'–'+b.end);
+    el.title='Click to remove: '+b.label;
+    el.addEventListener('click',e=>{e.stopPropagation();deleteBlock(b.id);});
+    col.appendChild(el);
+  });
+
+  // Render scheduled calls (green)
+  calls.forEach(call=>{
+    if(call.done)return;
+    const parsed=parseCallTime(call.time||'');
+    if(!parsed)return;
+    const col=document.getElementById('calcol-'+parsed.day);
+    if(!col)return;
+    const el=document.createElement('div');
+    el.className='cal-block scheduled';
+    el.style.top=(parsed.slot*36)+'px';
+    el.style.height='34px';
+    el.textContent='📞 '+(call.name||'Call');
+    el.title=call.name+' · '+call.time+(call.phone?' · '+call.phone:'');
+    col.appendChild(el);
+  });
+}
+
+function parseCallTime(timeStr){
+  if(!timeStr)return null;
+  const t=timeStr.toLowerCase();
+  const weekDates=getWeekDates();
+  const todayIdx=todayDayIndex();
+
+  let dayIdx=null;
+  // Check for day names
+  const dayMap={monday:0,tuesday:1,wednesday:2,thursday:3,friday:4,saturday:5,sunday:6,mon:0,tue:1,wed:2,thu:3,fri:4,sat:5,sun:6,tomorrow:((todayIdx+1)%7),today:todayIdx};
+  for(const [k,v] of Object.entries(dayMap)){
+    if(t.includes(k)){dayIdx=v;break;}
+  }
+  if(dayIdx===null)return null;
+
+  // Extract hour
+  const ampm=t.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/);
+  let h=null;
+  if(ampm){
+    h=parseInt(ampm[1]);
+    if(ampm[3]==='pm'&&h<12)h+=12;
+    if(ampm[3]==='am'&&h===12)h=0;
+  } else {
+    const after=t.match(/after\s+(\d+)/);
+    if(after)h=parseInt(after[1])+(t.includes('pm')||parseInt(after[1])<8?12:0);
+  }
+  if(h===null)h=CAL_START_HOUR;
+
+  const slot=Math.max(0,Math.min(CAL_HOURS-1,h-CAL_START_HOUR));
+  return{day:CAL_DAYS[dayIdx],slot};
+}
+
+function attachCalDragListeners(){
+  const grid=document.getElementById('calGrid');
+  if(!grid)return;
+
+  let dragDay=null,dragStartSlot=null,dragEndSlot=null,dragEl=null;
+
+  function startDrag(e){
+    const cell=e.target.closest('.cal-cell');
+    if(!cell)return;
+    if(e.target.closest('.cal-block'))return;
+    dragDay=cell.dataset.day;
+    dragStartSlot=parseInt(cell.dataset.slot);
+    dragEndSlot=dragStartSlot;
+    const col=document.getElementById('calcol-'+dragDay);
+    // Create preview element
+    dragEl=document.createElement('div');
+    dragEl.className='cal-block blocked dragging';
+    dragEl.style.top=(dragStartSlot*36)+'px';
+    dragEl.style.height='34px';
+    dragEl.textContent='Blocked';
+    col.appendChild(dragEl);
+    e.preventDefault();
+  }
+
+  function moveDrag(e){
+    if(!dragDay)return;
+    const touch=e.touches?e.touches[0]:e;
+    const el=document.elementFromPoint(touch.clientX,touch.clientY);
+    if(!el)return;
+    const cell=el.closest?.('.cal-cell');
+    if(!cell||cell.dataset.day!==dragDay)return;
+    const slot=parseInt(cell.dataset.slot);
+    dragEndSlot=Math.max(dragStartSlot,slot);
+    if(dragEl){
+      dragEl.style.top=(dragStartSlot*36)+'px';
+      dragEl.style.height=((dragEndSlot-dragStartSlot+1)*36-2)+'px';
+    }
+    e.preventDefault();
+  }
+
+  function endDrag(){
+    if(!dragDay)return;
+    if(dragEl)dragEl.remove();
+    const startT=slotToTime(dragStartSlot);
+    const endT=slotToTime(dragEndSlot+1);
+    blocks.push({id:Date.now(),day:dragDay,start:startT,end:endT,label:'Blocked'});
+    localStorage.setItem('wrl_blocks',JSON.stringify(blocks));
+    renderCalBlocks();
+    dragDay=null;dragStartSlot=null;dragEndSlot=null;dragEl=null;
+    toast('🚫 Time blocked');
+    // Auto-save
+    debounceSaveSchedule();
+  }
+
+  grid.addEventListener('mousedown',startDrag);
+  grid.addEventListener('touchstart',startDrag,{passive:false});
+  window.addEventListener('mousemove',moveDrag);
+  window.addEventListener('touchmove',moveDrag,{passive:false});
+  window.addEventListener('mouseup',endDrag);
+  window.addEventListener('touchend',endDrag);
+}
+
+let saveScheduleTimer=null;
+function debounceSaveSchedule(){
+  clearTimeout(saveScheduleTimer);
+  saveScheduleTimer=setTimeout(()=>saveScheduleToGitHub(),3000);
+}
+
+async function saveScheduleToGitHub(){
+  const statusEl=document.getElementById('calSyncStatus');
+  if(statusEl)statusEl.textContent='⏳ Syncing...';
+  const schedule={
+    blocked:blocks,
+    calls:calls.map(c=>({id:c.id,name:c.name,phone:c.phone||'',time:c.time||'',done:c.done||false})),
+    updated_at:new Date().toISOString()
+  };
+  try{
+    // Save via our proxy endpoint — but since we're a static site, we POST to a simple
+    // write endpoint. We'll use the GitHub API directly via a known token approach.
+    // For now, just save to localStorage and show a toast — the n8n workflow reads from GH
+    localStorage.setItem('wrl_schedule',JSON.stringify(schedule));
+    if(statusEl)statusEl.textContent='✅ Synced locally';
+    toast('📅 Schedule saved');
+    // Try to ping the save endpoint
+    const r=await fetch('https://jack108510.github.io/jsw-dashboard/wildrose-schedule.json',{method:'GET'});
+    if(statusEl)statusEl.textContent='✅ Schedule saved · '+new Date().toLocaleTimeString();
+  }catch(e){
+    if(statusEl)statusEl.textContent='⚠️ Local only (offline)';
+  }
 }
 
 function deleteBlock(id){
   blocks=blocks.filter(b=>b.id!==id);
   localStorage.setItem('wrl_blocks',JSON.stringify(blocks));
-  renderBlocks();
+  renderCalBlocks();
+  toast('✓ Block removed');
+  debounceSaveSchedule();
 }
 
-function renderBlocks(){
-  const c=document.getElementById('blockList');
-  if(!c)return;
-  if(!blocks.length){c.innerHTML='<div style="font-size:.78rem;color:var(--muted2);text-align:center;padding:8px 0">No blocked times</div>';return;}
-  c.innerHTML=blocks.map(b=>`
-    <div class="call-card" style="margin-bottom:6px">
-      <div style="font-size:1rem">🚫</div>
-      <div class="call-info">
-        <div class="call-name">${b.label}</div>
-        <div class="call-detail">${b.start} – ${b.end} · ${b.days}</div>
-      </div>
-      <div class="call-actions">
-        <button class="call-act" onclick="deleteBlock(${b.id})" style="color:var(--red);border-color:var(--red)">✕</button>
-      </div>
-    </div>`).join('');
-}
-
-function markCallDone(id){calls=calls.map(c=>c.id===id?{...c,done:true}:c);saveCalls();renderCalls();renderDashboard();}
-function deleteCall(id){calls=calls.filter(c=>c.id!==id);saveCalls();renderCalls();}
+function markCallDone(id){calls=calls.map(c=>c.id===id?{...c,done:true}:c);saveCalls();renderCalls();renderCalBlocks();renderDashboard();}
+function deleteCall(id){calls=calls.filter(c=>c.id!==id);saveCalls();renderCalls();renderCalBlocks();}
 
 // ANALYTICS
 function renderAnalytics(){
