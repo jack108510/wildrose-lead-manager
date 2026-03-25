@@ -14,70 +14,20 @@
   --green-dim:rgba(34,197,94,.1);--red-dim:rgba(239,68,68,.1);--blue-dim:rgba(59,130,246,.1);
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100dvh;display:flex;flex-direction:column;overflow:hidden}
-
-/* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:54px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface)}
 .logo{display:flex;align-items:center;gap:8px}
 .logo-icon{width:28px;height:28px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.logo-text{font-size:.95rem;font-weight:800;letter-spacing:-.3px}
-.logo-sub{font-size:.68rem;color:var(--muted);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.logo-text{font-size:.95rem;font-weight:800}
+.logo-sub{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
 .nav-tabs{display:flex;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:3px}
 .tab{padding:5px 14px;border-radius:7px;font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap}
 .tab.active{background:var(--gold);color:#000}
 .badge{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:#fff;border-radius:8px;font-size:.58rem;font-weight:700;padding:1px 5px;margin-left:4px;min-width:16px;line-height:1.4}
-.nav-right{display:flex;align-items:center;gap:10px}
-.refresh-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-size:.72rem;cursor:pointer;transition:all .15s}
-.refresh-btn:hover{border-color:var(--gold);color:var(--gold)}
-
-/* PAGES */
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-size:.72rem;cursor:pointer;transition:all .15s}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
 .page{display:none;flex:1;overflow-y:auto;flex-direction:column}
 .page.active{display:flex}
-
-/* ── PIPELINE PAGE ── */
-#pg-pipeline{flex-direction:row;overflow-x:auto;gap:0;padding:16px;gap:12px;align-items:flex-start}
-.pipe-col{flex-shrink:0;width:280px;display:flex;flex-direction:column;gap:8px}
-.pipe-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:4px}
-.pipe-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
-.pipe-count-badge{font-size:.68rem;font-weight:700;background:var(--dim);color:var(--muted);padding:2px 8px;border-radius:10px}
-.lead-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s;position:relative}
-.lead-card:hover{border-color:var(--gold);transform:translateY(-1px)}
-.lead-card.hot{border-color:rgba(212,168,67,.4)}
-.lead-company{font-size:.88rem;font-weight:700;margin-bottom:3px}
-.lead-name{font-size:.74rem;color:var(--muted);margin-bottom:8px}
-.lead-industry{display:inline-block;font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:6px;margin-bottom:8px}
-.ind-trades{background:rgba(251,146,60,.1);color:#fb923c}
-.ind-law{background:rgba(168,85,247,.1);color:#a855f7}
-.ind-real_estate{background:rgba(59,130,246,.1);color:#3b82f6}
-.ind-property_management{background:rgba(34,197,94,.1);color:#22c55e}
-.ind-inbound{background:var(--gold-dim);color:var(--gold)}
-.ind-default{background:var(--dim);color:var(--muted)}
-.lead-footer{display:flex;align-items:center;justify-content:space-between}
-.lead-date{font-size:.65rem;color:var(--muted)}
-.lead-dot{width:6px;height:6px;border-radius:50%}
-
-/* ── REPLIES PAGE ── */
-#pg-replies{padding:14px;gap:8px}
-.reply-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
-.reply-card.unread{border-left:3px solid var(--gold)}
-.reply-row{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer}
-.reply-row:hover{background:var(--surface)}
-.avatar{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;flex-shrink:0;background:var(--gold-dim);color:var(--gold)}
-.reply-info{flex:1;min-width:0}
-.reply-from{font-size:.88rem;font-weight:700;margin-bottom:2px}
-.reply-company{font-size:.72rem;color:var(--gold);margin-bottom:2px}
-.reply-preview{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.reply-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
-.reply-time{font-size:.65rem;color:var(--muted)}
-.unread-pip{width:8px;height:8px;border-radius:50%;background:var(--gold)}
-.reply-body{display:none;padding:0 14px 14px;border-top:1px solid var(--border);margin-top:0}
-.reply-body.open{display:block}
-.reply-text{font-size:.82rem;line-height:1.6;color:#ccc;padding:12px;background:var(--bg);border-radius:8px;margin:12px 0;white-space:pre-wrap}
-.reply-actions{display:flex;gap:8px}
-.r-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.73rem;cursor:pointer;font-weight:600;transition:all .15s}
-.r-btn:hover{background:var(--dim)}
-.r-btn.gold{background:var(--gold);border-color:var(--gold);color:#000}
-.r-btn.green{background:var(--green-dim);border-color:var(--green);color:var(--green)}
-.r-btn.red{background:var(--red-dim);border-color:var(--red);color:var(--red)}
 
 /* ── DASHBOARD ── */
 #pg-dash{padding:16px;gap:14px}
@@ -90,50 +40,121 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .stat.gold-stat{border-color:rgba(212,168,67,.3);background:linear-gradient(135deg,var(--card) 0%,rgba(212,168,67,.05) 100%)}
 .stat.gold-stat .stat-val{color:var(--gold)}
 .section-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
-.activity-list{display:flex;flex-direction:column;gap:6px}
-.activity-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.activity-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s}
+.activity-item:hover{border-color:var(--gold)}
 .act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .act-text{flex:1;font-size:.8rem}
 .act-time{font-size:.65rem;color:var(--muted)}
 
+/* ── PIPELINE ── */
+#pg-pipeline{flex-direction:row;overflow-x:auto;padding:16px;gap:12px;align-items:flex-start}
+.pipe-col{flex-shrink:0;width:280px;display:flex;flex-direction:column;gap:8px}
+.pipe-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:4px}
+.pipe-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+.pipe-count-badge{font-size:.68rem;font-weight:700;background:var(--dim);color:var(--muted);padding:2px 8px;border-radius:10px}
+.lead-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s}
+.lead-card:hover{border-color:var(--gold);transform:translateY(-1px)}
+.lead-card.replied{border-left:3px solid var(--gold)}
+.lead-company{font-size:.88rem;font-weight:700;margin-bottom:3px}
+.lead-name{font-size:.74rem;color:var(--muted);margin-bottom:8px}
+.ind-tag{display:inline-block;font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:6px;margin-bottom:8px}
+.ind-trades{background:rgba(251,146,60,.1);color:#fb923c}
+.ind-law{background:rgba(168,85,247,.1);color:#a855f7}
+.ind-real_estate{background:var(--blue-dim);color:var(--blue)}
+.ind-services{background:var(--green-dim);color:var(--green)}
+.ind-inbound{background:var(--gold-dim);color:var(--gold)}
+.ind-default{background:var(--dim);color:var(--muted)}
+.lead-footer{display:flex;align-items:center;justify-content:space-between}
+.lead-date{font-size:.65rem;color:var(--muted)}
+.status-dot{width:6px;height:6px;border-radius:50%}
+
+/* ── REPLIES ── */
+#pg-replies{padding:14px;gap:8px}
+.reply-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.reply-card.unread{border-left:3px solid var(--gold)}
+.reply-row{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer}
+.reply-row:hover{background:var(--surface)}
+.avatar{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;flex-shrink:0;background:var(--gold-dim);color:var(--gold)}
+.reply-info{flex:1;min-width:0}
+.reply-from{font-size:.88rem;font-weight:700;margin-bottom:2px}
+.reply-company{font-size:.72rem;color:var(--gold);margin-bottom:2px}
+.reply-preview{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reply-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.reply-time{font-size:.65rem;color:var(--muted)}
+.unread-pip{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.reply-body{display:none;padding:0 14px 14px;border-top:1px solid var(--border)}
+.reply-body.open{display:block}
+.reply-text{font-size:.82rem;line-height:1.6;color:#ccc;padding:12px;background:var(--bg);border-radius:8px;margin:12px 0;white-space:pre-wrap}
+.reply-actions{display:flex;gap:8px;flex-wrap:wrap}
+.r-btn{flex:1;min-width:80px;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.73rem;cursor:pointer;font-weight:600;transition:all .15s}
+.r-btn:hover{background:var(--dim)}
+.r-btn.gold{background:var(--gold);border-color:var(--gold);color:#000}
+.r-btn.green{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.r-btn.red{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+.r-btn.blue{background:var(--blue-dim);border-color:var(--blue);color:var(--blue)}
+
 /* ── CALLS ── */
 #pg-calls{padding:14px;gap:12px}
 .add-bar{display:flex;gap:8px}
-.add-input{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:10px;font-size:.85rem}
+.add-input{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:10px;font-size:.85rem;outline:none}
+.add-input:focus{border-color:var(--gold)}
 .add-input::placeholder{color:var(--muted)}
-.add-btn{background:var(--gold);color:#000;border:none;padding:10px 18px;border-radius:10px;font-size:.82rem;cursor:pointer;font-weight:700;white-space:nowrap}
+.add-btn{background:var(--gold);color:#000;border:none;padding:10px 18px;border-radius:10px;font-size:.82rem;cursor:pointer;font-weight:700}
 .call-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px}
 .call-card.done{opacity:.45}
-.call-status-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0}
-.call-status-dot.done{background:var(--green)}
+.call-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.call-dot.done{background:var(--green)}
 .call-info{flex:1}
 .call-name{font-size:.9rem;font-weight:700;margin-bottom:2px}
 .call-detail{font-size:.75rem;color:var(--muted)}
-.call-actions{display:flex;gap:6px}
+.call-acts{display:flex;gap:6px}
 .call-act{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:6px;font-size:.72rem;cursor:pointer}
 .call-act:hover{background:var(--dim);color:var(--text)}
-.call-act.done-btn{color:var(--green);border-color:var(--green)}
+.call-act.done-act{color:var(--green);border-color:var(--green)}
+
+/* ── LEAD PROFILE MODAL ── */
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:none;align-items:flex-end;justify-content:center}
+#modal.show{display:flex}
+.modal-sheet{background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--gold);border-radius:20px 20px 0 0;width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column}
+.modal-header{padding:20px 20px 0;flex-shrink:0}
+.modal-close{float:right;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;margin-top:-4px}
+.modal-company{font-size:1.2rem;font-weight:800;margin-bottom:2px}
+.modal-sub{font-size:.78rem;color:var(--muted)}
+.modal-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-top:16px;padding:0 20px;flex-shrink:0}
+.modal-tab{padding:10px 14px;font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+.modal-tab.active{color:var(--gold);border-color:var(--gold)}
+.modal-body{flex:1;overflow-y:auto;padding:16px 20px 20px}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.profile-field{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px}
+.pf-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}
+.pf-val{font-size:.85rem;font-weight:600}
+.status-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.status-pill{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:.73rem;cursor:pointer;font-weight:600;transition:all .15s}
+.status-pill:hover{background:var(--dim)}
+.status-pill.active-pill{background:var(--gold);border-color:var(--gold);color:#000}
+.convo-msg{padding:10px 12px;border-radius:10px;margin-bottom:8px;font-size:.8rem;line-height:1.5}
+.convo-msg.out{background:var(--gold-dim);border:1px solid rgba(212,168,67,.2);border-radius:10px 10px 2px 10px}
+.convo-msg.in{background:var(--card);border:1px solid var(--border);border-radius:10px 10px 10px 2px}
+.convo-meta{font-size:.65rem;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.convo-dir{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:1px 6px;border-radius:4px}
+.convo-dir.out{background:var(--gold-dim);color:var(--gold)}
+.convo-dir.in{background:var(--blue-dim);color:var(--blue)}
+.analytics-row{display:flex;gap:10px;margin-bottom:12px}
+.analytics-stat{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.analytics-val{font-size:1.4rem;font-weight:800;margin-bottom:4px}
+.analytics-lbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.call-req-card{background:var(--card);border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:14px;margin-bottom:10px}
+.call-req-tag{font-size:.65rem;font-weight:700;text-transform:uppercase;background:var(--green-dim);color:var(--green);padding:2px 8px;border-radius:6px;display:inline-block;margin-bottom:8px}
+.reply-compose{margin-top:12px}
+.reply-compose textarea{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:10px;font-size:.82rem;resize:vertical;min-height:80px;outline:none;font-family:inherit}
+.reply-compose textarea:focus{border-color:var(--gold)}
+.reply-compose-btn{margin-top:8px;width:100%;background:var(--gold);color:#000;border:none;padding:10px;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer}
 
 /* EMPTY + TOAST */
 .empty{padding:60px 20px;text-align:center;color:var(--muted);font-size:.85rem}
 .empty-icon{font-size:2.5rem;margin-bottom:12px;opacity:.4}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a2e;border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:20px;font-size:.82rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
 #toast.show{opacity:1}
-
-/* MODAL */
-#modal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;display:none;align-items:flex-end;justify-content:center}
-#modal.show{display:flex}
-.modal-card{background:var(--card);border:1px solid var(--border);border-top:1px solid var(--gold);border-radius:20px 20px 0 0;width:100%;max-width:520px;padding:24px;max-height:85vh;overflow-y:auto}
-.modal-title{font-size:1.1rem;font-weight:800;margin-bottom:4px}
-.modal-sub{font-size:.78rem;color:var(--muted);margin-bottom:16px}
-.modal-field{margin-bottom:12px}
-.modal-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}
-.modal-val{font-size:.88rem}
-.modal-actions{display:flex;gap:8px;margin-top:16px}
-.modal-close{position:absolute;display:none}
-.close-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.8rem}
-.close-btn:hover{background:var(--dim)}
-
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
 </style>
@@ -155,7 +176,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <button class="tab" onclick="nav('calls',this)">Calls</button>
   </div>
   <div class="nav-right">
-    <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+    <button class="nav-btn" onclick="loadAll()">↻</button>
   </div>
 </nav>
 
@@ -165,137 +186,127 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 <div class="page" id="pg-calls">
   <div style="padding:14px">
     <div class="add-bar" style="margin-bottom:12px">
-      <input class="add-input" id="callInput" placeholder="Add call — e.g. Jason @ Abacus Plumbing, 2pm Thu"/>
+      <input class="add-input" id="callInput" placeholder="Add call — e.g. Jason @ Abacus, Thu 2pm"/>
       <button class="add-btn" onclick="addCall()">+ Add</button>
     </div>
     <div id="callList"></div>
   </div>
 </div>
 
-<div id="toast"></div>
-
+<!-- LEAD PROFILE MODAL -->
 <div id="modal">
-  <div class="modal-card" id="modalCard">
-    <div id="modalContent"></div>
-    <div class="modal-actions">
-      <button class="close-btn" onclick="closeModal()" style="flex:1">Close</button>
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modal-company" class="modal-company"></div>
+      <div id="modal-sub" class="modal-sub"></div>
+      <div class="modal-tabs">
+        <div class="modal-tab active" onclick="modalTab('profile',this)">Profile</div>
+        <div class="modal-tab" onclick="modalTab('conversations',this)">Conversations</div>
+        <div class="modal-tab" onclick="modalTab('analytics',this)">Analytics</div>
+      </div>
     </div>
+    <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
 
+<div id="toast"></div>
+
 <script>
-const SUPABASE_URL = 'https://xacehhtgvubcqdoltazg.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhY2VoaHRndnViY3Fkb2x0YXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDI4NjcsImV4cCI6MjA4OTUxODg2N30.GGS5D4RLLkMdMn17GIBgjHkEn6d-HH9AXIzTBwSAzv8';
+const SB = 'https://xacehhtgvubcqdoltazg.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhY2VoaHRndnViY3Fkb2x0YXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDI4NjcsImV4cCI6MjA4OTUxODg2N30.GGS5D4RLLkMdMn17GIBgjHkEn6d-HH9AXIzTBwSAzv8';
 const AM_KEY = 'am_us_eb590201635e5a67541a0e4c6eb32c5d6b144eb5cf48a5ca7ce9bece7940c11f';
 const AM_INBOX = 'jack@wildroseautomations.ca';
 
-let leads = [], replies = [], calls = JSON.parse(localStorage.getItem('wr_calls') || '[]');
+let leads=[], replies=[], conversations=[], calls=JSON.parse(localStorage.getItem('wr_calls')||'[]');
+let currentLead=null, currentModalTab='profile';
 
-const STATUS_COLORS = {
-  contacted: '#3b82f6',
-  replied: '#d4a843',
-  booked: '#22c55e',
-  bounced: '#ef4444',
-  dead: '#4a4a6a'
-};
-const STATUS_ORDER = ['booked','replied','contacted','bounced','dead'];
+const STATUS_COLORS={contacted:'#3b82f6',replied:'#d4a843',booked:'#22c55e',bounced:'#ef4444',dead:'#4a4a6a'};
+const STATUS_ORDER=['booked','replied','contacted','bounced','dead'];
 
-function nav(page, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('pg-' + page).classList.add('active');
+function sbFetch(path){
+  return fetch(SB+'/rest/v1/'+path,{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(r=>r.json());
+}
+function sbPatch(path,body){
+  return fetch(SB+'/rest/v1/'+path,{method:'PATCH',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});
+}
+
+function nav(page,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('pg-'+page).classList.add('active');
   btn.classList.add('active');
-  if (page === 'pipeline') renderPipeline();
-  if (page === 'replies') renderReplies();
-  if (page === 'dash') renderDash();
-  if (page === 'calls') renderCalls();
+  if(page==='pipeline') renderPipeline();
+  else if(page==='replies') renderReplies();
+  else if(page==='dash') renderDash();
+  else if(page==='calls') renderCalls();
 }
 
-async function loadAll() {
+async function loadAll(){
   toast('Refreshing...');
-  await Promise.all([loadLeads(), loadReplies()]);
-  const activePage = document.querySelector('.page.active').id.replace('pg-','');
-  if (activePage === 'pipeline') renderPipeline();
-  else if (activePage === 'replies') renderReplies();
-  else if (activePage === 'dash') renderDash();
-  toast('Updated');
-}
-
-async function loadLeads() {
-  try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/leads?order=contacted_at.desc&limit=200`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-    });
-    leads = await r.json();
-  } catch(e) { leads = []; }
-}
-
-async function loadReplies() {
-  try {
-    const r = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(AM_INBOX)}/messages?limit=100`, {
-      headers: { 'Authorization': 'Bearer ' + AM_KEY }
-    });
-    const d = await r.json();
-    const all = d.messages || [];
-    replies = all.filter(m => (m.labels || []).includes('received') && !(m.from || '').includes('mailer-daemon'));
-    // badge
-    const unread = replies.filter(m => (m.labels || []).includes('unread')).length;
-    const badge = document.getElementById('replyBadge');
-    badge.style.display = unread > 0 ? '' : 'none';
-    badge.textContent = unread;
-  } catch(e) { replies = []; }
-}
-
-function getLeadForThread(tid) {
-  return leads.find(l => l.thread_id === tid);
+  await Promise.all([
+    sbFetch('leads?order=contacted_at.desc&limit=200').then(d=>{leads=Array.isArray(d)?d:[];}),
+    sbFetch('conversations?order=sent_at.desc&limit=500').then(d=>{conversations=Array.isArray(d)?d:[];}),
+    fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(AM_INBOX)}/messages?limit=100`,
+      {headers:{'Authorization':'Bearer '+AM_KEY}})
+      .then(r=>r.json()).then(d=>{
+        const all=(d.messages||[]);
+        replies=all.filter(m=>(m.labels||[]).includes('received')&&!(m.from||'').includes('mailer-daemon'));
+        const unread=replies.filter(m=>(m.labels||[]).includes('unread')).length;
+        const badge=document.getElementById('replyBadge');
+        badge.style.display=unread>0?'':'none';
+        badge.textContent=unread;
+      })
+  ]);
+  const active=document.querySelector('.page.active').id.replace('pg-','');
+  if(active==='pipeline') renderPipeline();
+  else if(active==='replies') renderReplies();
+  else if(active==='dash') renderDash();
+  toast('Updated ✓');
 }
 
 // ── DASHBOARD ──
-function renderDash() {
-  const total = leads.length;
-  const replied = leads.filter(l => l.status === 'replied' || l.last_reply_at).length;
-  const booked = leads.filter(l => l.status === 'booked').length;
-  const bounced = leads.filter(l => l.status === 'bounced').length;
-  const reply_rate = total > 0 ? Math.round(replied/total*100) : 0;
+function renderDash(){
+  const total=leads.length;
+  const replied=leads.filter(l=>l.status==='replied'||l.last_reply_at).length;
+  const booked=leads.filter(l=>l.status==='booked').length;
+  const bounced=leads.filter(l=>l.status==='bounced').length;
+  const replyRate=total>0?Math.round(replied/total*100):0;
+  const callsBooked=leads.filter(l=>l.status==='booked');
 
-  const recent = [...leads].slice(0, 8);
-
-  document.getElementById('pg-dash').innerHTML = `
+  document.getElementById('pg-dash').innerHTML=`
     <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
       <div class="stat-row">
-        <div class="stat gold-stat">
-          <div class="stat-lbl">Total Leads</div>
-          <div class="stat-val">${total}</div>
-          <div class="stat-sub">all time</div>
-        </div>
-        <div class="stat">
-          <div class="stat-lbl">Replied</div>
-          <div class="stat-val" style="color:var(--gold)">${replied}</div>
-          <div class="stat-sub">${reply_rate}% reply rate</div>
-        </div>
-        <div class="stat">
-          <div class="stat-lbl">Booked</div>
-          <div class="stat-val" style="color:var(--green)">${booked}</div>
-          <div class="stat-sub">calls scheduled</div>
-        </div>
-        <div class="stat">
-          <div class="stat-lbl">Bounced</div>
-          <div class="stat-val" style="color:var(--red)">${bounced}</div>
-          <div class="stat-sub">bad emails</div>
-        </div>
+        <div class="stat gold-stat"><div class="stat-lbl">Total Sent</div><div class="stat-val">${total}</div><div class="stat-sub">all time</div></div>
+        <div class="stat"><div class="stat-lbl">Replied</div><div class="stat-val" style="color:var(--gold)">${replied}</div><div class="stat-sub">${replyRate}% rate</div></div>
+        <div class="stat"><div class="stat-lbl">Booked</div><div class="stat-val" style="color:var(--green)">${booked}</div><div class="stat-sub">calls scheduled</div></div>
+        <div class="stat"><div class="stat-lbl">Bounced</div><div class="stat-val" style="color:var(--red)">${bounced}</div><div class="stat-sub">bad emails</div></div>
       </div>
 
+      ${callsBooked.length>0?`
       <div>
-        <div class="section-label" style="margin-bottom:10px">Pipeline Breakdown</div>
+        <div class="section-label" style="margin-bottom:10px">📞 Booked Calls</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${callsBooked.map(l=>`
+            <div class="activity-item" onclick="showLead(${l.id})" style="border-color:rgba(34,197,94,.3)">
+              <div class="act-dot" style="background:var(--green)"></div>
+              <div class="act-text"><strong>${l.company||l.email}</strong>${l.name?' · '+l.name:''}</div>
+              <div style="font-size:.7rem;background:var(--green-dim);color:var(--green);padding:3px 8px;border-radius:6px">Call Booked</div>
+            </div>`).join('')}
+        </div>
+      </div>`:''}
+
+      <div>
+        <div class="section-label" style="margin-bottom:10px">Pipeline</div>
         <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-          ${STATUS_ORDER.map(s => {
-            const count = leads.filter(l => l.status === s).length;
-            const pct = total > 0 ? Math.round(count/total*100) : 0;
-            return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--border)">
+          ${STATUS_ORDER.map(s=>{
+            const count=leads.filter(l=>l.status===s).length;
+            const pct=total>0?Math.round(count/total*100):0;
+            return`<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer" onclick="document.querySelector('[onclick*=pipeline]').click()">
               <div style="width:8px;height:8px;border-radius:50%;background:${STATUS_COLORS[s]||'#555'};flex-shrink:0"></div>
               <div style="flex:1;font-size:.82rem;text-transform:capitalize">${s}</div>
               <div style="flex:2;height:4px;background:var(--dim);border-radius:2px;overflow:hidden">
-                <div style="height:100%;width:${pct}%;background:${STATUS_COLORS[s]||'#555'};border-radius:2px;transition:width .5s"></div>
+                <div style="height:100%;width:${pct}%;background:${STATUS_COLORS[s]||'#555'};border-radius:2px"></div>
               </div>
               <div style="font-size:.82rem;font-weight:700;width:24px;text-align:right">${count}</div>
             </div>`;
@@ -304,12 +315,12 @@ function renderDash() {
       </div>
 
       <div>
-        <div class="section-label" style="margin-bottom:10px">Recent Leads</div>
-        <div class="activity-list">
-          ${recent.map(l => `
-            <div class="activity-item" onclick="showLead(${l.id})" style="cursor:pointer">
+        <div class="section-label" style="margin-bottom:10px">Recent Activity</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${leads.slice(0,10).map(l=>`
+            <div class="activity-item" onclick="showLead(${l.id})">
               <div class="act-dot" style="background:${STATUS_COLORS[l.status]||'#555'}"></div>
-              <div class="act-text"><strong>${l.company||l.name||l.email}</strong>${l.name && l.company ? ' · ' + l.name : ''}</div>
+              <div class="act-text"><strong>${l.company||l.email}</strong>${l.name&&l.company?' · '+l.name:''}</div>
               <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.5px;padding:2px 6px;border-radius:4px;background:var(--dim);color:var(--muted)">${l.status}</div>
               <div class="act-time">${timeAgo(l.contacted_at)}</div>
             </div>`).join('')}
@@ -319,200 +330,313 @@ function renderDash() {
 }
 
 // ── PIPELINE ──
-function renderPipeline() {
-  const cols = STATUS_ORDER.map(status => {
-    const colLeads = leads.filter(l => l.status === status);
-    return `<div class="pipe-col">
+function renderPipeline(){
+  document.getElementById('pg-pipeline').innerHTML=STATUS_ORDER.map(status=>{
+    const col=leads.filter(l=>l.status===status);
+    return`<div class="pipe-col">
       <div class="pipe-header">
         <div class="pipe-title" style="color:${STATUS_COLORS[status]}">${status}</div>
-        <div class="pipe-count-badge">${colLeads.length}</div>
+        <div class="pipe-count-badge">${col.length}</div>
       </div>
-      ${colLeads.length === 0 ? `<div style="font-size:.75rem;color:var(--muted);padding:16px;text-align:center">Empty</div>` : ''}
-      ${colLeads.map(l => {
-        const initials = (l.company || l.name || l.email || '?').slice(0,2).toUpperCase();
-        const ind = l.industry || 'default';
-        return `<div class="lead-card ${l.status==='replied'?'hot':''}" onclick="showLead(${l.id})">
-          <div class="lead-company">${l.company || l.email}</div>
-          ${l.name ? `<div class="lead-name">${l.name}</div>` : ''}
-          <div class="lead-industry ind-${ind}">${ind.replace('_',' ')}</div>
+      ${col.length===0?`<div style="font-size:.75rem;color:var(--muted);padding:16px;text-align:center">Empty</div>`:''}
+      ${col.map(l=>{
+        const ind=l.industry||'default';
+        const hasConvos=conversations.some(c=>c.lead_id===l.id);
+        return`<div class="lead-card ${l.status==='replied'?'replied':''}" onclick="showLead(${l.id})">
+          <div class="lead-company">${l.company||l.email}</div>
+          ${l.name?`<div class="lead-name">${l.name}</div>`:''}
+          <div class="ind-tag ind-${ind}">${ind.replace('_',' ')}</div>
+          ${hasConvos?`<div style="font-size:.65rem;color:var(--gold);margin-bottom:6px">💬 Has replies</div>`:''}
           <div class="lead-footer">
             <div class="lead-date">${timeAgo(l.contacted_at)}</div>
-            <div class="lead-dot" style="background:${STATUS_COLORS[l.status]||'#555'}"></div>
+            <div class="status-dot" style="background:${STATUS_COLORS[status]||'#555'}"></div>
           </div>
         </div>`;
       }).join('')}
     </div>`;
-  });
-
-  document.getElementById('pg-pipeline').innerHTML = cols.join('');
+  }).join('');
 }
 
 // ── REPLIES ──
-function renderReplies() {
-  if (!replies.length) {
-    document.getElementById('pg-replies').innerHTML = `<div class="empty"><div class="empty-icon">📭</div>No replies yet</div>`;
+function renderReplies(){
+  if(!replies.length){
+    document.getElementById('pg-replies').innerHTML=`<div class="empty"><div class="empty-icon">📭</div>No replies yet</div>`;
     return;
   }
-
-  const html = replies.map(m => {
-    const unread = (m.labels || []).includes('unread');
-    const fromName = (m.from || '').replace(/<.*>/, '').trim() || 'Unknown';
-    const lead = getLeadForThread(m.thread_id);
-    const initials = fromName.slice(0,2).toUpperCase();
-    const timeStr = m.timestamp ? new Date(m.timestamp).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
-
-    return `<div class="reply-card ${unread ? 'unread' : ''}" id="reply-${m.message_id.replace(/[^a-z0-9]/gi,'_')}">
-      <div class="reply-row" onclick="toggleReply(this)">
-        <div class="avatar">${initials}</div>
+  document.getElementById('pg-replies').innerHTML=replies.map(m=>{
+    const unread=(m.labels||[]).includes('unread');
+    const fromName=(m.from||'').replace(/<.*>/,'').trim()||'Unknown';
+    const lead=leads.find(l=>l.thread_id===m.thread_id);
+    const timeStr=m.timestamp?new Date(m.timestamp).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+    const wantsCall=(m.preview||'').toLowerCase().match(/call|number|phone|reach|available|schedule/);
+    const id=m.message_id.replace(/[^a-z0-9]/gi,'_');
+    return`<div class="reply-card ${unread?'unread':''}" id="r_${id}">
+      <div class="reply-row" onclick="toggleReply('${id}')">
+        <div class="avatar">${fromName.slice(0,2).toUpperCase()}</div>
         <div class="reply-info">
           <div class="reply-from">${fromName}</div>
-          ${lead ? `<div class="reply-company">${lead.company || lead.email}</div>` : ''}
-          <div class="reply-preview">${m.preview || m.subject || ''}</div>
+          ${lead?`<div class="reply-company">${lead.company||lead.email}</div>`:''}
+          <div class="reply-preview">${wantsCall?'📞 ':''} ${m.preview||m.subject||''}</div>
         </div>
         <div class="reply-meta">
           <div class="reply-time">${timeStr}</div>
-          ${unread ? `<div class="unread-pip"></div>` : ''}
+          ${unread?`<div class="unread-pip"></div>`:''}
         </div>
       </div>
-      <div class="reply-body">
-        <div class="reply-text">${(m.preview || '').slice(0, 800)}</div>
-        <div style="font-size:.72rem;color:var(--muted);margin-bottom:10px">From: ${m.from} · ${m.subject}</div>
+      <div class="reply-body" id="rb_${id}">
+        ${wantsCall?`<div style="background:var(--green-dim);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:8px 12px;margin-top:12px;font-size:.78rem;color:var(--green)">📞 Wants a call — check their message for number/time</div>`:''}
+        <div class="reply-text">${(m.preview||'').slice(0,800)}</div>
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:10px">From: ${m.from} · ${m.subject||''}</div>
         <div class="reply-actions">
-          ${lead ? `
+          ${lead?`
           <button class="r-btn green" onclick="updateStatus(${lead.id},'booked',this)">✅ Booked</button>
+          <button class="r-btn blue" onclick="showLead(${lead.id})">👤 Profile</button>
           <button class="r-btn red" onclick="updateStatus(${lead.id},'dead',this)">❌ Dead</button>
-          ` : ''}
-          <button class="r-btn gold" onclick="replyTo('${m.from.replace(/'/g,"\\'")}','${(m.subject||'').replace(/'/g,"\\'")}','${m.thread_id}')">↩ Reply</button>
+          `:''}
+          <button class="r-btn gold" onclick="openReply('${(m.from||'').replace(/'/g,"\\'")}','${(m.subject||'').replace(/'/g,"\\'")}','${m.thread_id}','${id}')">↩ Reply</button>
+        </div>
+        <div id="compose_${id}" style="display:none" class="reply-compose">
+          <textarea id="replytext_${id}" placeholder="Type your reply..."></textarea>
+          <button class="reply-compose-btn" onclick="sendReply('${(m.from||'').replace(/'/g,"\\'")}','${(m.subject||'').replace(/'/g,"\\'")}','${m.thread_id}','${id}')">Send Reply</button>
         </div>
       </div>
     </div>`;
   }).join('');
-
-  document.getElementById('pg-replies').innerHTML = html;
 }
 
-function toggleReply(row) {
-  const body = row.nextElementSibling;
-  body.classList.toggle('open');
+function toggleReply(id){
+  const body=document.getElementById('rb_'+id);
+  body&&body.classList.toggle('open');
 }
-
-async function updateStatus(leadId, status, btn) {
-  btn.disabled = true;
-  btn.textContent = '...';
-  try {
-    await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${leadId}`, {
-      method: 'PATCH',
-      headers: {
-        'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ status })
+function openReply(to,subj,tid,id){
+  const compose=document.getElementById('compose_'+id);
+  if(compose) compose.style.display=compose.style.display==='none'?'block':'none';
+}
+async function sendReply(to,subject,threadId,id){
+  const text=document.getElementById('replytext_'+id)?.value?.trim();
+  if(!text) return;
+  const replySubject=subject.startsWith('Re:')?subject:'Re: '+subject;
+  try{
+    await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(AM_INBOX)}/messages/send`,{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+AM_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({to:[to],subject:replySubject,text,thread_id:threadId})
     });
-    const lead = leads.find(l => l.id === leadId);
-    if (lead) lead.status = status;
-    toast(`Status updated to ${status}`);
-  } catch(e) { toast('Update failed'); }
-  btn.disabled = false;
+    toast('Reply sent ✓');
+    document.getElementById('compose_'+id).style.display='none';
+  }catch(e){toast('Send failed');}
 }
 
-function replyTo(to, subject, threadId) {
-  const text = prompt(`Reply to ${to}:`);
-  if (!text) return;
-  const replySubject = subject.startsWith('Re:') ? subject : 'Re: ' + subject;
-  fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(AM_INBOX)}/messages/send`, {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + AM_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ to: [to], subject: replySubject, text, thread_id: threadId })
-  }).then(() => toast('Reply sent')).catch(() => toast('Send failed'));
+async function updateStatus(leadId,status,btn){
+  btn.disabled=true;btn.textContent='...';
+  await sbPatch(`leads?id=eq.${leadId}`,{status});
+  const lead=leads.find(l=>l.id===leadId);
+  if(lead) lead.status=status;
+  toast(`Marked as ${status}`);
+  btn.disabled=false;
 }
 
-// ── LEAD MODAL ──
-function showLead(id) {
-  const l = leads.find(x => x.id === id);
-  if (!l) return;
-  document.getElementById('modalContent').innerHTML = `
-    <div class="modal-title">${l.company || l.email}</div>
-    <div class="modal-sub" style="color:var(--gold)">${l.status}</div>
-    <div class="modal-field"><div class="modal-label">Contact</div><div class="modal-val">${l.name || '—'}</div></div>
-    <div class="modal-field"><div class="modal-label">Email</div><div class="modal-val">${l.email}</div></div>
-    <div class="modal-field"><div class="modal-label">Industry</div><div class="modal-val">${l.industry || '—'}</div></div>
-    <div class="modal-field"><div class="modal-label">Location</div><div class="modal-val">${l.location || '—'}</div></div>
-    <div class="modal-field"><div class="modal-label">Notes</div><div class="modal-val" style="font-size:.8rem;color:#aaa">${l.notes || '—'}</div></div>
-    <div class="modal-field"><div class="modal-label">Contacted</div><div class="modal-val">${l.contacted_at ? new Date(l.contacted_at).toLocaleDateString('en-CA') : '—'}</div></div>
-    <div class="modal-field"><div class="modal-label">Follow-ups</div><div class="modal-val">${l.follow_up_count || 0}</div></div>
-    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-      ${['contacted','replied','booked','dead'].map(s =>
-        `<button class="r-btn ${s==='booked'?'green':s==='dead'?'red':''}" style="flex:none" onclick="updateStatus(${l.id},'${s}',this)">${s}</button>`
-      ).join('')}
-    </div>`;
+// ── LEAD PROFILE MODAL ──
+async function showLead(id){
+  currentLead=leads.find(l=>l.id===id);
+  if(!currentLead) return;
+  document.getElementById('modal-company').textContent=currentLead.company||currentLead.email;
+  document.getElementById('modal-sub').textContent=(currentLead.industry||'')+(currentLead.location?' · '+currentLead.location:'');
   document.getElementById('modal').classList.add('show');
+  // Load fresh conversations for this lead
+  const convos=await sbFetch(`conversations?lead_id=eq.${id}&order=sent_at.asc`);
+  currentLead._convos=Array.isArray(convos)?convos:[];
+  // Also check AgentMail replies for this lead's thread
+  currentLead._replies=replies.filter(r=>r.thread_id===currentLead.thread_id);
+  renderModalTab('profile');
 }
 
-function closeModal() {
+function closeModal(){
   document.getElementById('modal').classList.remove('show');
+  currentLead=null;
+}
+
+function modalTab(tab,el){
+  document.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  currentModalTab=tab;
+  renderModalTab(tab);
+}
+
+function renderModalTab(tab){
+  const l=currentLead;
+  if(!l) return;
+  const body=document.getElementById('modal-body');
+
+  if(tab==='profile'){
+    const convos=l._convos||[];
+    const inbound=convos.filter(c=>c.direction==='inbound');
+    const wantsCall=inbound.some(c=>(c.body||'').toLowerCase().match(/call|phone|number|schedule|available/));
+    body.innerHTML=`
+      <div class="status-pills" style="margin-bottom:16px">
+        ${['contacted','replied','booked','dead','bounced'].map(s=>
+          `<div class="status-pill ${l.status===s?'active-pill':''}" onclick="updateStatusModal(${l.id},'${s}',this)">${s}</div>`
+        ).join('')}
+      </div>
+      ${wantsCall?`<div class="call-req-card">
+        <div class="call-req-tag">📞 Wants a Call</div>
+        <div style="font-size:.82rem">This lead mentioned calling in their reply. Check conversations tab for their number/availability.</div>
+      </div>`:''}
+      <div class="profile-grid">
+        <div class="profile-field"><div class="pf-label">Company</div><div class="pf-val">${l.company||'—'}</div></div>
+        <div class="profile-field"><div class="pf-label">Contact</div><div class="pf-val">${l.name||'—'}</div></div>
+        <div class="profile-field"><div class="pf-label">Email</div><div class="pf-val" style="font-size:.78rem;word-break:break-all">${l.email}</div></div>
+        <div class="profile-field"><div class="pf-label">Industry</div><div class="pf-val">${l.industry||'—'}</div></div>
+        <div class="profile-field"><div class="pf-label">Location</div><div class="pf-val">${l.location||'—'}</div></div>
+        <div class="profile-field"><div class="pf-label">Status</div><div class="pf-val" style="color:${STATUS_COLORS[l.status]||'#fff'}">${l.status}</div></div>
+        <div class="profile-field"><div class="pf-label">Contacted</div><div class="pf-val" style="font-size:.78rem">${l.contacted_at?new Date(l.contacted_at).toLocaleDateString('en-CA'):'—'}</div></div>
+        <div class="profile-field"><div class="pf-label">Last Reply</div><div class="pf-val" style="font-size:.78rem">${l.last_reply_at?timeAgo(l.last_reply_at):'No reply yet'}</div></div>
+      </div>
+      ${l.notes?`<div class="profile-field" style="margin-bottom:12px"><div class="pf-label">Notes</div><div class="pf-val" style="font-size:.78rem;color:#aaa;font-weight:400">${l.notes}</div></div>`:''}
+      <div class="reply-compose">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px">Quick Reply</div>
+        <textarea id="modal-reply-text" placeholder="Type a reply..." rows="3"></textarea>
+        <button class="reply-compose-btn" onclick="sendModalReply()">Send Reply</button>
+      </div>`;
+  }
+
+  else if(tab==='conversations'){
+    const convos=l._convos||[];
+    const amReplies=l._replies||[];
+    if(!convos.length&&!amReplies.length){
+      body.innerHTML=`<div class="empty"><div class="empty-icon">💬</div>No conversations logged yet</div>`;
+      return;
+    }
+    body.innerHTML=`
+      <div style="margin-bottom:12px;font-size:.75rem;color:var(--muted)">${convos.length} messages logged · ${amReplies.length} inbound replies</div>
+      ${amReplies.map(m=>`
+        <div class="convo-msg in">
+          <div class="convo-meta"><span class="convo-dir in">INBOUND</span>${new Date(m.timestamp).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+          <div>${m.preview||''}</div>
+        </div>`).join('')}
+      ${convos.map(c=>`
+        <div class="convo-msg ${c.direction==='outbound'?'out':'in'}">
+          <div class="convo-meta">
+            <span class="convo-dir ${c.direction==='outbound'?'out':'in'}">${c.direction.toUpperCase()}</span>
+            ${c.inbox?`<span style="font-size:.62rem;color:var(--muted)">${c.inbox}</span>`:''}
+            ${new Date(c.sent_at).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}
+          </div>
+          <div style="font-weight:600;margin-bottom:3px;font-size:.78rem">${c.subject||''}</div>
+          <div>${(c.body||'').slice(0,400)}</div>
+        </div>`).join('')}`;
+  }
+
+  else if(tab==='analytics'){
+    const convos=l._convos||[];
+    const inbound=convos.filter(c=>c.direction==='inbound').length+(l._replies||[]).length;
+    const outbound=convos.filter(c=>c.direction==='outbound').length;
+    const daysSince=l.contacted_at?Math.round((Date.now()-new Date(l.contacted_at))/(86400000)):0;
+    const wantsCall=(l._replies||[]).some(r=>(r.preview||'').toLowerCase().match(/call|phone|number|schedule/));
+    const callText=(l._replies||[]).find(r=>(r.preview||'').toLowerCase().match(/call|phone|number|schedule/))?.preview||'';
+    body.innerHTML=`
+      <div class="analytics-row">
+        <div class="analytics-stat"><div class="analytics-val" style="color:var(--gold)">${inbound}</div><div class="analytics-lbl">Replies Received</div></div>
+        <div class="analytics-stat"><div class="analytics-val">${outbound}</div><div class="analytics-lbl">Emails Sent</div></div>
+        <div class="analytics-stat"><div class="analytics-val">${daysSince}</div><div class="analytics-lbl">Days Since Contact</div></div>
+      </div>
+      <div class="analytics-row">
+        <div class="analytics-stat"><div class="analytics-val" style="color:${STATUS_COLORS[l.status]||'#fff'}">${l.status}</div><div class="analytics-lbl">Current Status</div></div>
+        <div class="analytics-stat"><div class="analytics-val">${l.follow_up_count||0}</div><div class="analytics-lbl">Follow-ups Sent</div></div>
+      </div>
+      ${wantsCall?`
+      <div class="call-req-card">
+        <div class="call-req-tag">📞 Call Requested</div>
+        <div style="font-size:.82rem;margin-bottom:8px">${callText.slice(0,300)}</div>
+        <button class="r-btn green" style="max-width:180px" onclick="updateStatusModal(${l.id},'booked',this);addCallFromLead('${(l.company||'').replace(/'/g,"\\'")}')">✅ Mark as Booked</button>
+      </div>`:'<div style="font-size:.82rem;color:var(--muted);padding:20px;text-align:center">No call request detected in replies</div>'}`;
+  }
+}
+
+async function updateStatusModal(leadId,status,el){
+  await sbPatch(`leads?id=eq.${leadId}`,{status});
+  const lead=leads.find(l=>l.id===leadId);
+  if(lead) lead.status=status;
+  document.querySelectorAll('.status-pill').forEach(p=>p.classList.remove('active-pill'));
+  el.classList.add('active-pill');
+  toast(`Status: ${status}`);
+}
+
+function addCallFromLead(company){
+  calls.unshift({text:`Call with ${company}`,done:false,added:new Date().toISOString()});
+  localStorage.setItem('wr_calls',JSON.stringify(calls));
+  toast('Added to calls list');
+}
+
+async function sendModalReply(){
+  const l=currentLead;
+  if(!l) return;
+  const text=document.getElementById('modal-reply-text')?.value?.trim();
+  if(!text) return;
+  // Find most recent thread
+  const threadId=l.thread_id;
+  const toAddr=l.email;
+  if(!threadId&&!toAddr){toast('No thread to reply to');return;}
+  try{
+    await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(AM_INBOX)}/messages/send`,{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+AM_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({to:[toAddr],subject:'Re: Following up — Wildrose Automations',text,thread_id:threadId||undefined})
+    });
+    toast('Reply sent ✓');
+    document.getElementById('modal-reply-text').value='';
+  }catch(e){toast('Send failed');}
 }
 
 // ── CALLS ──
-function renderCalls() {
-  const el = document.getElementById('callList');
-  if (!calls.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">📞</div>No calls scheduled</div>';
-    return;
-  }
-  el.innerHTML = calls.map((c, i) => `
-    <div class="call-card ${c.done ? 'done' : ''}" style="margin-bottom:8px">
-      <div class="call-status-dot ${c.done ? 'done' : ''}"></div>
-      <div class="call-info">
-        <div class="call-name">${c.text}</div>
-        <div class="call-detail">${c.added ? new Date(c.added).toLocaleDateString('en-CA') : ''}</div>
-      </div>
-      <div class="call-actions">
-        ${!c.done ? `<button class="call-act done-btn" onclick="markCallDone(${i})">✓ Done</button>` : ''}
-        <button class="call-act" onclick="removeCall(${i})">✕</button>
-      </div>
-    </div>`).join('');
+function renderCalls(){
+  const el=document.getElementById('callList');
+  const booked=leads.filter(l=>l.status==='booked');
+  if(!calls.length&&!booked.length){el.innerHTML=`<div class="empty"><div class="empty-icon">📞</div>No calls scheduled</div>`;return;}
+  el.innerHTML=`
+    ${booked.length?`<div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--green);margin-bottom:8px">Booked from CRM (${booked.length})</div>`:''}
+    ${booked.map(l=>`
+      <div class="call-card" style="border-color:rgba(34,197,94,.3);margin-bottom:8px;cursor:pointer" onclick="showLead(${l.id})">
+        <div class="call-dot done"></div>
+        <div class="call-info"><div class="call-name">${l.company||l.email}</div><div class="call-detail">${l.name||''} · Status: booked</div></div>
+        <div style="font-size:.7rem;color:var(--green)">Booked ✓</div>
+      </div>`).join('')}
+    ${calls.length?`<div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;margin-top:${booked.length?'12px':'0'}">Manual Calls</div>`:''}
+    ${calls.map((c,i)=>`
+      <div class="call-card ${c.done?'done':''}" style="margin-bottom:8px">
+        <div class="call-dot ${c.done?'done':''}"></div>
+        <div class="call-info"><div class="call-name">${c.text}</div><div class="call-detail">${c.added?new Date(c.added).toLocaleDateString('en-CA'):''}</div></div>
+        <div class="call-acts">
+          ${!c.done?`<button class="call-act done-act" onclick="markCallDone(${i})">✓</button>`:''}
+          <button class="call-act" onclick="removeCall(${i})">✕</button>
+        </div>
+      </div>`).join('')}`;
 }
 
-function addCall() {
-  const input = document.getElementById('callInput');
-  const text = input.value.trim();
-  if (!text) return;
-  calls.unshift({ text, done: false, added: new Date().toISOString() });
-  localStorage.setItem('wr_calls', JSON.stringify(calls));
-  input.value = '';
-  renderCalls();
+function addCall(){
+  const input=document.getElementById('callInput');
+  const text=input.value.trim();if(!text)return;
+  calls.unshift({text,done:false,added:new Date().toISOString()});
+  localStorage.setItem('wr_calls',JSON.stringify(calls));
+  input.value='';renderCalls();
+}
+function markCallDone(i){calls[i].done=true;localStorage.setItem('wr_calls',JSON.stringify(calls));renderCalls();}
+function removeCall(i){calls.splice(i,1);localStorage.setItem('wr_calls',JSON.stringify(calls));renderCalls();}
+
+function timeAgo(iso){
+  if(!iso)return'';
+  const diff=(Date.now()-new Date(iso))/1000;
+  if(diff<3600)return Math.round(diff/60)+'m ago';
+  if(diff<86400)return Math.round(diff/3600)+'h ago';
+  return Math.round(diff/86400)+'d ago';
+}
+function toast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2000);
 }
 
-function markCallDone(i) { calls[i].done = true; localStorage.setItem('wr_calls', JSON.stringify(calls)); renderCalls(); }
-function removeCall(i) { calls.splice(i,1); localStorage.setItem('wr_calls', JSON.stringify(calls)); renderCalls(); }
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
 
-// ── UTILS ──
-function timeAgo(iso) {
-  if (!iso) return '';
-  const diff = (Date.now() - new Date(iso)) / 1000;
-  if (diff < 3600) return Math.round(diff/60) + 'm ago';
-  if (diff < 86400) return Math.round(diff/3600) + 'h ago';
-  return Math.round(diff/86400) + 'd ago';
-}
-
-function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2000);
-}
-
-// Close modal on backdrop click
-document.getElementById('modal').addEventListener('click', e => {
-  if (e.target === document.getElementById('modal')) closeModal();
-});
-
-// ── INIT ──
-(async () => {
-  await Promise.all([loadLeads(), loadReplies()]);
-  renderDash();
-  renderCalls();
-})();
+(async()=>{await loadAll();renderDash();renderCalls();})();
 </script>
 </body>
 </html>
