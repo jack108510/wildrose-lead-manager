@@ -296,12 +296,11 @@
 <div id="toast"></div>
 
 <script>
-const TOKEN='am_us_237687733d6087d5e2e5c3956f651883c8b190d38b855ebdbcf85f6780a8c3c9';
+const TOKEN='am_us_eb590201635e5a67541a0e4c6eb32c5d6b144eb5cf48a5ca7ce9bece7940c11f';
 const INBOX='wildroseautomations@agentmail.to';
 const GEMINI='AIzaSyCDXNM5Ii5-0nnFLbBuKXQpSJBGmDZ_FTg';
-const DATA_URL='https://jack108510.github.io/jsw-dashboard/wildrose-pending-leads.json';
-const REPLIES_URL='https://jack108510.github.io/jsw-dashboard/wildrose-replies.json';
-const CALLS_URL='https://jack108510.github.io/jsw-dashboard/wildrose-calls.json';
+const SUPABASE_URL='https://xacehhtgvubcqdoltazg.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhY2VoaHRndnViY3Fkb2x0YXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDI4NjcsImV4cCI6MjA4OTUxODg2N30.GGS5D4RLLkMdMn17GIBgjHkEn6d-HH9AXIzTBwSAzv8';
 
 let leads=[], replies=[], calls=[], blocks=[], knownReplyIds=new Set(), coachLead=null, coachPhase='opener';
 let recognition=null, isListening=false, coachTimer=null, pendingChunk='', coachTx=[];
@@ -325,52 +324,48 @@ function saveLocal(lead){let all=getLocal();const i=all.findIndex(l=>l.id===lead
 function getCalls(){return JSON.parse(localStorage.getItem('wrl_calls')||'[]');}
 function saveCalls(){localStorage.setItem('wrl_calls',JSON.stringify(calls));}
 
-async function init(){
-  // Load leads
+async function loadLeads(){
   try{
-    const r=await fetch(DATA_URL+'?t='+Date.now());
-    if(r.ok){const fresh=await r.json();const lmap={};getLocal().forEach(l=>lmap[l.id]=l);leads=fresh.map(l=>lmap[l.id]||l);localStorage.setItem('wrl',JSON.stringify(leads));}
-    else throw new Error();
-  }catch(e){leads=getLocal();}
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/leads?order=contacted_at.desc`,{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    if(r.ok){
+      const data=await r.json();
+      leads=data.map(l=>({
+        id:l.id, email:l.email,
+        name:l.company||l.name||l.email,
+        company:l.company, industry:l.industry,
+        location:l.location, notes:l.notes,
+        status:l.status, thread_id:l.thread_id,
+        contacted_at:l.contacted_at, last_reply_at:l.last_reply_at,
+        follow_up_count:l.follow_up_count
+      }));
+    }
+  }catch(e){ leads=[]; }
+}
+
+async function updateLeadStatus(leadId, newStatus){
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${leadId}`,{
+      method:'PATCH',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({status:newStatus})
+    });
+    const lead=leads.find(l=>l.id===leadId);
+    if(lead){ lead.status=newStatus; renderDashboard(); }
+    toast('Status updated: '+newStatus);
+  }catch(e){ toast('Failed to update status'); }
+}
+
+async function init(){
+  // Load leads from Supabase
+  await loadLeads();
 
   // Load calls and blocks
   calls=getCalls();
   blocks=JSON.parse(localStorage.getItem('wrl_blocks')||'[]');
-  // Try to merge schedule from GitHub
-  try{
-    const sr=await fetch('https://jack108510.github.io/jsw-dashboard/wildrose-schedule.json?t='+Date.now());
-    if(sr.ok){
-      const sched=await sr.json();
-      if(sched.blocked&&sched.blocked.length){
-        const localIds=new Set(blocks.map(b=>String(b.id)));
-        sched.blocked.forEach(rb=>{ if(!localIds.has(String(rb.id))) blocks.push(rb); });
-        localStorage.setItem('wrl_blocks',JSON.stringify(blocks));
-      }
-      if(sched.calls&&sched.calls.length){
-        const localCallIds=new Set(calls.map(c=>String(c.id)));
-        sched.calls.forEach(rc=>{ if(!localCallIds.has(String(rc.id))) calls.push(rc); });
-        saveCalls();
-      }
-    }
-  }catch(e){}
 
-  // Load static replies file first (has full threads)
-  try {
-    const r=await fetch(REPLIES_URL+'?t='+Date.now());
-    if(r.ok){ replies=await r.json(); replies.forEach(m=>knownReplyIds.add(m.id||m.timestamp)); }
-  } catch(e){}
-  // Load booked calls from GitHub
-  try {
-    const r=await fetch(CALLS_URL+'?t='+Date.now());
-    if(r.ok){
-      const bookedCalls=await r.json();
-      // Merge with local calls - booked calls take priority
-      const localIds=new Set(calls.map(c=>String(c.id)));
-      bookedCalls.forEach(bc=>{ if(!localIds.has(String(bc.id))) calls.push(bc); });
-      saveCalls();
-    }
-  } catch(e){}
-  // Then also poll live inbox
+  // Poll live AgentMail inbox
   await fetchReplies(true);
 
   renderDashboard();
@@ -395,30 +390,29 @@ async function fetchReplies(initial=false){
   try{
     const r=await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(INBOX)}/messages?limit=50`,{headers:{Authorization:`Bearer ${TOKEN}`}});
     const d=await r.json();
-    // Group by thread, find threads with inbound messages
-    const allMsgs=d.messages||d.data||[];
+    // Filter for received (inbound) messages only
+    const allMsgs=(d.messages||d.data||[]).filter(m=>{
+      const labels=m.labels||[];
+      return labels.includes('received');
+    });
     const threadMap={};
     allMsgs.forEach(m=>{
       const tid=m.thread_id||m.message_id;
       if(!threadMap[tid])threadMap[tid]=[];
       threadMap[tid].push(m);
     });
-    // Build reply objects per thread that has inbound
-    const msgs=Object.values(threadMap).filter(threadMsgs=>{
-      return threadMsgs.some(m=>{
-        const f=(m.from||'').toLowerCase();
-        return !f.includes('wildroseautomations')&&!f.includes('wildrose sales')&&!f.includes('mailer-daemon');
-      });
-    }).map(threadMsgs=>{
+    // Build reply objects per thread
+    const msgs=Object.values(threadMap).map(threadMsgs=>{
       threadMsgs.sort((a,b)=>new Date(a.timestamp||a.created_at)-new Date(b.timestamp||b.created_at));
-      const inbound=threadMsgs.filter(m=>{ const f=(m.from||'').toLowerCase(); return !f.includes('wildroseautomations')&&!f.includes('wildrose sales')&&!f.includes('mailer-daemon'); });
-      const latest=inbound[inbound.length-1];
-      // Build thread array
+      const latest=threadMsgs[threadMsgs.length-1];
+      // Match to lead via thread_id for company name
+      const matchedLead=leads.find(l=>l.thread_id&&l.thread_id===latest.thread_id);
+      const displayName=matchedLead?(matchedLead.company||matchedLead.name||latest.from):latest.from;
       const thread=threadMsgs.map(m=>{
         const isUs=(m.from||'').toLowerCase().includes('wildroseautomations')||(m.from||'').toLowerCase().includes('wildrose sales');
         return { from: isUs?'Wildrose Sales Team':m.from, time: m.timestamp||m.created_at, text: m.preview||'' };
       });
-      return { id: latest.message_id||latest.timestamp, from: latest.from, subject: latest.subject, timestamp: latest.timestamp||latest.created_at, preview: latest.preview, thread_id: latest.thread_id, thread, status:'auto_replied' };
+      return { id: latest.message_id||latest.timestamp, from: displayName, subject: latest.subject, timestamp: latest.timestamp||latest.created_at, preview: latest.preview, thread_id: latest.thread_id, lead_id: matchedLead?matchedLead.id:null, thread, status:'auto_replied' };
     });
 
     if(initial){
@@ -470,24 +464,26 @@ function addCallFromPopup(){
 function timeAgo(ts){if(!ts)return'';const d=(Date.now()-new Date(ts))/1000;if(d<3600)return Math.round(d/60)+'m';if(d<86400)return Math.round(d/3600)+'h';return Math.round(d/86400)+'d';}
 
 function renderDashboard(){
-  const sent=leads.filter(l=>l.status==='sent').length;
-  const replyCount=replies.length;
+  const totalSent=leads.length;
+  const repliedCount=leads.filter(l=>l.status==='replied'||l.last_reply_at).length;
+  const bookedCount=leads.filter(l=>l.status==='booked').length;
+  const bouncedCount=leads.filter(l=>l.status==='bounced').length;
   const callCount=calls.filter(c=>!c.done).length;
-  const rate=sent>0?((replyCount/sent)*100).toFixed(1):0;
+  const rate=totalSent>0?((repliedCount/totalSent)*100).toFixed(1):0;
 
-  document.getElementById('sSent').textContent=sent;
-  document.getElementById('sReplies').textContent=replyCount;
+  document.getElementById('sSent').textContent=totalSent;
+  document.getElementById('sReplies').textContent=repliedCount;
   document.getElementById('sRate').textContent=rate+'% reply rate';
-  document.getElementById('sCalls').textContent=callCount;
-  document.getElementById('sAuto').textContent=replyCount+'↩';
+  document.getElementById('sCalls').textContent=bookedCount||callCount;
+  document.getElementById('sAuto').textContent=replies.length+'↩';
 
   // Pipeline
   const p=[
-    {l:'Sent',c:sent,col:'var(--blue)'},
-    {l:'Replied',c:replyCount,col:'var(--green)'},
-    {l:'Calls Booked',c:calls.length,col:'var(--yellow)'},
-    {l:'Saved',c:leads.filter(l=>l.status==='saved').length,col:'var(--purple)'},
-    {l:'Skipped',c:leads.filter(l=>l.status==='skipped').length,col:'var(--muted)'},
+    {l:'Contacted',c:leads.filter(l=>l.status==='contacted').length,col:'var(--blue)'},
+    {l:'Replied',c:repliedCount,col:'var(--green)'},
+    {l:'Booked',c:bookedCount,col:'var(--yellow)'},
+    {l:'Bounced',c:bouncedCount,col:'var(--red)'},
+    {l:'Dead',c:leads.filter(l=>l.status==='dead').length,col:'var(--muted)'},
   ];
   const maxP=Math.max(...p.map(x=>x.c),1);
   document.getElementById('pipelineView').innerHTML=p.map(x=>`
@@ -571,7 +567,8 @@ function renderRepliesPage(){
         <div class="reply-actions">
           <button class="r-btn green" onclick="nav('coach',document.querySelector('.tab:last-child'))">📞 Coach</button>
           <button class="r-btn blue" onclick="scheduleFromReply('${encodeURIComponent(r.from||'')}','${encodeURIComponent(r.phone||'')}')">📅 Schedule</button>
-          <button class="r-btn" onclick="toast('📧 Reply...')">↩ Reply</button>
+          ${r.lead_id?`<button class="r-btn" onclick="updateLeadStatus('${r.lead_id}','booked');toast('✅ Marked booked')">✅ Booked</button>`:''}
+          ${r.lead_id?`<button class="r-btn" style="color:var(--muted2)" onclick="updateLeadStatus('${r.lead_id}','dead');toast('Marked dead')">✗ Dead</button>`:''}
         </div>
       </div>
     </div>`;
