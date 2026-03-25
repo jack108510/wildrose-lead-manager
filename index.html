@@ -1,970 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
-  <title>Wildrose Lead Manager</title>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --bg:#080808;--card:#111;--card2:#161616;--border:#1e1e1e;
-      --text:#f0f0f0;--muted:#555;--muted2:#888;
-      --green:#22c55e;--red:#ef4444;--yellow:#eab308;
-      --blue:#3b82f6;--purple:#a855f7;--orange:#f97316;
-    }
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);height:100dvh;display:flex;flex-direction:column;overflow:hidden}
-    nav{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:50px;border-bottom:1px solid var(--border);flex-shrink:0;position:relative;z-index:10}
-    .logo{font-size:1rem;font-weight:800;letter-spacing:-.3px}.logo span{color:var(--red)}
-    .tabs{display:flex;gap:2px}
-    .tab{padding:6px 12px;border-radius:8px;font-size:0.76rem;font-weight:600;color:var(--muted2);cursor:pointer;border:none;background:none;transition:all .15s}
-    .tab.active{background:var(--card2);color:var(--text)}
-    .badge{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:#fff;border-radius:10px;font-size:.62rem;font-weight:700;padding:1px 5px;margin-left:4px;min-width:16px}
-    .page{display:none;flex:1;overflow-y:auto;flex-direction:column}
-    .page.active{display:flex}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+<title>Wildrose — Lead Manager</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05050a;--surface:#0d0d14;--card:#12121c;--border:#1c1c2e;
+  --text:#f0f0f8;--muted:#4a4a6a;--dim:#2a2a3e;
+  --gold:#d4a843;--gold2:#f0c060;--gold-dim:rgba(212,168,67,.12);
+  --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;
+  --green-dim:rgba(34,197,94,.1);--red-dim:rgba(239,68,68,.1);--blue-dim:rgba(59,130,246,.1);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100dvh;display:flex;flex-direction:column;overflow:hidden}
 
-    /* ── DASHBOARD ── */
-    #pg-dash{padding:16px;gap:14px}
-    .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-    @media(min-width:480px){.stat-grid{grid-template-columns:repeat(4,1fr)}}
-    .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
-    .stat-lbl{font-size:.68rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
-    .stat-val{font-size:1.7rem;font-weight:800;line-height:1}
-    .stat-sub{font-size:.7rem;color:var(--muted2);margin-top:5px}
-    .sec-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted2);margin-bottom:10px}
-    .pipeline{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
-    .pipe-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
-    .pipe-row:last-child{border-bottom:none}
-    .pipe-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-    .pipe-lbl{font-size:.82rem;flex:1}
-    .pipe-bar-wrap{flex:2;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
-    .pipe-bar{height:100%;border-radius:3px;transition:width .5s}
-    .pipe-count{font-size:.82rem;font-weight:700}
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:54px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface)}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-icon{width:28px;height:28px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.logo-text{font-size:.95rem;font-weight:800;letter-spacing:-.3px}
+.logo-sub{font-size:.68rem;color:var(--muted);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.nav-tabs{display:flex;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:3px}
+.tab{padding:5px 14px;border-radius:7px;font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap}
+.tab.active{background:var(--gold);color:#000}
+.badge{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:#fff;border-radius:8px;font-size:.58rem;font-weight:700;padding:1px 5px;margin-left:4px;min-width:16px;line-height:1.4}
+.nav-right{display:flex;align-items:center;gap:10px}
+.refresh-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-size:.72rem;cursor:pointer;transition:all .15s}
+.refresh-btn:hover{border-color:var(--gold);color:var(--gold)}
 
-    /* ── REPLIES ── */
-    #pg-replies{padding:14px;gap:8px}
-    .reply-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
-    .reply-card.unread{border-color:var(--blue)}
-    .reply-card.read{border-color:var(--border);opacity:.85}
-    .reply-row{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none}
-    .reply-row:hover{background:var(--card2)}
-    .unread-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0}
-    .read-dot{width:8px;height:8px;border-radius:50%;background:transparent;border:1px solid var(--muted);flex-shrink:0}
-    .reply-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex-shrink:0}
-    .reply-snippet{flex:1;min-width:0}
-    .reply-from{font-size:.86rem;font-weight:700;margin-bottom:1px}
-    .reply-preview-line{font-size:.75rem;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .reply-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
-    .reply-time{font-size:.68rem;color:var(--muted2)}
-    .reply-chevron{font-size:.7rem;color:var(--muted);transition:transform .2s}
-    .reply-chevron.open{transform:rotate(180deg)}
-    .reply-body{display:none;padding:0 14px 14px}
-    .reply-body.open{display:block}
-    .auto-reply-tag{display:inline-block;font-size:.62rem;background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3);border-radius:20px;padding:2px 8px;margin-bottom:10px}
-    .reply-actions{display:flex;gap:7px;margin-top:12px}
-    .r-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:#1a1a1a;color:var(--text);font-size:.73rem;cursor:pointer;font-weight:600;transition:background .15s;text-align:center}
-    .r-btn:hover{background:#222}
-    .r-btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
-    .r-btn.green{background:rgba(34,197,94,.12);border-color:var(--green);color:var(--green)}
-    .empty-state{padding:40px;text-align:center;color:var(--muted2);font-size:.88rem}
+/* PAGES */
+.page{display:none;flex:1;overflow-y:auto;flex-direction:column}
+.page.active{display:flex}
 
-    /* ── CALL SCHEDULE ── */
-    #pg-calls{padding:14px;gap:12px}
-    .add-call-bar{display:flex;gap:8px;align-items:center}
-    .call-input{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:10px;font-size:.85rem}
-    .call-input::placeholder{color:var(--muted)}
-    .add-btn{background:var(--blue);color:#fff;border:none;padding:10px 18px;border-radius:10px;font-size:.82rem;cursor:pointer;font-weight:600;white-space:nowrap}
-    .call-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px}
-    .call-card.done{opacity:.5}
-    .call-dot{width:10px;height:10px;border-radius:50%;background:var(--yellow);flex-shrink:0}
-    .call-dot.done{background:var(--green)}
-    .call-info{flex:1}
-    .call-name{font-size:.9rem;font-weight:700;margin-bottom:2px}
-    .call-detail{font-size:.75rem;color:var(--muted2)}
-    .call-actions{display:flex;gap:6px}
-    .call-act{background:none;border:1px solid var(--border);color:var(--muted2);padding:5px 10px;border-radius:6px;font-size:.72rem;cursor:pointer}
-    .call-act:hover{background:var(--card2);color:var(--text)}
-    .call-act.done-btn{color:var(--green);border-color:var(--green)}
+/* ── PIPELINE PAGE ── */
+#pg-pipeline{flex-direction:row;overflow-x:auto;gap:0;padding:16px;gap:12px;align-items:flex-start}
+.pipe-col{flex-shrink:0;width:280px;display:flex;flex-direction:column;gap:8px}
+.pipe-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:4px}
+.pipe-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+.pipe-count-badge{font-size:.68rem;font-weight:700;background:var(--dim);color:var(--muted);padding:2px 8px;border-radius:10px}
+.lead-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s;position:relative}
+.lead-card:hover{border-color:var(--gold);transform:translateY(-1px)}
+.lead-card.hot{border-color:rgba(212,168,67,.4)}
+.lead-company{font-size:.88rem;font-weight:700;margin-bottom:3px}
+.lead-name{font-size:.74rem;color:var(--muted);margin-bottom:8px}
+.lead-industry{display:inline-block;font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:6px;margin-bottom:8px}
+.ind-trades{background:rgba(251,146,60,.1);color:#fb923c}
+.ind-law{background:rgba(168,85,247,.1);color:#a855f7}
+.ind-real_estate{background:rgba(59,130,246,.1);color:#3b82f6}
+.ind-property_management{background:rgba(34,197,94,.1);color:#22c55e}
+.ind-inbound{background:var(--gold-dim);color:var(--gold)}
+.ind-default{background:var(--dim);color:var(--muted)}
+.lead-footer{display:flex;align-items:center;justify-content:space-between}
+.lead-date{font-size:.65rem;color:var(--muted)}
+.lead-dot{width:6px;height:6px;border-radius:50%}
 
-    /* ── WEEKLY CALENDAR ── */
-    .cal-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-    .cal-header{display:flex;border-bottom:1px solid var(--border)}
-    .cal-time-col{width:44px;flex-shrink:0;background:var(--card)}
-    .cal-days{display:flex;flex:1;overflow-x:auto}
-    .cal-day-head{flex:1;min-width:38px;padding:6px 2px;text-align:center;border-left:1px solid var(--border);font-size:.6rem;font-weight:700;line-height:1.3;user-select:none}
-    .cal-day-head .day-name{color:var(--muted2);text-transform:uppercase;letter-spacing:.5px}
-    .cal-day-head .day-date{color:var(--text);font-size:.72rem;font-weight:800}
-    .cal-day-head.today{background:rgba(59,130,246,.07)}
-    .cal-day-head.today .day-name{color:var(--blue)}
-    .cal-body{display:flex;position:relative;overflow-x:auto}
-    .cal-time-labels{width:44px;flex-shrink:0;position:relative}
-    .cal-time-slot{height:36px;display:flex;align-items:flex-start;justify-content:flex-end;padding-right:6px;font-size:.58rem;color:var(--muted);user-select:none;margin-top:-7px}
-    .cal-grid{display:flex;flex:1}
-    .cal-col{flex:1;min-width:38px;position:relative;border-left:1px solid var(--border)}
-    .cal-cell{height:36px;border-bottom:1px solid #141414;cursor:crosshair;position:relative}
-    .cal-cell:hover{background:rgba(255,255,255,.02)}
-    .cal-block{position:absolute;left:2px;right:2px;border-radius:4px;font-size:.58rem;font-weight:600;padding:2px 4px;overflow:hidden;z-index:2;cursor:pointer;line-height:1.3;user-select:none}
-    .cal-block.blocked{background:rgba(239,68,68,.25);border:1px solid rgba(239,68,68,.5);color:#fca5a5}
-    .cal-block.scheduled{background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:#86efac;cursor:default}
-    .cal-block.dragging{background:rgba(239,68,68,.4);border:1px dashed var(--red)}
-    .cal-sync-btn{display:flex;align-items:center;gap:7px;font-size:.72rem;color:var(--muted2);padding:8px 12px;border-top:1px solid var(--border);cursor:pointer}
-    .cal-sync-btn:hover{color:var(--text)}
+/* ── REPLIES PAGE ── */
+#pg-replies{padding:14px;gap:8px}
+.reply-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
+.reply-card.unread{border-left:3px solid var(--gold)}
+.reply-row{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer}
+.reply-row:hover{background:var(--surface)}
+.avatar{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;flex-shrink:0;background:var(--gold-dim);color:var(--gold)}
+.reply-info{flex:1;min-width:0}
+.reply-from{font-size:.88rem;font-weight:700;margin-bottom:2px}
+.reply-company{font-size:.72rem;color:var(--gold);margin-bottom:2px}
+.reply-preview{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reply-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.reply-time{font-size:.65rem;color:var(--muted)}
+.unread-pip{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.reply-body{display:none;padding:0 14px 14px;border-top:1px solid var(--border);margin-top:0}
+.reply-body.open{display:block}
+.reply-text{font-size:.82rem;line-height:1.6;color:#ccc;padding:12px;background:var(--bg);border-radius:8px;margin:12px 0;white-space:pre-wrap}
+.reply-actions{display:flex;gap:8px}
+.r-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.73rem;cursor:pointer;font-weight:600;transition:all .15s}
+.r-btn:hover{background:var(--dim)}
+.r-btn.gold{background:var(--gold);border-color:var(--gold);color:#000}
+.r-btn.green{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.r-btn.red{background:var(--red-dim);border-color:var(--red);color:var(--red)}
 
-    /* ── ANALYTICS ── */
-    #pg-analytics{padding:16px;gap:14px}
-    .rate-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .rate-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
-    .rate-val{font-size:1.5rem;font-weight:800}
-    .rate-lbl{font-size:.68rem;color:var(--muted2);margin-top:4px}
-    .chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
-    .bar-chart{display:flex;align-items:flex-end;gap:6px;height:90px;margin-top:10px}
-    .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
-    .bar{width:100%;border-radius:4px 4px 0 0;background:var(--blue);opacity:.7;min-height:3px;transition:height .5s}
-    .bar-lbl{font-size:.6rem;color:var(--muted2);text-align:center}
-    .status-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
-    .status-row:last-child{border-bottom:none}
+/* ── DASHBOARD ── */
+#pg-dash{padding:16px;gap:14px}
+.stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:500px){.stat-row{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
+.stat-lbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.stat-val{font-size:1.9rem;font-weight:800;line-height:1}
+.stat-sub{font-size:.7rem;color:var(--muted);margin-top:5px}
+.stat.gold-stat{border-color:rgba(212,168,67,.3);background:linear-gradient(135deg,var(--card) 0%,rgba(212,168,67,.05) 100%)}
+.stat.gold-stat .stat-val{color:var(--gold)}
+.section-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.activity-list{display:flex;flex-direction:column;gap:6px}
+.activity-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.act-text{flex:1;font-size:.8rem}
+.act-time{font-size:.65rem;color:var(--muted)}
 
-    /* ── CALL COACH ── */
-    #pg-coach{overflow:hidden}
-    .coach-lead-bar{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-shrink:0}
-    .coach-select{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:.82rem}
-    .coach-load{background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;white-space:nowrap}
-    .coach-ctx{display:none;background:var(--card);border-bottom:1px solid var(--border);padding:12px 14px;flex-shrink:0}
-    .coach-ctx.on{display:block}
-    .ctx-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:7px}
-    .ctx-lbl{font-size:.62rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
-    .ctx-val{font-size:.84rem;font-weight:600}
-    .ctx-angle{font-size:.78rem;color:#aaa;border-left:3px solid var(--purple);padding-left:9px;line-height:1.5}
-    .coach-phases{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
-    .cphase{flex:1;text-align:center;font-size:.62rem;color:var(--muted2);padding:8px 2px;border-bottom:2px solid transparent;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
-    .cphase.active{color:var(--blue);border-color:var(--blue)}
-    .coach-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;overflow:hidden}
-    .coach-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--green);margin-bottom:12px}
-    .coach-say{font-size:clamp(1rem,2.5vw,1.45rem);font-weight:600;line-height:1.5;color:var(--text);max-width:620px}
-    .coach-say.dim{color:var(--muted);font-style:italic;font-size:.95rem}
-    .obj-bar{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:0 14px 10px;flex-shrink:0}
-    .obj-chip{background:#111;border:1px solid var(--border);color:var(--yellow);padding:5px 11px;border-radius:20px;font-size:.7rem;cursor:pointer}
-    .obj-chip:hover{background:#1a1a1a}
-    .coach-tx{height:85px;background:#050505;border-top:1px solid var(--border);padding:9px 14px;overflow-y:auto;flex-shrink:0}
-    .coach-tx p{font-size:.73rem;color:var(--muted);line-height:1.6;margin-bottom:2px}
-    .coach-tx p.interim{color:#2a2a2a;font-style:italic}
-    .coach-ctrl{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border);flex-shrink:0}
-    #micBtn{flex:1;padding:12px;border-radius:10px;border:none;font-size:.88rem;font-weight:700;cursor:pointer}
-    #micBtn.off{background:var(--green);color:#000}
-    #micBtn.on{background:var(--red);color:#fff}
-    #clrBtn{padding:12px 14px;background:var(--card);border:1px solid var(--border);color:var(--muted2);border-radius:10px;font-size:.8rem;cursor:pointer}
+/* ── CALLS ── */
+#pg-calls{padding:14px;gap:12px}
+.add-bar{display:flex;gap:8px}
+.add-input{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:10px;font-size:.85rem}
+.add-input::placeholder{color:var(--muted)}
+.add-btn{background:var(--gold);color:#000;border:none;padding:10px 18px;border-radius:10px;font-size:.82rem;cursor:pointer;font-weight:700;white-space:nowrap}
+.call-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px}
+.call-card.done{opacity:.45}
+.call-status-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.call-status-dot.done{background:var(--green)}
+.call-info{flex:1}
+.call-name{font-size:.9rem;font-weight:700;margin-bottom:2px}
+.call-detail{font-size:.75rem;color:var(--muted)}
+.call-actions{display:flex;gap:6px}
+.call-act{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:6px;font-size:.72rem;cursor:pointer}
+.call-act:hover{background:var(--dim);color:var(--text)}
+.call-act.done-btn{color:var(--green);border-color:var(--green)}
 
-    /* REPLY POPUP */
-    #popup{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:none;align-items:flex-end;justify-content:center;padding:0 0 0 0}
-    #popup.show{display:flex}
-    .popup-card{background:#111;border:1px solid var(--border);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:20px;max-height:80vh;overflow-y:auto}
-    .popup-title{font-size:1rem;font-weight:700;margin-bottom:4px}
-    .popup-sub{font-size:.78rem;color:var(--muted2);margin-bottom:14px}
-    .popup-msg{font-size:.85rem;color:#bbb;line-height:1.6;padding:12px;background:#0a0a0a;border-radius:8px;margin-bottom:14px;border-left:3px solid var(--green)}
-    .popup-actions{display:flex;gap:8px}
-    .popup-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted2);font-size:1.3rem;cursor:pointer}
+/* EMPTY + TOAST */
+.empty{padding:60px 20px;text-align:center;color:var(--muted);font-size:.85rem}
+.empty-icon{font-size:2.5rem;margin-bottom:12px;opacity:.4}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a2e;border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:20px;font-size:.82rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
+#toast.show{opacity:1}
 
-    #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:9px 20px;border-radius:20px;font-size:.82rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
-    #toast.show{opacity:1}
-    ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
-  </style>
+/* MODAL */
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;display:none;align-items:flex-end;justify-content:center}
+#modal.show{display:flex}
+.modal-card{background:var(--card);border:1px solid var(--border);border-top:1px solid var(--gold);border-radius:20px 20px 0 0;width:100%;max-width:520px;padding:24px;max-height:85vh;overflow-y:auto}
+.modal-title{font-size:1.1rem;font-weight:800;margin-bottom:4px}
+.modal-sub{font-size:.78rem;color:var(--muted);margin-bottom:16px}
+.modal-field{margin-bottom:12px}
+.modal-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}
+.modal-val{font-size:.88rem}
+.modal-actions{display:flex;gap:8px;margin-top:16px}
+.modal-close{position:absolute;display:none}
+.close-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.8rem}
+.close-btn:hover{background:var(--dim)}
+
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+</style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">Wild<span>rose</span></div>
-  <div class="tabs">
-    <button class="tab active" onclick="nav('dash',this)">Dashboard</button>
+  <div class="logo">
+    <div class="logo-icon">🌹</div>
+    <div>
+      <div class="logo-text">Wildrose</div>
+      <div class="logo-sub">Lead Manager</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab active" onclick="nav('dash',this)">Overview</button>
+    <button class="tab" onclick="nav('pipeline',this)">Pipeline</button>
     <button class="tab" onclick="nav('replies',this)">Replies <span class="badge" id="replyBadge" style="display:none">0</span></button>
     <button class="tab" onclick="nav('calls',this)">Calls</button>
-    <button class="tab" onclick="nav('analytics',this)">Analytics</button>
-    <button class="tab" onclick="nav('coach',this)">📞</button>
+  </div>
+  <div class="nav-right">
+    <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
   </div>
 </nav>
 
-<!-- DASHBOARD -->
-<div class="page active" id="pg-dash">
-  <div class="stat-grid">
-    <div class="stat"><div class="stat-lbl">Sent Today</div><div class="stat-val" style="color:var(--blue)" id="sSent">0</div><div class="stat-sub">Total outreach</div></div>
-    <div class="stat"><div class="stat-lbl">Replies</div><div class="stat-val" style="color:var(--green)" id="sReplies">0</div><div class="stat-sub" id="sRate">0% reply rate</div></div>
-    <div class="stat"><div class="stat-lbl">Calls Booked</div><div class="stat-val" style="color:var(--yellow)" id="sCalls">0</div><div class="stat-sub">Scheduled</div></div>
-    <div class="stat"><div class="stat-lbl">Auto-Replied</div><div class="stat-val" style="color:var(--purple)" id="sAuto">—</div><div class="stat-sub">By AI</div></div>
-  </div>
-  <div><div class="sec-title">Pipeline</div><div class="pipeline" id="pipelineView"></div></div>
-  <div><div class="sec-title">Recent Replies</div><div id="dashReplies" class="pipeline"><div class="empty-state">No replies yet</div></div></div>
-</div>
-
-<!-- REPLIES -->
-<div class="page" id="pg-replies">
-  <div id="repliesContainer" style="display:contents"></div>
-</div>
-
-<!-- CALLS -->
+<div class="page active" id="pg-dash"></div>
+<div class="page" id="pg-pipeline"></div>
+<div class="page" id="pg-replies"></div>
 <div class="page" id="pg-calls">
-  <div class="add-call-bar">
-    <input class="call-input" id="callName" placeholder="Company name..." />
-    <input class="call-input" id="callTime" placeholder="When? (e.g. Thurs after 6)" style="max-width:180px"/>
-    <input class="call-input" id="callPhone" placeholder="Phone" style="max-width:130px"/>
-    <button class="add-btn" onclick="addCall()">+ Add</button>
-  </div>
-  <div id="callList" style="display:contents"></div>
-  <!-- WEEKLY CALENDAR -->
-  <div style="padding:4px 0 6px"><div class="sec-title" style="padding:0">🗓 Weekly Schedule</div></div>
-  <div class="cal-wrap" id="calWrap">
-    <div class="cal-header">
-      <div class="cal-time-col"></div>
-      <div class="cal-days" id="calDayHeaders"></div>
+  <div style="padding:14px">
+    <div class="add-bar" style="margin-bottom:12px">
+      <input class="add-input" id="callInput" placeholder="Add call — e.g. Jason @ Abacus Plumbing, 2pm Thu"/>
+      <button class="add-btn" onclick="addCall()">+ Add</button>
     </div>
-    <div class="cal-body">
-      <div class="cal-time-labels" id="calTimeLabels"></div>
-      <div class="cal-grid" id="calGrid"></div>
-    </div>
-    <div class="cal-sync-btn" onclick="saveScheduleToGitHub()">
-      <span id="calSyncStatus">⬆️ Sync to GitHub</span>
-    </div>
-  </div>
-</div>
-
-<!-- ANALYTICS -->
-<div class="page" id="pg-analytics">
-  <div><div class="sec-title">Response Rate</div>
-    <div class="rate-grid">
-      <div class="rate-card"><div class="rate-val" style="color:var(--blue)" id="aSent">0</div><div class="rate-lbl">Sent</div></div>
-      <div class="rate-card"><div class="rate-val" style="color:var(--green)" id="aReplied">0</div><div class="rate-lbl">Replied</div></div>
-      <div class="rate-card"><div class="rate-val" style="color:var(--yellow)" id="aRate">0%</div><div class="rate-lbl">Reply Rate</div></div>
-    </div>
-  </div>
-  <div><div class="sec-title">By Business Type</div><div class="chart-card"><div class="bar-chart" id="typeChart"></div></div></div>
-  <div><div class="sec-title">Status Breakdown</div><div class="pipeline" id="statusBreak"></div></div>
-</div>
-
-<!-- CALL COACH -->
-<div class="page" id="pg-coach">
-  <div class="coach-lead-bar">
-    <select class="coach-select" id="coachSel"><option value="">— Select lead —</option></select>
-    <button class="coach-load" onclick="loadCoach()">Load</button>
-  </div>
-  <div class="coach-ctx" id="coachCtx">
-    <div class="ctx-row">
-      <div><div class="ctx-lbl">Business</div><div class="ctx-val" id="cBiz">—</div></div>
-      <div><div class="ctx-lbl">Type</div><div class="ctx-val" id="cType">—</div></div>
-      <div><div class="ctx-lbl">City</div><div class="ctx-val" id="cCity">—</div></div>
-      <div><div class="ctx-lbl">Contact</div><div class="ctx-val" id="cContact">—</div></div>
-    </div>
-    <div class="ctx-angle" id="cAngle">—</div>
-  </div>
-  <div class="coach-phases">
-    <div class="cphase active" data-p="opener" onclick="setPhase('opener')">Opener</div>
-    <div class="cphase" data-p="discovery" onclick="setPhase('discovery')">Discovery</div>
-    <div class="cphase" data-p="pitch" onclick="setPhase('pitch')">Pitch</div>
-    <div class="cphase" data-p="objection" onclick="setPhase('objection')">Objection</div>
-    <div class="cphase" data-p="close" onclick="setPhase('close')">Close</div>
-  </div>
-  <div class="coach-main">
-    <div class="coach-lbl">SAY THIS</div>
-    <div class="coach-say dim" id="coachSay">Load a lead to start.</div>
-  </div>
-  <div class="obj-bar">
-    <div class="obj-chip" onclick="handleObj('too expensive')">💸 Price</div>
-    <div class="obj-chip" onclick="handleObj('not interested')">🚫 Not interested</div>
-    <div class="obj-chip" onclick="handleObj('already have someone')">👤 Have someone</div>
-    <div class="obj-chip" onclick="handleObj('too busy right now')">⏰ Too busy</div>
-    <div class="obj-chip" onclick="handleObj('send me more info')">📧 Info</div>
-    <div class="obj-chip" onclick="handleObj('how does it work')">❓ How it works</div>
-  </div>
-  <div class="coach-tx" id="coachTx"><p style="color:#222">Transcript...</p></div>
-  <div class="coach-ctrl">
-    <button id="micBtn" class="off" onclick="toggleMic()">🎙 Start Listening</button>
-    <button id="clrBtn" onclick="clearCoach()">Clear</button>
-  </div>
-</div>
-
-<!-- REPLY POPUP -->
-<div id="popup">
-  <div class="popup-card" style="position:relative">
-    <button class="popup-close" onclick="closePopup()">×</button>
-    <div class="popup-title" id="popupTitle">New Reply</div>
-    <div class="popup-sub" id="popupSub"></div>
-    <div class="popup-msg" id="popupMsg"></div>
-    <div class="popup-actions">
-      <button class="r-btn green" onclick="closePopup();nav('coach',document.querySelector('.tabs .tab:last-child'))">📞 Call Coach</button>
-      <button class="r-btn blue" onclick="addCallFromPopup()">📅 Schedule Call</button>
-      <button class="r-btn" onclick="closePopup()">Dismiss</button>
-    </div>
+    <div id="callList"></div>
   </div>
 </div>
 
 <div id="toast"></div>
 
+<div id="modal">
+  <div class="modal-card" id="modalCard">
+    <div id="modalContent"></div>
+    <div class="modal-actions">
+      <button class="close-btn" onclick="closeModal()" style="flex:1">Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const TOKEN='am_us_eb590201635e5a67541a0e4c6eb32c5d6b144eb5cf48a5ca7ce9bece7940c11f';
-const INBOX='wildroseautomations@agentmail.to';
-const GEMINI='AIzaSyCDXNM5Ii5-0nnFLbBuKXQpSJBGmDZ_FTg';
-const SUPABASE_URL='https://xacehhtgvubcqdoltazg.supabase.co';
-const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhY2VoaHRndnViY3Fkb2x0YXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDI4NjcsImV4cCI6MjA4OTUxODg2N30.GGS5D4RLLkMdMn17GIBgjHkEn6d-HH9AXIzTBwSAzv8';
+const SUPABASE_URL = 'https://xacehhtgvubcqdoltazg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhY2VoaHRndnViY3Fkb2x0YXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDI4NjcsImV4cCI6MjA4OTUxODg2N30.GGS5D4RLLkMdMn17GIBgjHkEn6d-HH9AXIzTBwSAzv8';
+const AM_KEY = 'am_us_eb590201635e5a67541a0e4c6eb32c5d6b144eb5cf48a5ca7ce9bece7940c11f';
+const AM_INBOX = 'jack@wildroseautomations.ca';
 
-let leads=[], replies=[], calls=[], blocks=[], knownReplyIds=new Set(), coachLead=null, coachPhase='opener';
-let recognition=null, isListening=false, coachTimer=null, pendingChunk='', coachTx=[];
-let popupReply=null;
-let readIds=new Set(JSON.parse(localStorage.getItem('wrl_read')||'[]'));
+let leads = [], replies = [], calls = JSON.parse(localStorage.getItem('wr_calls') || '[]');
 
-function nav(id,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('pg-'+id).classList.add('active');
-  if(btn)btn.classList.add('active');
-  if(id==='calls')setTimeout(renderCalendar,50);
-  if(id==='analytics')renderAnalytics();
+const STATUS_COLORS = {
+  contacted: '#3b82f6',
+  replied: '#d4a843',
+  booked: '#22c55e',
+  bounced: '#ef4444',
+  dead: '#4a4a6a'
+};
+const STATUS_ORDER = ['booked','replied','contacted','bounced','dead'];
+
+function nav(page, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('pg-' + page).classList.add('active');
+  btn.classList.add('active');
+  if (page === 'pipeline') renderPipeline();
+  if (page === 'replies') renderReplies();
+  if (page === 'dash') renderDash();
+  if (page === 'calls') renderCalls();
 }
 
-function toast(msg,ms=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),ms);}
+async function loadAll() {
+  toast('Refreshing...');
+  await Promise.all([loadLeads(), loadReplies()]);
+  const activePage = document.querySelector('.page.active').id.replace('pg-','');
+  if (activePage === 'pipeline') renderPipeline();
+  else if (activePage === 'replies') renderReplies();
+  else if (activePage === 'dash') renderDash();
+  toast('Updated');
+}
 
-// DATA
-function getLocal(){return JSON.parse(localStorage.getItem('wrl')||'[]');}
-function saveLocal(lead){let all=getLocal();const i=all.findIndex(l=>l.id===lead.id);if(i>=0)all[i]=lead;else all.push(lead);localStorage.setItem('wrl',JSON.stringify(all));}
-function getCalls(){return JSON.parse(localStorage.getItem('wrl_calls')||'[]');}
-function saveCalls(){localStorage.setItem('wrl_calls',JSON.stringify(calls));}
-
-async function loadLeads(){
-  try{
-    const r=await fetch(`${SUPABASE_URL}/rest/v1/leads?order=contacted_at.desc`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function loadLeads() {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/leads?order=contacted_at.desc&limit=200`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
     });
-    if(r.ok){
-      const data=await r.json();
-      leads=data.map(l=>({
-        id:l.id, email:l.email,
-        name:l.company||l.name||l.email,
-        company:l.company, industry:l.industry,
-        location:l.location, notes:l.notes,
-        status:l.status, thread_id:l.thread_id,
-        contacted_at:l.contacted_at, last_reply_at:l.last_reply_at,
-        follow_up_count:l.follow_up_count
-      }));
-    }
-  }catch(e){ leads=[]; }
+    leads = await r.json();
+  } catch(e) { leads = []; }
 }
 
-async function updateLeadStatus(leadId, newStatus){
-  try{
-    await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${leadId}`,{
-      method:'PATCH',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body:JSON.stringify({status:newStatus})
+async function loadReplies() {
+  try {
+    const r = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(AM_INBOX)}/messages?limit=100`, {
+      headers: { 'Authorization': 'Bearer ' + AM_KEY }
     });
-    const lead=leads.find(l=>l.id===leadId);
-    if(lead){ lead.status=newStatus; renderDashboard(); }
-    toast('Status updated: '+newStatus);
-  }catch(e){ toast('Failed to update status'); }
+    const d = await r.json();
+    const all = d.messages || [];
+    replies = all.filter(m => (m.labels || []).includes('received') && !(m.from || '').includes('mailer-daemon'));
+    // badge
+    const unread = replies.filter(m => (m.labels || []).includes('unread')).length;
+    const badge = document.getElementById('replyBadge');
+    badge.style.display = unread > 0 ? '' : 'none';
+    badge.textContent = unread;
+  } catch(e) { replies = []; }
 }
 
-async function init(){
-  // Load leads from Supabase
-  await loadLeads();
-
-  // Load calls and blocks
-  calls=getCalls();
-  blocks=JSON.parse(localStorage.getItem('wrl_blocks')||'[]');
-
-  // Poll live AgentMail inbox
-  await fetchReplies(true);
-
-  renderDashboard();
-  renderRepliesPage();
-  renderCalls();
-  renderCalendar();
-  populateCoachLeads();
-
-  // Poll for new replies every 60 seconds
-  setInterval(()=>fetchReplies(false),60000);
+function getLeadForThread(tid) {
+  return leads.find(l => l.thread_id === tid);
 }
 
-async function fetchThreadMessages(threadId){
-  try{
-    const r=await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(INBOX)}/threads/${threadId}/messages`,{headers:{Authorization:`Bearer ${TOKEN}`}});
-    if(r.ok){ const d=await r.json(); return d.messages||d.data||[]; }
-  }catch(e){}
-  return [];
-}
+// ── DASHBOARD ──
+function renderDash() {
+  const total = leads.length;
+  const replied = leads.filter(l => l.status === 'replied' || l.last_reply_at).length;
+  const booked = leads.filter(l => l.status === 'booked').length;
+  const bounced = leads.filter(l => l.status === 'bounced').length;
+  const reply_rate = total > 0 ? Math.round(replied/total*100) : 0;
 
-async function fetchReplies(initial=false){
-  try{
-    const r=await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(INBOX)}/messages?limit=50`,{headers:{Authorization:`Bearer ${TOKEN}`}});
-    const d=await r.json();
-    // Filter for received (inbound) messages only
-    const allMsgs=(d.messages||d.data||[]).filter(m=>{
-      const labels=m.labels||[];
-      return labels.includes('received');
-    });
-    const threadMap={};
-    allMsgs.forEach(m=>{
-      const tid=m.thread_id||m.message_id;
-      if(!threadMap[tid])threadMap[tid]=[];
-      threadMap[tid].push(m);
-    });
-    // Build reply objects per thread
-    const msgs=Object.values(threadMap).map(threadMsgs=>{
-      threadMsgs.sort((a,b)=>new Date(a.timestamp||a.created_at)-new Date(b.timestamp||b.created_at));
-      const latest=threadMsgs[threadMsgs.length-1];
-      // Match to lead via thread_id for company name
-      const matchedLead=leads.find(l=>l.thread_id&&l.thread_id===latest.thread_id);
-      const displayName=matchedLead?(matchedLead.company||matchedLead.name||latest.from):latest.from;
-      const thread=threadMsgs.map(m=>{
-        const isUs=(m.from||'').toLowerCase().includes('wildroseautomations')||(m.from||'').toLowerCase().includes('wildrose sales');
-        return { from: isUs?'Wildrose Sales Team':m.from, time: m.timestamp||m.created_at, text: m.preview||'' };
-      });
-      return { id: latest.message_id||latest.timestamp, from: displayName, subject: latest.subject, timestamp: latest.timestamp||latest.created_at, preview: latest.preview, thread_id: latest.thread_id, lead_id: matchedLead?matchedLead.id:null, thread, status:'auto_replied' };
-    });
+  const recent = [...leads].slice(0, 8);
 
-    if(initial){
-      msgs.forEach(m=>knownReplyIds.add(m.message_id||m.timestamp));
-      replies=msgs;
-    } else {
-      const newOnes=msgs.filter(m=>!knownReplyIds.has(m.message_id||m.timestamp));
-      newOnes.forEach(m=>knownReplyIds.add(m.message_id||m.timestamp));
-      if(newOnes.length>0){
-        replies=msgs;
-        renderDashboard();
-        renderRepliesPage();
-        // Show popup for the first new reply
-        showPopup(newOnes[0]);
-        // Update badge
-        document.getElementById('replyBadge').style.display='inline-flex';
-        document.getElementById('replyBadge').textContent=replies.length;
-      }
-    }
+  document.getElementById('pg-dash').innerHTML = `
+    <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+      <div class="stat-row">
+        <div class="stat gold-stat">
+          <div class="stat-lbl">Total Leads</div>
+          <div class="stat-val">${total}</div>
+          <div class="stat-sub">all time</div>
+        </div>
+        <div class="stat">
+          <div class="stat-lbl">Replied</div>
+          <div class="stat-val" style="color:var(--gold)">${replied}</div>
+          <div class="stat-sub">${reply_rate}% reply rate</div>
+        </div>
+        <div class="stat">
+          <div class="stat-lbl">Booked</div>
+          <div class="stat-val" style="color:var(--green)">${booked}</div>
+          <div class="stat-sub">calls scheduled</div>
+        </div>
+        <div class="stat">
+          <div class="stat-lbl">Bounced</div>
+          <div class="stat-val" style="color:var(--red)">${bounced}</div>
+          <div class="stat-sub">bad emails</div>
+        </div>
+      </div>
 
-    // Update badge — show unread count
-    const unread=replies.filter(r=>!readIds.has(String(r.id||r.message_id||r.timestamp))).length;
-    const badge=document.getElementById('replyBadge');
-    if(unread>0){badge.style.display='inline-flex';badge.textContent=unread;}
-    else badge.style.display='none';
-  }catch(e){}
-}
+      <div>
+        <div class="section-label" style="margin-bottom:10px">Pipeline Breakdown</div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          ${STATUS_ORDER.map(s => {
+            const count = leads.filter(l => l.status === s).length;
+            const pct = total > 0 ? Math.round(count/total*100) : 0;
+            return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--border)">
+              <div style="width:8px;height:8px;border-radius:50%;background:${STATUS_COLORS[s]||'#555'};flex-shrink:0"></div>
+              <div style="flex:1;font-size:.82rem;text-transform:capitalize">${s}</div>
+              <div style="flex:2;height:4px;background:var(--dim);border-radius:2px;overflow:hidden">
+                <div style="height:100%;width:${pct}%;background:${STATUS_COLORS[s]||'#555'};border-radius:2px;transition:width .5s"></div>
+              </div>
+              <div style="font-size:.82rem;font-weight:700;width:24px;text-align:right">${count}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
 
-// POPUP
-function showPopup(reply){
-  popupReply=reply;
-  document.getElementById('popupTitle').textContent='🔔 New Reply!';
-  document.getElementById('popupSub').textContent=reply.from+' · '+timeAgo(reply.timestamp||reply.created_at);
-  document.getElementById('popupMsg').textContent=reply.preview||(reply.subject||'(no preview)');
-  document.getElementById('popup').classList.add('show');
-}
-function closePopup(){document.getElementById('popup').classList.remove('show');}
-function addCallFromPopup(){
-  if(!popupReply)return;
-  const name=popupReply.from.split('<')[0].trim()||'Unknown';
-  calls.unshift({id:Date.now(),name,time:'TBD',done:false,from:popupReply.from});
-  saveCalls();renderCalls();
-  toast('📅 Added to call schedule');
-  closePopup();
-  nav('calls',document.querySelector('.tab:nth-child(3)'));
-}
-
-// DASHBOARD
-function timeAgo(ts){if(!ts)return'';const d=(Date.now()-new Date(ts))/1000;if(d<3600)return Math.round(d/60)+'m';if(d<86400)return Math.round(d/3600)+'h';return Math.round(d/86400)+'d';}
-
-function renderDashboard(){
-  const totalSent=leads.length;
-  const repliedCount=leads.filter(l=>l.status==='replied'||l.last_reply_at).length;
-  const bookedCount=leads.filter(l=>l.status==='booked').length;
-  const bouncedCount=leads.filter(l=>l.status==='bounced').length;
-  const callCount=calls.filter(c=>!c.done).length;
-  const rate=totalSent>0?((repliedCount/totalSent)*100).toFixed(1):0;
-
-  document.getElementById('sSent').textContent=totalSent;
-  document.getElementById('sReplies').textContent=repliedCount;
-  document.getElementById('sRate').textContent=rate+'% reply rate';
-  document.getElementById('sCalls').textContent=bookedCount||callCount;
-  document.getElementById('sAuto').textContent=replies.length+'↩';
-
-  // Pipeline
-  const p=[
-    {l:'Contacted',c:leads.filter(l=>l.status==='contacted').length,col:'var(--blue)'},
-    {l:'Replied',c:repliedCount,col:'var(--green)'},
-    {l:'Booked',c:bookedCount,col:'var(--yellow)'},
-    {l:'Bounced',c:bouncedCount,col:'var(--red)'},
-    {l:'Dead',c:leads.filter(l=>l.status==='dead').length,col:'var(--muted)'},
-  ];
-  const maxP=Math.max(...p.map(x=>x.c),1);
-  document.getElementById('pipelineView').innerHTML=p.map(x=>`
-    <div class="pipe-row">
-      <div class="pipe-dot" style="background:${x.col}"></div>
-      <div class="pipe-lbl">${x.l}</div>
-      <div class="pipe-bar-wrap"><div class="pipe-bar" style="background:${x.col};width:${Math.round((x.c/maxP)*100)}%"></div></div>
-      <div class="pipe-count">${x.c}</div>
-    </div>`).join('');
-
-  // Recent replies on dash
-  const dr=document.getElementById('dashReplies');
-  if(!replies.length){dr.innerHTML='<div class="empty-state">No replies yet — check back after 8 AM</div>';return;}
-  const colors=['#3b82f6','#22c55e','#f97316','#a855f7','#ef4444'];
-  dr.innerHTML=replies.slice(0,4).map((r,i)=>{
-    const init=(r.from||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-    return `<div class="pipe-row" style="cursor:pointer" onclick="nav('replies',document.querySelector('.tab:nth-child(2)'))">
-      <div style="width:32px;height:32px;border-radius:50%;background:${colors[i%5]}22;color:${colors[i%5]};display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0">${init}</div>
-      <div style="flex:1;min-width:0"><div style="font-size:.85rem;font-weight:600">${r.from||'Unknown'}</div><div style="font-size:.75rem;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.preview||''}</div></div>
-      <div style="font-size:.7rem;color:var(--muted2)">${timeAgo(r.timestamp||r.created_at)}</div>
+      <div>
+        <div class="section-label" style="margin-bottom:10px">Recent Leads</div>
+        <div class="activity-list">
+          ${recent.map(l => `
+            <div class="activity-item" onclick="showLead(${l.id})" style="cursor:pointer">
+              <div class="act-dot" style="background:${STATUS_COLORS[l.status]||'#555'}"></div>
+              <div class="act-text"><strong>${l.company||l.name||l.email}</strong>${l.name && l.company ? ' · ' + l.name : ''}</div>
+              <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.5px;padding:2px 6px;border-radius:4px;background:var(--dim);color:var(--muted)">${l.status}</div>
+              <div class="act-time">${timeAgo(l.contacted_at)}</div>
+            </div>`).join('')}
+        </div>
+      </div>
     </div>`;
-  }).join('');
 }
 
-// REPLIES PAGE
-function markRead(id){ readIds.add(id); localStorage.setItem('wrl_read',JSON.stringify([...readIds])); }
+// ── PIPELINE ──
+function renderPipeline() {
+  const cols = STATUS_ORDER.map(status => {
+    const colLeads = leads.filter(l => l.status === status);
+    return `<div class="pipe-col">
+      <div class="pipe-header">
+        <div class="pipe-title" style="color:${STATUS_COLORS[status]}">${status}</div>
+        <div class="pipe-count-badge">${colLeads.length}</div>
+      </div>
+      ${colLeads.length === 0 ? `<div style="font-size:.75rem;color:var(--muted);padding:16px;text-align:center">Empty</div>` : ''}
+      ${colLeads.map(l => {
+        const initials = (l.company || l.name || l.email || '?').slice(0,2).toUpperCase();
+        const ind = l.industry || 'default';
+        return `<div class="lead-card ${l.status==='replied'?'hot':''}" onclick="showLead(${l.id})">
+          <div class="lead-company">${l.company || l.email}</div>
+          ${l.name ? `<div class="lead-name">${l.name}</div>` : ''}
+          <div class="lead-industry ind-${ind}">${ind.replace('_',' ')}</div>
+          <div class="lead-footer">
+            <div class="lead-date">${timeAgo(l.contacted_at)}</div>
+            <div class="lead-dot" style="background:${STATUS_COLORS[l.status]||'#555'}"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
 
-function toggleReply(id){
-  const body=document.getElementById('rb-'+id);
-  const chev=document.getElementById('rc-'+id);
-  const card=document.getElementById('rcard-'+id);
-  if(!body)return;
-  const open=body.classList.toggle('open');
-  if(chev)chev.classList.toggle('open',open);
-  if(open){
-    markRead(id);
-    if(card){card.classList.remove('unread');card.classList.add('read');}
-    // Update badge
-    const unread=replies.filter(r=>!readIds.has(r.id||r.message_id||r.timestamp)).length;
-    const badge=document.getElementById('replyBadge');
-    if(unread>0){badge.style.display='inline-flex';badge.textContent=unread;}
-    else badge.style.display='none';
+  document.getElementById('pg-pipeline').innerHTML = cols.join('');
+}
+
+// ── REPLIES ──
+function renderReplies() {
+  if (!replies.length) {
+    document.getElementById('pg-replies').innerHTML = `<div class="empty"><div class="empty-icon">📭</div>No replies yet</div>`;
+    return;
   }
-}
 
-function renderRepliesPage(){
-  const c=document.getElementById('repliesContainer');
-  if(!replies.length){c.innerHTML='<div class="empty-state">No replies yet.<br><br>Emails go out automatically at 8 AM every morning.</div>';return;}
-  const colors=['#3b82f6','#22c55e','#f97316','#a855f7','#ef4444'];
-  c.innerHTML=replies.map((r,i)=>{
-    const rid=r.id||r.message_id||r.timestamp||i;
-    const isUnread=!readIds.has(String(rid));
-    const thread=r.thread||[];
-    const initials=(r.from||'U').replace(/<.*>/,'').trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-    const col=colors[i%5];
-    const threadHtml=thread.map(msg=>{
-      const isUs=msg.from&&(msg.from.toLowerCase().includes('wildrose')||msg.from.toLowerCase().includes('wildroseautomations'));
-      return `<div style="margin-bottom:8px">
-        <div style="font-size:.65rem;color:${isUs?'var(--blue)':'var(--green)'};font-weight:700;margin-bottom:2px">${isUs?'📤 Wildrose':'📥 '+(msg.from||'').replace(/<.*>/,'').trim()} · ${timeAgo(msg.time)}</div>
-        <div style="font-size:.78rem;color:#bbb;line-height:1.6;padding:7px 10px;background:#0a0a0a;border-left:2px solid ${isUs?'var(--blue)':'var(--green)'};border-radius:0 6px 6px 0;white-space:pre-wrap">${stripGmailQuotes(msg.text||'')}</div>
-      </div>`;
-    }).join('');
+  const html = replies.map(m => {
+    const unread = (m.labels || []).includes('unread');
+    const fromName = (m.from || '').replace(/<.*>/, '').trim() || 'Unknown';
+    const lead = getLeadForThread(m.thread_id);
+    const initials = fromName.slice(0,2).toUpperCase();
+    const timeStr = m.timestamp ? new Date(m.timestamp).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
 
-    return `<div class="reply-card ${isUnread?'unread':'read'}" id="rcard-${rid}">
-      <div class="reply-row" onclick="toggleReply('${rid}')">
-        <div class="${isUnread?'unread-dot':'read-dot'}"></div>
-        <div class="reply-avatar" style="background:${col}22;color:${col}">${initials}</div>
-        <div class="reply-snippet">
-          <div class="reply-from">${(r.from||'Unknown').replace(/<.*>/,'').trim()}</div>
-          <div class="reply-preview-line">${r.preview||r.subject||''}</div>
+    return `<div class="reply-card ${unread ? 'unread' : ''}" id="reply-${m.message_id.replace(/[^a-z0-9]/gi,'_')}">
+      <div class="reply-row" onclick="toggleReply(this)">
+        <div class="avatar">${initials}</div>
+        <div class="reply-info">
+          <div class="reply-from">${fromName}</div>
+          ${lead ? `<div class="reply-company">${lead.company || lead.email}</div>` : ''}
+          <div class="reply-preview">${m.preview || m.subject || ''}</div>
         </div>
         <div class="reply-meta">
-          <div class="reply-time">${timeAgo(r.timestamp||r.created_at)}</div>
-          ${r.status==='auto_replied'?'<div style="font-size:.6rem;color:var(--green)">✅ AI replied</div>':''}
-          <div class="reply-chevron" id="rc-${rid}">▾</div>
+          <div class="reply-time">${timeStr}</div>
+          ${unread ? `<div class="unread-pip"></div>` : ''}
         </div>
       </div>
-      <div class="reply-body" id="rb-${rid}">
-        ${r.phone?`<div style="font-size:.78rem;color:var(--green);margin-bottom:8px">📞 ${r.phone}</div>`:''}
-        ${thread.length?`<div style="margin-bottom:2px">${threadHtml}</div>`:`<div style="font-size:.8rem;color:#bbb;padding:8px 10px;background:#0a0a0a;border-left:2px solid var(--green);border-radius:0 6px 6px 0;margin-bottom:10px">${r.preview||'(no preview)'}</div>`}
+      <div class="reply-body">
+        <div class="reply-text">${(m.preview || '').slice(0, 800)}</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-bottom:10px">From: ${m.from} · ${m.subject}</div>
         <div class="reply-actions">
-          <button class="r-btn green" onclick="nav('coach',document.querySelector('.tab:last-child'))">📞 Coach</button>
-          <button class="r-btn blue" onclick="scheduleFromReply('${encodeURIComponent(r.from||'')}','${encodeURIComponent(r.phone||'')}')">📅 Schedule</button>
-          ${r.lead_id?`<button class="r-btn" onclick="updateLeadStatus('${r.lead_id}','booked');toast('✅ Marked booked')">✅ Booked</button>`:''}
-          ${r.lead_id?`<button class="r-btn" style="color:var(--muted2)" onclick="updateLeadStatus('${r.lead_id}','dead');toast('Marked dead')">✗ Dead</button>`:''}
+          ${lead ? `
+          <button class="r-btn green" onclick="updateStatus(${lead.id},'booked',this)">✅ Booked</button>
+          <button class="r-btn red" onclick="updateStatus(${lead.id},'dead',this)">❌ Dead</button>
+          ` : ''}
+          <button class="r-btn gold" onclick="replyTo('${m.from.replace(/'/g,"\\'")}','${(m.subject||'').replace(/'/g,"\\'")}','${m.thread_id}')">↩ Reply</button>
         </div>
       </div>
     </div>`;
   }).join('');
+
+  document.getElementById('pg-replies').innerHTML = html;
 }
 
-function scheduleFromReply(encodedFrom, encodedPhone){
-  const from=decodeURIComponent(encodedFrom);
-  const phone=decodeURIComponent(encodedPhone||'');
-  const name=from.split('<')[0].trim()||from;
-  calls.unshift({id:Date.now(),name,time:'TBD',done:false,phone});
-  saveCalls();renderCalls();
-  toast('📅 Added to schedule');
-  nav('calls',document.querySelector('.tab:nth-child(3)'));
+function toggleReply(row) {
+  const body = row.nextElementSibling;
+  body.classList.toggle('open');
 }
 
-// CALL SCHEDULE
-function renderCalls(){
-  const c=document.getElementById('callList');
-  if(!calls.length){c.innerHTML='<div class="empty-state">No calls scheduled yet.<br>Replies come in → click Schedule Call.</div>';return;}
-  c.innerHTML=calls.map(call=>`
-    <div class="call-card ${call.done?'done':''}">
-      <div class="call-dot ${call.done?'done':''}"></div>
+async function updateStatus(leadId, status, btn) {
+  btn.disabled = true;
+  btn.textContent = '...';
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${leadId}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status })
+    });
+    const lead = leads.find(l => l.id === leadId);
+    if (lead) lead.status = status;
+    toast(`Status updated to ${status}`);
+  } catch(e) { toast('Update failed'); }
+  btn.disabled = false;
+}
+
+function replyTo(to, subject, threadId) {
+  const text = prompt(`Reply to ${to}:`);
+  if (!text) return;
+  const replySubject = subject.startsWith('Re:') ? subject : 'Re: ' + subject;
+  fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(AM_INBOX)}/messages/send`, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + AM_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ to: [to], subject: replySubject, text, thread_id: threadId })
+  }).then(() => toast('Reply sent')).catch(() => toast('Send failed'));
+}
+
+// ── LEAD MODAL ──
+function showLead(id) {
+  const l = leads.find(x => x.id === id);
+  if (!l) return;
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-title">${l.company || l.email}</div>
+    <div class="modal-sub" style="color:var(--gold)">${l.status}</div>
+    <div class="modal-field"><div class="modal-label">Contact</div><div class="modal-val">${l.name || '—'}</div></div>
+    <div class="modal-field"><div class="modal-label">Email</div><div class="modal-val">${l.email}</div></div>
+    <div class="modal-field"><div class="modal-label">Industry</div><div class="modal-val">${l.industry || '—'}</div></div>
+    <div class="modal-field"><div class="modal-label">Location</div><div class="modal-val">${l.location || '—'}</div></div>
+    <div class="modal-field"><div class="modal-label">Notes</div><div class="modal-val" style="font-size:.8rem;color:#aaa">${l.notes || '—'}</div></div>
+    <div class="modal-field"><div class="modal-label">Contacted</div><div class="modal-val">${l.contacted_at ? new Date(l.contacted_at).toLocaleDateString('en-CA') : '—'}</div></div>
+    <div class="modal-field"><div class="modal-label">Follow-ups</div><div class="modal-val">${l.follow_up_count || 0}</div></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      ${['contacted','replied','booked','dead'].map(s =>
+        `<button class="r-btn ${s==='booked'?'green':s==='dead'?'red':''}" style="flex:none" onclick="updateStatus(${l.id},'${s}',this)">${s}</button>`
+      ).join('')}
+    </div>`;
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+// ── CALLS ──
+function renderCalls() {
+  const el = document.getElementById('callList');
+  if (!calls.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📞</div>No calls scheduled</div>';
+    return;
+  }
+  el.innerHTML = calls.map((c, i) => `
+    <div class="call-card ${c.done ? 'done' : ''}" style="margin-bottom:8px">
+      <div class="call-status-dot ${c.done ? 'done' : ''}"></div>
       <div class="call-info">
-        <div class="call-name">${call.name}</div>
-        <div class="call-detail">📅 ${call.time||'TBD'} ${call.phone?'· 📞 '+call.phone:''}</div>
+        <div class="call-name">${c.text}</div>
+        <div class="call-detail">${c.added ? new Date(c.added).toLocaleDateString('en-CA') : ''}</div>
       </div>
       <div class="call-actions">
-        ${!call.done?`<button class="call-act done-btn" onclick="markCallDone(${call.id})">✓ Done</button>`:''}
-        <button class="call-act" onclick="deleteCall(${call.id})">✕</button>
+        ${!c.done ? `<button class="call-act done-btn" onclick="markCallDone(${i})">✓ Done</button>` : ''}
+        <button class="call-act" onclick="removeCall(${i})">✕</button>
       </div>
     </div>`).join('');
 }
 
-function addCall(){
-  const name=document.getElementById('callName').value.trim();
-  const time=document.getElementById('callTime').value.trim();
-  const phone=document.getElementById('callPhone').value.trim();
-  if(!name)return;
-  calls.unshift({id:Date.now(),name,time:time||'TBD',phone,done:false});
-  saveCalls();renderCalls();renderCalBlocks();
-  document.getElementById('callName').value='';
-  document.getElementById('callTime').value='';
-  document.getElementById('callPhone').value='';
-  toast('📅 Call added');
-  debounceSaveSchedule();
+function addCall() {
+  const input = document.getElementById('callInput');
+  const text = input.value.trim();
+  if (!text) return;
+  calls.unshift({ text, done: false, added: new Date().toISOString() });
+  localStorage.setItem('wr_calls', JSON.stringify(calls));
+  input.value = '';
+  renderCalls();
 }
 
-// ── STRIP GMAIL QUOTE CHAINS ──
-function stripGmailQuotes(text){
-  if(!text)return'';
-  // Remove "On [date], ... wrote:" followed by quoted block
-  let t=text;
-  // Remove trailing Gmail quote blocks starting with "On ... wrote:"
-  t=t.replace(/\r\n/g,'\n');
-  // Strip lines that are part of "On <date> <person> wrote:" pattern + following quoted lines
-  t=t.replace(/\n?On .{5,120}wrote:\s*[\s\S]*/i,'');
-  // Also strip "> " quoted lines at end
-  t=t.replace(/(\n>.*)+$/,'');
-  return t.trim();
+function markCallDone(i) { calls[i].done = true; localStorage.setItem('wr_calls', JSON.stringify(calls)); renderCalls(); }
+function removeCall(i) { calls.splice(i,1); localStorage.setItem('wr_calls', JSON.stringify(calls)); renderCalls(); }
+
+// ── UTILS ──
+function timeAgo(iso) {
+  if (!iso) return '';
+  const diff = (Date.now() - new Date(iso)) / 1000;
+  if (diff < 3600) return Math.round(diff/60) + 'm ago';
+  if (diff < 86400) return Math.round(diff/3600) + 'h ago';
+  return Math.round(diff/86400) + 'd ago';
 }
 
-// ── WEEKLY CALENDAR ──
-const CAL_DAYS=['mon','tue','wed','thu','fri','sat','sun'];
-const CAL_DAY_NAMES=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-const CAL_START_HOUR=7; // 7 AM
-const CAL_END_HOUR=22;  // 10 PM
-const CAL_HOURS=CAL_END_HOUR-CAL_START_HOUR; // 15 slots
-
-let calDragState=null; // {day, startSlot, endSlot, el}
-
-function getWeekDates(){
-  const now=new Date();
-  const dayOfWeek=now.getDay(); // 0=Sun
-  // Get Monday of current week
-  const monday=new Date(now);
-  const diff=dayOfWeek===0?-6:1-dayOfWeek;
-  monday.setDate(monday.getDate()+diff);
-  return CAL_DAYS.map((_,i)=>{
-    const d=new Date(monday);
-    d.setDate(monday.getDate()+i);
-    return d;
-  });
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
 }
 
-function dayIndexFromDate(d){
-  const dow=d.getDay(); // 0=Sun,1=Mon...
-  return dow===0?6:dow-1; // Map to 0=Mon..6=Sun
-}
+// Close modal on backdrop click
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
 
-function todayDayIndex(){
-  return dayIndexFromDate(new Date());
-}
-
-function slotToTime(slot){
-  const h=CAL_START_HOUR+slot;
-  return (h<10?'0':'')+h+':00';
-}
-
-function timeToSlot(timeStr){
-  if(!timeStr)return null;
-  const parts=timeStr.split(':');
-  const h=parseInt(parts[0]);
-  const m=parseInt(parts[1]||0);
-  const slot=(h-CAL_START_HOUR)+(m>=30?0.5:0);
-  if(slot<0||slot>=CAL_HOURS)return null;
-  return Math.floor(slot);
-}
-
-function renderCalendar(){
-  const weekDates=getWeekDates();
-  const todayIdx=todayDayIndex();
-
-  // Day headers
-  const dh=document.getElementById('calDayHeaders');
-  if(!dh)return;
-  dh.innerHTML=weekDates.map((d,i)=>`
-    <div class="cal-day-head${i===todayIdx?' today':''}">
-      <div class="day-name">${CAL_DAY_NAMES[i]}</div>
-      <div class="day-date">${d.getDate()}</div>
-    </div>`).join('');
-
-  // Time labels
-  const tl=document.getElementById('calTimeLabels');
-  tl.innerHTML=Array.from({length:CAL_HOURS+1},(_,i)=>{
-    const h=CAL_START_HOUR+i;
-    const label=h===12?'12p':(h>12?(h-12)+'p':h+'a');
-    return `<div class="cal-time-slot">${label}</div>`;
-  }).join('');
-
-  // Grid columns
-  const grid=document.getElementById('calGrid');
-  grid.innerHTML=CAL_DAYS.map((day,di)=>`
-    <div class="cal-col" id="calcol-${day}" data-day="${day}" data-di="${di}">
-      ${Array.from({length:CAL_HOURS},(_,si)=>`
-        <div class="cal-cell" data-day="${day}" data-slot="${si}" data-di="${di}"></div>
-      `).join('')}
-    </div>`).join('');
-
-  // Render blocks on the grid
-  renderCalBlocks();
-
-  // Attach drag listeners
-  attachCalDragListeners();
-}
-
-function renderCalBlocks(){
-  // Clear existing block overlays
-  document.querySelectorAll('.cal-block').forEach(el=>el.remove());
-
-  // Render blocked times (red)
-  blocks.forEach(b=>{
-    const startSlot=timeToSlot(b.start);
-    const endSlot=timeToSlot(b.end);
-    if(startSlot===null)return;
-    const endS=endSlot!==null?endSlot:CAL_HOURS;
-    const col=document.getElementById('calcol-'+b.day);
-    if(!col)return;
-    const el=document.createElement('div');
-    el.className='cal-block blocked';
-    el.style.top=(startSlot*36)+'px';
-    el.style.height=((endS-startSlot)*36-2)+'px';
-    el.textContent=b.label||(b.start+'–'+b.end);
-    el.title='Click to remove: '+b.label;
-    el.addEventListener('click',e=>{e.stopPropagation();deleteBlock(b.id);});
-    col.appendChild(el);
-  });
-
-  // Render scheduled calls (green)
-  calls.forEach(call=>{
-    if(call.done)return;
-    const parsed=parseCallTime(call.time||'');
-    if(!parsed)return;
-    const col=document.getElementById('calcol-'+parsed.day);
-    if(!col)return;
-    const el=document.createElement('div');
-    el.className='cal-block scheduled';
-    el.style.top=(parsed.slot*36)+'px';
-    el.style.height='34px';
-    el.textContent='📞 '+(call.name||'Call');
-    el.title=call.name+' · '+call.time+(call.phone?' · '+call.phone:'');
-    col.appendChild(el);
-  });
-}
-
-function parseCallTime(timeStr){
-  if(!timeStr)return null;
-  const t=timeStr.toLowerCase();
-  const weekDates=getWeekDates();
-  const todayIdx=todayDayIndex();
-
-  let dayIdx=null;
-  // Check for day names
-  const dayMap={monday:0,tuesday:1,wednesday:2,thursday:3,friday:4,saturday:5,sunday:6,mon:0,tue:1,wed:2,thu:3,fri:4,sat:5,sun:6,tomorrow:((todayIdx+1)%7),today:todayIdx};
-  for(const [k,v] of Object.entries(dayMap)){
-    if(t.includes(k)){dayIdx=v;break;}
-  }
-  if(dayIdx===null)return null;
-
-  // Extract hour
-  const ampm=t.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/);
-  let h=null;
-  if(ampm){
-    h=parseInt(ampm[1]);
-    if(ampm[3]==='pm'&&h<12)h+=12;
-    if(ampm[3]==='am'&&h===12)h=0;
-  } else {
-    const after=t.match(/after\s+(\d+)/);
-    if(after)h=parseInt(after[1])+(t.includes('pm')||parseInt(after[1])<8?12:0);
-  }
-  if(h===null)h=CAL_START_HOUR;
-
-  const slot=Math.max(0,Math.min(CAL_HOURS-1,h-CAL_START_HOUR));
-  return{day:CAL_DAYS[dayIdx],slot};
-}
-
-function attachCalDragListeners(){
-  const grid=document.getElementById('calGrid');
-  if(!grid)return;
-
-  let dragDay=null,dragStartSlot=null,dragEndSlot=null,dragEl=null;
-
-  function startDrag(e){
-    const cell=e.target.closest('.cal-cell');
-    if(!cell)return;
-    if(e.target.closest('.cal-block'))return;
-    dragDay=cell.dataset.day;
-    dragStartSlot=parseInt(cell.dataset.slot);
-    dragEndSlot=dragStartSlot;
-    const col=document.getElementById('calcol-'+dragDay);
-    // Create preview element
-    dragEl=document.createElement('div');
-    dragEl.className='cal-block blocked dragging';
-    dragEl.style.top=(dragStartSlot*36)+'px';
-    dragEl.style.height='34px';
-    dragEl.textContent='Blocked';
-    col.appendChild(dragEl);
-    e.preventDefault();
-  }
-
-  function moveDrag(e){
-    if(!dragDay)return;
-    const touch=e.touches?e.touches[0]:e;
-    const el=document.elementFromPoint(touch.clientX,touch.clientY);
-    if(!el)return;
-    const cell=el.closest?.('.cal-cell');
-    if(!cell||cell.dataset.day!==dragDay)return;
-    const slot=parseInt(cell.dataset.slot);
-    dragEndSlot=Math.max(dragStartSlot,slot);
-    if(dragEl){
-      dragEl.style.top=(dragStartSlot*36)+'px';
-      dragEl.style.height=((dragEndSlot-dragStartSlot+1)*36-2)+'px';
-    }
-    e.preventDefault();
-  }
-
-  function endDrag(){
-    if(!dragDay)return;
-    if(dragEl)dragEl.remove();
-    const startT=slotToTime(dragStartSlot);
-    const endT=slotToTime(dragEndSlot+1);
-    blocks.push({id:Date.now(),day:dragDay,start:startT,end:endT,label:'Blocked'});
-    localStorage.setItem('wrl_blocks',JSON.stringify(blocks));
-    renderCalBlocks();
-    dragDay=null;dragStartSlot=null;dragEndSlot=null;dragEl=null;
-    toast('🚫 Time blocked');
-    // Auto-save
-    debounceSaveSchedule();
-  }
-
-  grid.addEventListener('mousedown',startDrag);
-  grid.addEventListener('touchstart',startDrag,{passive:false});
-  window.addEventListener('mousemove',moveDrag);
-  window.addEventListener('touchmove',moveDrag,{passive:false});
-  window.addEventListener('mouseup',endDrag);
-  window.addEventListener('touchend',endDrag);
-}
-
-let saveScheduleTimer=null;
-function debounceSaveSchedule(){
-  clearTimeout(saveScheduleTimer);
-  saveScheduleTimer=setTimeout(()=>saveScheduleToGitHub(),3000);
-}
-
-async function saveScheduleToGitHub(){
-  const statusEl=document.getElementById('calSyncStatus');
-  if(statusEl)statusEl.textContent='⏳ Syncing...';
-  const schedule={
-    blocked:blocks,
-    calls:calls.map(c=>({id:c.id,name:c.name,phone:c.phone||'',time:c.time||'',done:c.done||false})),
-    updated_at:new Date().toISOString()
-  };
-  try{
-    // Save via our proxy endpoint — but since we're a static site, we POST to a simple
-    // write endpoint. We'll use the GitHub API directly via a known token approach.
-    // For now, just save to localStorage and show a toast — the n8n workflow reads from GH
-    localStorage.setItem('wrl_schedule',JSON.stringify(schedule));
-    if(statusEl)statusEl.textContent='✅ Synced locally';
-    toast('📅 Schedule saved');
-    // Try to ping the save endpoint
-    const r=await fetch('https://jack108510.github.io/jsw-dashboard/wildrose-schedule.json',{method:'GET'});
-    if(statusEl)statusEl.textContent='✅ Schedule saved · '+new Date().toLocaleTimeString();
-  }catch(e){
-    if(statusEl)statusEl.textContent='⚠️ Local only (offline)';
-  }
-}
-
-function deleteBlock(id){
-  blocks=blocks.filter(b=>b.id!==id);
-  localStorage.setItem('wrl_blocks',JSON.stringify(blocks));
-  renderCalBlocks();
-  toast('✓ Block removed');
-  debounceSaveSchedule();
-}
-
-function markCallDone(id){calls=calls.map(c=>c.id===id?{...c,done:true}:c);saveCalls();renderCalls();renderCalBlocks();renderDashboard();}
-function deleteCall(id){calls=calls.filter(c=>c.id!==id);saveCalls();renderCalls();renderCalBlocks();}
-
-// ANALYTICS
-function renderAnalytics(){
-  const all=leads;
-  const sent=all.filter(l=>l.status==='sent').length;
-  const replyCount=replies.length;
-  const rate=sent>0?((replyCount/sent)*100).toFixed(1):0;
-  document.getElementById('aSent').textContent=sent;
-  document.getElementById('aReplied').textContent=replyCount;
-  document.getElementById('aRate').textContent=rate+'%';
-  // By type
-  const types={};all.filter(l=>l.status==='sent').forEach(l=>{types[l.type||'other']=(types[l.type||'other']||0)+1;});
-  const maxT=Math.max(...Object.values(types),1);
-  document.getElementById('typeChart').innerHTML=Object.entries(types).length?Object.entries(types).map(([t,c])=>`<div class="bar-col"><div class="bar" style="height:${Math.round((c/maxT)*76)+4}px"></div><div class="bar-lbl">${t}</div></div>`).join(''):'<div style="color:var(--muted);font-size:.82rem">No data yet</div>';
-  // Status
-  const statuses=[['pending','var(--yellow)'],['sent','var(--blue)'],['saved','var(--purple)'],['skipped','var(--muted)'],['send_failed','var(--red)']];
-  document.getElementById('statusBreak').innerHTML=statuses.map(([s,col])=>{
-    const count=all.filter(l=>(l.status||'pending')===s).length;
-    return `<div class="status-row"><div class="pipe-dot" style="background:${col}"></div><div class="pipe-lbl" style="text-transform:capitalize">${s.replace('_',' ')}</div><div class="pipe-bar-wrap"><div class="pipe-bar" style="background:${col};width:${Math.round((count/Math.max(all.length,1))*100)}%"></div></div><div class="pipe-count">${count}</div></div>`;
-  }).join('');
-}
-
-// CALL COACH
-function populateCoachLeads(){
-  const sel=document.getElementById('coachSel');
-  leads.forEach((l,i)=>{const o=document.createElement('option');o.value=i;o.textContent=`${l.business_name} (${l.city})`;sel.appendChild(o);});
-}
-function loadCoach(){
-  const idx=document.getElementById('coachSel').value;if(idx==='')return;
-  coachLead=leads[parseInt(idx)];
-  document.getElementById('cBiz').textContent=coachLead.business_name||'—';
-  document.getElementById('cType').textContent=coachLead.type||'—';
-  document.getElementById('cCity').textContent=coachLead.city||'—';
-  document.getElementById('cContact').textContent=coachLead.first_name||coachLead.email||'—';
-  document.getElementById('cAngle').textContent=coachLead.automation_angle||'—';
-  document.getElementById('coachCtx').classList.add('on');
-  setPhase('opener');getCoaching('Call just started.');
-}
-const PHASES={
-  opener:'OPENER. Give Jack a warm casual opening — introduce himself, mention the email reply, make them comfortable. 1-2 sentences.',
-  discovery:'DISCOVERY. Give Jack one sharp question about their lead follow-up process. 1 question.',
-  pitch:'PITCH. Connect their pain to Wildrose. 2-3 sentences, mention a result. No jargon.',
-  objection:'OBJECTION. Acknowledge, reframe, redirect. 2-3 sentences.',
-  close:'CLOSE. Get a commitment — call, demo, or next step. 1-2 sentences.'
-};
-function setPhase(p){coachPhase=p;document.querySelectorAll('.cphase').forEach(el=>el.classList.toggle('active',el.dataset.p===p));}
-function handleObj(obj){setPhase('objection');getCoaching(`Prospect said: "${obj}"`);}
-async function getCoaching(chunk){
-  if(!coachLead)return;
-  const el=document.getElementById('coachSay');el.className='dim';el.textContent='...';
-  const prompt=`Real-time sales coach for Jack Wilde, CEO of Wildrose Automations.
-Wildrose builds AI lead response and booking automation for local service businesses. Custom pricing $500-$2k/month. Clients recover 3-5 lost jobs/week.
-Lead: ${coachLead.business_name} | ${coachLead.type} | ${coachLead.city} | ${coachLead.automation_angle||''}
-Phase: ${coachPhase.toUpperCase()} — ${PHASES[coachPhase]}
-Transcript: ${coachTx.slice(-6).join(' ')||'(just started)'}
-Last: ${chunk}
-Reply ONLY with what Jack should say. No labels. Max 2 sentences. Natural and direct.`;
-  try{
-    const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:100,temperature:.7}})});
-    const d=await r.json();const txt=d.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-    if(txt){el.className='';el.textContent=txt;}
-  }catch(e){el.className='';el.textContent='Connection error.';}
-}
-function toggleMic(){isListening?stopMic():startMic();}
-function startMic(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Use Chrome on desktop.');return;}
-  recognition=new SR();recognition.continuous=true;recognition.interimResults=true;recognition.lang='en-CA';
-  recognition.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal){const t=e.results[i][0].transcript.trim();if(t){coachTx.push(t);pendingChunk+=' '+t;addLine(t,true);scheduleCoach();}}else interim+=e.results[i][0].transcript;}if(interim)updateInterim(interim);};
-  recognition.onend=()=>{if(isListening)recognition.start();};
-  recognition.start();isListening=true;
-  const b=document.getElementById('micBtn');b.className='on';b.textContent='🔴 Stop Listening';
-}
-function stopMic(){if(recognition)recognition.stop();isListening=false;const b=document.getElementById('micBtn');b.className='off';b.textContent='🎙 Start Listening';}
-function scheduleCoach(){clearTimeout(coachTimer);coachTimer=setTimeout(()=>{if(pendingChunk.trim().length>8){const t=pendingChunk.trim();pendingChunk='';getCoaching(t);}},3000);}
-function addLine(text,final){const a=document.getElementById('coachTx');const p=document.createElement('p');p.className=final?'final':'interim';p.textContent=text;a.appendChild(p);a.scrollTop=a.scrollHeight;while(a.children.length>20)a.removeChild(a.firstChild);}
-function updateInterim(text){const a=document.getElementById('coachTx');let l=a.querySelector('p.interim');if(!l){l=document.createElement('p');l.className='interim';a.appendChild(l);}l.textContent=text+'...';a.scrollTop=a.scrollHeight;}
-function clearCoach(){coachTx=[];pendingChunk='';document.getElementById('coachTx').innerHTML='<p style="color:#222">Cleared.</p>';document.getElementById('coachSay').className='dim';document.getElementById('coachSay').textContent='Ready.';}
-
-init();
+// ── INIT ──
+(async () => {
+  await Promise.all([loadLeads(), loadReplies()]);
+  renderDash();
+  renderCalls();
+})();
 </script>
 </body>
 </html>
