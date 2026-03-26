@@ -690,8 +690,7 @@ async function amSend(fromEmail, to, subject, body, inReplyTo = null) {
 
 async function fetchInbox(inboxEmail) {
   try {
-    const inboxId = inboxEmail.split('@')[0];
-    const res = await fetch(`https://api.agentmail.to/v0/inboxes/${inboxId}/messages?limit=50`, {
+    const res = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inboxEmail)}/messages?limit=100`, {
       headers: { 'Authorization': `Bearer ${AM_KEY}` }
     });
     if (!res.ok) return [];
