@@ -965,9 +965,29 @@ function renderInboxMessages() {
     return;
   }
 
-  const html = `<div class="inbox-list">` + inboxMessages.map((msg, i) => {
-    const fromName = msg.from_name || msg.from_address || msg.from || 'Unknown';
-    const fromEmail = msg.from_address || msg.from || '';
+  // Sort: replies (inbound from leads) first, then rest
+  const sorted = [...inboxMessages].sort((a, b) => {
+    const aFrom = (a.from_address || a.from || '').toLowerCase();
+    const bFrom = (b.from_address || b.from || '').toLowerCase();
+    const aIsReply = !aFrom.includes('wildroseautomations') && !aFrom.includes('mailer-daemon');
+    const bIsReply = !bFrom.includes('wildroseautomations') && !bFrom.includes('mailer-daemon');
+    if (aIsReply && !bIsReply) return -1;
+    if (!aIsReply && bIsReply) return 1;
+    return new Date(b.date||b.created_at||0) - new Date(a.date||a.created_at||0);
+  });
+
+  const replyCount = sorted.filter(m => {
+    const from = (m.from_address || m.from || '').toLowerCase();
+    return !from.includes('wildroseautomations') && !from.includes('mailer-daemon');
+  }).length;
+
+  const html = `
+    ${replyCount > 0 ? `<div style="padding:8px 16px;background:#0a140a;border-bottom:1px solid rgba(34,197,94,.25);font-size:11px;font-weight:700;color:#22c55e;letter-spacing:.5px">
+      📬 ${replyCount} LEAD REPL${replyCount===1?'Y':'IES'} — SHOWN FIRST
+    </div>` : ''}
+    <div class="inbox-list">` + sorted.map((msg, i) => {
+    const fromName = msg.from_name || (msg.from||'').replace(/<.*>/,'').trim() || 'Unknown';
+    const fromEmail = msg.from_address || (msg.from||'').match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0] || '';
     const lead = leads.find(l => l.email && l.email.toLowerCase() === fromEmail.toLowerCase());
     const company = lead ? (lead.company || '') : '';
     const subject = msg.subject || '(no subject)';
@@ -975,12 +995,16 @@ function renderInboxMessages() {
     const ts = timeAgo(msg.date || msg.created_at);
     const inboxShort = (msg._inbox || '').split('@')[0];
     const isUnread = !msg._read;
+    const isReply = !fromEmail.includes('wildroseautomations') && !fromEmail.includes('mailer-daemon') && fromEmail !== '';
+    const statusColor = lead ? ({'replied':'#f59e0b','booked':'#22c55e','dead':'#ef4444','contacted':'#3b82f6'}[lead.status]||'') : '';
 
     return `
-      <div class="email-card ${isUnread ? 'unread' : ''}" id="email-card-${i}" onclick="toggleEmail(${i})">
+      <div class="email-card ${isUnread ? 'unread' : ''}" id="email-card-${i}" onclick="toggleEmail(${i})" style="${isReply ? 'border-left:3px solid #22c55e;' : ''}">
         <div class="email-card-header">
           <span class="email-sender">${escHtml(fromName)}</span>
+          ${isReply ? `<span style="font-size:10px;font-weight:700;background:rgba(34,197,94,.15);color:#22c55e;padding:1px 7px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px">Reply</span>` : ''}
           ${company ? `<span class="email-company-tag">${escHtml(company)}</span>` : ''}
+          ${lead && statusColor ? `<span style="font-size:10px;font-weight:700;color:${statusColor};text-transform:uppercase">${lead.status}</span>` : ''}
           <span class="email-inbox-tag">${escHtml(inboxShort)}</span>
           <span class="email-time">${ts}</span>
         </div>
@@ -1008,6 +1032,8 @@ function renderInboxMessages() {
   }).join('') + `</div>`;
 
   document.getElementById('inbox-content').innerHTML = html;
+  // Re-map toggle to sorted array
+  window._sortedInboxMsgs = sorted;
 }
 
 function toggleEmail(i) {
