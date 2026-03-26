@@ -577,6 +577,7 @@ const AM_INBOXES = [
 // ── STATE ──────────────────────────────────────────────────────────────────
 let leads = [];
 let inboxMessages = [];
+let replyMessages = []; // filtered reply messages, indexed separately
 let currentFilter = 'all';
 let selectedLead = null;
 let activeTab = 'campaigns';
@@ -821,10 +822,11 @@ async function renderReplies() {
     updateInboxBadge();
 
     // Only inbound messages — exclude our own sends, bounces, noise
-    const replyMsgs = inboxMessages.filter(m => {
+    replyMessages = inboxMessages.filter(m => {
       const from = (m.from_address || m.from || '').toLowerCase();
       return !from.includes('wildroseautomations') && !from.includes('mailer-daemon') && !from.includes('noreply') && !from.includes('no-reply');
-    }).sort((a,b) => new Date(b.date||b.created_at||0) - new Date(a.date||a.created_at||0));
+    }).sort((a,b) => new Date(b.timestamp||b.date||b.created_at||0) - new Date(a.timestamp||a.date||a.created_at||0));
+    const replyMsgs = replyMessages;
 
     // Update replies badge
     const badge = document.getElementById('replies-badge');
@@ -903,12 +905,12 @@ async function toggleReplyCard(rid, idx) {
   document.querySelectorAll('.email-expanded').forEach(e => e.classList.remove('open'));
   if (!isOpen) {
     exp.classList.add('open');
-    if (inboxMessages[idx]) inboxMessages[idx]._read = true;
+    if (replyMessages[idx]) replyMessages[idx]._read = true;
     card.classList.remove('unread');
     card.style.borderLeft = '';
 
     // Load full thread using thread_id — returns full text for every message
-    const msg = inboxMessages[idx];
+    const msg = replyMessages[idx];
     const threadId = msg.thread_id;
     const inbox = msg._inbox || AM_INBOXES[0];
     const fromEmail = (msg.from_address || (msg.from||'').match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0] || '').toLowerCase();
