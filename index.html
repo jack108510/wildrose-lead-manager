@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wildrose — Campaign Manager</title>
+<title>Wildrose — Lead Manager</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -39,10 +39,11 @@
     display: flex;
     align-items: center;
     height: 52px;
-    gap: 24px;
+    gap: 20px;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 200;
+    flex-shrink: 0;
   }
 
   .logo {
@@ -53,121 +54,83 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
   }
   .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 
-  nav { display: flex; gap: 2px; flex: 1; }
+  nav { display: flex; gap: 2px; overflow-x: auto; flex: 1; }
+  nav::-webkit-scrollbar { display: none; }
 
   .tab-btn {
-    background: none;
-    border: none;
-    color: var(--muted);
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    transition: all 0.15s;
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    background: none; border: none; color: var(--muted);
+    padding: 6px 14px; border-radius: 6px; cursor: pointer;
+    font-size: 13px; font-weight: 500; transition: all 0.15s;
+    white-space: nowrap; display: flex; align-items: center; gap: 6px;
   }
   .tab-btn:hover { color: var(--text); background: var(--border); }
   .tab-btn.active { color: var(--accent); background: var(--accent-dim); }
 
   .badge {
-    background: var(--danger);
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    border-radius: 10px;
-    padding: 1px 5px;
-    min-width: 16px;
-    text-align: center;
-    line-height: 14px;
+    background: var(--danger); color: #fff; font-size: 10px;
+    font-weight: 700; border-radius: 10px; padding: 1px 5px;
+    min-width: 16px; text-align: center; line-height: 14px;
   }
 
-  .header-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .header-right { display: flex; align-items: center; gap: 10px; margin-left: auto; flex-shrink: 0; }
   .sync-btn {
     background: none; border: 1px solid var(--border);
     color: var(--muted); padding: 5px 12px; border-radius: 6px;
-    cursor: pointer; font-size: 12px; transition: all 0.15s;
+    cursor: pointer; font-size: 12px; transition: all 0.15s; white-space: nowrap;
   }
   .sync-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   /* PAGES */
-  .page { display: none; padding: 20px; flex: 1; }
+  .page { display: none; padding: 20px; flex: 1; min-height: 0; }
   .page.active { display: block; }
 
   /* STATS GRID */
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
     margin-bottom: 20px;
   }
-
   .stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
   }
   .stat-label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
   .stat-value { font-size: 28px; font-weight: 700; color: var(--text); line-height: 1; }
   .stat-sub { color: var(--muted); font-size: 11px; margin-top: 4px; }
 
   /* TWO-COL LAYOUT */
-  .two-col { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+  .two-col { display: grid; grid-template-columns: 1fr 300px; gap: 16px; }
   @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* THREE-COL LAYOUT */
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 1100px) { .three-col { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 700px) { .three-col { grid-template-columns: 1fr; } }
 
   /* SECTION */
   .section {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden; margin-bottom: 16px;
   }
+  .section:last-child { margin-bottom: 0; }
   .section-header {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: 14px 16px; border-bottom: 1px solid var(--border);
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--muted);
+    display: flex; align-items: center; justify-content: space-between;
   }
-
-  /* RECENT SENDS */
-  .send-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto auto;
-    gap: 12px;
-    align-items: center;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.1s;
-  }
-  .send-row:last-child { border-bottom: none; }
-  .send-row:hover { background: rgba(255,255,255,0.02); }
-  .send-company { font-weight: 500; color: var(--text); }
-  .send-email { color: var(--muted); font-size: 12px; }
-  .send-time { color: var(--muted); font-size: 11px; white-space: nowrap; }
+  .section-header span { font-weight: 400; text-transform: none; letter-spacing: 0; }
 
   /* STATUS PILLS */
   .pill {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    white-space: nowrap;
+    display: inline-block; padding: 2px 8px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.03em; white-space: nowrap;
   }
   .pill-contacted { background: rgba(59,130,246,0.15); color: #3b82f6; }
   .pill-replied { background: rgba(168,85,247,0.15); color: #a855f7; }
@@ -175,106 +138,193 @@
   .pill-bounced { background: rgba(245,158,11,0.15); color: #f59e0b; }
   .pill-dead { background: rgba(100,116,139,0.15); color: #64748b; }
 
-  /* INDUSTRY BARS */
-  .industry-row { padding: 10px 16px; }
-  .industry-label {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    font-size: 12px;
+  /* FUNNEL */
+  .funnel-wrap { padding: 16px; }
+  .funnel-step {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 10px;
   }
+  .funnel-label { width: 80px; font-size: 12px; color: var(--muted); text-align: right; flex-shrink: 0; }
+  .funnel-bar-wrap { flex: 1; background: var(--border); border-radius: 4px; height: 28px; overflow: hidden; position: relative; }
+  .funnel-bar { height: 100%; border-radius: 4px; display: flex; align-items: center; padding: 0 10px; transition: width 0.6s ease; }
+  .funnel-bar-contacted { background: linear-gradient(90deg, #1d3a6a, #2563eb); }
+  .funnel-bar-replied { background: linear-gradient(90deg, #3b1a6e, #7c3aed); }
+  .funnel-bar-booked { background: linear-gradient(90deg, #14431a, #16a34a); }
+  .funnel-count { font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap; }
+  .funnel-pct { width: 50px; font-size: 12px; color: var(--muted); text-align: right; flex-shrink: 0; }
+
+  /* INDUSTRY BARS */
+  .industry-row { padding: 8px 16px; }
+  .industry-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
   .industry-name { color: var(--text); }
   .industry-count { color: var(--muted); }
   .bar-track { background: var(--border); border-radius: 4px; height: 5px; overflow: hidden; }
   .bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.6s ease; }
 
+  /* TIMELINE SVG CHART */
+  .timeline-wrap { padding: 16px; overflow-x: auto; }
+  .timeline-bars { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
+  .timeline-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; min-width: 24px; }
+  .timeline-bar { width: 100%; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 2px; transition: background 0.15s; }
+  .timeline-bar:hover { background: #60a5fa; }
+  .timeline-label { font-size: 9px; color: var(--muted); white-space: nowrap; transform: rotate(-45deg); margin-top: 6px; }
+  .timeline-count { font-size: 10px; color: var(--muted); }
+
+  /* ACTIVE CONVERSATIONS */
+  .convo-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background 0.1s;
+  }
+  .convo-row:last-child { border-bottom: none; }
+  .convo-row:hover { background: rgba(255,255,255,0.02); }
+  .convo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--purple); box-shadow: 0 0 6px var(--purple); flex-shrink: 0; }
+  .convo-main { flex: 1; min-width: 0; }
+  .convo-company { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .convo-email { font-size: 11px; color: var(--muted); }
+  .convo-time { font-size: 11px; color: var(--purple); white-space: nowrap; flex-shrink: 0; }
+
+  /* RECENT SENDS */
+  .send-row {
+    display: grid; grid-template-columns: 1fr auto auto auto;
+    gap: 12px; align-items: center; padding: 10px 16px;
+    border-bottom: 1px solid var(--border); transition: background 0.1s;
+  }
+  .send-row:last-child { border-bottom: none; }
+  .send-row:hover { background: rgba(255,255,255,0.02); }
+  .send-company { font-weight: 500; color: var(--text); }
+  .send-email { color: var(--muted); font-size: 12px; }
+  .send-time { color: var(--muted); font-size: 11px; white-space: nowrap; }
+
   /* INBOX */
-  .inbox-list { display: flex; flex-direction: column; gap: 0; }
-
+  .inbox-wrap { max-width: 800px; }
   .email-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 0;
-    padding: 14px 16px;
-    cursor: pointer;
-    transition: background 0.1s;
-    border-bottom: 1px solid var(--border);
-    position: relative;
+    background: var(--card); border-bottom: 1px solid var(--border);
+    padding: 14px 16px; cursor: pointer; transition: background 0.1s; position: relative;
   }
-  .email-card:first-child { border-radius: 10px 10px 0 0; }
-  .email-card:last-child { border-radius: 0 0 10px 10px; border-bottom: none; }
-  .email-card:only-child { border-radius: 10px; }
   .email-card:hover { background: #12121e; }
-  .email-card.unread { border-left: 3px solid var(--accent); }
-
-  .email-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-  .email-sender { font-weight: 600; color: var(--text); }
-  .email-company-tag {
-    font-size: 11px; color: var(--accent); background: var(--accent-dim);
-    padding: 1px 6px; border-radius: 4px;
+  .email-card.unread::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--accent); border-radius: 0;
   }
-  .email-inbox-tag {
-    font-size: 10px; color: var(--muted); background: var(--border);
-    padding: 1px 6px; border-radius: 4px; margin-left: auto;
-  }
+  .email-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+  .email-sender { font-weight: 600; color: var(--text); font-size: 13px; }
+  .email-company-tag { font-size: 11px; color: var(--accent); background: var(--accent-dim); padding: 1px 6px; border-radius: 4px; }
+  .email-inbox-tag { font-size: 10px; color: var(--muted); background: var(--border); padding: 1px 6px; border-radius: 4px; margin-left: auto; }
   .email-time { font-size: 11px; color: var(--muted); white-space: nowrap; }
   .email-subject { font-weight: 500; color: var(--text); margin-bottom: 3px; font-size: 13px; }
-  .email-preview { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-
-  .email-expanded {
-    display: none;
-    padding: 14px 16px;
-    background: #08080f;
-    border-top: 1px solid var(--border);
-  }
+  .email-preview { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .email-expanded { display: none; padding: 16px; background: #08080f; border-bottom: 1px solid var(--border); }
   .email-expanded.open { display: block; }
-  .email-body-text {
-    color: var(--text);
-    font-size: 13px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-    word-break: break-word;
-    margin-bottom: 14px;
-  }
-  .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .email-body-text { color: var(--text); font-size: 13px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
 
-  /* REPLY COMPOSER */
-  .reply-composer {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
+  /* FILTER BAR */
+  .filter-bar { display: flex; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .filter-btn {
+    background: none; border: 1px solid var(--border); border-radius: 20px;
+    color: var(--muted); padding: 4px 12px; font-size: 12px; cursor: pointer; transition: all 0.15s;
   }
-  .reply-composer textarea {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    padding: 10px;
-    font-size: 13px;
-    font-family: inherit;
-    resize: vertical;
-    min-height: 80px;
-    outline: none;
-    margin-bottom: 8px;
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  /* SEARCH */
+  .search-bar { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  .search-input {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text); padding: 8px 12px;
+    font-size: 13px; outline: none; font-family: inherit;
   }
-  .reply-composer textarea:focus { border-color: var(--accent); }
-  .reply-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .reply-from { font-size: 11px; color: var(--muted); }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+
+  /* CONTACTS TABLE */
+  .contacts-table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left; padding: 10px 16px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--muted);
+    border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  td { padding: 10px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); cursor: pointer; }
+  tr.selected td { background: var(--accent-dim); }
+
+  /* CONTACT PANEL — fixed right sidebar */
+  .contact-panel {
+    position: fixed; right: 0; top: 52px; bottom: 0;
+    width: 420px; background: var(--card); border-left: 1px solid var(--border);
+    display: flex; flex-direction: column; z-index: 150;
+    transform: translateX(100%); transition: transform 0.25s ease;
+    box-shadow: -4px 0 30px rgba(0,0,0,0.5);
+  }
+  .contact-panel.open { transform: translateX(0); }
+
+  .panel-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .panel-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .panel-close {
+    width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border);
+    background: none; color: var(--muted); cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+  }
+  .panel-close:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
+
+  .panel-lead-info {
+    padding: 14px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .panel-company-name { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+  .panel-contact-name { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .panel-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .meta-tag { font-size: 11px; color: var(--muted); background: var(--border); padding: 2px 8px; border-radius: 4px; }
+  .panel-quick-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .panel-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+
+  /* CHAT BUBBLES */
+  .chat-wrap { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+  .chat-msg { display: flex; flex-direction: column; max-width: 85%; }
+  .chat-msg.outbound { align-self: flex-end; align-items: flex-end; }
+  .chat-msg.inbound { align-self: flex-start; align-items: flex-start; }
+
+  .chat-bubble {
+    padding: 10px 14px; border-radius: 12px;
+    font-size: 12px; line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+    max-height: 200px; overflow: hidden; position: relative; cursor: pointer;
+  }
+  .chat-bubble.expanded { max-height: none; }
+  .chat-msg.outbound .chat-bubble { background: #1a3a6e; border: 1px solid #2563eb; color: #e2e8f0; border-bottom-right-radius: 4px; }
+  .chat-msg.inbound .chat-bubble { background: #0f0f18; border: 1px solid var(--border); color: #e2e8f0; border-bottom-left-radius: 4px; }
+
+  .chat-meta { font-size: 10px; color: var(--muted); margin-top: 3px; display: flex; gap: 6px; align-items: center; }
+  .chat-subject { font-size: 11px; font-weight: 600; margin-bottom: 4px; color: var(--muted); }
+  .chat-expand-hint { font-size: 10px; color: var(--accent); margin-top: 4px; cursor: pointer; }
+
+  /* COMPOSE */
+  .compose-card {
+    max-width: 680px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 24px;
+  }
+  .compose-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+  .form-group { margin-bottom: 14px; }
+  .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text); padding: 9px 12px;
+    font-size: 13px; font-family: inherit; outline: none; transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+  .form-select { appearance: none; cursor: pointer; }
+  .form-textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
 
   /* BUTTONS */
   .btn {
-    border: none;
-    border-radius: 6px;
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+    border: none; border-radius: 6px; padding: 6px 14px; font-size: 12px;
+    font-weight: 600; cursor: pointer; transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 5px;
   }
   .btn-primary { background: var(--accent); color: #fff; }
   .btn-primary:hover { background: #2563eb; }
@@ -286,117 +336,9 @@
   .btn-danger:hover { background: rgba(239,68,68,0.25); }
   .btn-ghost { background: none; color: var(--muted); border: 1px solid var(--border); }
   .btn-ghost:hover { color: var(--text); border-color: var(--text); }
+  .btn-amber { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .btn-amber:hover { background: rgba(245,158,11,0.25); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  /* CONTACTS */
-  .filter-bar { display: flex; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .filter-btn {
-    background: none; border: 1px solid var(--border); border-radius: 20px;
-    color: var(--muted); padding: 4px 12px; font-size: 12px; cursor: pointer; transition: all 0.15s;
-  }
-  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .filter-btn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
-
-  .search-bar {
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-  .search-input {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    padding: 8px 12px;
-    font-size: 13px;
-    outline: none;
-    font-family: inherit;
-  }
-  .search-input:focus { border-color: var(--accent); }
-  .search-input::placeholder { color: var(--muted); }
-
-  .contacts-layout { display: grid; grid-template-columns: 1fr; gap: 0; }
-  .contacts-layout.with-panel { grid-template-columns: 1fr 380px; }
-
-  .contacts-table { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; }
-  th {
-    text-align: left; padding: 10px 16px;
-    font-size: 11px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.05em; color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-  td { padding: 10px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(255,255,255,0.02); cursor: pointer; }
-  tr.selected td { background: var(--accent-dim); }
-
-  /* CONTACT PANEL */
-  .contact-panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    max-height: calc(100vh - 120px);
-    position: sticky;
-    top: 72px;
-  }
-  .panel-header { padding: 16px; border-bottom: 1px solid var(--border); }
-  .panel-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-  .panel-company { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
-  .panel-meta { display: flex; flex-wrap: wrap; gap: 6px; }
-  .meta-tag {
-    font-size: 11px; color: var(--muted); background: var(--border);
-    padding: 2px 8px; border-radius: 4px;
-  }
-  .panel-body { flex: 1; overflow-y: auto; }
-  .panel-section { padding: 12px 16px; border-bottom: 1px solid var(--border); }
-  .panel-section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 8px; }
-  .panel-notes { color: var(--text); font-size: 13px; line-height: 1.5; }
-
-  .thread-msg {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 8px;
-  }
-  .thread-msg-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
-  .thread-msg-from { font-weight: 500; font-size: 12px; }
-  .thread-msg-time { font-size: 11px; color: var(--muted); }
-  .thread-msg-subject { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-  .thread-msg-body { font-size: 12px; color: var(--text); line-height: 1.5; white-space: pre-wrap; max-height: 100px; overflow: hidden; position: relative; }
-  .thread-msg-body.expanded { max-height: none; }
-
-  /* COMPOSE */
-  .compose-card {
-    max-width: 680px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px;
-  }
-  .compose-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
-  .form-group { margin-bottom: 14px; }
-  .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
-  .form-input, .form-select, .form-textarea {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    padding: 9px 12px;
-    font-size: 13px;
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
-  .form-select { appearance: none; cursor: pointer; }
-  .form-textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
 
   /* LOADING / EMPTY */
   .loading { text-align: center; padding: 40px; color: var(--muted); }
@@ -409,8 +351,7 @@
   .toast {
     background: var(--card); border: 1px solid var(--border); border-radius: 8px;
     padding: 10px 16px; font-size: 13px; color: var(--text);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    animation: slideIn 0.2s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5); animation: slideIn 0.2s ease;
     display: flex; align-items: center; gap: 8px;
   }
   .toast.success { border-left: 3px solid var(--success); }
@@ -424,13 +365,26 @@
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
+  /* REPLIES BANNER */
+  .replies-banner {
+    display: none; padding: 12px 16px; background: #0a1a0a;
+    border-bottom: 1px solid rgba(34,197,94,.3); margin: -20px -20px 20px;
+  }
+  .replies-banner-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #22c55e; margin-bottom: 8px; }
+  .reply-alert {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(34,197,94,.06); border: 1px solid rgba(34,197,94,.2);
+    border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: background .15s; margin-bottom: 6px;
+  }
+  .reply-alert:hover { background: rgba(34,197,94,.12); }
+  .reply-alert:last-child { margin-bottom: 0; }
+
   /* RESPONSIVE */
   @media (max-width: 768px) {
+    .contact-panel { width: 100%; }
     .two-col { grid-template-columns: 1fr; }
-    .contacts-layout.with-panel { grid-template-columns: 1fr; }
-    .contact-panel { position: static; max-height: none; }
-    .send-row { grid-template-columns: 1fr auto; }
-    .send-email, .send-time { display: none; }
+    .send-row { grid-template-columns: 1fr auto auto; }
+    .send-email-col { display: none; }
   }
 </style>
 </head>
@@ -442,8 +396,12 @@
     Wildrose
   </div>
   <nav>
-    <button class="tab-btn active" onclick="switchTab('campaigns')" id="tab-campaigns">Campaigns</button>
+    <button class="tab-btn active" onclick="switchTab('analytics')" id="tab-analytics">Analytics</button>
+    <button class="tab-btn" onclick="switchTab('inbox')" id="tab-inbox">
+      Inbox <span class="badge" id="inbox-badge" style="display:none">0</span>
+    </button>
     <button class="tab-btn" onclick="switchTab('contacts')" id="tab-contacts">Contacts</button>
+    <button class="tab-btn" onclick="switchTab('campaigns')" id="tab-campaigns">Campaigns</button>
     <button class="tab-btn" onclick="switchTab('compose')" id="tab-compose">+ Compose</button>
   </nav>
   <div class="header-right">
@@ -451,42 +409,44 @@
   </div>
 </header>
 
-<!-- CAMPAIGNS -->
-<div class="page active" id="page-campaigns">
-
-  <!-- REPLIES BANNER — top priority -->
-  <div id="replies-banner" style="display:none;padding:12px 16px;background:#0f1a0f;border-bottom:1px solid rgba(34,197,94,.3)">
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#22c55e;margin-bottom:8px">📬 Replies — Needs Attention</div>
-    <div id="replies-list" style="display:flex;flex-direction:column;gap:6px"></div>
-  </div>
-
-  <div class="stats-grid" id="stats-grid">
-    <div class="stat-card"><div class="stat-label">Total Sent</div><div class="stat-value" id="stat-sent">—</div><div class="stat-sub">All time</div></div>
-    <div class="stat-card"><div class="stat-label">Replied</div><div class="stat-value" id="stat-replied">—</div><div class="stat-sub">Positive responses</div></div>
-    <div class="stat-card"><div class="stat-label">Reply Rate</div><div class="stat-value" id="stat-rate">—</div><div class="stat-sub">contacted → replied+booked</div></div>
-    <div class="stat-card"><div class="stat-label">Booked</div><div class="stat-value" id="stat-booked">—</div><div class="stat-sub">Meetings set</div></div>
+<!-- ANALYTICS -->
+<div class="page active" id="page-analytics">
+  <div class="stats-grid" id="analytics-stats">
+    <div class="stat-card"><div class="stat-label">Total Leads</div><div class="stat-value" id="stat-total">—</div><div class="stat-sub">in database</div></div>
+    <div class="stat-card"><div class="stat-label">Emails Sent</div><div class="stat-value" id="stat-sent">—</div><div class="stat-sub">contacted</div></div>
+    <div class="stat-card"><div class="stat-label">Reply Rate</div><div class="stat-value" id="stat-rate">—</div><div class="stat-sub">replied + booked</div></div>
+    <div class="stat-card"><div class="stat-label">Booked</div><div class="stat-value" id="stat-booked">—</div><div class="stat-sub">meetings set</div></div>
+    <div class="stat-card"><div class="stat-label">Bounced</div><div class="stat-value" id="stat-bounced">—</div><div class="stat-sub">bad addresses</div></div>
   </div>
 
   <div class="two-col">
-    <div class="section">
-      <div class="section-header">Recent Sends <span id="recent-count" style="font-weight:400"></span></div>
-      <div id="recent-sends"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
+    <div>
+      <div class="section" id="analytics-funnel-section">
+        <div class="section-header">Conversion Funnel</div>
+        <div id="analytics-funnel" class="funnel-wrap"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
+      </div>
+      <div class="section">
+        <div class="section-header">Leads Contacted — Last 14 Days</div>
+        <div id="analytics-timeline" class="timeline-wrap"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
+      </div>
+      <div class="section">
+        <div class="section-header">Active Conversations <span id="active-convo-count"></span></div>
+        <div id="active-convos"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
+      </div>
     </div>
-    <div class="section">
-      <div class="section-header">By Industry</div>
-      <div id="industry-breakdown"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
+    <div class="section" style="height:fit-content">
+      <div class="section-header">Top Industries</div>
+      <div id="analytics-industries"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
     </div>
   </div>
 </div>
 
-<!-- REPLIES (hidden, data still loads in background) -->
-<div style="display:none" id="page-replies">
-  <div id="replies-content"></div>
-</div>
-
-<!-- INBOX (hidden) -->
-<div style="display:none" id="page-inbox">
-  <div id="inbox-content"></div>
+<!-- INBOX -->
+<div class="page" id="page-inbox">
+  <div class="section inbox-wrap">
+    <div class="section-header">Inbox <span id="inbox-count"></span></div>
+    <div id="inbox-content"><div class="loading"><div class="spinner"></div><div>Loading inboxes…</div></div></div>
+  </div>
 </div>
 
 <!-- CONTACTS -->
@@ -494,19 +454,57 @@
   <div class="section">
     <div class="filter-bar" id="contacts-filter-bar">
       <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-      <button class="filter-btn" onclick="setFilter('contacted', this)">Contacted</button>
       <button class="filter-btn" onclick="setFilter('replied', this)">Replied</button>
+      <button class="filter-btn" onclick="setFilter('contacted', this)">Contacted</button>
       <button class="filter-btn" onclick="setFilter('booked', this)">Booked</button>
       <button class="filter-btn" onclick="setFilter('bounced', this)">Bounced</button>
       <button class="filter-btn" onclick="setFilter('dead', this)">Dead</button>
     </div>
     <div class="search-bar">
-      <input class="search-input" type="text" placeholder="Search by name, email, company…" oninput="filterContacts(this.value)" id="contact-search">
+      <input class="search-input" type="text" placeholder="Search by name, email, company, industry…" oninput="filterContacts(this.value)" id="contact-search">
     </div>
-    <div class="contacts-layout" id="contacts-layout">
-      <div class="contacts-table">
-        <div id="contacts-table-content"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
-      </div>
+    <div class="contacts-table-wrap">
+      <div id="contacts-table-content"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT PANEL (fixed overlay) -->
+<div class="contact-panel" id="contact-panel">
+  <div class="panel-topbar">
+    <div class="panel-title">Conversation</div>
+    <button class="panel-close" onclick="closePanel()" title="Close">×</button>
+  </div>
+  <div class="panel-lead-info" id="panel-lead-info"></div>
+  <div class="panel-body">
+    <div id="panel-thread" class="chat-wrap">
+      <div class="loading"><div class="spinner"></div><div>Loading thread…</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CAMPAIGNS -->
+<div class="page" id="page-campaigns">
+  <div class="replies-banner" id="replies-banner">
+    <div class="replies-banner-title">📬 Replies — Needs Attention</div>
+    <div id="replies-list"></div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">Total Sent</div><div class="stat-value" id="camp-sent">—</div><div class="stat-sub">All time</div></div>
+    <div class="stat-card"><div class="stat-label">Replied</div><div class="stat-value" id="camp-replied">—</div><div class="stat-sub">Positive responses</div></div>
+    <div class="stat-card"><div class="stat-label">Reply Rate</div><div class="stat-value" id="camp-rate">—</div><div class="stat-sub">contacted → replied+booked</div></div>
+    <div class="stat-card"><div class="stat-label">Booked</div><div class="stat-value" id="camp-booked">—</div><div class="stat-sub">Meetings set</div></div>
+  </div>
+
+  <div class="two-col">
+    <div class="section">
+      <div class="section-header">Recent Sends <span id="recent-count"></span></div>
+      <div id="recent-sends"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
+    </div>
+    <div class="section">
+      <div class="section-header">By Industry</div>
+      <div id="industry-breakdown"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
     </div>
   </div>
 </div>
@@ -553,44 +551,46 @@
 
 <script>
 // ── CONSTANTS ──────────────────────────────────────────────────────────────
-const API = 'https://n8n.wildeautomations.com/webhook/axOX5mjUR0dkmgD6/webhook/lead-api';
+const SB_URL = 'https://xacehhtgvubcqdoltazg.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhY2VoaHRndnViY3Fkb2x0YXpnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mzk0Mjg2NywiZXhwIjoyMDg5NTE4ODY3fQ.5sqLtRtRnWEEuytTsfGhh1hmrQkTilL4Bd_rMrqmQ9A';
+const SB_HDR = { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' };
+
 const AM_KEY = 'am_us_eb590201635e5a67541a0e4c6eb32c5d6b144eb5cf48a5ca7ce9bece7940c11f';
 const AM_INBOXES = [
-  'jack@wildroseautomations.ca',
-  'lena@wildroseautomations.ca',
-  'brad@wildroseautomations.ca',
-  'kate@wildroseautomations.ca',
-  'cole@wildroseautomations.ca',
-  'emma@wildroseautomations.ca',
-  'mike@wildroseautomations.ca',
-  'sarah@wildroseautomations.ca',
-  'ryan@wildroseautomations.ca',
-  'hudson@wildroseautomations.ca'
+  'jack@wildroseautomations.ca', 'lena@wildroseautomations.ca',
+  'brad@wildroseautomations.ca', 'kate@wildroseautomations.ca',
+  'cole@wildroseautomations.ca', 'emma@wildroseautomations.ca',
+  'mike@wildroseautomations.ca', 'sarah@wildroseautomations.ca',
+  'ryan@wildroseautomations.ca', 'hudson@wildroseautomations.ca'
 ];
 
 // ── STATE ──────────────────────────────────────────────────────────────────
 let leads = [];
 let inboxMessages = [];
-let replyMessages = []; // filtered reply messages, indexed separately
 let currentFilter = 'all';
 let selectedLead = null;
-let activeTab = 'campaigns';
+let activeTab = 'analytics';
+const readSet = new Set();
 
 // ── UTILS ──────────────────────────────────────────────────────────────────
 function timeAgo(dateStr) {
   if (!dateStr) return '—';
-  const d = new Date(dateStr);
-  const diff = (Date.now() - d.getTime()) / 1000;
+  const diff = (Date.now() - new Date(dateStr).getTime()) / 1000;
   if (diff < 60) return 'just now';
   if (diff < 3600) return Math.floor(diff/60) + 'm ago';
   if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
   if (diff < 604800) return Math.floor(diff/86400) + 'd ago';
-  return d.toLocaleDateString('en-CA');
+  return new Date(dateStr).toLocaleDateString('en-CA');
 }
 
-function formatDate(dateStr) {
+function fmtDate(dateStr) {
   if (!dateStr) return '—';
   return new Date(dateStr).toLocaleDateString('en-CA');
+}
+
+function fmtDateTime(dateStr) {
+  if (!dateStr) return '—';
+  return new Date(dateStr).toLocaleString('en-CA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 function pillHtml(status) {
@@ -608,78 +608,60 @@ function toast(msg, type = 'info') {
 
 function escHtml(s) {
   if (!s) return '';
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ── DATA API (via n8n — no Supabase keys in frontend) ─────────────────────
-async function apiCall(action, extra = {}) {
-  const res = await fetch(API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action, ...extra })
-  });
-  const json = await res.json();
-  return json.data;
-}
-
-async function loadLeads() {
-  const data = await apiCall('get_leads');
-  leads = Array.isArray(data) ? data : (data ? [data] : []);
-  return leads;
-}
-
-async function updateLeadStatus(id, status) {
-  await apiCall('update_lead', { id, updates: { status, last_reply_at: new Date().toISOString() } });
-  const l = leads.find(x => x.id === id);
-  if (l) l.status = status;
-}
-
-async function logSentEmail(toEmail, toName, company, subject) {
-  let lead = leads.find(l => l.email && l.email.toLowerCase() === toEmail.toLowerCase());
-  if (lead) {
-    await apiCall('update_lead', { id: lead.id, updates: { status: 'contacted', contacted_at: new Date().toISOString() } });
-    lead.status = 'contacted';
-  } else {
-    const created = await apiCall('add_lead', { lead: {
-      name: toName || toEmail.split('@')[0], email: toEmail,
-      company: company || '', status: 'contacted', contacted_at: new Date().toISOString()
-    }});
-    if (created) leads.unshift(Array.isArray(created) ? created[0] : created);
-  }
-}
-
-// ── AGENTMAIL ──────────────────────────────────────────────────────────────
-async function amFetch(inboxEmail, path, opts = {}) {
-  const inboxId = inboxEmail.split('@')[0];
-  const url = `https://api.agentmail.to/v0/inboxes/${inboxId}/threads` + (path || '');
-  const res = await fetch(url, {
-    headers: {
-      'Authorization': `Bearer ${AM_KEY}`,
-      'Content-Type': 'application/json',
-      ...opts.headers
-    },
-    ...opts
-  });
-  if (!res.ok) throw new Error(`AM ${res.status}`);
+// ── SUPABASE API ──────────────────────────────────────────────────────────
+async function sbGet(path) {
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: SB_HDR });
+  if (!res.ok) throw new Error(`Supabase ${res.status}: ${await res.text()}`);
   return res.json();
 }
 
-async function amSend(fromEmail, to, subject, body, inReplyTo = null) {
+async function sbPatch(table, id, updates) {
+  const res = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: { ...SB_HDR, 'Prefer': 'return=minimal' },
+    body: JSON.stringify(updates)
+  });
+  if (!res.ok) throw new Error(`Supabase PATCH ${res.status}`);
+}
+
+async function loadLeads() {
+  const data = await sbGet('leads?select=*&order=contacted_at.desc&limit=5000');
+  leads = Array.isArray(data) ? data : [];
+  return leads;
+}
+
+async function loadConversations(leadId) {
+  const data = await sbGet(`conversations?select=*&lead_id=eq.${leadId}&order=sent_at.asc`);
+  return Array.isArray(data) ? data : [];
+}
+
+async function loadAllConversations() {
+  const data = await sbGet('conversations?select=*,leads!lead_id(id,name,company,email,status,industry)&order=sent_at.desc&limit=2000');
+  return Array.isArray(data) ? data : [];
+}
+
+async function updateLeadStatus(id, status) {
+  const updates = { status };
+  if (status === 'replied') updates.last_reply_at = new Date().toISOString();
+  await sbPatch('leads', id, updates);
+  const l = leads.find(x => x.id === id);
+  if (l) Object.assign(l, updates);
+}
+
+// ── AGENTMAIL ─────────────────────────────────────────────────────────────
+async function amSend(fromEmail, to, subject, body, threadId = null) {
   const inboxId = fromEmail.split('@')[0];
   const payload = { to: [{ email: to }], subject, text: body };
-  if (inReplyTo) payload.in_reply_to = inReplyTo;
+  if (threadId) payload.thread_id = threadId;
   const res = await fetch(`https://api.agentmail.to/v0/inboxes/${inboxId}/messages`, {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${AM_KEY}`,
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Authorization': `Bearer ${AM_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
-  if (!res.ok) {
-    const t = await res.text();
-    throw new Error(`AM send ${res.status}: ${t}`);
-  }
+  if (!res.ok) throw new Error(`AM send ${res.status}: ${await res.text()}`);
   return res.json();
 }
 
@@ -690,31 +672,27 @@ async function fetchInbox(inboxEmail) {
     });
     if (!res.ok) return [];
     const data = await res.json();
-    const messages = Array.isArray(data) ? data : (data.messages || data.items || []);
-    return messages.map(m => ({ ...m, _inbox: inboxEmail }));
+    const msgs = Array.isArray(data) ? data : (data.messages || data.items || []);
+    return msgs.map(m => ({ ...m, _inbox: inboxEmail }));
   } catch { return []; }
 }
 
 async function loadAllInboxes() {
   const results = await Promise.all(AM_INBOXES.map(fetchInbox));
   const all = results.flat();
-
-  // Filter: only inbound (received label), exclude noise
   const inbound = all.filter(m => {
-    const fromAddr = (m.from_address || m.from || '').toLowerCase();
+    const from = (m.from_address || m.from || '').toLowerCase();
     const labels = (m.labels || []).map(l => (typeof l === 'string' ? l : l.name || '').toLowerCase());
     const hasReceived = labels.includes('received') || labels.includes('inbox');
-    const isNoise = fromAddr.includes('mailer-daemon') || fromAddr.includes('noreply') ||
-                    fromAddr.includes('no-reply') || fromAddr.includes('wildroseautomations');
-    return !isNoise && (hasReceived || m.direction === 'inbound' || (m.from_address && !AM_INBOXES.includes(fromAddr)));
+    const isNoise = from.includes('mailer-daemon') || from.includes('noreply') ||
+                    from.includes('no-reply') || from.includes('wildroseautomations');
+    return !isNoise && (hasReceived || m.direction === 'inbound' || (m.from_address && !AM_INBOXES.includes(from)));
   });
-
-  // Sort newest first
   inbound.sort((a, b) => new Date(b.date || b.created_at || 0) - new Date(a.date || a.created_at || 0));
   return inbound;
 }
 
-// ── TAB SWITCHING ──────────────────────────────────────────────────────────
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────
 function switchTab(tab) {
   activeTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -722,67 +700,91 @@ function switchTab(tab) {
   document.getElementById(`tab-${tab}`).classList.add('active');
   document.getElementById(`page-${tab}`).classList.add('active');
 
-  if (tab === 'campaigns') renderCampaigns();
-  if (tab === 'replies') renderReplies();
-  if (tab === 'inbox') renderInbox();
-  if (tab === 'contacts') renderContacts();
+  // Close contact panel when switching away from contacts
+  if (tab !== 'contacts') closePanel();
+
+  if (tab === 'analytics') renderAnalytics();
+  else if (tab === 'inbox') renderInbox();
+  else if (tab === 'contacts') renderContacts();
+  else if (tab === 'campaigns') renderCampaigns();
 }
 
-// ── CAMPAIGNS ──────────────────────────────────────────────────────────────
-function renderCampaigns() {
+// ── ANALYTICS ─────────────────────────────────────────────────────────────
+function renderAnalytics() {
   const contacted = leads.filter(l => ['contacted','replied','booked','bounced','dead'].includes(l.status));
   const replied = leads.filter(l => ['replied','booked'].includes(l.status));
   const booked = leads.filter(l => l.status === 'booked');
+  const bounced = leads.filter(l => l.status === 'bounced');
   const rate = contacted.length ? ((replied.length / contacted.length) * 100).toFixed(1) : '0.0';
 
+  document.getElementById('stat-total').textContent = leads.length;
   document.getElementById('stat-sent').textContent = contacted.length;
-  document.getElementById('stat-replied').textContent = replied.length;
   document.getElementById('stat-rate').textContent = rate + '%';
   document.getElementById('stat-booked').textContent = booked.length;
+  document.getElementById('stat-bounced').textContent = bounced.length;
 
-  // ── REPLIES BANNER ──
-  const repliedLeads = leads.filter(l => l.status === 'replied')
-    .sort((a,b) => new Date(b.last_reply_at||0) - new Date(a.last_reply_at||0));
-  const banner = document.getElementById('replies-banner');
-  const repliesList = document.getElementById('replies-list');
-  if (repliedLeads.length > 0) {
-    banner.style.display = 'block';
-    repliesList.innerHTML = repliedLeads.map(l => `
-      <div onclick="switchTab('contacts');setTimeout(()=>openContact(${l.id}),300)" style="display:flex;align-items:center;gap:12px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:10px 14px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(34,197,94,.12)'" onmouseout="this.style.background='rgba(34,197,94,.06)'">
-        <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0;box-shadow:0 0 6px #22c55e"></div>
-        <div style="flex:1;min-width:0">
-          <div style="font-weight:700;font-size:13px">${escHtml(l.company||l.name||l.email)}</div>
-          <div style="font-size:11px;color:#64748b">${escHtml(l.email)} · ${escHtml(l.industry||'')}</div>
+  // Funnel
+  const fTotal = contacted.length || 1;
+  document.getElementById('analytics-funnel').innerHTML = `
+    <div class="funnel-step">
+      <div class="funnel-label">Contacted</div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar funnel-bar-contacted" style="width:100%">
+          <span class="funnel-count">${contacted.length.toLocaleString()}</span>
         </div>
-        <div style="font-size:11px;color:#22c55e;white-space:nowrap">${timeAgo(l.last_reply_at)} ↗</div>
       </div>
-    `).join('');
-  } else {
-    banner.style.display = 'none';
-  }
-
-  // Recent sends (last 20 by contacted_at)
-  const recent = [...contacted]
-    .sort((a, b) => new Date(b.contacted_at || 0) - new Date(a.contacted_at || 0))
-    .slice(0, 20);
-
-  document.getElementById('recent-count').textContent = `(${recent.length})`;
-
-  if (recent.length === 0) {
-    document.getElementById('recent-sends').innerHTML = '<div class="empty">No sends yet</div>';
-  } else {
-    document.getElementById('recent-sends').innerHTML = recent.map(l => `
-      <div class="send-row">
-        <div>
-          <div class="send-company">${escHtml(l.company || l.name)}</div>
-          <div class="send-email">${escHtml(l.email)}</div>
+      <div class="funnel-pct">100%</div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-label">Replied</div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar funnel-bar-replied" style="width:${Math.max(4, (replied.length/fTotal)*100)}%">
+          <span class="funnel-count">${replied.length.toLocaleString()}</span>
         </div>
-        <div class="send-email">${escHtml(l.email)}</div>
-        ${pillHtml(l.status)}
-        <div class="send-time">${timeAgo(l.contacted_at)}</div>
       </div>
-    `).join('');
+      <div class="funnel-pct">${((replied.length/fTotal)*100).toFixed(1)}%</div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-label">Booked</div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar funnel-bar-booked" style="width:${Math.max(2, (booked.length/fTotal)*100)}%">
+          <span class="funnel-count">${booked.length.toLocaleString()}</span>
+        </div>
+      </div>
+      <div class="funnel-pct">${((booked.length/fTotal)*100).toFixed(1)}%</div>
+    </div>
+  `;
+
+  // Timeline — last 14 days
+  const now = new Date();
+  const days = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    days.push({
+      label: d.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' }),
+      key: d.toISOString().slice(0, 10),
+      count: 0
+    });
   }
+  contacted.forEach(l => {
+    if (!l.contacted_at) return;
+    const k = new Date(l.contacted_at).toISOString().slice(0, 10);
+    const d = days.find(x => x.key === k);
+    if (d) d.count++;
+  });
+  const maxCount = Math.max(...days.map(d => d.count), 1);
+  document.getElementById('analytics-timeline').innerHTML = `
+    <div class="timeline-bars">
+      ${days.map(d => `
+        <div class="timeline-bar-wrap" title="${d.label}: ${d.count} sent">
+          <div class="timeline-count">${d.count > 0 ? d.count : ''}</div>
+          <div class="timeline-bar" style="height:${Math.max(2, Math.round((d.count/maxCount)*80))}px"></div>
+          <div class="timeline-label">${d.label.replace(/\d{4}-/, '')}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
 
   // Industry breakdown
   const industries = {};
@@ -792,11 +794,10 @@ function renderCampaigns() {
   });
   const sorted = Object.entries(industries).sort((a, b) => b[1] - a[1]).slice(0, 10);
   const maxVal = sorted.length ? sorted[0][1] : 1;
-
   if (sorted.length === 0) {
-    document.getElementById('industry-breakdown').innerHTML = '<div class="empty">No data</div>';
+    document.getElementById('analytics-industries').innerHTML = '<div class="empty">No data</div>';
   } else {
-    document.getElementById('industry-breakdown').innerHTML = sorted.map(([name, count]) => `
+    document.getElementById('analytics-industries').innerHTML = sorted.map(([name, count]) => `
       <div class="industry-row">
         <div class="industry-label">
           <span class="industry-name">${escHtml(name)}</span>
@@ -806,321 +807,120 @@ function renderCampaigns() {
       </div>
     `).join('');
   }
+
+  // Active conversations
+  const activeConvos = leads
+    .filter(l => l.status === 'replied')
+    .sort((a, b) => new Date(b.last_reply_at || 0) - new Date(a.last_reply_at || 0));
+  document.getElementById('active-convo-count').textContent = activeConvos.length ? `(${activeConvos.length})` : '';
+  if (activeConvos.length === 0) {
+    document.getElementById('active-convos').innerHTML = '<div class="empty">No active conversations</div>';
+  } else {
+    document.getElementById('active-convos').innerHTML = activeConvos.map(l => `
+      <div class="convo-row" onclick="openContactFromAnalytics(${l.id})">
+        <div class="convo-dot"></div>
+        <div class="convo-main">
+          <div class="convo-company">${escHtml(l.company || l.name || l.email)}</div>
+          <div class="convo-email">${escHtml(l.email)}${l.industry ? ' · ' + escHtml(l.industry) : ''}</div>
+        </div>
+        <div class="convo-time">${timeAgo(l.last_reply_at)}</div>
+      </div>
+    `).join('');
+  }
 }
 
-// ── REPLIES ────────────────────────────────────────────────────────────────
-async function renderReplies() {
-  document.getElementById('replies-content').innerHTML = '<div class="loading"><div class="spinner"></div><div>Loading replies…</div></div>';
+function openContactFromAnalytics(id) {
+  switchTab('contacts');
+  setTimeout(() => openContact(id), 50);
+}
+
+// ── INBOX ─────────────────────────────────────────────────────────────────
+async function renderInbox() {
+  document.getElementById('inbox-content').innerHTML = '<div class="loading"><div class="spinner"></div><div>Fetching inboxes…</div></div>';
   try {
-    if (!inboxMessages.length) inboxMessages = await loadAllInboxes();
-    updateInboxBadge();
+    // Load from Supabase conversations table (inbound emails)
+    const convos = await sbGet('conversations?select=*&direction=eq.inbound&order=sent_at.desc&limit=500');
+    const msgs = Array.isArray(convos) ? convos : [];
+    document.getElementById('inbox-count').textContent = msgs.length ? `(${msgs.length})` : '';
 
-    // Only inbound messages — exclude our own sends, bounces, noise
-    replyMessages = inboxMessages.filter(m => {
-      const from = (m.from_address || m.from || '').toLowerCase();
-      return !from.includes('wildroseautomations') && !from.includes('mailer-daemon') && !from.includes('noreply') && !from.includes('no-reply');
-    }).sort((a,b) => new Date(b.timestamp||b.date||b.created_at||0) - new Date(a.timestamp||a.date||a.created_at||0));
-    const replyMsgs = replyMessages;
-
-    // Update replies badge
-    const badge = document.getElementById('replies-badge');
-    const unread = replyMsgs.filter(m => !m._read).length;
+    // Update badge
+    const unread = msgs.filter(m => !readSet.has(String(m.id))).length;
+    const badge = document.getElementById('inbox-badge');
     badge.textContent = unread > 99 ? '99+' : unread;
     badge.style.display = unread > 0 ? 'inline-block' : 'none';
 
-    if (!replyMsgs.length) {
-      document.getElementById('replies-content').innerHTML = '<div class="empty" style="padding:60px 20px;text-align:center;color:var(--muted)">No replies yet</div>';
+    if (msgs.length === 0) {
+      document.getElementById('inbox-content').innerHTML = '<div class="empty">No inbound messages</div>';
       return;
     }
 
-    document.getElementById('replies-content').innerHTML = `
-      <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-        <div style="font-size:12px;font-weight:600;color:var(--muted)">${replyMsgs.length} reply${replyMsgs.length!==1?'s':''}</div>
-        <div style="font-size:11px;color:var(--muted)">Click to expand & reply</div>
-      </div>
-      <div class="inbox-list">
-        ${replyMsgs.map((msg, i) => {
-          const fromName = msg.from_name || (msg.from||'').replace(/<.*>/,'').trim() || 'Unknown';
-          const fromEmail = msg.from_address || (msg.from||'').match(/[\\w.+-]+@[\\w.-]+\\.[a-z]{2,}/i)?.[0] || '';
-          const lead = leads.find(l => l.email && l.email.toLowerCase() === fromEmail.toLowerCase());
-          const company = lead ? (lead.company || lead.name || '') : '';
-          const subject = msg.subject || '(no subject)';
-          const bodyText = msg.text || msg.body_text || msg.body || msg.preview || '';
-          const preview = bodyText.slice(0, 140);
-          const ts = timeAgo(msg.date || msg.created_at);
-          const inboxShort = (msg._inbox || '').split('@')[0];
-          const isUnread = !msg._read;
-          const statusColor = lead ? ({'replied':'#f59e0b','booked':'#22c55e','dead':'#ef4444','contacted':'#3b82f6'}[lead.status]||'#64748b') : '#64748b';
-          const rid = 'r_' + i;
+    document.getElementById('inbox-content').innerHTML = msgs.map((msg, i) => {
+      const lead = leads.find(l => l.id === msg.lead_id);
+      const fromAddr = msg.from_address || '';
+      const fromName = fromAddr.split('@')[0] || 'Unknown';
+      const company = lead ? (lead.company || '') : '';
+      const subject = msg.subject || '(no subject)';
+      const preview = (msg.body || '').slice(0, 140).replace(/\n/g, ' ');
+      const isUnread = !readSet.has(String(msg.id));
+      const inboxShort = (msg.inbox || '').split('@')[0];
 
-          return `
-            <div class="email-card ${isUnread?'unread':''}" id="rc-${rid}" onclick="toggleReplyCard('${rid}', ${i})" style="${isUnread?'border-left:3px solid var(--accent);':''}">
-              <div class="email-card-header">
-                <span class="email-sender" style="font-size:13px">${escHtml(fromName)}</span>
-                ${company ? `<span style="font-size:11px;color:var(--accent);font-weight:600;background:var(--accent-dim);padding:1px 7px;border-radius:10px">${escHtml(company)}</span>` : ''}
-                <span style="font-size:10px;color:var(--muted);background:var(--border);padding:1px 6px;border-radius:4px">${escHtml(inboxShort)}</span>
-                ${lead ? `<span style="font-size:10px;color:${statusColor};font-weight:700;text-transform:uppercase">${lead.status}</span>` : ''}
-                <span class="email-time">${ts}</span>
-              </div>
-              <div class="email-subject" style="margin-top:4px">${escHtml(subject)}</div>
-              <div class="email-preview">${escHtml(preview)}${bodyText.length>140?'…':''}</div>
+      return `
+        <div class="email-card ${isUnread ? 'unread' : ''}" id="inbox-card-${i}" onclick="toggleInboxCard(${i}, '${msg.id}')">
+          <div class="email-card-header">
+            <span class="email-sender">${escHtml(fromName)}</span>
+            <span style="font-size:10px;font-weight:700;background:rgba(34,197,94,.15);color:#22c55e;padding:1px 7px;border-radius:10px;text-transform:uppercase">Reply</span>
+            ${company ? `<span class="email-company-tag">${escHtml(company)}</span>` : ''}
+            ${lead ? pillHtml(lead.status) : ''}
+            <span class="email-inbox-tag">${escHtml(inboxShort)}</span>
+            <span class="email-time">${timeAgo(msg.sent_at)}</span>
+          </div>
+          <div class="email-subject">${escHtml(subject)}</div>
+          <div class="email-preview">${escHtml(preview)}${(msg.body||'').length > 140 ? '…' : ''}</div>
+        </div>
+        <div class="email-expanded" id="inbox-exp-${i}">
+          <div class="email-body-text">${escHtml(msg.body || '(no content)')}</div>
+          ${lead ? `
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+              <button class="btn btn-purple" onclick="quickMarkStatus(${lead.id}, 'replied')">✓ Mark Replied</button>
+              <button class="btn btn-success" onclick="quickMarkStatus(${lead.id}, 'booked')">📅 Booked</button>
+              <button class="btn btn-danger" onclick="quickMarkStatus(${lead.id}, 'dead')">✗ Dead</button>
+              <button class="btn btn-ghost" onclick="openContactFromAnalytics(${lead.id})">👤 View Thread</button>
             </div>
-            <div class="email-expanded" id="re-${rid}">
-              <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
-                <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">Full Conversation</div>
-                <div id="thread-${rid}"><div style="font-size:11px;color:var(--muted)">Loading…</div></div>
-              </div>
-              <div style="padding:12px 16px;display:flex;gap:8px;border-bottom:1px solid var(--border);flex-wrap:wrap">
-                ${lead ? `
-                  <button onclick="quickStatus('${lead.id}','booked','${rid}')" style="background:#14291a;border:1px solid #22c55e;color:#22c55e;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">✅ Booked</button>
-                  <button onclick="quickStatus('${lead.id}','replied','${rid}')" style="background:#1a1a0a;border:1px solid #f59e0b;color:#f59e0b;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">💬 Mark Replied</button>
-                  <button onclick="quickStatus('${lead.id}','dead','${rid}')" style="background:#1a0808;border:1px solid #ef4444;color:#ef4444;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">❌ Dead</button>
-                  <button onclick="switchTab('contacts');setTimeout(()=>openContact(${lead.id}),300)" style="background:var(--border);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">👤 Profile</button>
-                ` : `<div style="font-size:12px;color:var(--muted);padding:6px 0">No matching lead in CRM for ${escHtml(fromEmail)}</div>`}
-              </div>
-              <div style="padding:14px 16px">
-                <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Reply from <strong style="color:var(--accent)">${escHtml(msg._inbox||'jack@wildroseautomations.ca')}</strong></div>
-                <textarea id="rt-${rid}" placeholder="Type your reply…" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px;font-size:13px;resize:vertical;min-height:100px;outline:none;font-family:inherit" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-                <button onclick="sendReplyFromReplies('${rid}','${escHtml(fromEmail).replace(/'/g,"\\'")}','${escHtml(subject).replace(/'/g,"\\'")}','${escHtml(msg._inbox||'').replace(/'/g,"\\'")}','${escHtml(msg.thread_id||'').replace(/'/g,"\\'")}','${lead?lead.id:''}')" style="margin-top:8px;background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px">Send Reply ↗</button>
-              </div>
-            </div>
-          `;
-        }).join('')}
-      </div>`;
-  } catch(e) {
-    document.getElementById('replies-content').innerHTML = `<div class="empty">Error: ${escHtml(e.message)}</div>`;
-  }
-}
-
-async function toggleReplyCard(rid, idx) {
-  const exp = document.getElementById(`re-${rid}`);
-  const card = document.getElementById(`rc-${rid}`);
-  const isOpen = exp.classList.contains('open');
-  document.querySelectorAll('.email-expanded').forEach(e => e.classList.remove('open'));
-  if (!isOpen) {
-    exp.classList.add('open');
-    if (replyMessages[idx]) replyMessages[idx]._read = true;
-    card.classList.remove('unread');
-    card.style.borderLeft = '';
-
-    // Load full thread using thread_id — returns full text for every message
-    const msg = replyMessages[idx];
-    const threadId = msg.thread_id;
-    const inbox = msg._inbox || AM_INBOXES[0];
-    const fromEmail = (msg.from_address || (msg.from||'').match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0] || '').toLowerCase();
-    const threadDiv = document.getElementById(`thread-${rid}`);
-    if (threadDiv) {
-      threadDiv.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:8px 0">Loading thread…</div>';
-      try {
-        // Fetch thread directly by thread_id — returns all messages with full text
-        const res = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/threads/${threadId}`, {
-          headers: { 'Authorization': `Bearer ${AM_KEY}` }
-        });
-        const data = await res.json();
-        const thread = (data.messages || []).sort((a,b) => new Date(a.timestamp||0) - new Date(b.timestamp||0));
-
-        if (!thread.length) {
-          threadDiv.innerHTML = '<div style="font-size:11px;color:var(--muted)">No messages found in thread</div>';
-          return;
-        }
-
-        const fmtTime = ts => ts ? new Date(ts).toLocaleString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
-
-        threadDiv.innerHTML = thread.map(m => {
-          const mFrom = (m.from || '').toLowerCase();
-          const isInbound = mFrom.includes(fromEmail) || (!mFrom.includes('wildroseautomations'));
-          const sender = (m.from||'').replace(/<.*>/,'').trim() || mFrom;
-          const body = m.text || m.extracted_text || m.preview || '';
-          return `
-            <div style="margin-bottom:12px;padding:12px;border-radius:8px;background:${isInbound?'#0d1a0d':'#0a0a14'};border:1px solid ${isInbound?'rgba(34,197,94,.2)':'rgba(59,130,246,.15)'}">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
-                <span style="font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;text-transform:uppercase;background:${isInbound?'rgba(34,197,94,.15)':'rgba(59,130,246,.15)'};color:${isInbound?'#22c55e':'#3b82f6'}">${isInbound?'THEM':'YOU'}</span>
-                <span style="font-size:11px;color:var(--text);font-weight:600">${escHtml(sender)}</span>
-                <span style="font-size:11px;color:var(--muted);margin-left:auto">${fmtTime(m.timestamp)}</span>
-              </div>
-              ${m.subject ? `<div style="font-size:12px;font-weight:600;margin-bottom:6px;color:var(--muted)">${escHtml(m.subject)}</div>` : ''}
-              <div style="font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text)">${escHtml(body.slice(0,2000))}${body.length>2000?'\n\n[truncated…]':''}</div>
-            </div>`;
-        }).join('');
-      } catch(e) {
-        threadDiv.innerHTML = `<div style="font-size:11px;color:var(--muted)">Error: ${escHtml(e.message)}</div>`;
-      }
-    }
-  }
-}
-
-async function quickStatus(leadId, status, rid) {
-  await updateLeadStatus(parseInt(leadId), status);
-  toast(`Marked as ${status}`, 'success');
-  renderCampaigns();
-}
-
-async function sendReplyFromReplies(rid, toEmail, subject, fromInbox, threadId, leadId) {
-  const text = document.getElementById(`rt-${rid}`)?.value?.trim();
-  if (!text) { toast('Write something first', 'error'); return; }
-  const inbox = fromInbox || 'jack@wildroseautomations.ca';
-  const replySubj = subject.startsWith('Re:') ? subject : 'Re: ' + subject;
-  try {
-    const inboxId = inbox.split('@')[0];
-    const body = { to: [toEmail], subject: replySubj, text };
-    if (threadId) body.thread_id = threadId;
-    await fetch(`https://api.agentmail.to/v0/inboxes/${inboxId}/messages/send`, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${AM_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    if (leadId) await updateLeadStatus(parseInt(leadId), 'replied');
-    toast('Reply sent ✓', 'success');
-    document.getElementById(`rt-${rid}`).value = '';
-  } catch(e) { toast('Send failed', 'error'); }
-}
-
-// ── INBOX ──────────────────────────────────────────────────────────────────
-async function renderInbox() {
-  document.getElementById('inbox-content').innerHTML = '<div class="loading"><div class="spinner"></div><div>Fetching all inboxes…</div></div>';
-  try {
-    inboxMessages = await loadAllInboxes();
-    updateInboxBadge();
-    renderInboxMessages();
+          ` : `<div style="margin-top:12px;font-size:12px;color:var(--muted)">Lead not found in CRM for ${escHtml(fromAddr)}</div>`}
+        </div>
+      `;
+    }).join('');
   } catch (e) {
-    document.getElementById('inbox-content').innerHTML = `<div class="empty">Error loading inbox: ${escHtml(e.message)}</div>`;
+    document.getElementById('inbox-content').innerHTML = `<div class="empty">Error: ${escHtml(e.message)}</div>`;
   }
 }
 
-function updateInboxBadge() {
-  const badge = document.getElementById('inbox-badge');
-  const unread = inboxMessages.filter(m => !m._read).length;
-  if (unread > 0) {
-    badge.textContent = unread > 99 ? '99+' : unread;
-    badge.style.display = 'inline-block';
-  } else {
-    badge.style.display = 'none';
-  }
-}
-
-function renderInboxMessages() {
-  if (inboxMessages.length === 0) {
-    document.getElementById('inbox-content').innerHTML = '<div class="empty">No inbound messages</div>';
-    return;
-  }
-
-  // Sort: replies (inbound from leads) first, then rest
-  const sorted = [...inboxMessages].sort((a, b) => {
-    const aFrom = (a.from_address || a.from || '').toLowerCase();
-    const bFrom = (b.from_address || b.from || '').toLowerCase();
-    const aIsReply = !aFrom.includes('wildroseautomations') && !aFrom.includes('mailer-daemon');
-    const bIsReply = !bFrom.includes('wildroseautomations') && !bFrom.includes('mailer-daemon');
-    if (aIsReply && !bIsReply) return -1;
-    if (!aIsReply && bIsReply) return 1;
-    return new Date(b.date||b.created_at||0) - new Date(a.date||a.created_at||0);
-  });
-
-  const replyCount = sorted.filter(m => {
-    const from = (m.from_address || m.from || '').toLowerCase();
-    return !from.includes('wildroseautomations') && !from.includes('mailer-daemon');
-  }).length;
-
-  const html = `
-    ${replyCount > 0 ? `<div style="padding:8px 16px;background:#0a140a;border-bottom:1px solid rgba(34,197,94,.25);font-size:11px;font-weight:700;color:#22c55e;letter-spacing:.5px">
-      📬 ${replyCount} LEAD REPL${replyCount===1?'Y':'IES'} — SHOWN FIRST
-    </div>` : ''}
-    <div class="inbox-list">` + sorted.map((msg, i) => {
-    const fromName = msg.from_name || (msg.from||'').replace(/<.*>/,'').trim() || 'Unknown';
-    const fromEmail = msg.from_address || (msg.from||'').match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0] || '';
-    const lead = leads.find(l => l.email && l.email.toLowerCase() === fromEmail.toLowerCase());
-    const company = lead ? (lead.company || '') : '';
-    const subject = msg.subject || '(no subject)';
-    const preview = (msg.text || msg.body_text || msg.snippet || '').slice(0, 120);
-    const ts = timeAgo(msg.date || msg.created_at);
-    const inboxShort = (msg._inbox || '').split('@')[0];
-    const isUnread = !msg._read;
-    const isReply = !fromEmail.includes('wildroseautomations') && !fromEmail.includes('mailer-daemon') && fromEmail !== '';
-    const statusColor = lead ? ({'replied':'#f59e0b','booked':'#22c55e','dead':'#ef4444','contacted':'#3b82f6'}[lead.status]||'') : '';
-
-    return `
-      <div class="email-card ${isUnread ? 'unread' : ''}" id="email-card-${i}" onclick="toggleEmail(${i})" style="${isReply ? 'border-left:3px solid #22c55e;' : ''}">
-        <div class="email-card-header">
-          <span class="email-sender">${escHtml(fromName)}</span>
-          ${isReply ? `<span style="font-size:10px;font-weight:700;background:rgba(34,197,94,.15);color:#22c55e;padding:1px 7px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px">Reply</span>` : ''}
-          ${company ? `<span class="email-company-tag">${escHtml(company)}</span>` : ''}
-          ${lead && statusColor ? `<span style="font-size:10px;font-weight:700;color:${statusColor};text-transform:uppercase">${lead.status}</span>` : ''}
-          <span class="email-inbox-tag">${escHtml(inboxShort)}</span>
-          <span class="email-time">${ts}</span>
-        </div>
-        <div class="email-subject">${escHtml(subject)}</div>
-        <div class="email-preview">${escHtml(preview)}</div>
-      </div>
-      <div class="email-expanded" id="email-exp-${i}">
-        <div class="email-body-text">${escHtml(msg.text || msg.body_text || msg.body || '(no content)')}</div>
-        ${lead ? `<div class="action-row">
-          <button class="btn btn-purple" onclick="markLeadStatus(${i}, '${lead.id}', 'replied')">✓ Mark Replied</button>
-          <button class="btn btn-success" onclick="markLeadStatus(${i}, '${lead.id}', 'booked')">📅 Booked</button>
-          <button class="btn btn-danger" onclick="markLeadStatus(${i}, '${lead.id}', 'dead')">✗ Dead</button>
-        </div>` : ''}
-        <div class="reply-composer">
-          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">
-            Reply via <strong>${escHtml(msg._inbox || '')}</strong> → <strong>${escHtml(fromEmail)}</strong>
-          </div>
-          <textarea id="reply-body-${i}" placeholder="Write your reply…"></textarea>
-          <div class="reply-footer">
-            <button class="btn btn-primary" onclick="sendReply(${i})">Send Reply</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('') + `</div>`;
-
-  document.getElementById('inbox-content').innerHTML = html;
-  // Re-map toggle to sorted array
-  window._sortedInboxMsgs = sorted;
-}
-
-function toggleEmail(i) {
-  const card = document.getElementById(`email-card-${i}`);
-  const exp = document.getElementById(`email-exp-${i}`);
+function toggleInboxCard(i, msgId) {
+  const exp = document.getElementById(`inbox-exp-${i}`);
+  const card = document.getElementById(`inbox-card-${i}`);
   const isOpen = exp.classList.contains('open');
-  // Close all
   document.querySelectorAll('.email-expanded').forEach(e => e.classList.remove('open'));
   if (!isOpen) {
     exp.classList.add('open');
-    inboxMessages[i]._read = true;
+    readSet.add(String(msgId));
     card.classList.remove('unread');
-    updateInboxBadge();
+    // Update badge
+    const unread = document.querySelectorAll('.email-card.unread').length;
+    const badge = document.getElementById('inbox-badge');
+    badge.textContent = unread;
+    badge.style.display = unread > 0 ? 'inline-block' : 'none';
   }
 }
 
-async function markLeadStatus(msgIdx, leadId, status) {
+async function quickMarkStatus(leadId, status) {
   try {
     await updateLeadStatus(leadId, status);
     toast(`Marked as ${status}`, 'success');
-    renderCampaigns();
-  } catch (e) {
-    toast('Error: ' + e.message, 'error');
-  }
+    renderAnalytics();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
 }
 
-async function sendReply(i) {
-  const msg = inboxMessages[i];
-  const body = document.getElementById(`reply-body-${i}`).value.trim();
-  if (!body) { toast('Write a reply first', 'error'); return; }
-  const toEmail = msg.from_address || msg.from || '';
-  const inbox = msg._inbox || AM_INBOXES[0];
-  const subject = msg.subject ? `Re: ${msg.subject}` : 'Re: Your message';
-  try {
-    await amSend(inbox, toEmail, subject, body, msg.message_id);
-    toast('Reply sent!', 'success');
-    document.getElementById(`reply-body-${i}`).value = '';
-    // Update lead status if found
-    const lead = leads.find(l => l.email && l.email.toLowerCase() === toEmail.toLowerCase());
-    if (lead && lead.status === 'replied') {
-      // already replied, keep as is
-    }
-  } catch (e) {
-    toast('Send failed: ' + e.message, 'error');
-  }
-}
-
-// ── CONTACTS ──────────────────────────────────────────────────────────────
+// ── CONTACTS ─────────────────────────────────────────────────────────────
 function setFilter(filter, btn) {
   currentFilter = filter;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -1136,7 +936,8 @@ function filterContacts(search = '') {
     return (l.name || '').toLowerCase().includes(q) ||
            (l.email || '').toLowerCase().includes(q) ||
            (l.company || '').toLowerCase().includes(q) ||
-           (l.industry || '').toLowerCase().includes(q);
+           (l.industry || '').toLowerCase().includes(q) ||
+           (l.location || '').toLowerCase().includes(q);
   });
   renderContactsTable(filtered);
 }
@@ -1160,18 +961,25 @@ function renderContactsTable(filtered) {
           <th>Industry</th>
           <th>Location</th>
           <th>Status</th>
-          <th>Date</th>
+          <th>Contacted</th>
+          <th>Last Reply</th>
+          <th>Follow-ups</th>
         </tr>
       </thead>
       <tbody>
         ${filtered.map(l => `
-          <tr class="${selectedLead && selectedLead.id === l.id ? 'selected' : ''}" onclick="selectLead('${l.id}')">
-            <td><strong>${escHtml(l.company || '—')}</strong>${l.name ? `<div style="font-size:11px;color:var(--muted)">${escHtml(l.name)}</div>` : ''}</td>
-            <td style="color:var(--muted)">${escHtml(l.email)}</td>
-            <td style="color:var(--muted)">${escHtml(l.industry || '—')}</td>
-            <td style="color:var(--muted)">${escHtml(l.location || '—')}</td>
+          <tr class="${selectedLead && selectedLead.id === l.id ? 'selected' : ''}" onclick="openContact(${l.id})">
+            <td>
+              <div style="font-weight:600">${escHtml(l.company || '—')}</div>
+              ${l.name ? `<div style="font-size:11px;color:var(--muted)">${escHtml(l.name)}</div>` : ''}
+            </td>
+            <td style="color:var(--muted);font-size:12px">${escHtml(l.email)}</td>
+            <td style="color:var(--muted);font-size:12px">${escHtml(l.industry || '—')}</td>
+            <td style="color:var(--muted);font-size:12px">${escHtml(l.location || '—')}</td>
             <td>${pillHtml(l.status)}</td>
-            <td style="color:var(--muted)">${formatDate(l.contacted_at)}</td>
+            <td style="color:var(--muted);font-size:12px">${fmtDate(l.contacted_at)}</td>
+            <td style="color:var(--muted);font-size:12px">${l.last_reply_at ? timeAgo(l.last_reply_at) : '—'}</td>
+            <td style="color:var(--muted);font-size:12px;text-align:center">${l.follow_up_count || 0}</td>
           </tr>
         `).join('')}
       </tbody>
@@ -1179,198 +987,188 @@ function renderContactsTable(filtered) {
   `;
 }
 
-async function selectLead(id) {
-  selectedLead = leads.find(l => l.id == id);
-  if (!selectedLead) return;
+async function openContact(id) {
+  const lead = leads.find(l => l.id == id);
+  if (!lead) return;
+  selectedLead = lead;
+  renderContacts();
 
-  const layout = document.getElementById('contacts-layout');
-  layout.classList.add('with-panel');
-
-  // Remove existing panel
-  const existing = document.getElementById('contact-panel');
-  if (existing) existing.remove();
-
-  const panel = document.createElement('div');
-  panel.className = 'contact-panel';
-  panel.id = 'contact-panel';
-  panel.innerHTML = `
-    <div class="panel-header">
-      <div class="panel-name">${escHtml(selectedLead.name || selectedLead.email)}</div>
-      <div class="panel-company">${escHtml(selectedLead.company || '—')}</div>
-      <div class="panel-meta">
-        ${pillHtml(selectedLead.status)}
-        ${selectedLead.industry ? `<span class="meta-tag">${escHtml(selectedLead.industry)}</span>` : ''}
-        ${selectedLead.location ? `<span class="meta-tag">📍 ${escHtml(selectedLead.location)}</span>` : ''}
-      </div>
+  // Populate panel header
+  document.getElementById('panel-lead-info').innerHTML = `
+    <div class="panel-company-name">${escHtml(lead.company || lead.name || lead.email)}</div>
+    ${lead.name && lead.company ? `<div class="panel-contact-name">${escHtml(lead.name)}</div>` : ''}
+    <div class="panel-meta">
+      ${pillHtml(lead.status)}
+      ${lead.industry ? `<span class="meta-tag">${escHtml(lead.industry)}</span>` : ''}
+      ${lead.location ? `<span class="meta-tag">📍 ${escHtml(lead.location)}</span>` : ''}
+      <span class="meta-tag">${escHtml(lead.email)}</span>
+      ${lead.contacted_at ? `<span class="meta-tag">Sent ${fmtDate(lead.contacted_at)}</span>` : ''}
+      ${lead.last_reply_at ? `<span class="meta-tag" style="color:var(--purple)">Replied ${timeAgo(lead.last_reply_at)}</span>` : ''}
     </div>
-    <div class="panel-body">
-      <div class="panel-section">
-        <div class="panel-section-title">Contact Info</div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">${escHtml(selectedLead.email)}</div>
-        <div style="font-size:12px;color:var(--muted)">Contacted: ${timeAgo(selectedLead.contacted_at)}</div>
-        ${selectedLead.last_reply_at ? `<div style="font-size:12px;color:var(--muted)">Last reply: ${timeAgo(selectedLead.last_reply_at)}</div>` : ''}
-      </div>
-      ${selectedLead.notes ? `
-      <div class="panel-section">
-        <div class="panel-section-title">Notes</div>
-        <div class="panel-notes">${escHtml(selectedLead.notes)}</div>
-      </div>` : ''}
-      <div class="panel-section">
-        <div class="panel-section-title">Actions</div>
-        <div class="action-row">
-          <button class="btn btn-purple btn-sm" onclick="quickStatus('replied')">Replied</button>
-          <button class="btn btn-success btn-sm" onclick="quickStatus('booked')">Booked</button>
-          <button class="btn btn-danger btn-sm" onclick="quickStatus('dead')">Dead</button>
-        </div>
-      </div>
-      <div class="panel-section" id="thread-section">
-        <div class="panel-section-title">Email Thread <span id="thread-loading" style="color:var(--muted);font-weight:400">(loading…)</span></div>
-        <div id="thread-messages"></div>
-      </div>
-      <div class="panel-section">
-        <div class="panel-section-title">Reply</div>
-        <div class="reply-composer">
-          <div style="margin-bottom:8px">
-            <select class="form-select" id="panel-reply-from" style="font-size:12px;padding:5px 8px">
-              ${AM_INBOXES.map(i => `<option value="${i}">${i.split('@')[0]}</option>`).join('')}
-            </select>
-          </div>
-          <input class="form-input" id="panel-reply-subject" placeholder="Subject" style="margin-bottom:8px;font-size:12px;padding:7px 10px">
-          <textarea id="panel-reply-body" placeholder="Write your message…" style="min-height:80px"></textarea>
-          <button class="btn btn-primary" onclick="sendPanelReply()">Send</button>
-        </div>
-      </div>
-    </div>
-    <div style="padding:10px;border-top:1px solid var(--border)">
-      <button class="btn btn-ghost" onclick="closePanel()" style="width:100%;justify-content:center">Close</button>
+    <div class="panel-quick-actions">
+      <button class="btn btn-purple" style="font-size:11px;padding:4px 10px" onclick="panelStatus(${lead.id},'replied')">Replied</button>
+      <button class="btn btn-success" style="font-size:11px;padding:4px 10px" onclick="panelStatus(${lead.id},'booked')">Booked</button>
+      <button class="btn btn-amber" style="font-size:11px;padding:4px 10px" onclick="panelStatus(${lead.id},'bounced')">Bounced</button>
+      <button class="btn btn-danger" style="font-size:11px;padding:4px 10px" onclick="panelStatus(${lead.id},'dead')">Dead</button>
     </div>
   `;
 
-  layout.appendChild(panel);
+  // Show panel
+  document.getElementById('contact-panel').classList.add('open');
 
-  // Load thread
-  loadThread(selectedLead.email);
-  renderContacts();
+  // Load conversations
+  const threadDiv = document.getElementById('panel-thread');
+  threadDiv.innerHTML = '<div class="loading"><div class="spinner"></div><div>Loading thread…</div></div>';
+  try {
+    const convos = await loadConversations(lead.id);
+    renderChatThread(convos, lead, threadDiv);
+  } catch(e) {
+    threadDiv.innerHTML = `<div class="empty">Error: ${escHtml(e.message)}</div>`;
+  }
 }
 
-async function loadThread(email) {
-  try {
-    // Find threads across all inboxes that involve this email
-    const emailLower = email.toLowerCase();
-    const allThreadResults = await Promise.all(AM_INBOXES.map(async inbox => {
-      try {
-        const res = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/threads?limit=100`, {
-          headers: { 'Authorization': `Bearer ${AM_KEY}` }
-        });
-        if (!res.ok) return [];
-        const data = await res.json();
-        return (data.threads || []).filter(t => {
-          const senders = (t.senders || []).join(' ').toLowerCase();
-          const recipients = (t.recipients || []).join(' ').toLowerCase();
-          return senders.includes(emailLower) || recipients.includes(emailLower);
-        }).map(t => ({ ...t, _inbox: inbox }));
-      } catch { return []; }
-    }));
+function renderChatThread(convos, lead, container) {
+  if (convos.length === 0) {
+    container.innerHTML = '<div class="empty">No emails on record for this lead.</div>';
+    return;
+  }
 
-    const matchedThreads = allThreadResults.flat();
-    document.getElementById('thread-loading').textContent = `(${matchedThreads.length} thread${matchedThreads.length!==1?'s':''})`;
-    const container = document.getElementById('thread-messages');
+  container.innerHTML = convos.map((msg, i) => {
+    const isOut = msg.direction === 'outbound';
+    const senderAddr = isOut ? (msg.from_address || '') : (msg.from_address || lead.email);
+    const senderName = senderAddr.split('@')[0];
+    const body = msg.body || '';
+    const isTruncated = body.length > 500;
+    const displayBody = isTruncated ? body.slice(0, 500) : body;
 
-    if (matchedThreads.length === 0) {
-      container.innerHTML = '<div style="font-size:12px;color:var(--muted)">No email threads found for this contact</div>';
-      return;
-    }
-
-    // Fetch full messages for each thread
-    const allMessages = [];
-    for (const t of matchedThreads) {
-      try {
-        const res = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(t._inbox)}/threads/${t.thread_id}`, {
-          headers: { 'Authorization': `Bearer ${AM_KEY}` }
-        });
-        if (!res.ok) continue;
-        const data = await res.json();
-        (data.messages || []).forEach(m => allMessages.push({ ...m, _inbox: t._inbox }));
-      } catch {}
-    }
-
-    allMessages.sort((a, b) => new Date(a.timestamp || 0) - new Date(b.timestamp || 0));
-    document.getElementById('thread-loading').textContent = `(${allMessages.length} message${allMessages.length!==1?'s':''})`;
-
-    if (allMessages.length === 0) {
-      container.innerHTML = '<div style="font-size:12px;color:var(--muted)">No messages found</div>';
-      return;
-    }
-
-    container.innerHTML = allMessages.map((m, i) => {
-      const from = (m.from || 'Unknown');
-      const isOutbound = (m.from || '').toLowerCase().includes('wildroseautomations');
-      const body = m.text || m.extracted_text || m.preview || '';
-      const fmtTime = ts => ts ? new Date(ts).toLocaleString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
-      return `
-        <div class="thread-msg" style="${isOutbound ? 'border-left:2px solid var(--accent)' : 'border-left:2px solid #22c55e'}">
-          <div class="thread-msg-header">
-            <span class="thread-msg-from" style="color:${isOutbound?'var(--accent)':'#22c55e'}">${isOutbound?'YOU':'THEM'}</span>
-            <span style="font-size:11px;color:var(--text);margin-left:4px">${escHtml(from.replace(/<.*>/,'').trim())}</span>
-            <span class="thread-msg-time">${fmtTime(m.timestamp)}</span>
-          </div>
-          <div class="thread-msg-subject">${escHtml(m.subject || '')}</div>
-          <div class="thread-msg-body" id="tmb-${i}" style="max-height:none">${escHtml(body)}</div>
+    return `
+      <div class="chat-msg ${isOut ? 'outbound' : 'inbound'}">
+        ${msg.subject ? `<div class="chat-subject">${escHtml(msg.subject)}</div>` : ''}
+        <div class="chat-bubble" id="cbubble-${i}" onclick="toggleBubble(${i})">
+          ${escHtml(displayBody)}${isTruncated ? '\n\n[click to expand…]' : ''}
         </div>
-      `;
-    }).join('');
-  } catch (e) {
-    const tl = document.getElementById('thread-loading');
-    if (tl) tl.textContent = '(error)';
+        <div class="chat-meta">
+          <span>${escHtml(senderName)}</span>
+          <span>·</span>
+          <span>${fmtDateTime(msg.sent_at)}</span>
+          ${msg.inbox ? `<span>·</span><span style="color:var(--accent)">${escHtml(msg.inbox.split('@')[0])}</span>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Store full bodies for expand
+  window._chatBodies = convos.map(m => m.body || '');
+}
+
+function toggleBubble(i) {
+  const el = document.getElementById(`cbubble-${i}`);
+  if (!el || !window._chatBodies) return;
+  const full = window._chatBodies[i];
+  if (el.classList.contains('expanded')) {
+    el.textContent = full.slice(0, 500) + (full.length > 500 ? '\n\n[click to expand…]' : '');
+    el.classList.remove('expanded');
+  } else {
+    el.textContent = full;
+    el.classList.add('expanded');
   }
 }
 
-function expandThread(id, fullText) {
-  const el = document.getElementById(id);
-  if (el) { el.textContent = fullText; el.nextElementSibling.remove(); }
-}
-
-async function quickStatus(status) {
-  if (!selectedLead) return;
+async function panelStatus(leadId, status) {
   try {
-    await updateLeadStatus(selectedLead.id, status);
-    selectedLead.status = status;
+    await updateLeadStatus(leadId, status);
     toast(`Marked as ${status}`, 'success');
+    if (selectedLead && selectedLead.id === leadId) selectedLead.status = status;
     renderContacts();
-    // Re-render panel header pill
-    const panelPill = document.querySelector('.panel-meta .pill');
-    if (panelPill) { panelPill.className = `pill pill-${status}`; panelPill.textContent = status; }
-  } catch (e) {
-    toast('Error: ' + e.message, 'error');
-  }
-}
-
-async function sendPanelReply() {
-  if (!selectedLead) return;
-  const from = document.getElementById('panel-reply-from').value;
-  const subject = document.getElementById('panel-reply-subject').value.trim() || `Re: Your inquiry`;
-  const body = document.getElementById('panel-reply-body').value.trim();
-  if (!body) { toast('Write a message first', 'error'); return; }
-  try {
-    await amSend(from, selectedLead.email, subject, body);
-    toast('Sent!', 'success');
-    document.getElementById('panel-reply-body').value = '';
-    await updateLeadStatus(selectedLead.id, 'contacted');
-    loadThread(selectedLead.email);
-  } catch (e) {
-    toast('Send failed: ' + e.message, 'error');
-  }
+    renderAnalytics();
+    // Update pill in panel
+    document.getElementById('panel-lead-info').querySelectorAll('.pill').forEach(p => {
+      p.className = `pill pill-${status}`;
+      p.textContent = status;
+    });
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
 }
 
 function closePanel() {
   selectedLead = null;
-  document.getElementById('contacts-layout').classList.remove('with-panel');
-  const panel = document.getElementById('contact-panel');
-  if (panel) panel.remove();
-  renderContacts();
+  document.getElementById('contact-panel').classList.remove('open');
+  if (activeTab === 'contacts') renderContacts();
 }
 
-// ── COMPOSE ────────────────────────────────────────────────────────────────
+// ── CAMPAIGNS ─────────────────────────────────────────────────────────────
+function renderCampaigns() {
+  const contacted = leads.filter(l => ['contacted','replied','booked','bounced','dead'].includes(l.status));
+  const replied = leads.filter(l => ['replied','booked'].includes(l.status));
+  const booked = leads.filter(l => l.status === 'booked');
+  const rate = contacted.length ? ((replied.length / contacted.length) * 100).toFixed(1) : '0.0';
+
+  document.getElementById('camp-sent').textContent = contacted.length;
+  document.getElementById('camp-replied').textContent = replied.length;
+  document.getElementById('camp-rate').textContent = rate + '%';
+  document.getElementById('camp-booked').textContent = booked.length;
+
+  // Replies banner
+  const repliedLeads = leads.filter(l => l.status === 'replied')
+    .sort((a, b) => new Date(b.last_reply_at || 0) - new Date(a.last_reply_at || 0));
+  const banner = document.getElementById('replies-banner');
+  if (repliedLeads.length > 0) {
+    banner.style.display = 'block';
+    document.getElementById('replies-list').innerHTML = repliedLeads.map(l => `
+      <div class="reply-alert" onclick="openContactFromAnalytics(${l.id})">
+        <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;flex-shrink:0"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13px">${escHtml(l.company || l.name || l.email)}</div>
+          <div style="font-size:11px;color:#64748b">${escHtml(l.email)}${l.industry ? ' · ' + escHtml(l.industry) : ''}</div>
+        </div>
+        <div style="font-size:11px;color:#22c55e;white-space:nowrap">${timeAgo(l.last_reply_at)} ↗</div>
+      </div>
+    `).join('');
+  } else {
+    banner.style.display = 'none';
+  }
+
+  // Recent sends
+  const recent = [...contacted]
+    .sort((a, b) => new Date(b.contacted_at || 0) - new Date(a.contacted_at || 0))
+    .slice(0, 25);
+  document.getElementById('recent-count').textContent = recent.length ? `(${recent.length})` : '';
+  if (recent.length === 0) {
+    document.getElementById('recent-sends').innerHTML = '<div class="empty">No sends yet</div>';
+  } else {
+    document.getElementById('recent-sends').innerHTML = recent.map(l => `
+      <div class="send-row">
+        <div>
+          <div class="send-company">${escHtml(l.company || l.name || l.email)}</div>
+          <div class="send-email">${escHtml(l.email)}</div>
+        </div>
+        <div class="send-email send-email-col">${escHtml(l.industry || '—')}</div>
+        ${pillHtml(l.status)}
+        <div class="send-time">${timeAgo(l.contacted_at)}</div>
+      </div>
+    `).join('');
+  }
+
+  // Industry breakdown
+  const industries = {};
+  contacted.forEach(l => { const k = l.industry || 'Unknown'; industries[k] = (industries[k] || 0) + 1; });
+  const sorted = Object.entries(industries).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const maxVal = sorted.length ? sorted[0][1] : 1;
+  if (sorted.length === 0) {
+    document.getElementById('industry-breakdown').innerHTML = '<div class="empty">No data</div>';
+  } else {
+    document.getElementById('industry-breakdown').innerHTML = sorted.map(([name, count]) => `
+      <div class="industry-row">
+        <div class="industry-label">
+          <span class="industry-name">${escHtml(name)}</span>
+          <span class="industry-count">${count}</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round((count/maxVal)*100)}%"></div></div>
+      </div>
+    `).join('');
+  }
+}
+
+// ── COMPOSE ───────────────────────────────────────────────────────────────
 async function sendEmail() {
   const from = document.getElementById('compose-from').value;
   const to = document.getElementById('compose-to').value.trim();
@@ -1387,14 +1185,19 @@ async function sendEmail() {
 
   try {
     await amSend(from, to, subject, body);
-    await logSentEmail(to, '', '', subject);
+    // Log in Supabase if lead exists
+    const lead = leads.find(l => l.email && l.email.toLowerCase() === to.toLowerCase());
+    if (lead) {
+      await sbPatch('leads', lead.id, { status: 'contacted', contacted_at: new Date().toISOString() });
+      lead.status = 'contacted';
+    }
     toast('Email sent!', 'success');
     status.textContent = '✓ Sent';
     document.getElementById('compose-to').value = '';
     document.getElementById('compose-subject').value = '';
     document.getElementById('compose-body').value = '';
     setTimeout(() => { status.textContent = ''; }, 3000);
-  } catch (e) {
+  } catch(e) {
     toast('Failed: ' + e.message, 'error');
     status.textContent = '✗ Failed';
   } finally {
@@ -1402,40 +1205,37 @@ async function sendEmail() {
   }
 }
 
-// ── REFRESH ────────────────────────────────────────────────────────────────
+// ── REFRESH ───────────────────────────────────────────────────────────────
 async function refreshAll() {
   toast('Refreshing…', 'info');
   inboxMessages = [];
-  await loadLeads();
-  if (activeTab === 'campaigns') renderCampaigns();
-  else if (activeTab === 'replies') renderReplies();
-  else if (activeTab === 'inbox') renderInbox();
-  else if (activeTab === 'contacts') renderContacts();
+  try {
+    await loadLeads();
+    if (activeTab === 'analytics') renderAnalytics();
+    else if (activeTab === 'inbox') renderInbox();
+    else if (activeTab === 'contacts') renderContacts();
+    else if (activeTab === 'campaigns') renderCampaigns();
+    toast('Refreshed', 'success');
+  } catch(e) { toast('Refresh failed: ' + e.message, 'error'); }
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────────────
 async function init() {
   try {
     await loadLeads();
-    renderCampaigns();
+    renderAnalytics();
 
-    // Background: load inbox + update both badges
-    loadAllInboxes().then(msgs => {
-      inboxMessages = msgs;
-      updateInboxBadge();
-      // Update replies badge
-      const replyMsgs = msgs.filter(m => {
-        const from = (m.from_address || m.from || '').toLowerCase();
-        return !from.includes('wildroseautomations') && !from.includes('mailer-daemon') && !from.includes('noreply');
-      });
-      const unread = replyMsgs.filter(m => !m._read).length;
-      const badge = document.getElementById('replies-badge');
+    // Background: load inbox badge
+    sbGet('conversations?select=id&direction=eq.inbound&limit=500').then(data => {
+      const msgs = Array.isArray(data) ? data : [];
+      const unread = msgs.filter(m => !readSet.has(String(m.id))).length;
+      const badge = document.getElementById('inbox-badge');
       badge.textContent = unread > 99 ? '99+' : unread;
       badge.style.display = unread > 0 ? 'inline-block' : 'none';
     }).catch(() => {});
-  } catch (e) {
+  } catch(e) {
     toast('Failed to load data: ' + e.message, 'error');
-    document.getElementById('recent-sends').innerHTML = `<div class="empty">Error: ${escHtml(e.message)}</div>`;
+    document.getElementById('active-convos').innerHTML = `<div class="empty">Error: ${escHtml(e.message)}</div>`;
   }
 }
 
@@ -1443,4 +1243,3 @@ init();
 </script>
 </body>
 </html>
-<!-- v1774555796 -->
