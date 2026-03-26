@@ -907,55 +907,47 @@ async function toggleReplyCard(rid, idx) {
     card.classList.remove('unread');
     card.style.borderLeft = '';
 
-    // Load full thread history
+    // Load full thread using thread_id — returns full text for every message
     const msg = inboxMessages[idx];
+    const threadId = msg.thread_id;
+    const inbox = msg._inbox || AM_INBOXES[0];
     const fromEmail = (msg.from_address || (msg.from||'').match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0] || '').toLowerCase();
     const threadDiv = document.getElementById(`thread-${rid}`);
-    if (threadDiv && fromEmail) {
+    if (threadDiv) {
       threadDiv.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:8px 0">Loading thread…</div>';
       try {
-        // Fetch all messages from all inboxes, match by from/to email
-        const allResults = await Promise.all(AM_INBOXES.map(inbox =>
-          fetch(`https://api.agentmail.to/v0/inboxes/${inbox.split('@')[0]}/messages?limit=100`, {
-            headers: { 'Authorization': `Bearer ${AM_KEY}` }
-          }).then(r => r.json()).then(d => (d.messages||[]).map(m => ({...m, _inbox: inbox}))).catch(() => [])
-        ));
-        const all = allResults.flat();
-
-        // Match: sent TO this email OR received FROM this email
-        const thread = all.filter(m => {
-          const mFrom = (m.from_address || m.from || '').toLowerCase();
-          const mTo = (m.to || []).join(' ').toLowerCase() + (m.recipients||[]).join(' ').toLowerCase();
-          return mFrom.includes(fromEmail) || mTo.includes(fromEmail);
-        }).sort((a,b) => new Date(a.timestamp||a.date||0) - new Date(b.timestamp||b.date||0));
+        // Fetch thread directly by thread_id — returns all messages with full text
+        const res = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/threads/${threadId}`, {
+          headers: { 'Authorization': `Bearer ${AM_KEY}` }
+        });
+        const data = await res.json();
+        const thread = (data.messages || []).sort((a,b) => new Date(a.timestamp||0) - new Date(b.timestamp||0));
 
         if (!thread.length) {
-          threadDiv.innerHTML = '<div style="font-size:11px;color:var(--muted)">No thread history found</div>';
+          threadDiv.innerHTML = '<div style="font-size:11px;color:var(--muted)">No messages found in thread</div>';
           return;
         }
 
         const fmtTime = ts => ts ? new Date(ts).toLocaleString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
 
         threadDiv.innerHTML = thread.map(m => {
-          const mFrom = (m.from_address || m.from || '').toLowerCase();
-          const isInbound = mFrom.includes(fromEmail);
+          const mFrom = (m.from || '').toLowerCase();
+          const isInbound = mFrom.includes(fromEmail) || (!mFrom.includes('wildroseautomations'));
           const sender = (m.from||'').replace(/<.*>/,'').trim() || mFrom;
-          const body = m.body || m.text || m.body_text || m.preview || '';
-          const inboxTag = isInbound ? '' : `<span style="font-size:10px;color:var(--muted)">via ${(m._inbox||'').split('@')[0]}</span>`;
+          const body = m.text || m.extracted_text || m.preview || '';
           return `
             <div style="margin-bottom:12px;padding:12px;border-radius:8px;background:${isInbound?'#0d1a0d':'#0a0a14'};border:1px solid ${isInbound?'rgba(34,197,94,.2)':'rgba(59,130,246,.15)'}">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
                 <span style="font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;text-transform:uppercase;background:${isInbound?'rgba(34,197,94,.15)':'rgba(59,130,246,.15)'};color:${isInbound?'#22c55e':'#3b82f6'}">${isInbound?'THEM':'YOU'}</span>
                 <span style="font-size:11px;color:var(--text);font-weight:600">${escHtml(sender)}</span>
-                ${inboxTag}
-                <span style="font-size:11px;color:var(--muted);margin-left:auto">${fmtTime(m.timestamp||m.date)}</span>
+                <span style="font-size:11px;color:var(--muted);margin-left:auto">${fmtTime(m.timestamp)}</span>
               </div>
-              ${m.subject ? `<div style="font-size:12px;font-weight:600;margin-bottom:5px;color:var(--muted)">${escHtml(m.subject)}</div>` : ''}
-              <div style="font-size:13px;line-height:1.6;white-space:pre-wrap;color:var(--text)">${escHtml(body.slice(0,800))}${body.length>800?'…':''}</div>
+              ${m.subject ? `<div style="font-size:12px;font-weight:600;margin-bottom:6px;color:var(--muted)">${escHtml(m.subject)}</div>` : ''}
+              <div style="font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text)">${escHtml(body.slice(0,2000))}${body.length>2000?'\n\n[truncated…]':''}</div>
             </div>`;
         }).join('');
       } catch(e) {
-        threadDiv.innerHTML = `<div style="font-size:11px;color:var(--muted)">Error loading thread</div>`;
+        threadDiv.innerHTML = `<div style="font-size:11px;color:var(--muted)">Error: ${escHtml(e.message)}</div>`;
       }
     }
   }
@@ -1267,46 +1259,67 @@ async function selectLead(id) {
 
 async function loadThread(email) {
   try {
-    const results = await Promise.all(AM_INBOXES.map(async inbox => {
+    // Find threads across all inboxes that involve this email
+    const emailLower = email.toLowerCase();
+    const allThreadResults = await Promise.all(AM_INBOXES.map(async inbox => {
       try {
-        const inboxId = inbox.split('@')[0];
-        const res = await fetch(`https://api.agentmail.to/v0/inboxes/${inboxId}/messages?limit=50`, {
+        const res = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/threads?limit=100`, {
           headers: { 'Authorization': `Bearer ${AM_KEY}` }
         });
         if (!res.ok) return [];
         const data = await res.json();
-        const msgs = Array.isArray(data) ? data : (data.messages || data.items || []);
-        return msgs.filter(m => {
-          const from = (m.from_address || m.from || '').toLowerCase();
-          const to = (Array.isArray(m.to) ? m.to.map(t => (t.email||t).toLowerCase()).join(',') : (m.to||'').toLowerCase());
-          return from.includes(email.toLowerCase()) || to.includes(email.toLowerCase());
-        }).map(m => ({ ...m, _inbox: inbox }));
+        return (data.threads || []).filter(t => {
+          const senders = (t.senders || []).join(' ').toLowerCase();
+          const recipients = (t.recipients || []).join(' ').toLowerCase();
+          return senders.includes(emailLower) || recipients.includes(emailLower);
+        }).map(t => ({ ...t, _inbox: inbox }));
       } catch { return []; }
     }));
 
-    const thread = results.flat().sort((a, b) => new Date(a.date || a.created_at || 0) - new Date(b.date || b.created_at || 0));
-
-    document.getElementById('thread-loading').textContent = `(${thread.length})`;
+    const matchedThreads = allThreadResults.flat();
+    document.getElementById('thread-loading').textContent = `(${matchedThreads.length} thread${matchedThreads.length!==1?'s':''})`;
     const container = document.getElementById('thread-messages');
 
-    if (thread.length === 0) {
+    if (matchedThreads.length === 0) {
+      container.innerHTML = '<div style="font-size:12px;color:var(--muted)">No email threads found for this contact</div>';
+      return;
+    }
+
+    // Fetch full messages for each thread
+    const allMessages = [];
+    for (const t of matchedThreads) {
+      try {
+        const res = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(t._inbox)}/threads/${t.thread_id}`, {
+          headers: { 'Authorization': `Bearer ${AM_KEY}` }
+        });
+        if (!res.ok) continue;
+        const data = await res.json();
+        (data.messages || []).forEach(m => allMessages.push({ ...m, _inbox: t._inbox }));
+      } catch {}
+    }
+
+    allMessages.sort((a, b) => new Date(a.timestamp || 0) - new Date(b.timestamp || 0));
+    document.getElementById('thread-loading').textContent = `(${allMessages.length} message${allMessages.length!==1?'s':''})`;
+
+    if (allMessages.length === 0) {
       container.innerHTML = '<div style="font-size:12px;color:var(--muted)">No messages found</div>';
       return;
     }
 
-    container.innerHTML = thread.map((m, i) => {
-      const from = m.from_name || m.from_address || m.from || 'Unknown';
-      const isOutbound = AM_INBOXES.includes((m.from_address || '').toLowerCase()) || m.direction === 'outbound';
-      const body = m.text || m.body_text || m.body || '';
+    container.innerHTML = allMessages.map((m, i) => {
+      const from = (m.from || 'Unknown');
+      const isOutbound = (m.from || '').toLowerCase().includes('wildroseautomations');
+      const body = m.text || m.extracted_text || m.preview || '';
+      const fmtTime = ts => ts ? new Date(ts).toLocaleString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
       return `
-        <div class="thread-msg" style="${isOutbound ? 'border-left:2px solid var(--accent)' : ''}">
+        <div class="thread-msg" style="${isOutbound ? 'border-left:2px solid var(--accent)' : 'border-left:2px solid #22c55e'}">
           <div class="thread-msg-header">
-            <span class="thread-msg-from">${escHtml(from)} ${isOutbound ? '→' : '←'} <span style="color:var(--muted)">${escHtml(m._inbox||'').split('@')[0]}</span></span>
-            <span class="thread-msg-time">${timeAgo(m.date || m.created_at)}</span>
+            <span class="thread-msg-from" style="color:${isOutbound?'var(--accent)':'#22c55e'}">${isOutbound?'YOU':'THEM'}</span>
+            <span style="font-size:11px;color:var(--text);margin-left:4px">${escHtml(from.replace(/<.*>/,'').trim())}</span>
+            <span class="thread-msg-time">${fmtTime(m.timestamp)}</span>
           </div>
           <div class="thread-msg-subject">${escHtml(m.subject || '')}</div>
-          <div class="thread-msg-body" id="tmb-${i}">${escHtml(body.slice(0,200))}${body.length > 200 ? '…' : ''}</div>
-          ${body.length > 200 ? `<button onclick="expandThread('tmb-${i}','${escHtml(body.replace(/'/g,"\\'"))}')" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;padding:2px 0">Show more</button>` : ''}
+          <div class="thread-msg-body" id="tmb-${i}" style="max-height:none">${escHtml(body)}</div>
         </div>
       `;
     }).join('');
