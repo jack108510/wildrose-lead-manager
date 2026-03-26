@@ -544,8 +544,7 @@
 
 <script>
 // ── CONSTANTS ──────────────────────────────────────────────────────────────
-const SB = 'https://xacehhtgvubcqdoltazg.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhY2VoaHRndnViY3Fkb2x0YXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDI4NjcsImV4cCI6MjA4OTUxODg2N30.GGS5D4RLLkMdMn17GIBgjHkEn6d-HH9AXIzTBwSAzv8';
+const API = 'https://n8n.wildeautomations.com/webhook/axOX5mjUR0dkmgD6/webhook/lead-api';
 const AM_KEY = 'am_us_eb590201635e5a67541a0e4c6eb32c5d6b144eb5cf48a5ca7ce9bece7940c11f';
 const AM_INBOXES = [
   'jack@wildroseautomations.ca',
@@ -602,63 +601,40 @@ function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ── SUPABASE ───────────────────────────────────────────────────────────────
-async function sbFetch(path, opts = {}) {
-  const res = await fetch(`${SB}/rest/v1/${path}`, {
-    headers: {
-      'apikey': SB_KEY,
-      'Authorization': `Bearer ${SB_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': opts.prefer || 'return=representation',
-      ...opts.headers
-    },
-    ...opts
+// ── DATA API (via n8n — no Supabase keys in frontend) ─────────────────────
+async function apiCall(action, extra = {}) {
+  const res = await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, ...extra })
   });
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`SB ${res.status}: ${txt}`);
-  }
-  const ct = res.headers.get('content-type') || '';
-  return ct.includes('json') ? res.json() : res.text();
+  const json = await res.json();
+  return json.data;
 }
 
 async function loadLeads() {
-  leads = await sbFetch('leads?order=contacted_at.desc&limit=500');
+  const data = await apiCall('get_leads');
+  leads = Array.isArray(data) ? data : (data ? [data] : []);
   return leads;
 }
 
 async function updateLeadStatus(id, status) {
-  await sbFetch(`leads?id=eq.${id}`, {
-    method: 'PATCH',
-    body: JSON.stringify({ status, last_reply_at: new Date().toISOString() })
-  });
+  await apiCall('update_lead', { id, updates: { status, last_reply_at: new Date().toISOString() } });
   const l = leads.find(x => x.id === id);
   if (l) l.status = status;
 }
 
 async function logSentEmail(toEmail, toName, company, subject) {
-  // Find existing lead or create
   let lead = leads.find(l => l.email && l.email.toLowerCase() === toEmail.toLowerCase());
   if (lead) {
-    await sbFetch(`leads?id=eq.${lead.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ status: 'contacted', contacted_at: new Date().toISOString() })
-    });
+    await apiCall('update_lead', { id: lead.id, updates: { status: 'contacted', contacted_at: new Date().toISOString() } });
     lead.status = 'contacted';
-    lead.contacted_at = new Date().toISOString();
   } else {
-    const newLead = {
-      name: toName || toEmail.split('@')[0],
-      email: toEmail,
-      company: company || '',
-      status: 'contacted',
-      contacted_at: new Date().toISOString()
-    };
-    const created = await sbFetch('leads', {
-      method: 'POST',
-      body: JSON.stringify(newLead)
-    });
-    if (Array.isArray(created) && created.length) leads.unshift(created[0]);
+    const created = await apiCall('add_lead', { lead: {
+      name: toName || toEmail.split('@')[0], email: toEmail,
+      company: company || '', status: 'contacted', contacted_at: new Date().toISOString()
+    }});
+    if (created) leads.unshift(Array.isArray(created) ? created[0] : created);
   }
 }
 
