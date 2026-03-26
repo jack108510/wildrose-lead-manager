@@ -456,6 +456,13 @@
 
 <!-- CAMPAIGNS -->
 <div class="page active" id="page-campaigns">
+
+  <!-- REPLIES BANNER — top priority -->
+  <div id="replies-banner" style="display:none;padding:12px 16px;background:#0f1a0f;border-bottom:1px solid rgba(34,197,94,.3)">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#22c55e;margin-bottom:8px">📬 Replies — Needs Attention</div>
+    <div id="replies-list" style="display:flex;flex-direction:column;gap:6px"></div>
+  </div>
+
   <div class="stats-grid" id="stats-grid">
     <div class="stat-card"><div class="stat-label">Total Sent</div><div class="stat-value" id="stat-sent">—</div><div class="stat-sub">All time</div></div>
     <div class="stat-card"><div class="stat-label">Replied</div><div class="stat-value" id="stat-replied">—</div><div class="stat-sub">Positive responses</div></div>
@@ -729,6 +736,27 @@ function renderCampaigns() {
   document.getElementById('stat-replied').textContent = replied.length;
   document.getElementById('stat-rate').textContent = rate + '%';
   document.getElementById('stat-booked').textContent = booked.length;
+
+  // ── REPLIES BANNER ──
+  const repliedLeads = leads.filter(l => l.status === 'replied')
+    .sort((a,b) => new Date(b.last_reply_at||0) - new Date(a.last_reply_at||0));
+  const banner = document.getElementById('replies-banner');
+  const repliesList = document.getElementById('replies-list');
+  if (repliedLeads.length > 0) {
+    banner.style.display = 'block';
+    repliesList.innerHTML = repliedLeads.map(l => `
+      <div onclick="switchTab('contacts');setTimeout(()=>openContact(${l.id}),300)" style="display:flex;align-items:center;gap:12px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:10px 14px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(34,197,94,.12)'" onmouseout="this.style.background='rgba(34,197,94,.06)'">
+        <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0;box-shadow:0 0 6px #22c55e"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13px">${escHtml(l.company||l.name||l.email)}</div>
+          <div style="font-size:11px;color:#64748b">${escHtml(l.email)} · ${escHtml(l.industry||'')}</div>
+        </div>
+        <div style="font-size:11px;color:#22c55e;white-space:nowrap">${timeAgo(l.last_reply_at)} ↗</div>
+      </div>
+    `).join('');
+  } else {
+    banner.style.display = 'none';
+  }
 
   // Recent sends (last 20 by contacted_at)
   const recent = [...contacted]
