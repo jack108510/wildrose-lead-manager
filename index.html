@@ -443,9 +443,53 @@
 
 <!-- INBOX -->
 <div class="page" id="page-inbox">
-  <div class="section inbox-wrap">
-    <div class="section-header">Inbox <span id="inbox-count"></span></div>
-    <div id="inbox-content"><div class="loading"><div class="spinner"></div><div>Loading inboxes…</div></div></div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+    <div style="font-size:13px;font-weight:600;color:var(--text)">Combined Inbox <span id="inbox-count" style="color:var(--muted);font-weight:400"></span></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="filter-btn active" id="inbox-filter-all" onclick="setInboxFilter('all',this)">All</button>
+      <button class="filter-btn" id="inbox-filter-sent" onclick="setInboxFilter('sent',this)">Sent</button>
+      <button class="filter-btn" id="inbox-filter-received" onclick="setInboxFilter('received',this)">Received</button>
+      <button class="filter-btn" id="inbox-filter-replied" onclick="setInboxFilter('replied',this)">Replied</button>
+    </div>
+    <div style="margin-left:auto">
+      <select id="inbox-filter-account" onchange="renderInbox()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:12px">
+        <option value="">All Inboxes</option>
+        <option value="jack">jack</option>
+        <option value="lena">lena</option>
+        <option value="brad">brad</option>
+        <option value="kate">kate</option>
+        <option value="cole">cole</option>
+        <option value="emma">emma</option>
+        <option value="mike">mike</option>
+        <option value="sarah">sarah</option>
+        <option value="ryan">ryan</option>
+        <option value="hudson">hudson</option>
+      </select>
+    </div>
+  </div>
+  <div class="section inbox-wrap" style="max-width:100%">
+    <div id="inbox-content"><div class="loading"><div class="spinner"></div><div>Loading all inboxes…</div></div></div>
+  </div>
+  <!-- Thread expand panel -->
+  <div id="inbox-thread-panel" style="display:none;margin-top:16px">
+    <div class="section" style="max-width:100%">
+      <div class="section-header" style="display:flex;justify-content:space-between;align-items:center">
+        <span id="inbox-thread-title">Thread</span>
+        <button onclick="closeInboxThread()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1">×</button>
+      </div>
+      <div id="inbox-thread-messages" style="padding:16px"></div>
+      <div style="padding:16px;border-top:1px solid var(--border)">
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+          <span style="font-size:12px;color:var(--muted)">Reply from:</span>
+          <select id="inbox-reply-from" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:6px;font-size:12px"></select>
+        </div>
+        <textarea id="inbox-reply-body" placeholder="Write your reply…" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;font-size:13px;min-height:100px;resize:vertical;font-family:inherit"></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          <button class="btn btn-accent" onclick="sendInboxReply()">Send Reply</button>
+          <button id="inbox-reply-lead-btn" class="btn btn-ghost" style="display:none" onclick="openInboxLeadContact()">👤 View in Contacts</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -665,31 +709,55 @@ async function amSend(fromEmail, to, subject, body, threadId = null) {
   return res.json();
 }
 
-async function fetchInbox(inboxEmail) {
+async function fetchInboxThreads(inboxEmail, label = null) {
   try {
-    const res = await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inboxEmail)}/messages?limit=100`, {
-      headers: { 'Authorization': `Bearer ${AM_KEY}` }
-    });
+    let url = `https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inboxEmail)}/threads?limit=100`;
+    if (label) url += `&labels=${label}`;
+    const res = await fetch(url, { headers: { 'Authorization': `Bearer ${AM_KEY}` } });
     if (!res.ok) return [];
     const data = await res.json();
-    const msgs = Array.isArray(data) ? data : (data.messages || data.items || []);
-    return msgs.map(m => ({ ...m, _inbox: inboxEmail }));
+    const threads = data.threads || [];
+    return threads.map(t => ({ ...t, _inbox: inboxEmail, _inboxName: inboxEmail.split('@')[0] }));
   } catch { return []; }
 }
 
-async function loadAllInboxes() {
-  const results = await Promise.all(AM_INBOXES.map(fetchInbox));
+async function fetchThreadMessages(inboxEmail, threadId) {
+  try {
+    const res = await fetch(
+      `https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inboxEmail)}/threads/${threadId}/messages`,
+      { headers: { 'Authorization': `Bearer ${AM_KEY}` } }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.messages || data || [];
+  } catch { return []; }
+}
+
+async function loadAllInboxThreads() {
+  // Fetch all threads from all 10 inboxes in parallel
+  const results = await Promise.all(AM_INBOXES.map(inbox => fetchInboxThreads(inbox)));
   const all = results.flat();
-  const inbound = all.filter(m => {
-    const from = (m.from_address || m.from || '').toLowerCase();
-    const labels = (m.labels || []).map(l => (typeof l === 'string' ? l : l.name || '').toLowerCase());
-    const hasReceived = labels.includes('received') || labels.includes('inbox');
-    const isNoise = from.includes('mailer-daemon') || from.includes('noreply') ||
-                    from.includes('no-reply') || from.includes('wildroseautomations');
-    return !isNoise && (hasReceived || m.direction === 'inbound' || (m.from_address && !AM_INBOXES.includes(from)));
+
+  // Deduplicate by thread_id (same thread may appear in multiple inboxes)
+  const seen = new Set();
+  const deduped = [];
+  for (const t of all) {
+    if (!seen.has(t.thread_id)) {
+      seen.add(t.thread_id);
+      deduped.push(t);
+    }
+  }
+
+  // Filter out pure noise (FB security, system emails, etc.)
+  const noise = ['facebookmail.com', 'mailer-daemon', 'amazonses.com/bounce', 'postmaster'];
+  const filtered = deduped.filter(t => {
+    const senders = (t.senders || []).join(' ').toLowerCase();
+    return !noise.some(n => senders.includes(n));
   });
-  inbound.sort((a, b) => new Date(b.date || b.created_at || 0) - new Date(a.date || a.created_at || 0));
-  return inbound;
+
+  // Sort by most recent activity
+  filtered.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+  return filtered;
 }
 
 // ── TAB SWITCHING ─────────────────────────────────────────────────────────
@@ -835,82 +903,177 @@ function openContactFromAnalytics(id) {
 }
 
 // ── INBOX ─────────────────────────────────────────────────────────────────
-async function renderInbox() {
-  document.getElementById('inbox-content').innerHTML = '<div class="loading"><div class="spinner"></div><div>Fetching inboxes…</div></div>';
-  try {
-    // Load from Supabase conversations table (inbound emails)
-    const convos = await sbGet('conversations?select=*&direction=eq.inbound&order=sent_at.desc&limit=500');
-    const msgs = Array.isArray(convos) ? convos : [];
-    document.getElementById('inbox-count').textContent = msgs.length ? `(${msgs.length})` : '';
+let allInboxThreads = [];
+let inboxFilterMode = 'all';
+let activeInboxThread = null;
+let activeInboxThreadInbox = null;
 
-    // Update badge
-    const unread = msgs.filter(m => !readSet.has(String(m.id))).length;
+function setInboxFilter(mode, btn) {
+  inboxFilterMode = mode;
+  document.querySelectorAll('[id^="inbox-filter-"]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderInboxList();
+}
+
+async function renderInbox() {
+  document.getElementById('inbox-content').innerHTML = '<div class="loading"><div class="spinner"></div><div>Loading all inboxes…</div></div>';
+  try {
+    allInboxThreads = await loadAllInboxThreads();
+    renderInboxList();
+    const unread = allInboxThreads.filter(t =>
+      (t.labels||[]).map(l=>l.toLowerCase()).includes('unread') && !readSet.has(t.thread_id)
+    ).length;
     const badge = document.getElementById('inbox-badge');
     badge.textContent = unread > 99 ? '99+' : unread;
     badge.style.display = unread > 0 ? 'inline-block' : 'none';
+  } catch(e) {
+    document.getElementById('inbox-content').innerHTML = `<div class="empty">Error loading inboxes: ${escHtml(e.message)}</div>`;
+  }
+}
 
-    if (msgs.length === 0) {
-      document.getElementById('inbox-content').innerHTML = '<div class="empty">No inbound messages</div>';
-      return;
+function renderInboxList() {
+  const accountFilter = document.getElementById('inbox-filter-account')?.value || '';
+  let threads = allInboxThreads;
+  if (accountFilter) threads = threads.filter(t => t._inboxName === accountFilter);
+  if (inboxFilterMode !== 'all') {
+    threads = threads.filter(t => (t.labels||[]).map(l=>l.toLowerCase()).includes(inboxFilterMode));
+  }
+  document.getElementById('inbox-count').textContent = `(${threads.length})`;
+  if (threads.length === 0) {
+    document.getElementById('inbox-content').innerHTML = '<div class="empty" style="padding:32px">No messages found</div>';
+    return;
+  }
+  document.getElementById('inbox-content').innerHTML = threads.map((thread, i) => {
+    const labels = (thread.labels||[]).map(l=>l.toLowerCase());
+    const isSent = labels.includes('sent');
+    const isReceived = labels.includes('received');
+    const isUnread = labels.includes('unread') && !readSet.has(thread.thread_id);
+    const isDelayed = labels.includes('delayed');
+    const isActive = activeInboxThread === thread.thread_id;
+    const recipients = thread.recipients || [];
+    const senders = thread.senders || [];
+    const allAddrs = [...recipients,...senders].map(s=>{const m=s.match(/<(.+?)>/);return m?m[1].toLowerCase():s.toLowerCase();});
+    const lead = leads.find(l => allAddrs.includes(l.email.toLowerCase()));
+    const company = lead?.company || '';
+    let displayName = '';
+    if (isSent) {
+      const r = recipients[0]||''; const m=r.match(/<(.+?)>/); displayName=m?m[1]:r;
+    } else {
+      const s = senders[0]||''; const m=s.match(/^([^<]+)</); displayName=m?m[1].trim():s.replace(/<.+>/,'').trim();
     }
-
-    document.getElementById('inbox-content').innerHTML = msgs.map((msg, i) => {
-      const lead = leads.find(l => l.id === msg.lead_id);
-      const fromAddr = msg.from_address || '';
-      const fromName = fromAddr.split('@')[0] || 'Unknown';
-      const company = lead ? (lead.company || '') : '';
-      const subject = msg.subject || '(no subject)';
-      const preview = (msg.body || '').slice(0, 140).replace(/\n/g, ' ');
-      const isUnread = !readSet.has(String(msg.id));
-      const inboxShort = (msg.inbox || '').split('@')[0];
-
-      return `
-        <div class="email-card ${isUnread ? 'unread' : ''}" id="inbox-card-${i}" onclick="toggleInboxCard(${i}, '${msg.id}')">
-          <div class="email-card-header">
-            <span class="email-sender">${escHtml(fromName)}</span>
-            <span style="font-size:10px;font-weight:700;background:rgba(34,197,94,.15);color:#22c55e;padding:1px 7px;border-radius:10px;text-transform:uppercase">Reply</span>
-            ${company ? `<span class="email-company-tag">${escHtml(company)}</span>` : ''}
-            ${lead ? pillHtml(lead.status) : ''}
-            <span class="email-inbox-tag">${escHtml(inboxShort)}</span>
-            <span class="email-time">${timeAgo(msg.sent_at)}</span>
-          </div>
-          <div class="email-subject">${escHtml(subject)}</div>
-          <div class="email-preview">${escHtml(preview)}${(msg.body||'').length > 140 ? '…' : ''}</div>
+    let labelBadges = '';
+    if (isSent && isDelayed) labelBadges += `<span style="font-size:10px;background:rgba(245,158,11,.15);color:#f59e0b;padding:1px 6px;border-radius:10px">delayed</span>`;
+    else if (isSent) labelBadges += `<span style="font-size:10px;background:rgba(59,130,246,.15);color:#3b82f6;padding:1px 6px;border-radius:10px">sent</span>`;
+    if (isReceived) labelBadges += `<span style="font-size:10px;background:rgba(168,85,247,.15);color:#a855f7;padding:1px 6px;border-radius:10px">reply</span>`;
+    const msgCount = thread.message_count || 1;
+    return `
+      <div class="email-card ${isUnread?'unread':''}" style="${isActive?'border-left:3px solid var(--accent);background:#12121e':''}" onclick="openInboxThread(${i})">
+        <div class="email-card-header">
+          <span class="email-sender" style="${isUnread?'font-weight:700':''}">${escHtml(displayName.split('@')[0])}</span>
+          ${labelBadges}
+          ${company?`<span class="email-company-tag">${escHtml(company)}</span>`:''}
+          ${lead?pillHtml(lead.status):''}
+          <span class="email-inbox-tag">${escHtml(thread._inboxName)}</span>
+          ${msgCount>1?`<span style="font-size:10px;color:var(--muted);background:var(--border);padding:1px 6px;border-radius:10px">${msgCount}</span>`:''}
+          <span class="email-time" style="margin-left:auto">${timeAgo(thread.timestamp)}</span>
         </div>
-        <div class="email-expanded" id="inbox-exp-${i}">
-          <div class="email-body-text">${escHtml(msg.body || '(no content)')}</div>
-          ${lead ? `
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
-              <button class="btn btn-purple" onclick="quickMarkStatus(${lead.id}, 'replied')">✓ Mark Replied</button>
-              <button class="btn btn-success" onclick="quickMarkStatus(${lead.id}, 'booked')">📅 Booked</button>
-              <button class="btn btn-danger" onclick="quickMarkStatus(${lead.id}, 'dead')">✗ Dead</button>
-              <button class="btn btn-ghost" onclick="openContactFromAnalytics(${lead.id})">👤 View Thread</button>
-            </div>
-          ` : `<div style="margin-top:12px;font-size:12px;color:var(--muted)">Lead not found in CRM for ${escHtml(fromAddr)}</div>`}
+        <div class="email-subject" style="${isUnread?'font-weight:600;color:var(--text)':''}">${escHtml(thread.subject||'(no subject)')}</div>
+        <div class="email-preview">${escHtml((thread.preview||'').slice(0,140))}${(thread.preview||'').length>140?'…':''}</div>
+      </div>`;
+  }).join('');
+}
+
+async function openInboxThread(i) {
+  const threads = getFilteredInboxThreads();
+  const thread = threads[i];
+  if (!thread) return;
+  activeInboxThread = thread.thread_id;
+  activeInboxThreadInbox = thread._inbox;
+  readSet.add(thread.thread_id);
+  renderInboxList();
+  const panel = document.getElementById('inbox-thread-panel');
+  const msgDiv = document.getElementById('inbox-thread-messages');
+  panel.style.display = 'block';
+  msgDiv.innerHTML = '<div class="loading"><div class="spinner"></div><div>Loading messages…</div></div>';
+  document.getElementById('inbox-thread-title').textContent = thread.subject || '(no subject)';
+  const fromSel = document.getElementById('inbox-reply-from');
+  fromSel.innerHTML = AM_INBOXES.map(a=>`<option value="${a}" ${a===thread._inbox?'selected':''}>${a.split('@')[0]}</option>`).join('');
+  const recipients = thread.recipients||[];
+  const senders = thread.senders||[];
+  const allAddrs = [...recipients,...senders].map(s=>{const m=s.match(/<(.+?)>/);return m?m[1].toLowerCase():s.toLowerCase();});
+  const lead = leads.find(l=>allAddrs.includes(l.email.toLowerCase()));
+  const leadBtn = document.getElementById('inbox-reply-lead-btn');
+  if (lead) { leadBtn.style.display='inline-flex'; leadBtn.dataset.leadId=lead.id; } else { leadBtn.style.display='none'; }
+  const subj = thread.subject||'';
+  const replyArea = document.getElementById('inbox-reply-body');
+  replyArea.dataset.subject = subj.startsWith('Re:')?subj:`Re: ${subj}`;
+  replyArea.dataset.threadId = thread.thread_id;
+  replyArea.dataset.toEmail = allAddrs.find(a=>!a.includes('wildroseautomations'))||'';
+  try {
+    const messages = await fetchThreadMessages(thread._inbox, thread.thread_id);
+    if (!messages.length) { msgDiv.innerHTML='<div class="empty">No messages in this thread</div>'; return; }
+    msgDiv.innerHTML = messages.map(msg => {
+      const from = msg.from||'';
+      const fromName = from.replace(/<.+>/,'').trim()||from.split('@')[0];
+      const isOurs = from.toLowerCase().includes('wildroseautomations');
+      const msgLabels = (msg.labels||[]).map(l=>l.toLowerCase());
+      const isSentMsg = msgLabels.includes('sent');
+      const ts = msg.timestamp||msg.created_at||'';
+      return `<div style="margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-size:12px;font-weight:600;color:${isOurs?'var(--accent)':'var(--text)'}">${escHtml(fromName)}</span>
+          <span style="font-size:11px;color:var(--muted)">${fmtDateTime(ts)}</span>
+          ${isSentMsg?'<span style="font-size:10px;color:var(--muted);background:var(--border);padding:1px 5px;border-radius:4px">sent</span>':'<span style="font-size:10px;color:#a855f7;background:rgba(168,85,247,.15);padding:1px 5px;border-radius:4px">received</span>'}
         </div>
-      `;
+        <div style="background:${isOurs?'rgba(59,130,246,.08)':'var(--card)'};border:1px solid ${isOurs?'rgba(59,130,246,.2)':'var(--border)'};border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.6;color:var(--text);white-space:pre-wrap;word-break:break-word">${escHtml(msg.text||msg.preview||'(no content)')}</div>
+      </div>`;
     }).join('');
-  } catch (e) {
-    document.getElementById('inbox-content').innerHTML = `<div class="empty">Error: ${escHtml(e.message)}</div>`;
+  } catch(e) {
+    msgDiv.innerHTML = `<div class="empty">Error: ${escHtml(e.message)}</div>`;
   }
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function toggleInboxCard(i, msgId) {
-  const exp = document.getElementById(`inbox-exp-${i}`);
-  const card = document.getElementById(`inbox-card-${i}`);
-  const isOpen = exp.classList.contains('open');
-  document.querySelectorAll('.email-expanded').forEach(e => e.classList.remove('open'));
-  if (!isOpen) {
-    exp.classList.add('open');
-    readSet.add(String(msgId));
-    card.classList.remove('unread');
-    // Update badge
-    const unread = document.querySelectorAll('.email-card.unread').length;
-    const badge = document.getElementById('inbox-badge');
-    badge.textContent = unread;
-    badge.style.display = unread > 0 ? 'inline-block' : 'none';
-  }
+function getFilteredInboxThreads() {
+  const accountFilter = document.getElementById('inbox-filter-account')?.value||'';
+  let threads = allInboxThreads;
+  if (accountFilter) threads = threads.filter(t=>t._inboxName===accountFilter);
+  if (inboxFilterMode !== 'all') threads = threads.filter(t=>(t.labels||[]).map(l=>l.toLowerCase()).includes(inboxFilterMode));
+  return threads;
 }
+
+function closeInboxThread() {
+  activeInboxThread = null;
+  document.getElementById('inbox-thread-panel').style.display='none';
+  renderInboxList();
+}
+
+function openInboxLeadContact() {
+  const btn = document.getElementById('inbox-reply-lead-btn');
+  const leadId = btn?.dataset.leadId;
+  if (leadId) { switchTab('contacts'); setTimeout(()=>openContact(leadId),200); }
+}
+
+async function sendInboxReply() {
+  const replyArea = document.getElementById('inbox-reply-body');
+  const body = replyArea.value.trim();
+  const fromSel = document.getElementById('inbox-reply-from').value;
+  const subject = replyArea.dataset.subject||'Re: ';
+  const threadId = replyArea.dataset.threadId||null;
+  const toEmail = replyArea.dataset.toEmail||'';
+  if (!body) { toast('Write something first','error'); return; }
+  if (!toEmail) { toast('No recipient found','error'); return; }
+  try {
+    await amSend(fromSel, toEmail, subject, body, threadId);
+    toast('Reply sent!','success');
+    replyArea.value='';
+    const threads = getFilteredInboxThreads();
+    const idx = threads.findIndex(t=>t.thread_id===activeInboxThread);
+    if (idx>=0) setTimeout(()=>openInboxThread(idx),800);
+  } catch(e) { toast('Failed: '+e.message,'error'); }
+}
+
+function toggleInboxCard(i, msgId) { /* legacy no-op */ }
 
 async function quickMarkStatus(leadId, status) {
   try {
