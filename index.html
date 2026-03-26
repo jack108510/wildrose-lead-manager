@@ -1,218 +1,549 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
-<title>Wildrose — Lead Manager</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wildrose — Campaign Manager</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#05050a;--surface:#0d0d14;--card:#12121c;--border:#1c1c2e;
-  --text:#f0f0f8;--muted:#4a4a6a;--dim:#2a2a3e;
-  --gold:#d4a843;--gold2:#f0c060;--gold-dim:rgba(212,168,67,.12);
-  --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;
-  --green-dim:rgba(34,197,94,.1);--red-dim:rgba(239,68,68,.1);--blue-dim:rgba(59,130,246,.1);
-}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100dvh;display:flex;flex-direction:column;overflow:hidden}
-nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:54px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface)}
-.logo{display:flex;align-items:center;gap:8px}
-.logo-icon{width:28px;height:28px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.logo-text{font-size:.95rem;font-weight:800}
-.logo-sub{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-.nav-tabs{display:flex;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:3px}
-.tab{padding:5px 14px;border-radius:7px;font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap}
-.tab.active{background:var(--gold);color:#000}
-.badge{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:#fff;border-radius:8px;font-size:.58rem;font-weight:700;padding:1px 5px;margin-left:4px;min-width:16px;line-height:1.4}
-.nav-right{display:flex;align-items:center;gap:8px}
-.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-size:.72rem;cursor:pointer;transition:all .15s}
-.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
-.page{display:none;flex:1;overflow-y:auto;flex-direction:column}
-.page.active{display:flex}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── DASHBOARD ── */
-#pg-dash{padding:16px;gap:14px}
-.stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-@media(min-width:500px){.stat-row{grid-template-columns:repeat(4,1fr)}}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
-.stat-lbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
-.stat-val{font-size:1.9rem;font-weight:800;line-height:1}
-.stat-sub{font-size:.7rem;color:var(--muted);margin-top:5px}
-.stat.gold-stat{border-color:rgba(212,168,67,.3);background:linear-gradient(135deg,var(--card) 0%,rgba(212,168,67,.05) 100%)}
-.stat.gold-stat .stat-val{color:var(--gold)}
-.section-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
-.activity-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s}
-.activity-item:hover{border-color:var(--gold)}
-.act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.act-text{flex:1;font-size:.8rem}
-.act-time{font-size:.65rem;color:var(--muted)}
+  :root {
+    --bg: #05050a;
+    --card: #0f0f18;
+    --border: #1a1a2e;
+    --accent: #3b82f6;
+    --accent-dim: rgba(59,130,246,0.15);
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --purple: #a855f7;
+  }
 
-/* ── PIPELINE ── */
-#pg-pipeline{flex-direction:row;overflow-x:auto;padding:16px;gap:12px;align-items:flex-start}
-.pipe-col{flex-shrink:0;width:280px;display:flex;flex-direction:column;gap:8px}
-.pipe-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:4px}
-.pipe-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
-.pipe-count-badge{font-size:.68rem;font-weight:700;background:var(--dim);color:var(--muted);padding:2px 8px;border-radius:10px}
-.lead-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s}
-.lead-card:hover{border-color:var(--gold);transform:translateY(-1px)}
-.lead-card.replied{border-left:3px solid var(--gold)}
-.lead-company{font-size:.88rem;font-weight:700;margin-bottom:3px}
-.lead-name{font-size:.74rem;color:var(--muted);margin-bottom:8px}
-.ind-tag{display:inline-block;font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:6px;margin-bottom:8px}
-.ind-trades{background:rgba(251,146,60,.1);color:#fb923c}
-.ind-law{background:rgba(168,85,247,.1);color:#a855f7}
-.ind-real_estate{background:var(--blue-dim);color:var(--blue)}
-.ind-services{background:var(--green-dim);color:var(--green)}
-.ind-inbound{background:var(--gold-dim);color:var(--gold)}
-.ind-default{background:var(--dim);color:var(--muted)}
-.lead-footer{display:flex;align-items:center;justify-content:space-between}
-.lead-date{font-size:.65rem;color:var(--muted)}
-.status-dot{width:6px;height:6px;border-radius:50%}
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 
-/* ── REPLIES ── */
-#pg-replies{padding:14px;gap:8px}
-.reply-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.reply-card.unread{border-left:3px solid var(--gold)}
-.reply-row{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer}
-.reply-row:hover{background:var(--surface)}
-.avatar{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;flex-shrink:0;background:var(--gold-dim);color:var(--gold)}
-.reply-info{flex:1;min-width:0}
-.reply-from{font-size:.88rem;font-weight:700;margin-bottom:2px}
-.reply-company{font-size:.72rem;color:var(--gold);margin-bottom:2px}
-.reply-preview{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.reply-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
-.reply-time{font-size:.65rem;color:var(--muted)}
-.unread-pip{width:8px;height:8px;border-radius:50%;background:var(--gold)}
-.reply-body{display:none;padding:0 14px 14px;border-top:1px solid var(--border)}
-.reply-body.open{display:block}
-.reply-text{font-size:.82rem;line-height:1.6;color:#ccc;padding:12px;background:var(--bg);border-radius:8px;margin:12px 0;white-space:pre-wrap}
-.reply-actions{display:flex;gap:8px;flex-wrap:wrap}
-.r-btn{flex:1;min-width:80px;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.73rem;cursor:pointer;font-weight:600;transition:all .15s}
-.r-btn:hover{background:var(--dim)}
-.r-btn.gold{background:var(--gold);border-color:var(--gold);color:#000}
-.r-btn.green{background:var(--green-dim);border-color:var(--green);color:var(--green)}
-.r-btn.red{background:var(--red-dim);border-color:var(--red);color:var(--red)}
-.r-btn.blue{background:var(--blue-dim);border-color:var(--blue);color:var(--blue)}
+  /* HEADER */
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    height: 52px;
+    gap: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
 
-/* ── CALLS ── */
-#pg-calls{padding:14px;gap:12px}
-.add-bar{display:flex;gap:8px}
-.add-input{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:10px;font-size:.85rem;outline:none}
-.add-input:focus{border-color:var(--gold)}
-.add-input::placeholder{color:var(--muted)}
-.add-btn{background:var(--gold);color:#000;border:none;padding:10px 18px;border-radius:10px;font-size:.82rem;cursor:pointer;font-weight:700}
-.call-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px}
-.call-card.done{opacity:.45}
-.call-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0}
-.call-dot.done{background:var(--green)}
-.call-info{flex:1}
-.call-name{font-size:.9rem;font-weight:700;margin-bottom:2px}
-.call-detail{font-size:.75rem;color:var(--muted)}
-.call-acts{display:flex;gap:6px}
-.call-act{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:6px;font-size:.72rem;cursor:pointer}
-.call-act:hover{background:var(--dim);color:var(--text)}
-.call-act.done-act{color:var(--green);border-color:var(--green)}
+  .logo {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 
-/* ── LEAD PROFILE MODAL ── */
-#modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:none;align-items:flex-end;justify-content:center}
-#modal.show{display:flex}
-.modal-sheet{background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--gold);border-radius:20px 20px 0 0;width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column}
-.modal-header{padding:20px 20px 0;flex-shrink:0}
-.modal-close{float:right;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;margin-top:-4px}
-.modal-company{font-size:1.2rem;font-weight:800;margin-bottom:2px}
-.modal-sub{font-size:.78rem;color:var(--muted)}
-.modal-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-top:16px;padding:0 20px;flex-shrink:0}
-.modal-tab{padding:10px 14px;font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
-.modal-tab.active{color:var(--gold);border-color:var(--gold)}
-.modal-body{flex:1;overflow-y:auto;padding:16px 20px 20px}
-.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.profile-field{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px}
-.pf-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}
-.pf-val{font-size:.85rem;font-weight:600}
-.status-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.status-pill{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:.73rem;cursor:pointer;font-weight:600;transition:all .15s}
-.status-pill:hover{background:var(--dim)}
-.status-pill.active-pill{background:var(--gold);border-color:var(--gold);color:#000}
-.convo-msg{padding:10px 12px;border-radius:10px;margin-bottom:8px;font-size:.8rem;line-height:1.5}
-.convo-msg.out{background:var(--gold-dim);border:1px solid rgba(212,168,67,.2);border-radius:10px 10px 2px 10px}
-.convo-msg.in{background:var(--card);border:1px solid var(--border);border-radius:10px 10px 10px 2px}
-.convo-meta{font-size:.65rem;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:6px}
-.convo-dir{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:1px 6px;border-radius:4px}
-.convo-dir.out{background:var(--gold-dim);color:var(--gold)}
-.convo-dir.in{background:var(--blue-dim);color:var(--blue)}
-.analytics-row{display:flex;gap:10px;margin-bottom:12px}
-.analytics-stat{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
-.analytics-val{font-size:1.4rem;font-weight:800;margin-bottom:4px}
-.analytics-lbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-.call-req-card{background:var(--card);border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:14px;margin-bottom:10px}
-.call-req-tag{font-size:.65rem;font-weight:700;text-transform:uppercase;background:var(--green-dim);color:var(--green);padding:2px 8px;border-radius:6px;display:inline-block;margin-bottom:8px}
-.reply-compose{margin-top:12px}
-.reply-compose textarea{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:10px;font-size:.82rem;resize:vertical;min-height:80px;outline:none;font-family:inherit}
-.reply-compose textarea:focus{border-color:var(--gold)}
-.reply-compose-btn{margin-top:8px;width:100%;background:var(--gold);color:#000;border:none;padding:10px;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer}
+  nav { display: flex; gap: 2px; flex: 1; }
 
-/* EMPTY + TOAST */
-.empty{padding:60px 20px;text-align:center;color:var(--muted);font-size:.85rem}
-.empty-icon{font-size:2.5rem;margin-bottom:12px;opacity:.4}
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a2e;border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:20px;font-size:.82rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
-#toast.show{opacity:1}
-::-webkit-scrollbar{width:3px;height:3px}
-::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tab-btn:hover { color: var(--text); background: var(--border); }
+  .tab-btn.active { color: var(--accent); background: var(--accent-dim); }
+
+  .badge {
+    background: var(--danger);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 1px 5px;
+    min-width: 16px;
+    text-align: center;
+    line-height: 14px;
+  }
+
+  .header-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .sync-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); padding: 5px 12px; border-radius: 6px;
+    cursor: pointer; font-size: 12px; transition: all 0.15s;
+  }
+  .sync-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* PAGES */
+  .page { display: none; padding: 20px; flex: 1; }
+  .page.active { display: block; }
+
+  /* STATS GRID */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .stat-label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .stat-value { font-size: 28px; font-weight: 700; color: var(--text); line-height: 1; }
+  .stat-sub { color: var(--muted); font-size: 11px; margin-top: 4px; }
+
+  /* TWO-COL LAYOUT */
+  .two-col { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* SECTION */
+  .section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .section-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* RECENT SENDS */
+  .send-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  .send-row:last-child { border-bottom: none; }
+  .send-row:hover { background: rgba(255,255,255,0.02); }
+  .send-company { font-weight: 500; color: var(--text); }
+  .send-email { color: var(--muted); font-size: 12px; }
+  .send-time { color: var(--muted); font-size: 11px; white-space: nowrap; }
+
+  /* STATUS PILLS */
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .pill-contacted { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  .pill-replied { background: rgba(168,85,247,0.15); color: #a855f7; }
+  .pill-booked { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .pill-bounced { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .pill-dead { background: rgba(100,116,139,0.15); color: #64748b; }
+
+  /* INDUSTRY BARS */
+  .industry-row { padding: 10px 16px; }
+  .industry-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 12px;
+  }
+  .industry-name { color: var(--text); }
+  .industry-count { color: var(--muted); }
+  .bar-track { background: var(--border); border-radius: 4px; height: 5px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.6s ease; }
+
+  /* INBOX */
+  .inbox-list { display: flex; flex-direction: column; gap: 0; }
+
+  .email-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: background 0.1s;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .email-card:first-child { border-radius: 10px 10px 0 0; }
+  .email-card:last-child { border-radius: 0 0 10px 10px; border-bottom: none; }
+  .email-card:only-child { border-radius: 10px; }
+  .email-card:hover { background: #12121e; }
+  .email-card.unread { border-left: 3px solid var(--accent); }
+
+  .email-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .email-sender { font-weight: 600; color: var(--text); }
+  .email-company-tag {
+    font-size: 11px; color: var(--accent); background: var(--accent-dim);
+    padding: 1px 6px; border-radius: 4px;
+  }
+  .email-inbox-tag {
+    font-size: 10px; color: var(--muted); background: var(--border);
+    padding: 1px 6px; border-radius: 4px; margin-left: auto;
+  }
+  .email-time { font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .email-subject { font-weight: 500; color: var(--text); margin-bottom: 3px; font-size: 13px; }
+  .email-preview { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+  .email-expanded {
+    display: none;
+    padding: 14px 16px;
+    background: #08080f;
+    border-top: 1px solid var(--border);
+  }
+  .email-expanded.open { display: block; }
+  .email-body-text {
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 14px;
+  }
+  .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+
+  /* REPLY COMPOSER */
+  .reply-composer {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .reply-composer textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 10px;
+    font-size: 13px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    margin-bottom: 8px;
+  }
+  .reply-composer textarea:focus { border-color: var(--accent); }
+  .reply-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .reply-from { font-size: 11px; color: var(--muted); }
+
+  /* BUTTONS */
+  .btn {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #2563eb; }
+  .btn-success { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+  .btn-success:hover { background: rgba(34,197,94,0.25); }
+  .btn-purple { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+  .btn-purple:hover { background: rgba(168,85,247,0.25); }
+  .btn-danger { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .btn-danger:hover { background: rgba(239,68,68,0.25); }
+  .btn-ghost { background: none; color: var(--muted); border: 1px solid var(--border); }
+  .btn-ghost:hover { color: var(--text); border-color: var(--text); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* CONTACTS */
+  .filter-bar { display: flex; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .filter-btn {
+    background: none; border: 1px solid var(--border); border-radius: 20px;
+    color: var(--muted); padding: 4px 12px; font-size: 12px; cursor: pointer; transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  .search-bar {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .search-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 8px 12px;
+    font-size: 13px;
+    outline: none;
+    font-family: inherit;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+
+  .contacts-layout { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .contacts-layout.with-panel { grid-template-columns: 1fr 380px; }
+
+  .contacts-table { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left; padding: 10px 16px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td { padding: 10px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); cursor: pointer; }
+  tr.selected td { background: var(--accent-dim); }
+
+  /* CONTACT PANEL */
+  .contact-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 120px);
+    position: sticky;
+    top: 72px;
+  }
+  .panel-header { padding: 16px; border-bottom: 1px solid var(--border); }
+  .panel-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .panel-company { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+  .panel-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .meta-tag {
+    font-size: 11px; color: var(--muted); background: var(--border);
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .panel-body { flex: 1; overflow-y: auto; }
+  .panel-section { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .panel-section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 8px; }
+  .panel-notes { color: var(--text); font-size: 13px; line-height: 1.5; }
+
+  .thread-msg {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+  .thread-msg-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .thread-msg-from { font-weight: 500; font-size: 12px; }
+  .thread-msg-time { font-size: 11px; color: var(--muted); }
+  .thread-msg-subject { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .thread-msg-body { font-size: 12px; color: var(--text); line-height: 1.5; white-space: pre-wrap; max-height: 100px; overflow: hidden; position: relative; }
+  .thread-msg-body.expanded { max-height: none; }
+
+  /* COMPOSE */
+  .compose-card {
+    max-width: 680px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+  }
+  .compose-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+  .form-group { margin-bottom: 14px; }
+  .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 9px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+  .form-select { appearance: none; cursor: pointer; }
+  .form-textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
+
+  /* LOADING / EMPTY */
+  .loading { text-align: center; padding: 40px; color: var(--muted); }
+  .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-bottom: 10px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .empty { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
+
+  /* TOAST */
+  #toast-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 9999; }
+  .toast {
+    background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 16px; font-size: 13px; color: var(--text);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    animation: slideIn 0.2s ease;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .toast.success { border-left: 3px solid var(--success); }
+  .toast.error { border-left: 3px solid var(--danger); }
+  .toast.info { border-left: 3px solid var(--accent); }
+  @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .two-col { grid-template-columns: 1fr; }
+    .contacts-layout.with-panel { grid-template-columns: 1fr; }
+    .contact-panel { position: static; max-height: none; }
+    .send-row { grid-template-columns: 1fr auto; }
+    .send-email, .send-time { display: none; }
+  }
 </style>
 </head>
 <body>
 
-<nav>
+<header>
   <div class="logo">
-    <div class="logo-icon">🌹</div>
-    <div>
-      <div class="logo-text">Wildrose</div>
-      <div class="logo-sub">Lead Manager</div>
-    </div>
+    <div class="logo-dot"></div>
+    Wildrose
   </div>
-  <div class="nav-tabs">
-    <button class="tab active" onclick="nav('dash',this)">Overview</button>
-    <button class="tab" onclick="nav('pipeline',this)">Pipeline</button>
-    <button class="tab" onclick="nav('replies',this)">Replies <span class="badge" id="replyBadge" style="display:none">0</span></button>
-    <button class="tab" onclick="nav('calls',this)">Calls</button>
+  <nav>
+    <button class="tab-btn active" onclick="switchTab('campaigns')" id="tab-campaigns">Campaigns</button>
+    <button class="tab-btn" onclick="switchTab('inbox')" id="tab-inbox">
+      Inbox <span class="badge" id="inbox-badge" style="display:none">0</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('contacts')" id="tab-contacts">Contacts</button>
+    <button class="tab-btn" onclick="switchTab('compose')" id="tab-compose">+ Compose</button>
+  </nav>
+  <div class="header-right">
+    <button class="sync-btn" onclick="refreshAll()">↻ Refresh</button>
   </div>
-  <div class="nav-right">
-    <button class="nav-btn" onclick="loadAll()">↻</button>
-  </div>
-</nav>
+</header>
 
-<div class="page active" id="pg-dash"></div>
-<div class="page" id="pg-pipeline"></div>
-<div class="page" id="pg-replies"></div>
-<div class="page" id="pg-calls">
-  <div style="padding:14px">
-    <div class="add-bar" style="margin-bottom:12px">
-      <input class="add-input" id="callInput" placeholder="Add call — e.g. Jason @ Abacus, Thu 2pm"/>
-      <button class="add-btn" onclick="addCall()">+ Add</button>
+<!-- CAMPAIGNS -->
+<div class="page active" id="page-campaigns">
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card"><div class="stat-label">Total Sent</div><div class="stat-value" id="stat-sent">—</div><div class="stat-sub">All time</div></div>
+    <div class="stat-card"><div class="stat-label">Replied</div><div class="stat-value" id="stat-replied">—</div><div class="stat-sub">Positive responses</div></div>
+    <div class="stat-card"><div class="stat-label">Reply Rate</div><div class="stat-value" id="stat-rate">—</div><div class="stat-sub">contacted → replied+booked</div></div>
+    <div class="stat-card"><div class="stat-label">Booked</div><div class="stat-value" id="stat-booked">—</div><div class="stat-sub">Meetings set</div></div>
+  </div>
+
+  <div class="two-col">
+    <div class="section">
+      <div class="section-header">Recent Sends <span id="recent-count" style="font-weight:400"></span></div>
+      <div id="recent-sends"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
     </div>
-    <div id="callList"></div>
+    <div class="section">
+      <div class="section-header">By Industry</div>
+      <div id="industry-breakdown"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
+    </div>
   </div>
 </div>
 
-<!-- LEAD PROFILE MODAL -->
-<div id="modal">
-  <div class="modal-sheet">
-    <div class="modal-header">
-      <button class="modal-close" onclick="closeModal()">✕</button>
-      <div id="modal-company" class="modal-company"></div>
-      <div id="modal-sub" class="modal-sub"></div>
-      <div class="modal-tabs">
-        <div class="modal-tab active" onclick="modalTab('profile',this)">Profile</div>
-        <div class="modal-tab" onclick="modalTab('conversations',this)">Conversations</div>
-        <div class="modal-tab" onclick="modalTab('analytics',this)">Analytics</div>
+<!-- INBOX -->
+<div class="page" id="page-inbox">
+  <div id="inbox-content"><div class="loading"><div class="spinner"></div><div>Fetching inboxes…</div></div></div>
+</div>
+
+<!-- CONTACTS -->
+<div class="page" id="page-contacts">
+  <div class="section">
+    <div class="filter-bar" id="contacts-filter-bar">
+      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('contacted', this)">Contacted</button>
+      <button class="filter-btn" onclick="setFilter('replied', this)">Replied</button>
+      <button class="filter-btn" onclick="setFilter('booked', this)">Booked</button>
+      <button class="filter-btn" onclick="setFilter('bounced', this)">Bounced</button>
+      <button class="filter-btn" onclick="setFilter('dead', this)">Dead</button>
+    </div>
+    <div class="search-bar">
+      <input class="search-input" type="text" placeholder="Search by name, email, company…" oninput="filterContacts(this.value)" id="contact-search">
+    </div>
+    <div class="contacts-layout" id="contacts-layout">
+      <div class="contacts-table">
+        <div id="contacts-table-content"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
       </div>
     </div>
-    <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
 
-<div id="toast"></div>
+<!-- COMPOSE -->
+<div class="page" id="page-compose">
+  <div class="compose-card">
+    <div class="compose-title">New Email</div>
+    <div class="form-group">
+      <label class="form-label">From</label>
+      <select class="form-select" id="compose-from">
+        <option value="jack@wildroseautomations.ca">jack@wildroseautomations.ca</option>
+        <option value="lena@wildroseautomations.ca">lena@wildroseautomations.ca</option>
+        <option value="brad@wildroseautomations.ca">brad@wildroseautomations.ca</option>
+        <option value="kate@wildroseautomations.ca">kate@wildroseautomations.ca</option>
+        <option value="cole@wildroseautomations.ca">cole@wildroseautomations.ca</option>
+        <option value="emma@wildroseautomations.ca">emma@wildroseautomations.ca</option>
+        <option value="mike@wildroseautomations.ca">mike@wildroseautomations.ca</option>
+        <option value="sarah@wildroseautomations.ca">sarah@wildroseautomations.ca</option>
+        <option value="ryan@wildroseautomations.ca">ryan@wildroseautomations.ca</option>
+        <option value="hudson@wildroseautomations.ca">hudson@wildroseautomations.ca</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">To</label>
+      <input class="form-input" type="email" id="compose-to" placeholder="recipient@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Subject</label>
+      <input class="form-input" type="text" id="compose-subject" placeholder="Subject line…">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Body</label>
+      <textarea class="form-textarea" id="compose-body" placeholder="Write your email…"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <button class="btn btn-primary" onclick="sendEmail()" id="send-btn">Send Email</button>
+      <span id="send-status" style="font-size:12px;color:var(--muted)"></span>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
 
 <script>
+// ── CONSTANTS ──────────────────────────────────────────────────────────────
 const SB = 'https://xacehhtgvubcqdoltazg.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhY2VoaHRndnViY3Fkb2x0YXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDI4NjcsImV4cCI6MjA4OTUxODg2N30.GGS5D4RLLkMdMn17GIBgjHkEn6d-HH9AXIzTBwSAzv8';
 const AM_KEY = 'am_us_eb590201635e5a67541a0e4c6eb32c5d6b144eb5cf48a5ca7ce9bece7940c11f';
@@ -228,508 +559,655 @@ const AM_INBOXES = [
   'ryan@wildroseautomations.ca',
   'hudson@wildroseautomations.ca'
 ];
-const AM_INBOX = AM_INBOXES[0]; // default send-from inbox
 
-let leads=[], replies=[], conversations=[], calls=JSON.parse(localStorage.getItem('wr_calls')||'[]');
-let currentLead=null, currentModalTab='profile';
+// ── STATE ──────────────────────────────────────────────────────────────────
+let leads = [];
+let inboxMessages = [];
+let currentFilter = 'all';
+let selectedLead = null;
+let activeTab = 'campaigns';
 
-const STATUS_COLORS={contacted:'#3b82f6',replied:'#d4a843',booked:'#22c55e',bounced:'#ef4444',dead:'#4a4a6a'};
-const STATUS_ORDER=['booked','replied','contacted','bounced','dead'];
-
-function sbFetch(path){
-  return fetch(SB+'/rest/v1/'+path,{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(r=>r.json());
-}
-function sbPatch(path,body){
-  return fetch(SB+'/rest/v1/'+path,{method:'PATCH',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});
-}
-
-function nav(page,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('pg-'+page).classList.add('active');
-  btn.classList.add('active');
-  if(page==='pipeline') renderPipeline();
-  else if(page==='replies') renderReplies();
-  else if(page==='dash') renderDash();
-  else if(page==='calls') renderCalls();
+// ── UTILS ──────────────────────────────────────────────────────────────────
+function timeAgo(dateStr) {
+  if (!dateStr) return '—';
+  const d = new Date(dateStr);
+  const diff = (Date.now() - d.getTime()) / 1000;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  if (diff < 604800) return Math.floor(diff/86400) + 'd ago';
+  return d.toLocaleDateString('en-CA');
 }
 
-async function loadAll(){
-  toast('Refreshing...');
-  await Promise.all([
-    sbFetch('leads?order=contacted_at.desc&limit=200').then(d=>{leads=Array.isArray(d)?d:[];}),
-    sbFetch('conversations?order=sent_at.desc&limit=500').then(d=>{conversations=Array.isArray(d)?d:[];}),
-    Promise.all(AM_INBOXES.map(inbox=>
-      fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/messages?limit=100`,
-        {headers:{'Authorization':'Bearer '+AM_KEY}})
-        .then(r=>r.json())
-        .then(d=>(d.messages||[]).map(m=>({...m,_inbox:inbox})))
-        .catch(()=>[])
-    )).then(results=>{
-        const all=results.flat();
-        replies=all.filter(m=>(m.labels||[]).includes('received')&&!(m.from||'').includes('mailer-daemon'));
-        const unread=replies.filter(m=>(m.labels||[]).includes('unread')).length;
-        const badge=document.getElementById('replyBadge');
-        badge.style.display=unread>0?'':'none';
-        badge.textContent=unread;
-      })
-  ]);
-  const active=document.querySelector('.page.active').id.replace('pg-','');
-  if(active==='pipeline') renderPipeline();
-  else if(active==='replies') renderReplies();
-  else if(active==='dash') renderDash();
-  toast('Updated ✓');
+function formatDate(dateStr) {
+  if (!dateStr) return '—';
+  return new Date(dateStr).toLocaleDateString('en-CA');
 }
 
-// ── DASHBOARD ──
-function renderDash(){
-  const total=leads.length;
-  const replied=leads.filter(l=>l.status==='replied'||l.last_reply_at).length;
-  const booked=leads.filter(l=>l.status==='booked').length;
-  const bounced=leads.filter(l=>l.status==='bounced').length;
-  const replyRate=total>0?Math.round(replied/total*100):0;
-  const callsBooked=leads.filter(l=>l.status==='booked');
+function pillHtml(status) {
+  const s = (status || 'contacted').toLowerCase();
+  return `<span class="pill pill-${s}">${s}</span>`;
+}
 
-  document.getElementById('pg-dash').innerHTML=`
-    <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
-      <div class="stat-row">
-        <div class="stat gold-stat"><div class="stat-lbl">Total Sent</div><div class="stat-val">${total}</div><div class="stat-sub">all time</div></div>
-        <div class="stat"><div class="stat-lbl">Replied</div><div class="stat-val" style="color:var(--gold)">${replied}</div><div class="stat-sub">${replyRate}% rate</div></div>
-        <div class="stat"><div class="stat-lbl">Booked</div><div class="stat-val" style="color:var(--green)">${booked}</div><div class="stat-sub">calls scheduled</div></div>
-        <div class="stat"><div class="stat-lbl">Bounced</div><div class="stat-val" style="color:var(--red)">${bounced}</div><div class="stat-sub">bad emails</div></div>
-      </div>
+function toast(msg, type = 'info') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
 
-      ${callsBooked.length>0?`
-      <div>
-        <div class="section-label" style="margin-bottom:10px">📞 Booked Calls</div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          ${callsBooked.map(l=>`
-            <div class="activity-item" onclick="showLead(${l.id})" style="border-color:rgba(34,197,94,.3)">
-              <div class="act-dot" style="background:var(--green)"></div>
-              <div class="act-text"><strong>${l.company||l.email}</strong>${l.name?' · '+l.name:''}</div>
-              <div style="font-size:.7rem;background:var(--green-dim);color:var(--green);padding:3px 8px;border-radius:6px">Call Booked</div>
-            </div>`).join('')}
+function escHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── SUPABASE ───────────────────────────────────────────────────────────────
+async function sbFetch(path, opts = {}) {
+  const res = await fetch(`${SB}/rest/v1/${path}`, {
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': `Bearer ${SB_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=representation',
+      ...opts.headers
+    },
+    ...opts
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`SB ${res.status}: ${txt}`);
+  }
+  const ct = res.headers.get('content-type') || '';
+  return ct.includes('json') ? res.json() : res.text();
+}
+
+async function loadLeads() {
+  leads = await sbFetch('leads?order=contacted_at.desc&limit=500');
+  return leads;
+}
+
+async function updateLeadStatus(id, status) {
+  await sbFetch(`leads?id=eq.${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status, last_reply_at: new Date().toISOString() })
+  });
+  const l = leads.find(x => x.id === id);
+  if (l) l.status = status;
+}
+
+async function logSentEmail(toEmail, toName, company, subject) {
+  // Find existing lead or create
+  let lead = leads.find(l => l.email && l.email.toLowerCase() === toEmail.toLowerCase());
+  if (lead) {
+    await sbFetch(`leads?id=eq.${lead.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: 'contacted', contacted_at: new Date().toISOString() })
+    });
+    lead.status = 'contacted';
+    lead.contacted_at = new Date().toISOString();
+  } else {
+    const newLead = {
+      name: toName || toEmail.split('@')[0],
+      email: toEmail,
+      company: company || '',
+      status: 'contacted',
+      contacted_at: new Date().toISOString()
+    };
+    const created = await sbFetch('leads', {
+      method: 'POST',
+      body: JSON.stringify(newLead)
+    });
+    if (Array.isArray(created) && created.length) leads.unshift(created[0]);
+  }
+}
+
+// ── AGENTMAIL ──────────────────────────────────────────────────────────────
+async function amFetch(inboxEmail, path, opts = {}) {
+  const inboxId = inboxEmail.split('@')[0];
+  const url = `https://api.agentmail.to/v0/inboxes/${inboxId}/threads` + (path || '');
+  const res = await fetch(url, {
+    headers: {
+      'Authorization': `Bearer ${AM_KEY}`,
+      'Content-Type': 'application/json',
+      ...opts.headers
+    },
+    ...opts
+  });
+  if (!res.ok) throw new Error(`AM ${res.status}`);
+  return res.json();
+}
+
+async function amSend(fromEmail, to, subject, body, inReplyTo = null) {
+  const inboxId = fromEmail.split('@')[0];
+  const payload = { to: [{ email: to }], subject, text: body };
+  if (inReplyTo) payload.in_reply_to = inReplyTo;
+  const res = await fetch(`https://api.agentmail.to/v0/inboxes/${inboxId}/messages`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${AM_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) {
+    const t = await res.text();
+    throw new Error(`AM send ${res.status}: ${t}`);
+  }
+  return res.json();
+}
+
+async function fetchInbox(inboxEmail) {
+  try {
+    const inboxId = inboxEmail.split('@')[0];
+    const res = await fetch(`https://api.agentmail.to/v0/inboxes/${inboxId}/messages?limit=50`, {
+      headers: { 'Authorization': `Bearer ${AM_KEY}` }
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    const messages = Array.isArray(data) ? data : (data.messages || data.items || []);
+    return messages.map(m => ({ ...m, _inbox: inboxEmail }));
+  } catch { return []; }
+}
+
+async function loadAllInboxes() {
+  const results = await Promise.all(AM_INBOXES.map(fetchInbox));
+  const all = results.flat();
+
+  // Filter: only inbound (received label), exclude noise
+  const inbound = all.filter(m => {
+    const fromAddr = (m.from_address || m.from || '').toLowerCase();
+    const labels = (m.labels || []).map(l => (typeof l === 'string' ? l : l.name || '').toLowerCase());
+    const hasReceived = labels.includes('received') || labels.includes('inbox');
+    const isNoise = fromAddr.includes('mailer-daemon') || fromAddr.includes('noreply') ||
+                    fromAddr.includes('no-reply') || fromAddr.includes('wildroseautomations');
+    return !isNoise && (hasReceived || m.direction === 'inbound' || (m.from_address && !AM_INBOXES.includes(fromAddr)));
+  });
+
+  // Sort newest first
+  inbound.sort((a, b) => new Date(b.date || b.created_at || 0) - new Date(a.date || a.created_at || 0));
+  return inbound;
+}
+
+// ── TAB SWITCHING ──────────────────────────────────────────────────────────
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  document.getElementById(`page-${tab}`).classList.add('active');
+
+  if (tab === 'campaigns') renderCampaigns();
+  if (tab === 'inbox') renderInbox();
+  if (tab === 'contacts') renderContacts();
+}
+
+// ── CAMPAIGNS ──────────────────────────────────────────────────────────────
+function renderCampaigns() {
+  const contacted = leads.filter(l => ['contacted','replied','booked','bounced','dead'].includes(l.status));
+  const replied = leads.filter(l => ['replied','booked'].includes(l.status));
+  const booked = leads.filter(l => l.status === 'booked');
+  const rate = contacted.length ? ((replied.length / contacted.length) * 100).toFixed(1) : '0.0';
+
+  document.getElementById('stat-sent').textContent = contacted.length;
+  document.getElementById('stat-replied').textContent = replied.length;
+  document.getElementById('stat-rate').textContent = rate + '%';
+  document.getElementById('stat-booked').textContent = booked.length;
+
+  // Recent sends (last 20 by contacted_at)
+  const recent = [...contacted]
+    .sort((a, b) => new Date(b.contacted_at || 0) - new Date(a.contacted_at || 0))
+    .slice(0, 20);
+
+  document.getElementById('recent-count').textContent = `(${recent.length})`;
+
+  if (recent.length === 0) {
+    document.getElementById('recent-sends').innerHTML = '<div class="empty">No sends yet</div>';
+  } else {
+    document.getElementById('recent-sends').innerHTML = recent.map(l => `
+      <div class="send-row">
+        <div>
+          <div class="send-company">${escHtml(l.company || l.name)}</div>
+          <div class="send-email">${escHtml(l.email)}</div>
         </div>
-      </div>`:''}
-
-      <div>
-        <div class="section-label" style="margin-bottom:10px">Pipeline</div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-          ${STATUS_ORDER.map(s=>{
-            const count=leads.filter(l=>l.status===s).length;
-            const pct=total>0?Math.round(count/total*100):0;
-            return`<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer" onclick="document.querySelector('[onclick*=pipeline]').click()">
-              <div style="width:8px;height:8px;border-radius:50%;background:${STATUS_COLORS[s]||'#555'};flex-shrink:0"></div>
-              <div style="flex:1;font-size:.82rem;text-transform:capitalize">${s}</div>
-              <div style="flex:2;height:4px;background:var(--dim);border-radius:2px;overflow:hidden">
-                <div style="height:100%;width:${pct}%;background:${STATUS_COLORS[s]||'#555'};border-radius:2px"></div>
-              </div>
-              <div style="font-size:.82rem;font-weight:700;width:24px;text-align:right">${count}</div>
-            </div>`;
-          }).join('')}
-        </div>
+        <div class="send-email">${escHtml(l.email)}</div>
+        ${pillHtml(l.status)}
+        <div class="send-time">${timeAgo(l.contacted_at)}</div>
       </div>
+    `).join('');
+  }
 
-      <div>
-        <div class="section-label" style="margin-bottom:10px">Recent Activity</div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          ${leads.slice(0,10).map(l=>`
-            <div class="activity-item" onclick="showLead(${l.id})">
-              <div class="act-dot" style="background:${STATUS_COLORS[l.status]||'#555'}"></div>
-              <div class="act-text"><strong>${l.company||l.email}</strong>${l.name&&l.company?' · '+l.name:''}</div>
-              <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.5px;padding:2px 6px;border-radius:4px;background:var(--dim);color:var(--muted)">${l.status}</div>
-              <div class="act-time">${timeAgo(l.contacted_at)}</div>
-            </div>`).join('')}
+  // Industry breakdown
+  const industries = {};
+  contacted.forEach(l => {
+    const ind = l.industry || 'Unknown';
+    industries[ind] = (industries[ind] || 0) + 1;
+  });
+  const sorted = Object.entries(industries).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const maxVal = sorted.length ? sorted[0][1] : 1;
+
+  if (sorted.length === 0) {
+    document.getElementById('industry-breakdown').innerHTML = '<div class="empty">No data</div>';
+  } else {
+    document.getElementById('industry-breakdown').innerHTML = sorted.map(([name, count]) => `
+      <div class="industry-row">
+        <div class="industry-label">
+          <span class="industry-name">${escHtml(name)}</span>
+          <span class="industry-count">${count}</span>
         </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round((count/maxVal)*100)}%"></div></div>
       </div>
-    </div>`;
+    `).join('');
+  }
 }
 
-// ── PIPELINE ──
-function renderPipeline(){
-  document.getElementById('pg-pipeline').innerHTML=STATUS_ORDER.map(status=>{
-    const col=leads.filter(l=>l.status===status);
-    return`<div class="pipe-col">
-      <div class="pipe-header">
-        <div class="pipe-title" style="color:${STATUS_COLORS[status]}">${status}</div>
-        <div class="pipe-count-badge">${col.length}</div>
-      </div>
-      ${col.length===0?`<div style="font-size:.75rem;color:var(--muted);padding:16px;text-align:center">Empty</div>`:''}
-      ${col.map(l=>{
-        const ind=l.industry||'default';
-        const hasConvos=conversations.some(c=>c.lead_id===l.id);
-        return`<div class="lead-card ${l.status==='replied'?'replied':''}" onclick="showLead(${l.id})">
-          <div class="lead-company">${l.company||l.email}</div>
-          ${l.name?`<div class="lead-name">${l.name}</div>`:''}
-          <div class="ind-tag ind-${ind}">${ind.replace('_',' ')}</div>
-          ${hasConvos?`<div style="font-size:.65rem;color:var(--gold);margin-bottom:6px">💬 Has replies</div>`:''}
-          <div class="lead-footer">
-            <div class="lead-date">${timeAgo(l.contacted_at)}</div>
-            <div class="status-dot" style="background:${STATUS_COLORS[status]||'#555'}"></div>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>`;
-  }).join('');
+// ── INBOX ──────────────────────────────────────────────────────────────────
+async function renderInbox() {
+  document.getElementById('inbox-content').innerHTML = '<div class="loading"><div class="spinner"></div><div>Fetching all inboxes…</div></div>';
+  try {
+    inboxMessages = await loadAllInboxes();
+    updateInboxBadge();
+    renderInboxMessages();
+  } catch (e) {
+    document.getElementById('inbox-content').innerHTML = `<div class="empty">Error loading inbox: ${escHtml(e.message)}</div>`;
+  }
 }
 
-// ── REPLIES ──
-function renderReplies(){
-  if(!replies.length){
-    document.getElementById('pg-replies').innerHTML=`<div class="empty"><div class="empty-icon">📭</div>No replies yet</div>`;
+function updateInboxBadge() {
+  const badge = document.getElementById('inbox-badge');
+  const unread = inboxMessages.filter(m => !m._read).length;
+  if (unread > 0) {
+    badge.textContent = unread > 99 ? '99+' : unread;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function renderInboxMessages() {
+  if (inboxMessages.length === 0) {
+    document.getElementById('inbox-content').innerHTML = '<div class="empty">No inbound messages</div>';
     return;
   }
-  document.getElementById('pg-replies').innerHTML=replies.map(m=>{
-    const unread=(m.labels||[]).includes('unread');
-    const fromName=(m.from||'').replace(/<.*>/,'').trim()||'Unknown';
-    const lead=leads.find(l=>l.thread_id===m.thread_id);
-    const timeStr=m.timestamp?new Date(m.timestamp).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
-    const wantsCall=(m.preview||'').toLowerCase().match(/call|number|phone|reach|available|schedule/);
-    const id=m.message_id.replace(/[^a-z0-9]/gi,'_');
-    return`<div class="reply-card ${unread?'unread':''}" id="r_${id}">
-      <div class="reply-row" onclick="toggleReply('${id}')">
-        <div class="avatar">${fromName.slice(0,2).toUpperCase()}</div>
-        <div class="reply-info">
-          <div class="reply-from">${fromName}</div>
-          ${lead?`<div class="reply-company">${lead.company||lead.email}</div>`:''}
-          <div class="reply-preview">${wantsCall?'📞 ':''} ${m.preview||m.subject||''}</div>
+
+  const html = `<div class="inbox-list">` + inboxMessages.map((msg, i) => {
+    const fromName = msg.from_name || msg.from_address || msg.from || 'Unknown';
+    const fromEmail = msg.from_address || msg.from || '';
+    const lead = leads.find(l => l.email && l.email.toLowerCase() === fromEmail.toLowerCase());
+    const company = lead ? (lead.company || '') : '';
+    const subject = msg.subject || '(no subject)';
+    const preview = (msg.text || msg.body_text || msg.snippet || '').slice(0, 120);
+    const ts = timeAgo(msg.date || msg.created_at);
+    const inboxShort = (msg._inbox || '').split('@')[0];
+    const isUnread = !msg._read;
+
+    return `
+      <div class="email-card ${isUnread ? 'unread' : ''}" id="email-card-${i}" onclick="toggleEmail(${i})">
+        <div class="email-card-header">
+          <span class="email-sender">${escHtml(fromName)}</span>
+          ${company ? `<span class="email-company-tag">${escHtml(company)}</span>` : ''}
+          <span class="email-inbox-tag">${escHtml(inboxShort)}</span>
+          <span class="email-time">${ts}</span>
         </div>
-        <div class="reply-meta">
-          <div class="reply-time">${timeStr}</div>
-          <div style="font-size:.58rem;color:var(--muted);margin-top:2px">${(m._inbox||'').split('@')[0]}</div>
-          ${unread?`<div class="unread-pip"></div>`:''}
+        <div class="email-subject">${escHtml(subject)}</div>
+        <div class="email-preview">${escHtml(preview)}</div>
+      </div>
+      <div class="email-expanded" id="email-exp-${i}">
+        <div class="email-body-text">${escHtml(msg.text || msg.body_text || msg.body || '(no content)')}</div>
+        ${lead ? `<div class="action-row">
+          <button class="btn btn-purple" onclick="markLeadStatus(${i}, '${lead.id}', 'replied')">✓ Mark Replied</button>
+          <button class="btn btn-success" onclick="markLeadStatus(${i}, '${lead.id}', 'booked')">📅 Booked</button>
+          <button class="btn btn-danger" onclick="markLeadStatus(${i}, '${lead.id}', 'dead')">✗ Dead</button>
+        </div>` : ''}
+        <div class="reply-composer">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">
+            Reply via <strong>${escHtml(msg._inbox || '')}</strong> → <strong>${escHtml(fromEmail)}</strong>
+          </div>
+          <textarea id="reply-body-${i}" placeholder="Write your reply…"></textarea>
+          <div class="reply-footer">
+            <button class="btn btn-primary" onclick="sendReply(${i})">Send Reply</button>
+          </div>
         </div>
       </div>
-      <div class="reply-body" id="rb_${id}">
-        ${wantsCall?`<div style="background:var(--green-dim);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:8px 12px;margin-top:12px;font-size:.78rem;color:var(--green)">📞 Wants a call — check their message for number/time</div>`:''}
-        <div class="reply-text">${(m.preview||'').slice(0,800)}</div>
-        <div style="font-size:.7rem;color:var(--muted);margin-bottom:10px">From: ${m.from} · ${m.subject||''}</div>
-        <div class="reply-actions">
-          ${lead?`
-          <button class="r-btn green" onclick="updateStatus(${lead.id},'booked',this)">✅ Booked</button>
-          <button class="r-btn blue" onclick="showLead(${lead.id})">👤 Profile</button>
-          <button class="r-btn red" onclick="updateStatus(${lead.id},'dead',this)">❌ Dead</button>
-          `:''}
-          <button class="r-btn gold" onclick="openReply('${(m.from||'').replace(/'/g,"\\'")}','${(m.subject||'').replace(/'/g,"\\'")}','${m.thread_id}','${id}')">↩ Reply</button>
-        </div>
-        <div id="compose_${id}" style="display:none" class="reply-compose">
-          <div style="font-size:.65rem;color:var(--muted);margin-bottom:6px">Replying from: <strong style="color:var(--gold)">${m._inbox||AM_INBOX}</strong></div>
-          <textarea id="replytext_${id}" placeholder="Type your reply..."></textarea>
-          <button class="reply-compose-btn" onclick="sendReply('${(m.from||'').replace(/'/g,"\\'")}','${(m.subject||'').replace(/'/g,"\\'")}','${m.thread_id}','${id}','${(m._inbox||AM_INBOX).replace(/'/g,"\\'")}')">Send Reply</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+    `;
+  }).join('') + `</div>`;
+
+  document.getElementById('inbox-content').innerHTML = html;
 }
 
-function toggleReply(id){
-  const body=document.getElementById('rb_'+id);
-  body&&body.classList.toggle('open');
-}
-function openReply(to,subj,tid,id){
-  const compose=document.getElementById('compose_'+id);
-  if(compose) compose.style.display=compose.style.display==='none'?'block':'none';
-}
-async function sendReply(to,subject,threadId,id,fromInbox){
-  const text=document.getElementById('replytext_'+id)?.value?.trim();
-  if(!text) return;
-  const replySubject=subject.startsWith('Re:')?subject:'Re: '+subject;
-  const inbox=fromInbox||AM_INBOX;
-  try{
-    await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/messages/send`,{
-      method:'POST',
-      headers:{'Authorization':'Bearer '+AM_KEY,'Content-Type':'application/json'},
-      body:JSON.stringify({to:[to],subject:replySubject,text,thread_id:threadId})
-    });
-    toast('Reply sent ✓');
-    document.getElementById('compose_'+id).style.display='none';
-  }catch(e){toast('Send failed');}
+function toggleEmail(i) {
+  const card = document.getElementById(`email-card-${i}`);
+  const exp = document.getElementById(`email-exp-${i}`);
+  const isOpen = exp.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.email-expanded').forEach(e => e.classList.remove('open'));
+  if (!isOpen) {
+    exp.classList.add('open');
+    inboxMessages[i]._read = true;
+    card.classList.remove('unread');
+    updateInboxBadge();
+  }
 }
 
-async function updateStatus(leadId,status,btn){
-  btn.disabled=true;btn.textContent='...';
-  await sbPatch(`leads?id=eq.${leadId}`,{status});
-  const lead=leads.find(l=>l.id===leadId);
-  if(lead) lead.status=status;
-  toast(`Marked as ${status}`);
-  btn.disabled=false;
+async function markLeadStatus(msgIdx, leadId, status) {
+  try {
+    await updateLeadStatus(leadId, status);
+    toast(`Marked as ${status}`, 'success');
+    renderCampaigns();
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  }
 }
 
-// ── LEAD PROFILE MODAL ──
-async function showLead(id){
-  currentLead=leads.find(l=>l.id===id);
-  if(!currentLead) return;
-  document.getElementById('modal-company').textContent=currentLead.company||currentLead.email;
-  document.getElementById('modal-sub').textContent=(currentLead.industry||'')+(currentLead.location?' · '+currentLead.location:'');
-  document.getElementById('modal').classList.add('show');
-  document.getElementById('modal-body').innerHTML=`<div style="padding:40px;text-align:center;color:var(--muted)">Loading...</div>`;
+async function sendReply(i) {
+  const msg = inboxMessages[i];
+  const body = document.getElementById(`reply-body-${i}`).value.trim();
+  if (!body) { toast('Write a reply first', 'error'); return; }
+  const toEmail = msg.from_address || msg.from || '';
+  const inbox = msg._inbox || AM_INBOXES[0];
+  const subject = msg.subject ? `Re: ${msg.subject}` : 'Re: Your message';
+  try {
+    await amSend(inbox, toEmail, subject, body, msg.message_id);
+    toast('Reply sent!', 'success');
+    document.getElementById(`reply-body-${i}`).value = '';
+    // Update lead status if found
+    const lead = leads.find(l => l.email && l.email.toLowerCase() === toEmail.toLowerCase());
+    if (lead && lead.status === 'replied') {
+      // already replied, keep as is
+    }
+  } catch (e) {
+    toast('Send failed: ' + e.message, 'error');
+  }
+}
 
-  const leadEmail=(currentLead.email||'').toLowerCase();
+// ── CONTACTS ──────────────────────────────────────────────────────────────
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterContacts(document.getElementById('contact-search').value);
+}
 
-  // Load Supabase conversations
-  const convos=await sbFetch(`conversations?lead_id=eq.${id}&order=sent_at.asc`);
-  currentLead._convos=Array.isArray(convos)?convos:[];
-
-  // Fetch full thread from ALL inboxes — match by from/to email
-  const allInboxMsgs=await Promise.all(AM_INBOXES.map(inbox=>
-    fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/messages?limit=100`,
-      {headers:{'Authorization':'Bearer '+AM_KEY}})
-    .then(r=>r.json())
-    .then(d=>(d.messages||[]).map(m=>({...m,_inbox:inbox})))
-    .catch(()=>[])
-  ));
-
-  const allMsgs=allInboxMsgs.flat();
-
-  // Inbound: from the lead's email
-  const inbound=allMsgs.filter(m=>{
-    const fromAddr=(m.from||'').toLowerCase();
-    return fromAddr.includes(leadEmail) && !(m.labels||[]).includes('sent');
+function filterContacts(search = '') {
+  const q = search.toLowerCase();
+  let filtered = leads.filter(l => {
+    if (currentFilter !== 'all' && l.status !== currentFilter) return false;
+    if (!q) return true;
+    return (l.name || '').toLowerCase().includes(q) ||
+           (l.email || '').toLowerCase().includes(q) ||
+           (l.company || '').toLowerCase().includes(q) ||
+           (l.industry || '').toLowerCase().includes(q);
   });
-
-  // Outbound: sent from our inboxes, to the lead's email
-  const outbound=allMsgs.filter(m=>{
-    const toAddr=(m.to||[]).join(' ').toLowerCase()+(m.recipients||[]).join(' ').toLowerCase();
-    return toAddr.includes(leadEmail) && ((m.labels||[]).includes('sent') || (m.labels||[]).includes('outbound'));
-  });
-
-  // Combine and sort chronologically
-  const combined=[
-    ...inbound.map(m=>({...m,_dir:'inbound'})),
-    ...outbound.map(m=>({...m,_dir:'outbound'}))
-  ].sort((a,b)=>new Date(a.timestamp||0)-new Date(b.timestamp||0));
-
-  currentLead._thread=combined;
-  currentLead._inbound=inbound;
-
-  renderModalTab('profile');
+  renderContactsTable(filtered);
 }
 
-function closeModal(){
-  document.getElementById('modal').classList.remove('show');
-  currentLead=null;
+function renderContacts() {
+  filterContacts(document.getElementById('contact-search').value);
 }
 
-function modalTab(tab,el){
-  document.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  currentModalTab=tab;
-  renderModalTab(tab);
-}
-
-function renderModalTab(tab){
-  const l=currentLead;
-  if(!l) return;
-  const body=document.getElementById('modal-body');
-
-  if(tab==='profile'){
-    const convos=l._convos||[];
-    const inbound=convos.filter(c=>c.direction==='inbound');
-    const wantsCall=inbound.some(c=>(c.body||'').toLowerCase().match(/call|phone|number|schedule|available/));
-    body.innerHTML=`
-      <div class="status-pills" style="margin-bottom:16px">
-        ${['contacted','replied','booked','dead','bounced'].map(s=>
-          `<div class="status-pill ${l.status===s?'active-pill':''}" onclick="updateStatusModal(${l.id},'${s}',this)">${s}</div>`
-        ).join('')}
-      </div>
-      ${wantsCall?`<div class="call-req-card">
-        <div class="call-req-tag">📞 Wants a Call</div>
-        <div style="font-size:.82rem">This lead mentioned calling in their reply. Check conversations tab for their number/availability.</div>
-      </div>`:''}
-      <div class="profile-grid">
-        <div class="profile-field"><div class="pf-label">Company</div><div class="pf-val">${l.company||'—'}</div></div>
-        <div class="profile-field"><div class="pf-label">Contact</div><div class="pf-val">${l.name||'—'}</div></div>
-        <div class="profile-field"><div class="pf-label">Email</div><div class="pf-val" style="font-size:.78rem;word-break:break-all">${l.email}</div></div>
-        <div class="profile-field"><div class="pf-label">Industry</div><div class="pf-val">${l.industry||'—'}</div></div>
-        <div class="profile-field"><div class="pf-label">Location</div><div class="pf-val">${l.location||'—'}</div></div>
-        <div class="profile-field"><div class="pf-label">Status</div><div class="pf-val" style="color:${STATUS_COLORS[l.status]||'#fff'}">${l.status}</div></div>
-        <div class="profile-field"><div class="pf-label">Contacted</div><div class="pf-val" style="font-size:.78rem">${l.contacted_at?new Date(l.contacted_at).toLocaleDateString('en-CA'):'—'}</div></div>
-        <div class="profile-field"><div class="pf-label">Last Reply</div><div class="pf-val" style="font-size:.78rem">${l.last_reply_at?timeAgo(l.last_reply_at):'No reply yet'}</div></div>
-      </div>
-      ${l.notes?`<div class="profile-field" style="margin-bottom:12px"><div class="pf-label">Notes</div><div class="pf-val" style="font-size:.78rem;color:#aaa;font-weight:400">${l.notes}</div></div>`:''}
-      <div class="reply-compose">
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px">Quick Reply</div>
-        <textarea id="modal-reply-text" placeholder="Type a reply..." rows="3"></textarea>
-        <button class="reply-compose-btn" onclick="sendModalReply()">Send Reply</button>
-      </div>`;
+function renderContactsTable(filtered) {
+  if (filtered.length === 0) {
+    document.getElementById('contacts-table-content').innerHTML = '<div class="empty">No contacts found</div>';
+    return;
   }
 
-  else if(tab==='conversations'){
-    const thread=l._thread||[];
-    const convos=l._convos||[];
+  document.getElementById('contacts-table-content').innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Email</th>
+          <th>Industry</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${filtered.map(l => `
+          <tr class="${selectedLead && selectedLead.id === l.id ? 'selected' : ''}" onclick="selectLead('${l.id}')">
+            <td><strong>${escHtml(l.company || '—')}</strong>${l.name ? `<div style="font-size:11px;color:var(--muted)">${escHtml(l.name)}</div>` : ''}</td>
+            <td style="color:var(--muted)">${escHtml(l.email)}</td>
+            <td style="color:var(--muted)">${escHtml(l.industry || '—')}</td>
+            <td style="color:var(--muted)">${escHtml(l.location || '—')}</td>
+            <td>${pillHtml(l.status)}</td>
+            <td style="color:var(--muted)">${formatDate(l.contacted_at)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
 
-    if(!thread.length&&!convos.length){
-      body.innerHTML=`<div class="empty"><div class="empty-icon">💬</div>No emails found for ${l.email}</div>`;
+async function selectLead(id) {
+  selectedLead = leads.find(l => l.id == id);
+  if (!selectedLead) return;
+
+  const layout = document.getElementById('contacts-layout');
+  layout.classList.add('with-panel');
+
+  // Remove existing panel
+  const existing = document.getElementById('contact-panel');
+  if (existing) existing.remove();
+
+  const panel = document.createElement('div');
+  panel.className = 'contact-panel';
+  panel.id = 'contact-panel';
+  panel.innerHTML = `
+    <div class="panel-header">
+      <div class="panel-name">${escHtml(selectedLead.name || selectedLead.email)}</div>
+      <div class="panel-company">${escHtml(selectedLead.company || '—')}</div>
+      <div class="panel-meta">
+        ${pillHtml(selectedLead.status)}
+        ${selectedLead.industry ? `<span class="meta-tag">${escHtml(selectedLead.industry)}</span>` : ''}
+        ${selectedLead.location ? `<span class="meta-tag">📍 ${escHtml(selectedLead.location)}</span>` : ''}
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="panel-section">
+        <div class="panel-section-title">Contact Info</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">${escHtml(selectedLead.email)}</div>
+        <div style="font-size:12px;color:var(--muted)">Contacted: ${timeAgo(selectedLead.contacted_at)}</div>
+        ${selectedLead.last_reply_at ? `<div style="font-size:12px;color:var(--muted)">Last reply: ${timeAgo(selectedLead.last_reply_at)}</div>` : ''}
+      </div>
+      ${selectedLead.notes ? `
+      <div class="panel-section">
+        <div class="panel-section-title">Notes</div>
+        <div class="panel-notes">${escHtml(selectedLead.notes)}</div>
+      </div>` : ''}
+      <div class="panel-section">
+        <div class="panel-section-title">Actions</div>
+        <div class="action-row">
+          <button class="btn btn-purple btn-sm" onclick="quickStatus('replied')">Replied</button>
+          <button class="btn btn-success btn-sm" onclick="quickStatus('booked')">Booked</button>
+          <button class="btn btn-danger btn-sm" onclick="quickStatus('dead')">Dead</button>
+        </div>
+      </div>
+      <div class="panel-section" id="thread-section">
+        <div class="panel-section-title">Email Thread <span id="thread-loading" style="color:var(--muted);font-weight:400">(loading…)</span></div>
+        <div id="thread-messages"></div>
+      </div>
+      <div class="panel-section">
+        <div class="panel-section-title">Reply</div>
+        <div class="reply-composer">
+          <div style="margin-bottom:8px">
+            <select class="form-select" id="panel-reply-from" style="font-size:12px;padding:5px 8px">
+              ${AM_INBOXES.map(i => `<option value="${i}">${i.split('@')[0]}</option>`).join('')}
+            </select>
+          </div>
+          <input class="form-input" id="panel-reply-subject" placeholder="Subject" style="margin-bottom:8px;font-size:12px;padding:7px 10px">
+          <textarea id="panel-reply-body" placeholder="Write your message…" style="min-height:80px"></textarea>
+          <button class="btn btn-primary" onclick="sendPanelReply()">Send</button>
+        </div>
+      </div>
+    </div>
+    <div style="padding:10px;border-top:1px solid var(--border)">
+      <button class="btn btn-ghost" onclick="closePanel()" style="width:100%;justify-content:center">Close</button>
+    </div>
+  `;
+
+  layout.appendChild(panel);
+
+  // Load thread
+  loadThread(selectedLead.email);
+  renderContacts();
+}
+
+async function loadThread(email) {
+  try {
+    const results = await Promise.all(AM_INBOXES.map(async inbox => {
+      try {
+        const inboxId = inbox.split('@')[0];
+        const res = await fetch(`https://api.agentmail.to/v0/inboxes/${inboxId}/messages?limit=50`, {
+          headers: { 'Authorization': `Bearer ${AM_KEY}` }
+        });
+        if (!res.ok) return [];
+        const data = await res.json();
+        const msgs = Array.isArray(data) ? data : (data.messages || data.items || []);
+        return msgs.filter(m => {
+          const from = (m.from_address || m.from || '').toLowerCase();
+          const to = (Array.isArray(m.to) ? m.to.map(t => (t.email||t).toLowerCase()).join(',') : (m.to||'').toLowerCase());
+          return from.includes(email.toLowerCase()) || to.includes(email.toLowerCase());
+        }).map(m => ({ ...m, _inbox: inbox }));
+      } catch { return []; }
+    }));
+
+    const thread = results.flat().sort((a, b) => new Date(a.date || a.created_at || 0) - new Date(b.date || b.created_at || 0));
+
+    document.getElementById('thread-loading').textContent = `(${thread.length})`;
+    const container = document.getElementById('thread-messages');
+
+    if (thread.length === 0) {
+      container.innerHTML = '<div style="font-size:12px;color:var(--muted)">No messages found</div>';
       return;
     }
 
-    const fmtTime=ts=>ts?new Date(ts).toLocaleString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
-
-    body.innerHTML=`
-      <div style="font-size:.72rem;color:var(--muted);margin-bottom:14px;display:flex;gap:12px">
-        <span>${thread.length} emails in thread</span>
-        <span style="color:var(--gold)">${(l._inbound||[]).length} replies from them</span>
-      </div>
-
-      ${thread.length?thread.map(m=>{
-        const isIn=m._dir==='inbound';
-        const name=(m.from||'').replace(/<.*>/,'').trim();
-        const preview=m.body||m.preview||m.snippet||'';
-        return`<div class="convo-msg ${isIn?'in':'out'}" style="margin-bottom:10px">
-          <div class="convo-meta" style="margin-bottom:6px">
-            <span class="convo-dir ${isIn?'in':'out'}">${isIn?'FROM THEM':'SENT'}</span>
-            <span style="font-size:.72rem;color:var(--text);font-weight:600">${name}</span>
-            ${!isIn?`<span style="font-size:.62rem;color:var(--muted)">via ${(m._inbox||'').split('@')[0]}</span>`:''}
-            <span style="font-size:.62rem;color:var(--muted);margin-left:auto">${fmtTime(m.timestamp)}</span>
+    container.innerHTML = thread.map((m, i) => {
+      const from = m.from_name || m.from_address || m.from || 'Unknown';
+      const isOutbound = AM_INBOXES.includes((m.from_address || '').toLowerCase()) || m.direction === 'outbound';
+      const body = m.text || m.body_text || m.body || '';
+      return `
+        <div class="thread-msg" style="${isOutbound ? 'border-left:2px solid var(--accent)' : ''}">
+          <div class="thread-msg-header">
+            <span class="thread-msg-from">${escHtml(from)} ${isOutbound ? '→' : '←'} <span style="color:var(--muted)">${escHtml(m._inbox||'').split('@')[0]}</span></span>
+            <span class="thread-msg-time">${timeAgo(m.date || m.created_at)}</span>
           </div>
-          <div style="font-size:.78rem;font-weight:700;margin-bottom:5px;color:${isIn?'var(--gold)':'var(--text)'}">${m.subject||''}</div>
-          <div style="font-size:.82rem;line-height:1.6;white-space:pre-wrap">${preview.slice(0,600)}${preview.length>600?'…':''}</div>
-        </div>`;
-      }).join(''):''}
-
-      ${convos.length?`
-        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:16px 0 8px">CRM LOG</div>
-        ${convos.map(c=>`
-          <div class="convo-msg ${c.direction==='outbound'?'out':'in'}" style="margin-bottom:8px">
-            <div class="convo-meta"><span class="convo-dir ${c.direction==='outbound'?'out':'in'}">${c.direction.toUpperCase()}</span>${fmtTime(c.sent_at)}</div>
-            <div style="font-size:.78rem;font-weight:600;margin-bottom:3px">${c.subject||''}</div>
-            <div style="font-size:.82rem">${(c.body||'').slice(0,300)}</div>
-          </div>`).join('')}`:''}
-
-      <div class="reply-compose" style="margin-top:16px">
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px">Reply to ${l.email}</div>
-        <textarea id="conv-reply-text" placeholder="Type your reply..." rows="4"></textarea>
-        <button class="reply-compose-btn" onclick="sendConvReply()">Send Reply</button>
-      </div>`;
-  }
-
-  else if(tab==='analytics'){
-    const convos=l._convos||[];
-    const inbound=(l._inbound||[]).length+convos.filter(c=>c.direction==='inbound').length;
-    const outbound=(l._thread||[]).filter(m=>m._dir==='outbound').length+convos.filter(c=>c.direction==='outbound').length;
-    const daysSince=l.contacted_at?Math.round((Date.now()-new Date(l.contacted_at))/(86400000)):0;
-    const wantsCall=(l._inbound||[]).some(r=>(r.preview||r.body||'').toLowerCase().match(/call|phone|number|schedule/));
-    const callText=(l._inbound||[]).find(r=>(r.preview||r.body||'').toLowerCase().match(/call|phone|number|schedule/))?.preview||'';
-    body.innerHTML=`
-      <div class="analytics-row">
-        <div class="analytics-stat"><div class="analytics-val" style="color:var(--gold)">${inbound}</div><div class="analytics-lbl">Replies Received</div></div>
-        <div class="analytics-stat"><div class="analytics-val">${outbound}</div><div class="analytics-lbl">Emails Sent</div></div>
-        <div class="analytics-stat"><div class="analytics-val">${daysSince}</div><div class="analytics-lbl">Days Since Contact</div></div>
-      </div>
-      <div class="analytics-row">
-        <div class="analytics-stat"><div class="analytics-val" style="color:${STATUS_COLORS[l.status]||'#fff'}">${l.status}</div><div class="analytics-lbl">Current Status</div></div>
-        <div class="analytics-stat"><div class="analytics-val">${l.follow_up_count||0}</div><div class="analytics-lbl">Follow-ups Sent</div></div>
-      </div>
-      ${wantsCall?`
-      <div class="call-req-card">
-        <div class="call-req-tag">📞 Call Requested</div>
-        <div style="font-size:.82rem;margin-bottom:8px">${callText.slice(0,300)}</div>
-        <button class="r-btn green" style="max-width:180px" onclick="updateStatusModal(${l.id},'booked',this);addCallFromLead('${(l.company||'').replace(/'/g,"\\'")}')">✅ Mark as Booked</button>
-      </div>`:'<div style="font-size:.82rem;color:var(--muted);padding:20px;text-align:center">No call request detected in replies</div>'}`;
-  }
-}
-
-async function updateStatusModal(leadId,status,el){
-  await sbPatch(`leads?id=eq.${leadId}`,{status});
-  const lead=leads.find(l=>l.id===leadId);
-  if(lead) lead.status=status;
-  document.querySelectorAll('.status-pill').forEach(p=>p.classList.remove('active-pill'));
-  el.classList.add('active-pill');
-  toast(`Status: ${status}`);
-}
-
-function addCallFromLead(company){
-  calls.unshift({text:`Call with ${company}`,done:false,added:new Date().toISOString()});
-  localStorage.setItem('wr_calls',JSON.stringify(calls));
-  toast('Added to calls list');
-}
-
-async function sendModalReply(){
-  const l=currentLead;
-  if(!l) return;
-  const text=document.getElementById('modal-reply-text')?.value?.trim();
-  if(!text) return;
-  await _sendReplyToLead(l,text,'modal-reply-text');
-}
-
-async function sendConvReply(){
-  const l=currentLead;
-  if(!l) return;
-  const text=document.getElementById('conv-reply-text')?.value?.trim();
-  if(!text) return;
-  await _sendReplyToLead(l,text,'conv-reply-text');
-}
-
-async function _sendReplyToLead(l,text,inputId){
-  // Find which inbox we originally sent from, or use jack@ as default
-  const sentMsg=(l._thread||[]).find(m=>m._dir==='outbound');
-  const inbox=sentMsg?sentMsg._inbox:AM_INBOX;
-  // Find thread_id from inbound reply if available
-  const threadId=(l._inbound||[])[0]?.thread_id||(l._thread||[])[0]?.thread_id||undefined;
-  const lastInboundSubj=(l._inbound||[])[0]?.subject||'';
-  const subject=lastInboundSubj?`Re: ${lastInboundSubj.replace(/^Re:\s*/i,'')}`:'Re: Following up — Wildrose Automations';
-  try{
-    await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/messages/send`,{
-      method:'POST',
-      headers:{'Authorization':'Bearer '+AM_KEY,'Content-Type':'application/json'},
-      body:JSON.stringify({to:[l.email],subject,text,thread_id:threadId})
-    });
-    toast('Sent from '+inbox.split('@')[0]+' ✓');
-    const el=document.getElementById(inputId);
-    if(el) el.value='';
-  }catch(e){toast('Send failed');}
-}
-
-// ── CALLS ──
-function renderCalls(){
-  const el=document.getElementById('callList');
-  const booked=leads.filter(l=>l.status==='booked');
-  if(!calls.length&&!booked.length){el.innerHTML=`<div class="empty"><div class="empty-icon">📞</div>No calls scheduled</div>`;return;}
-  el.innerHTML=`
-    ${booked.length?`<div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--green);margin-bottom:8px">Booked from CRM (${booked.length})</div>`:''}
-    ${booked.map(l=>`
-      <div class="call-card" style="border-color:rgba(34,197,94,.3);margin-bottom:8px;cursor:pointer" onclick="showLead(${l.id})">
-        <div class="call-dot done"></div>
-        <div class="call-info"><div class="call-name">${l.company||l.email}</div><div class="call-detail">${l.name||''} · Status: booked</div></div>
-        <div style="font-size:.7rem;color:var(--green)">Booked ✓</div>
-      </div>`).join('')}
-    ${calls.length?`<div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;margin-top:${booked.length?'12px':'0'}">Manual Calls</div>`:''}
-    ${calls.map((c,i)=>`
-      <div class="call-card ${c.done?'done':''}" style="margin-bottom:8px">
-        <div class="call-dot ${c.done?'done':''}"></div>
-        <div class="call-info"><div class="call-name">${c.text}</div><div class="call-detail">${c.added?new Date(c.added).toLocaleDateString('en-CA'):''}</div></div>
-        <div class="call-acts">
-          ${!c.done?`<button class="call-act done-act" onclick="markCallDone(${i})">✓</button>`:''}
-          <button class="call-act" onclick="removeCall(${i})">✕</button>
+          <div class="thread-msg-subject">${escHtml(m.subject || '')}</div>
+          <div class="thread-msg-body" id="tmb-${i}">${escHtml(body.slice(0,200))}${body.length > 200 ? '…' : ''}</div>
+          ${body.length > 200 ? `<button onclick="expandThread('tmb-${i}','${escHtml(body.replace(/'/g,"\\'"))}')" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;padding:2px 0">Show more</button>` : ''}
         </div>
-      </div>`).join('')}`;
+      `;
+    }).join('');
+  } catch (e) {
+    const tl = document.getElementById('thread-loading');
+    if (tl) tl.textContent = '(error)';
+  }
 }
 
-function addCall(){
-  const input=document.getElementById('callInput');
-  const text=input.value.trim();if(!text)return;
-  calls.unshift({text,done:false,added:new Date().toISOString()});
-  localStorage.setItem('wr_calls',JSON.stringify(calls));
-  input.value='';renderCalls();
-}
-function markCallDone(i){calls[i].done=true;localStorage.setItem('wr_calls',JSON.stringify(calls));renderCalls();}
-function removeCall(i){calls.splice(i,1);localStorage.setItem('wr_calls',JSON.stringify(calls));renderCalls();}
-
-function timeAgo(iso){
-  if(!iso)return'';
-  const diff=(Date.now()-new Date(iso))/1000;
-  if(diff<3600)return Math.round(diff/60)+'m ago';
-  if(diff<86400)return Math.round(diff/3600)+'h ago';
-  return Math.round(diff/86400)+'d ago';
-}
-function toast(msg){
-  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2000);
+function expandThread(id, fullText) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = fullText; el.nextElementSibling.remove(); }
 }
 
-document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
+async function quickStatus(status) {
+  if (!selectedLead) return;
+  try {
+    await updateLeadStatus(selectedLead.id, status);
+    selectedLead.status = status;
+    toast(`Marked as ${status}`, 'success');
+    renderContacts();
+    // Re-render panel header pill
+    const panelPill = document.querySelector('.panel-meta .pill');
+    if (panelPill) { panelPill.className = `pill pill-${status}`; panelPill.textContent = status; }
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
 
-(async()=>{await loadAll();renderDash();renderCalls();})();
+async function sendPanelReply() {
+  if (!selectedLead) return;
+  const from = document.getElementById('panel-reply-from').value;
+  const subject = document.getElementById('panel-reply-subject').value.trim() || `Re: Your inquiry`;
+  const body = document.getElementById('panel-reply-body').value.trim();
+  if (!body) { toast('Write a message first', 'error'); return; }
+  try {
+    await amSend(from, selectedLead.email, subject, body);
+    toast('Sent!', 'success');
+    document.getElementById('panel-reply-body').value = '';
+    await updateLeadStatus(selectedLead.id, 'contacted');
+    loadThread(selectedLead.email);
+  } catch (e) {
+    toast('Send failed: ' + e.message, 'error');
+  }
+}
+
+function closePanel() {
+  selectedLead = null;
+  document.getElementById('contacts-layout').classList.remove('with-panel');
+  const panel = document.getElementById('contact-panel');
+  if (panel) panel.remove();
+  renderContacts();
+}
+
+// ── COMPOSE ────────────────────────────────────────────────────────────────
+async function sendEmail() {
+  const from = document.getElementById('compose-from').value;
+  const to = document.getElementById('compose-to').value.trim();
+  const subject = document.getElementById('compose-subject').value.trim();
+  const body = document.getElementById('compose-body').value.trim();
+  const btn = document.getElementById('send-btn');
+  const status = document.getElementById('send-status');
+
+  if (!to || !subject || !body) { toast('Fill in all fields', 'error'); return; }
+  if (!to.includes('@')) { toast('Invalid email address', 'error'); return; }
+
+  btn.disabled = true;
+  status.textContent = 'Sending…';
+
+  try {
+    await amSend(from, to, subject, body);
+    await logSentEmail(to, '', '', subject);
+    toast('Email sent!', 'success');
+    status.textContent = '✓ Sent';
+    document.getElementById('compose-to').value = '';
+    document.getElementById('compose-subject').value = '';
+    document.getElementById('compose-body').value = '';
+    setTimeout(() => { status.textContent = ''; }, 3000);
+  } catch (e) {
+    toast('Failed: ' + e.message, 'error');
+    status.textContent = '✗ Failed';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ── REFRESH ────────────────────────────────────────────────────────────────
+async function refreshAll() {
+  toast('Refreshing…', 'info');
+  await loadLeads();
+  if (activeTab === 'campaigns') renderCampaigns();
+  else if (activeTab === 'inbox') renderInbox();
+  else if (activeTab === 'contacts') renderContacts();
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    await loadLeads();
+    renderCampaigns();
+
+    // Background: count unread in inbox
+    loadAllInboxes().then(msgs => {
+      inboxMessages = msgs;
+      updateInboxBadge();
+    }).catch(() => {});
+  } catch (e) {
+    toast('Failed to load data: ' + e.message, 'error');
+    document.getElementById('recent-sends').innerHTML = `<div class="empty">Error: ${escHtml(e.message)}</div>`;
+  }
+}
+
+init();
 </script>
 </body>
 </html>
