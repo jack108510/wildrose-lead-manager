@@ -216,7 +216,19 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 const SB = 'https://xacehhtgvubcqdoltazg.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhY2VoaHRndnViY3Fkb2x0YXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDI4NjcsImV4cCI6MjA4OTUxODg2N30.GGS5D4RLLkMdMn17GIBgjHkEn6d-HH9AXIzTBwSAzv8';
 const AM_KEY = 'am_us_eb590201635e5a67541a0e4c6eb32c5d6b144eb5cf48a5ca7ce9bece7940c11f';
-const AM_INBOX = 'jack@wildroseautomations.ca';
+const AM_INBOXES = [
+  'jack@wildroseautomations.ca',
+  'lena@wildroseautomations.ca',
+  'brad@wildroseautomations.ca',
+  'kate@wildroseautomations.ca',
+  'cole@wildroseautomations.ca',
+  'emma@wildroseautomations.ca',
+  'mike@wildroseautomations.ca',
+  'sarah@wildroseautomations.ca',
+  'ryan@wildroseautomations.ca',
+  'hudson@wildroseautomations.ca'
+];
+const AM_INBOX = AM_INBOXES[0]; // default send-from inbox
 
 let leads=[], replies=[], conversations=[], calls=JSON.parse(localStorage.getItem('wr_calls')||'[]');
 let currentLead=null, currentModalTab='profile';
@@ -247,10 +259,14 @@ async function loadAll(){
   await Promise.all([
     sbFetch('leads?order=contacted_at.desc&limit=200').then(d=>{leads=Array.isArray(d)?d:[];}),
     sbFetch('conversations?order=sent_at.desc&limit=500').then(d=>{conversations=Array.isArray(d)?d:[];}),
-    fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(AM_INBOX)}/messages?limit=100`,
-      {headers:{'Authorization':'Bearer '+AM_KEY}})
-      .then(r=>r.json()).then(d=>{
-        const all=(d.messages||[]);
+    Promise.all(AM_INBOXES.map(inbox=>
+      fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/messages?limit=100`,
+        {headers:{'Authorization':'Bearer '+AM_KEY}})
+        .then(r=>r.json())
+        .then(d=>(d.messages||[]).map(m=>({...m,_inbox:inbox})))
+        .catch(()=>[])
+    )).then(results=>{
+        const all=results.flat();
         replies=all.filter(m=>(m.labels||[]).includes('received')&&!(m.from||'').includes('mailer-daemon'));
         const unread=replies.filter(m=>(m.labels||[]).includes('unread')).length;
         const badge=document.getElementById('replyBadge');
@@ -380,6 +396,7 @@ function renderReplies(){
         </div>
         <div class="reply-meta">
           <div class="reply-time">${timeStr}</div>
+          <div style="font-size:.58rem;color:var(--muted);margin-top:2px">${(m._inbox||'').split('@')[0]}</div>
           ${unread?`<div class="unread-pip"></div>`:''}
         </div>
       </div>
@@ -396,8 +413,9 @@ function renderReplies(){
           <button class="r-btn gold" onclick="openReply('${(m.from||'').replace(/'/g,"\\'")}','${(m.subject||'').replace(/'/g,"\\'")}','${m.thread_id}','${id}')">↩ Reply</button>
         </div>
         <div id="compose_${id}" style="display:none" class="reply-compose">
+          <div style="font-size:.65rem;color:var(--muted);margin-bottom:6px">Replying from: <strong style="color:var(--gold)">${m._inbox||AM_INBOX}</strong></div>
           <textarea id="replytext_${id}" placeholder="Type your reply..."></textarea>
-          <button class="reply-compose-btn" onclick="sendReply('${(m.from||'').replace(/'/g,"\\'")}','${(m.subject||'').replace(/'/g,"\\'")}','${m.thread_id}','${id}')">Send Reply</button>
+          <button class="reply-compose-btn" onclick="sendReply('${(m.from||'').replace(/'/g,"\\'")}','${(m.subject||'').replace(/'/g,"\\'")}','${m.thread_id}','${id}','${(m._inbox||AM_INBOX).replace(/'/g,"\\'")}')">Send Reply</button>
         </div>
       </div>
     </div>`;
@@ -412,12 +430,13 @@ function openReply(to,subj,tid,id){
   const compose=document.getElementById('compose_'+id);
   if(compose) compose.style.display=compose.style.display==='none'?'block':'none';
 }
-async function sendReply(to,subject,threadId,id){
+async function sendReply(to,subject,threadId,id,fromInbox){
   const text=document.getElementById('replytext_'+id)?.value?.trim();
   if(!text) return;
   const replySubject=subject.startsWith('Re:')?subject:'Re: '+subject;
+  const inbox=fromInbox||AM_INBOX;
   try{
-    await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(AM_INBOX)}/messages/send`,{
+    await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/messages/send`,{
       method:'POST',
       headers:{'Authorization':'Bearer '+AM_KEY,'Content-Type':'application/json'},
       body:JSON.stringify({to:[to],subject:replySubject,text,thread_id:threadId})
