@@ -443,8 +443,11 @@
   </div>
   <nav>
     <button class="tab-btn active" onclick="switchTab('campaigns')" id="tab-campaigns">Campaigns</button>
+    <button class="tab-btn" onclick="switchTab('replies')" id="tab-replies">
+      Replies <span class="badge" id="replies-badge" style="display:none">0</span>
+    </button>
     <button class="tab-btn" onclick="switchTab('inbox')" id="tab-inbox">
-      Inbox <span class="badge" id="inbox-badge" style="display:none">0</span>
+      All Inbox <span class="badge" id="inbox-badge" style="display:none">0</span>
     </button>
     <button class="tab-btn" onclick="switchTab('contacts')" id="tab-contacts">Contacts</button>
     <button class="tab-btn" onclick="switchTab('compose')" id="tab-compose">+ Compose</button>
@@ -480,6 +483,11 @@
       <div id="industry-breakdown"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
     </div>
   </div>
+</div>
+
+<!-- REPLIES -->
+<div class="page" id="page-replies">
+  <div id="replies-content"><div class="loading"><div class="spinner"></div><div>Loading replies…</div></div></div>
 </div>
 
 <!-- INBOX -->
@@ -721,6 +729,7 @@ function switchTab(tab) {
   document.getElementById(`page-${tab}`).classList.add('active');
 
   if (tab === 'campaigns') renderCampaigns();
+  if (tab === 'replies') renderReplies();
   if (tab === 'inbox') renderInbox();
   if (tab === 'contacts') renderContacts();
 }
@@ -803,6 +812,128 @@ function renderCampaigns() {
       </div>
     `).join('');
   }
+}
+
+// ── REPLIES ────────────────────────────────────────────────────────────────
+async function renderReplies() {
+  document.getElementById('replies-content').innerHTML = '<div class="loading"><div class="spinner"></div><div>Loading replies…</div></div>';
+  try {
+    if (!inboxMessages.length) inboxMessages = await loadAllInboxes();
+    updateInboxBadge();
+
+    // Only inbound messages — exclude our own sends, bounces, noise
+    const replyMsgs = inboxMessages.filter(m => {
+      const from = (m.from_address || m.from || '').toLowerCase();
+      return !from.includes('wildroseautomations') && !from.includes('mailer-daemon') && !from.includes('noreply') && !from.includes('no-reply');
+    }).sort((a,b) => new Date(b.date||b.created_at||0) - new Date(a.date||a.created_at||0));
+
+    // Update replies badge
+    const badge = document.getElementById('replies-badge');
+    const unread = replyMsgs.filter(m => !m._read).length;
+    badge.textContent = unread > 99 ? '99+' : unread;
+    badge.style.display = unread > 0 ? 'inline-block' : 'none';
+
+    if (!replyMsgs.length) {
+      document.getElementById('replies-content').innerHTML = '<div class="empty" style="padding:60px 20px;text-align:center;color:var(--muted)">No replies yet</div>';
+      return;
+    }
+
+    document.getElementById('replies-content').innerHTML = `
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:12px;font-weight:600;color:var(--muted)">${replyMsgs.length} reply${replyMsgs.length!==1?'s':''}</div>
+        <div style="font-size:11px;color:var(--muted)">Click to expand & reply</div>
+      </div>
+      <div class="inbox-list">
+        ${replyMsgs.map((msg, i) => {
+          const fromName = msg.from_name || (msg.from||'').replace(/<.*>/,'').trim() || 'Unknown';
+          const fromEmail = msg.from_address || (msg.from||'').match(/[\\w.+-]+@[\\w.-]+\\.[a-z]{2,}/i)?.[0] || '';
+          const lead = leads.find(l => l.email && l.email.toLowerCase() === fromEmail.toLowerCase());
+          const company = lead ? (lead.company || lead.name || '') : '';
+          const subject = msg.subject || '(no subject)';
+          const bodyText = msg.text || msg.body_text || msg.body || msg.preview || '';
+          const preview = bodyText.slice(0, 140);
+          const ts = timeAgo(msg.date || msg.created_at);
+          const inboxShort = (msg._inbox || '').split('@')[0];
+          const isUnread = !msg._read;
+          const statusColor = lead ? ({'replied':'#f59e0b','booked':'#22c55e','dead':'#ef4444','contacted':'#3b82f6'}[lead.status]||'#64748b') : '#64748b';
+          const rid = 'r_' + i;
+
+          return `
+            <div class="email-card ${isUnread?'unread':''}" id="rc-${rid}" onclick="toggleReplyCard('${rid}', ${i})" style="${isUnread?'border-left:3px solid var(--accent);':''}">
+              <div class="email-card-header">
+                <span class="email-sender" style="font-size:13px">${escHtml(fromName)}</span>
+                ${company ? `<span style="font-size:11px;color:var(--accent);font-weight:600;background:var(--accent-dim);padding:1px 7px;border-radius:10px">${escHtml(company)}</span>` : ''}
+                <span style="font-size:10px;color:var(--muted);background:var(--border);padding:1px 6px;border-radius:4px">${escHtml(inboxShort)}</span>
+                ${lead ? `<span style="font-size:10px;color:${statusColor};font-weight:700;text-transform:uppercase">${lead.status}</span>` : ''}
+                <span class="email-time">${ts}</span>
+              </div>
+              <div class="email-subject" style="margin-top:4px">${escHtml(subject)}</div>
+              <div class="email-preview">${escHtml(preview)}${bodyText.length>140?'…':''}</div>
+            </div>
+            <div class="email-expanded" id="re-${rid}">
+              <div style="padding:16px;background:#080810;border-bottom:1px solid var(--border)">
+                <div style="font-size:11px;color:var(--muted);margin-bottom:8px">From: ${escHtml(msg.from||fromEmail)} · ${ts}</div>
+                <div style="font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text)">${escHtml(bodyText)}</div>
+              </div>
+              <div style="padding:12px 16px;display:flex;gap:8px;border-bottom:1px solid var(--border);flex-wrap:wrap">
+                ${lead ? `
+                  <button onclick="quickStatus('${lead.id}','booked','${rid}')" style="background:#14291a;border:1px solid #22c55e;color:#22c55e;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">✅ Booked</button>
+                  <button onclick="quickStatus('${lead.id}','replied','${rid}')" style="background:#1a1a0a;border:1px solid #f59e0b;color:#f59e0b;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">💬 Mark Replied</button>
+                  <button onclick="quickStatus('${lead.id}','dead','${rid}')" style="background:#1a0808;border:1px solid #ef4444;color:#ef4444;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">❌ Dead</button>
+                  <button onclick="switchTab('contacts');setTimeout(()=>openContact(${lead.id}),300)" style="background:var(--border);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">👤 Profile</button>
+                ` : `<div style="font-size:12px;color:var(--muted);padding:6px 0">No matching lead in CRM for ${escHtml(fromEmail)}</div>`}
+              </div>
+              <div style="padding:14px 16px">
+                <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Reply from <strong style="color:var(--accent)">${escHtml(msg._inbox||'jack@wildroseautomations.ca')}</strong></div>
+                <textarea id="rt-${rid}" placeholder="Type your reply…" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px;font-size:13px;resize:vertical;min-height:100px;outline:none;font-family:inherit" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+                <button onclick="sendReplyFromReplies('${rid}','${escHtml(fromEmail).replace(/'/g,"\\'")}','${escHtml(subject).replace(/'/g,"\\'")}','${escHtml(msg._inbox||'').replace(/'/g,"\\'")}','${escHtml(msg.thread_id||'').replace(/'/g,"\\'")}','${lead?lead.id:''}')" style="margin-top:8px;background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px">Send Reply ↗</button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>`;
+  } catch(e) {
+    document.getElementById('replies-content').innerHTML = `<div class="empty">Error: ${escHtml(e.message)}</div>`;
+  }
+}
+
+function toggleReplyCard(rid, idx) {
+  const exp = document.getElementById(`re-${rid}`);
+  const card = document.getElementById(`rc-${rid}`);
+  const isOpen = exp.classList.contains('open');
+  document.querySelectorAll('.email-expanded').forEach(e => e.classList.remove('open'));
+  if (!isOpen) {
+    exp.classList.add('open');
+    if (inboxMessages[idx]) inboxMessages[idx]._read = true;
+    card.classList.remove('unread');
+    card.style.borderLeft = '';
+  }
+}
+
+async function quickStatus(leadId, status, rid) {
+  await updateLeadStatus(parseInt(leadId), status);
+  toast(`Marked as ${status}`, 'success');
+  renderCampaigns();
+}
+
+async function sendReplyFromReplies(rid, toEmail, subject, fromInbox, threadId, leadId) {
+  const text = document.getElementById(`rt-${rid}`)?.value?.trim();
+  if (!text) { toast('Write something first', 'error'); return; }
+  const inbox = fromInbox || 'jack@wildroseautomations.ca';
+  const replySubj = subject.startsWith('Re:') ? subject : 'Re: ' + subject;
+  try {
+    const inboxId = inbox.split('@')[0];
+    const body = { to: [toEmail], subject: replySubj, text };
+    if (threadId) body.thread_id = threadId;
+    await fetch(`https://api.agentmail.to/v0/inboxes/${inboxId}/messages/send`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${AM_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (leadId) await updateLeadStatus(parseInt(leadId), 'replied');
+    toast('Reply sent ✓', 'success');
+    document.getElementById(`rt-${rid}`).value = '';
+  } catch(e) { toast('Send failed', 'error'); }
 }
 
 // ── INBOX ──────────────────────────────────────────────────────────────────
@@ -1188,8 +1319,10 @@ async function sendEmail() {
 // ── REFRESH ────────────────────────────────────────────────────────────────
 async function refreshAll() {
   toast('Refreshing…', 'info');
+  inboxMessages = [];
   await loadLeads();
   if (activeTab === 'campaigns') renderCampaigns();
+  else if (activeTab === 'replies') renderReplies();
   else if (activeTab === 'inbox') renderInbox();
   else if (activeTab === 'contacts') renderContacts();
 }
@@ -1200,10 +1333,19 @@ async function init() {
     await loadLeads();
     renderCampaigns();
 
-    // Background: count unread in inbox
+    // Background: load inbox + update both badges
     loadAllInboxes().then(msgs => {
       inboxMessages = msgs;
       updateInboxBadge();
+      // Update replies badge
+      const replyMsgs = msgs.filter(m => {
+        const from = (m.from_address || m.from || '').toLowerCase();
+        return !from.includes('wildroseautomations') && !from.includes('mailer-daemon') && !from.includes('noreply');
+      });
+      const unread = replyMsgs.filter(m => !m._read).length;
+      const badge = document.getElementById('replies-badge');
+      badge.textContent = unread > 99 ? '99+' : unread;
+      badge.style.display = unread > 0 ? 'inline-block' : 'none';
     }).catch(() => {});
   } catch (e) {
     toast('Failed to load data: ' + e.message, 'error');
