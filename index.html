@@ -462,11 +462,46 @@ async function showLead(id){
   document.getElementById('modal-company').textContent=currentLead.company||currentLead.email;
   document.getElementById('modal-sub').textContent=(currentLead.industry||'')+(currentLead.location?' · '+currentLead.location:'');
   document.getElementById('modal').classList.add('show');
-  // Load fresh conversations for this lead
+  document.getElementById('modal-body').innerHTML=`<div style="padding:40px;text-align:center;color:var(--muted)">Loading...</div>`;
+
+  const leadEmail=(currentLead.email||'').toLowerCase();
+
+  // Load Supabase conversations
   const convos=await sbFetch(`conversations?lead_id=eq.${id}&order=sent_at.asc`);
   currentLead._convos=Array.isArray(convos)?convos:[];
-  // Also check AgentMail replies for this lead's thread
-  currentLead._replies=replies.filter(r=>r.thread_id===currentLead.thread_id);
+
+  // Fetch full thread from ALL inboxes — match by from/to email
+  const allInboxMsgs=await Promise.all(AM_INBOXES.map(inbox=>
+    fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/messages?limit=100`,
+      {headers:{'Authorization':'Bearer '+AM_KEY}})
+    .then(r=>r.json())
+    .then(d=>(d.messages||[]).map(m=>({...m,_inbox:inbox})))
+    .catch(()=>[])
+  ));
+
+  const allMsgs=allInboxMsgs.flat();
+
+  // Inbound: from the lead's email
+  const inbound=allMsgs.filter(m=>{
+    const fromAddr=(m.from||'').toLowerCase();
+    return fromAddr.includes(leadEmail) && !(m.labels||[]).includes('sent');
+  });
+
+  // Outbound: sent from our inboxes, to the lead's email
+  const outbound=allMsgs.filter(m=>{
+    const toAddr=(m.to||[]).join(' ').toLowerCase()+(m.recipients||[]).join(' ').toLowerCase();
+    return toAddr.includes(leadEmail) && ((m.labels||[]).includes('sent') || (m.labels||[]).includes('outbound'));
+  });
+
+  // Combine and sort chronologically
+  const combined=[
+    ...inbound.map(m=>({...m,_dir:'inbound'})),
+    ...outbound.map(m=>({...m,_dir:'outbound'}))
+  ].sort((a,b)=>new Date(a.timestamp||0)-new Date(b.timestamp||0));
+
+  currentLead._thread=combined;
+  currentLead._inbound=inbound;
+
   renderModalTab('profile');
 }
 
@@ -520,38 +555,61 @@ function renderModalTab(tab){
   }
 
   else if(tab==='conversations'){
+    const thread=l._thread||[];
     const convos=l._convos||[];
-    const amReplies=l._replies||[];
-    if(!convos.length&&!amReplies.length){
-      body.innerHTML=`<div class="empty"><div class="empty-icon">💬</div>No conversations logged yet</div>`;
+
+    if(!thread.length&&!convos.length){
+      body.innerHTML=`<div class="empty"><div class="empty-icon">💬</div>No emails found for ${l.email}</div>`;
       return;
     }
+
+    const fmtTime=ts=>ts?new Date(ts).toLocaleString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+
     body.innerHTML=`
-      <div style="margin-bottom:12px;font-size:.75rem;color:var(--muted)">${convos.length} messages logged · ${amReplies.length} inbound replies</div>
-      ${amReplies.map(m=>`
-        <div class="convo-msg in">
-          <div class="convo-meta"><span class="convo-dir in">INBOUND</span>${new Date(m.timestamp).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-          <div>${m.preview||''}</div>
-        </div>`).join('')}
-      ${convos.map(c=>`
-        <div class="convo-msg ${c.direction==='outbound'?'out':'in'}">
-          <div class="convo-meta">
-            <span class="convo-dir ${c.direction==='outbound'?'out':'in'}">${c.direction.toUpperCase()}</span>
-            ${c.inbox?`<span style="font-size:.62rem;color:var(--muted)">${c.inbox}</span>`:''}
-            ${new Date(c.sent_at).toLocaleDateString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}
+      <div style="font-size:.72rem;color:var(--muted);margin-bottom:14px;display:flex;gap:12px">
+        <span>${thread.length} emails in thread</span>
+        <span style="color:var(--gold)">${(l._inbound||[]).length} replies from them</span>
+      </div>
+
+      ${thread.length?thread.map(m=>{
+        const isIn=m._dir==='inbound';
+        const name=(m.from||'').replace(/<.*>/,'').trim();
+        const preview=m.body||m.preview||m.snippet||'';
+        return`<div class="convo-msg ${isIn?'in':'out'}" style="margin-bottom:10px">
+          <div class="convo-meta" style="margin-bottom:6px">
+            <span class="convo-dir ${isIn?'in':'out'}">${isIn?'FROM THEM':'SENT'}</span>
+            <span style="font-size:.72rem;color:var(--text);font-weight:600">${name}</span>
+            ${!isIn?`<span style="font-size:.62rem;color:var(--muted)">via ${(m._inbox||'').split('@')[0]}</span>`:''}
+            <span style="font-size:.62rem;color:var(--muted);margin-left:auto">${fmtTime(m.timestamp)}</span>
           </div>
-          <div style="font-weight:600;margin-bottom:3px;font-size:.78rem">${c.subject||''}</div>
-          <div>${(c.body||'').slice(0,400)}</div>
-        </div>`).join('')}`;
+          <div style="font-size:.78rem;font-weight:700;margin-bottom:5px;color:${isIn?'var(--gold)':'var(--text)'}">${m.subject||''}</div>
+          <div style="font-size:.82rem;line-height:1.6;white-space:pre-wrap">${preview.slice(0,600)}${preview.length>600?'…':''}</div>
+        </div>`;
+      }).join(''):''}
+
+      ${convos.length?`
+        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:16px 0 8px">CRM LOG</div>
+        ${convos.map(c=>`
+          <div class="convo-msg ${c.direction==='outbound'?'out':'in'}" style="margin-bottom:8px">
+            <div class="convo-meta"><span class="convo-dir ${c.direction==='outbound'?'out':'in'}">${c.direction.toUpperCase()}</span>${fmtTime(c.sent_at)}</div>
+            <div style="font-size:.78rem;font-weight:600;margin-bottom:3px">${c.subject||''}</div>
+            <div style="font-size:.82rem">${(c.body||'').slice(0,300)}</div>
+          </div>`).join('')}`:''}
+
+      <div class="reply-compose" style="margin-top:16px">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px">Reply to ${l.email}</div>
+        <textarea id="conv-reply-text" placeholder="Type your reply..." rows="4"></textarea>
+        <button class="reply-compose-btn" onclick="sendConvReply()">Send Reply</button>
+      </div>`;
   }
 
   else if(tab==='analytics'){
     const convos=l._convos||[];
-    const inbound=convos.filter(c=>c.direction==='inbound').length+(l._replies||[]).length;
-    const outbound=convos.filter(c=>c.direction==='outbound').length;
+    const inbound=(l._inbound||[]).length+convos.filter(c=>c.direction==='inbound').length;
+    const outbound=(l._thread||[]).filter(m=>m._dir==='outbound').length+convos.filter(c=>c.direction==='outbound').length;
     const daysSince=l.contacted_at?Math.round((Date.now()-new Date(l.contacted_at))/(86400000)):0;
-    const wantsCall=(l._replies||[]).some(r=>(r.preview||'').toLowerCase().match(/call|phone|number|schedule/));
-    const callText=(l._replies||[]).find(r=>(r.preview||'').toLowerCase().match(/call|phone|number|schedule/))?.preview||'';
+    const wantsCall=(l._inbound||[]).some(r=>(r.preview||r.body||'').toLowerCase().match(/call|phone|number|schedule/));
+    const callText=(l._inbound||[]).find(r=>(r.preview||r.body||'').toLowerCase().match(/call|phone|number|schedule/))?.preview||'';
     body.innerHTML=`
       <div class="analytics-row">
         <div class="analytics-stat"><div class="analytics-val" style="color:var(--gold)">${inbound}</div><div class="analytics-lbl">Replies Received</div></div>
@@ -591,18 +649,34 @@ async function sendModalReply(){
   if(!l) return;
   const text=document.getElementById('modal-reply-text')?.value?.trim();
   if(!text) return;
-  // Find most recent thread
-  const threadId=l.thread_id;
-  const toAddr=l.email;
-  if(!threadId&&!toAddr){toast('No thread to reply to');return;}
+  await _sendReplyToLead(l,text,'modal-reply-text');
+}
+
+async function sendConvReply(){
+  const l=currentLead;
+  if(!l) return;
+  const text=document.getElementById('conv-reply-text')?.value?.trim();
+  if(!text) return;
+  await _sendReplyToLead(l,text,'conv-reply-text');
+}
+
+async function _sendReplyToLead(l,text,inputId){
+  // Find which inbox we originally sent from, or use jack@ as default
+  const sentMsg=(l._thread||[]).find(m=>m._dir==='outbound');
+  const inbox=sentMsg?sentMsg._inbox:AM_INBOX;
+  // Find thread_id from inbound reply if available
+  const threadId=(l._inbound||[])[0]?.thread_id||(l._thread||[])[0]?.thread_id||undefined;
+  const lastInboundSubj=(l._inbound||[])[0]?.subject||'';
+  const subject=lastInboundSubj?`Re: ${lastInboundSubj.replace(/^Re:\s*/i,'')}`:'Re: Following up — Wildrose Automations';
   try{
-    await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(AM_INBOX)}/messages/send`,{
+    await fetch(`https://api.agentmail.to/v0/inboxes/${encodeURIComponent(inbox)}/messages/send`,{
       method:'POST',
       headers:{'Authorization':'Bearer '+AM_KEY,'Content-Type':'application/json'},
-      body:JSON.stringify({to:[toAddr],subject:'Re: Following up — Wildrose Automations',text,thread_id:threadId||undefined})
+      body:JSON.stringify({to:[l.email],subject,text,thread_id:threadId})
     });
-    toast('Reply sent ✓');
-    document.getElementById('modal-reply-text').value='';
+    toast('Sent from '+inbox.split('@')[0]+' ✓');
+    const el=document.getElementById(inputId);
+    if(el) el.value='';
   }catch(e){toast('Send failed');}
 }
 
