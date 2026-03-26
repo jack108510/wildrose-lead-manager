@@ -443,12 +443,6 @@
   </div>
   <nav>
     <button class="tab-btn active" onclick="switchTab('campaigns')" id="tab-campaigns">Campaigns</button>
-    <button class="tab-btn" onclick="switchTab('replies')" id="tab-replies">
-      Replies <span class="badge" id="replies-badge" style="display:none">0</span>
-    </button>
-    <button class="tab-btn" onclick="switchTab('inbox')" id="tab-inbox">
-      All Inbox <span class="badge" id="inbox-badge" style="display:none">0</span>
-    </button>
     <button class="tab-btn" onclick="switchTab('contacts')" id="tab-contacts">Contacts</button>
     <button class="tab-btn" onclick="switchTab('compose')" id="tab-compose">+ Compose</button>
   </nav>
@@ -485,14 +479,14 @@
   </div>
 </div>
 
-<!-- REPLIES -->
-<div class="page" id="page-replies">
-  <div id="replies-content"><div class="loading"><div class="spinner"></div><div>Loading replies…</div></div></div>
+<!-- REPLIES (hidden, data still loads in background) -->
+<div style="display:none" id="page-replies">
+  <div id="replies-content"></div>
 </div>
 
-<!-- INBOX -->
-<div class="page" id="page-inbox">
-  <div id="inbox-content"><div class="loading"><div class="spinner"></div><div>Fetching inboxes…</div></div></div>
+<!-- INBOX (hidden) -->
+<div style="display:none" id="page-inbox">
+  <div id="inbox-content"></div>
 </div>
 
 <!-- CONTACTS -->
