@@ -871,9 +871,9 @@ async function renderReplies() {
               <div class="email-preview">${escHtml(preview)}${bodyText.length>140?'…':''}</div>
             </div>
             <div class="email-expanded" id="re-${rid}">
-              <div style="padding:16px;background:#080810;border-bottom:1px solid var(--border)">
-                <div style="font-size:11px;color:var(--muted);margin-bottom:8px">From: ${escHtml(msg.from||fromEmail)} · ${ts}</div>
-                <div style="font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text)">${escHtml(bodyText)}</div>
+              <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
+                <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">Full Conversation</div>
+                <div id="thread-${rid}"><div style="font-size:11px;color:var(--muted)">Loading…</div></div>
               </div>
               <div style="padding:12px 16px;display:flex;gap:8px;border-bottom:1px solid var(--border);flex-wrap:wrap">
                 ${lead ? `
@@ -897,7 +897,7 @@ async function renderReplies() {
   }
 }
 
-function toggleReplyCard(rid, idx) {
+async function toggleReplyCard(rid, idx) {
   const exp = document.getElementById(`re-${rid}`);
   const card = document.getElementById(`rc-${rid}`);
   const isOpen = exp.classList.contains('open');
@@ -907,6 +907,58 @@ function toggleReplyCard(rid, idx) {
     if (inboxMessages[idx]) inboxMessages[idx]._read = true;
     card.classList.remove('unread');
     card.style.borderLeft = '';
+
+    // Load full thread history
+    const msg = inboxMessages[idx];
+    const fromEmail = (msg.from_address || (msg.from||'').match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0] || '').toLowerCase();
+    const threadDiv = document.getElementById(`thread-${rid}`);
+    if (threadDiv && fromEmail) {
+      threadDiv.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:8px 0">Loading thread…</div>';
+      try {
+        // Fetch all messages from all inboxes, match by from/to email
+        const allResults = await Promise.all(AM_INBOXES.map(inbox =>
+          fetch(`https://api.agentmail.to/v0/inboxes/${inbox.split('@')[0]}/messages?limit=100`, {
+            headers: { 'Authorization': `Bearer ${AM_KEY}` }
+          }).then(r => r.json()).then(d => (d.messages||[]).map(m => ({...m, _inbox: inbox}))).catch(() => [])
+        ));
+        const all = allResults.flat();
+
+        // Match: sent TO this email OR received FROM this email
+        const thread = all.filter(m => {
+          const mFrom = (m.from_address || m.from || '').toLowerCase();
+          const mTo = (m.to || []).join(' ').toLowerCase() + (m.recipients||[]).join(' ').toLowerCase();
+          return mFrom.includes(fromEmail) || mTo.includes(fromEmail);
+        }).sort((a,b) => new Date(a.timestamp||a.date||0) - new Date(b.timestamp||b.date||0));
+
+        if (!thread.length) {
+          threadDiv.innerHTML = '<div style="font-size:11px;color:var(--muted)">No thread history found</div>';
+          return;
+        }
+
+        const fmtTime = ts => ts ? new Date(ts).toLocaleString('en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+
+        threadDiv.innerHTML = thread.map(m => {
+          const mFrom = (m.from_address || m.from || '').toLowerCase();
+          const isInbound = mFrom.includes(fromEmail);
+          const sender = (m.from||'').replace(/<.*>/,'').trim() || mFrom;
+          const body = m.body || m.text || m.body_text || m.preview || '';
+          const inboxTag = isInbound ? '' : `<span style="font-size:10px;color:var(--muted)">via ${(m._inbox||'').split('@')[0]}</span>`;
+          return `
+            <div style="margin-bottom:12px;padding:12px;border-radius:8px;background:${isInbound?'#0d1a0d':'#0a0a14'};border:1px solid ${isInbound?'rgba(34,197,94,.2)':'rgba(59,130,246,.15)'}">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <span style="font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;text-transform:uppercase;background:${isInbound?'rgba(34,197,94,.15)':'rgba(59,130,246,.15)'};color:${isInbound?'#22c55e':'#3b82f6'}">${isInbound?'THEM':'YOU'}</span>
+                <span style="font-size:11px;color:var(--text);font-weight:600">${escHtml(sender)}</span>
+                ${inboxTag}
+                <span style="font-size:11px;color:var(--muted);margin-left:auto">${fmtTime(m.timestamp||m.date)}</span>
+              </div>
+              ${m.subject ? `<div style="font-size:12px;font-weight:600;margin-bottom:5px;color:var(--muted)">${escHtml(m.subject)}</div>` : ''}
+              <div style="font-size:13px;line-height:1.6;white-space:pre-wrap;color:var(--text)">${escHtml(body.slice(0,800))}${body.length>800?'…':''}</div>
+            </div>`;
+        }).join('');
+      } catch(e) {
+        threadDiv.innerHTML = `<div style="font-size:11px;color:var(--muted)">Error loading thread</div>`;
+      }
+    }
   }
 }
 
