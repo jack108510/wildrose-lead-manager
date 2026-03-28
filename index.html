@@ -397,11 +397,9 @@
   </div>
   <nav>
     <button class="tab-btn active" onclick="switchTab('analytics')" id="tab-analytics">Analytics</button>
-    <button class="tab-btn" onclick="switchTab('inbox')" id="tab-inbox">
-      Inbox <span class="badge" id="inbox-badge" style="display:none">0</span>
-    </button>
+
     <button class="tab-btn" onclick="switchTab('contacts')" id="tab-contacts">Contacts</button>
-    <button class="tab-btn" onclick="switchTab('campaigns')" id="tab-campaigns">Campaigns</button>
+
     <button class="tab-btn" onclick="switchTab('compose')" id="tab-compose">+ Compose</button>
   </nav>
   <div class="header-right">
@@ -412,132 +410,8 @@
 <!-- ANALYTICS -->
 <div class="page active" id="page-analytics">
   <div class="stats-grid" id="analytics-stats">
-    <div class="stat-card"><div class="stat-label">Total Leads</div><div class="stat-value" id="stat-total">—</div><div class="stat-sub">in database</div></div>
-    <div class="stat-card"><div class="stat-label">Emails Sent</div><div class="stat-value" id="stat-sent">—</div><div class="stat-sub">contacted</div></div>
-    <div class="stat-card"><div class="stat-label">Reply Rate</div><div class="stat-value" id="stat-rate">—</div><div class="stat-sub">replied + booked</div></div>
-    <div class="stat-card"><div class="stat-label">Booked</div><div class="stat-value" id="stat-booked">—</div><div class="stat-sub">meetings set</div></div>
-    <div class="stat-card"><div class="stat-label">Bounced</div><div class="stat-value" id="stat-bounced">—</div><div class="stat-sub">bad addresses</div></div>
-  </div>
-
-  <div class="two-col">
-    <div>
-      <div class="section" id="analytics-funnel-section">
-        <div class="section-header">Conversion Funnel</div>
-        <div id="analytics-funnel" class="funnel-wrap"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
-      </div>
-      <div class="section">
-        <div class="section-header">Leads Contacted — Last 14 Days</div>
-        <div id="analytics-timeline" class="timeline-wrap"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
-      </div>
-      <div class="section">
-        <div class="section-header">Active Conversations <span id="active-convo-count"></span></div>
-        <div id="active-convos"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
-      </div>
-    </div>
-    <div class="section" style="height:fit-content">
-      <div class="section-header">Top Industries</div>
-      <div id="analytics-industries"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
-    </div>
-  </div>
-</div>
-
-<!-- INBOX -->
-<div class="page" id="page-inbox">
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
-    <div style="font-size:13px;font-weight:600;color:var(--text)">Combined Inbox <span id="inbox-count" style="color:var(--muted);font-weight:400"></span></div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button class="filter-btn active" id="inbox-filter-all" onclick="setInboxFilter('all',this)">All</button>
-      <button class="filter-btn" id="inbox-filter-sent" onclick="setInboxFilter('sent',this)">Sent</button>
-      <button class="filter-btn" id="inbox-filter-received" onclick="setInboxFilter('received',this)">Received</button>
-      <button class="filter-btn" id="inbox-filter-replied" onclick="setInboxFilter('replied',this)">Replied</button>
-    </div>
-    <div style="margin-left:auto">
-      <select id="inbox-filter-account" onchange="renderInbox()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:12px">
-        <option value="">All Inboxes</option>
-        <option value="jack">jack</option>
-        <option value="lena">lena</option>
-        <option value="brad">brad</option>
-        <option value="kate">kate</option>
-        <option value="cole">cole</option>
-        <option value="emma">emma</option>
-        <option value="mike">mike</option>
-        <option value="sarah">sarah</option>
-        <option value="ryan">ryan</option>
-        <option value="hudson">hudson</option>
-      </select>
-    </div>
-  </div>
-  <div class="section inbox-wrap" style="max-width:100%">
-    <div id="inbox-content"><div class="loading"><div class="spinner"></div><div>Loading all inboxes…</div></div></div>
-  </div>
-  <!-- Thread expand panel -->
-  <div id="inbox-thread-panel" style="display:none;margin-top:16px">
-    <div class="section" style="max-width:100%">
-      <div class="section-header" style="display:flex;justify-content:space-between;align-items:center">
-        <span id="inbox-thread-title">Thread</span>
-        <button onclick="closeInboxThread()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1">×</button>
-      </div>
-      <div id="inbox-thread-messages" style="padding:16px"></div>
-      <div style="padding:16px;border-top:1px solid var(--border)">
-        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-          <span style="font-size:12px;color:var(--muted)">Reply from:</span>
-          <select id="inbox-reply-from" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:6px;font-size:12px"></select>
-        </div>
-        <textarea id="inbox-reply-body" placeholder="Write your reply…" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;font-size:13px;min-height:100px;resize:vertical;font-family:inherit"></textarea>
-        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-accent" onclick="sendInboxReply()">Send Reply</button>
-          <button id="inbox-reply-lead-btn" class="btn btn-ghost" style="display:none" onclick="openInboxLeadContact()">👤 View in Contacts</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- CONTACTS -->
-<div class="page" id="page-contacts">
-  <div class="section">
-    <div class="filter-bar" id="contacts-filter-bar">
-      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-      <button class="filter-btn" onclick="setFilter('replied', this)">Replied</button>
-      <button class="filter-btn" onclick="setFilter('contacted', this)">Contacted</button>
-      <button class="filter-btn" onclick="setFilter('booked', this)">Booked</button>
-      <button class="filter-btn" onclick="setFilter('bounced', this)">Bounced</button>
-      <button class="filter-btn" onclick="setFilter('dead', this)">Dead</button>
-    </div>
-    <div class="search-bar">
-      <input class="search-input" type="text" placeholder="Search by name, email, company, industry…" oninput="filterContacts(this.value)" id="contact-search">
-    </div>
-    <div class="contacts-table-wrap">
-      <div id="contacts-table-content"><div class="loading"><div class="spinner"></div><div>Loading…</div></div></div>
-    </div>
-  </div>
-</div>
-
-<!-- CONTACT PANEL (fixed overlay) -->
-<div class="contact-panel" id="contact-panel">
-  <div class="panel-topbar">
-    <div class="panel-title">Conversation</div>
-    <button class="panel-close" onclick="closePanel()" title="Close">×</button>
-  </div>
-  <div class="panel-lead-info" id="panel-lead-info"></div>
-  <div class="panel-body">
-    <div id="panel-thread" class="chat-wrap">
-      <div class="loading"><div class="spinner"></div><div>Loading thread…</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- CAMPAIGNS -->
-<div class="page" id="page-campaigns">
-  <div class="replies-banner" id="replies-banner">
-    <div class="replies-banner-title">📬 Replies — Needs Attention</div>
-    <div id="replies-list"></div>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-card"><div class="stat-label">Total Sent</div><div class="stat-value" id="camp-sent">—</div><div class="stat-sub">All time</div></div>
-    <div class="stat-card"><div class="stat-label">Replied</div><div class="stat-value" id="camp-replied">—</div><div class="stat-sub">Positive responses</div></div>
-    <div class="stat-card"><div class="stat-label">Reply Rate</div><div class="stat-value" id="camp-rate">—</div><div class="stat-sub">contacted → replied+booked</div></div>
+    <div class="stat-value" id="stat-rate">—</div><div class="stat-sub">replied + booked</div></div>
+    <div class="stat-value" id="camp-rate">—</div><div class="stat-sub">contacted → replied+booked</div></div>
     <div class="stat-card"><div class="stat-label">Booked</div><div class="stat-value" id="camp-booked">—</div><div class="stat-sub">Meetings set</div></div>
   </div>
 
@@ -1406,3 +1280,4 @@ init();
 </script>
 </body>
 </html>
+
