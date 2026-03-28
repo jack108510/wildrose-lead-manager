@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Twisted Landscaping & Property Detailing Inc. | St. Albert, AB</title>
+  <meta name="description" content="St. Albert's trusted local landscaping professionals. Lawn maintenance, snow removal, planting, stump grinding & more. Licensed & insured. Free estimates." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark:   #1a3a2a;
+      --green-mid:    #2d5c40;
+      --green-light:  #3d7a54;
+      --green-accent: #4a9e6b;
+      --cream:        #f5f0e8;
+      --cream-dark:   #ede7d9;
+      --white:        #ffffff;
+      --text-dark:    #1c2b22;
+      --text-mid:     #3d5248;
+      --text-light:   #6b8c78;
+      --shadow-sm:    0 2px 8px rgba(26,58,42,0.10);
+      --shadow-md:    0 6px 24px rgba(26,58,42,0.14);
+      --shadow-lg:    0 16px 48px rgba(26,58,42,0.18);
+      --radius:       12px;
+      --radius-lg:    20px;
+      --transition:   0.25s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text-dark);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── UTILITY ─── */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 8px;
+      font-size: 1rem; font-weight: 600; text-decoration: none;
+      cursor: pointer; border: 2px solid transparent;
+      transition: all var(--transition); white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--green-accent); color: var(--white);
+      border-color: var(--green-accent);
+    }
+    .btn-primary:hover { background: #3d8a5c; border-color: #3d8a5c; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      border-color: rgba(255,255,255,0.7);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: var(--white); transform: translateY(-1px); }
+    .btn-dark {
+      background: var(--green-dark); color: var(--white);
+      border-color: var(--green-dark);
+    }
+    .btn-dark:hover { background: var(--green-mid); border-color: var(--green-mid); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--green-accent);
+      margin-bottom: 12px;
+    }
+    h2.section-title {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 800; color: var(--text-dark); line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-subtitle {
+      font-size: 1.1rem; color: var(--text-mid); max-width: 560px;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(26,58,42,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      transition: box-shadow var(--transition);
+    }
+    nav.scrolled { box-shadow: var(--shadow-lg); }
+
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+    }
+    .nav-logo-text {
+      display: flex; flex-direction: column; line-height: 1.15;
+    }
+    .nav-logo-text strong {
+      font-size: 1.05rem; font-weight: 800; color: var(--white); letter-spacing: 0.01em;
+    }
+    .nav-logo-text span {
+      font-size: 0.65rem; font-weight: 500; color: rgba(255,255,255,0.55);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 32px; list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.8); text-decoration: none;
+      font-size: 0.95rem; font-weight: 500;
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta .btn { padding: 10px 22px; font-size: 0.9rem; }
+
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 6px;
+    }
+    .nav-hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white); border-radius: 2px;
+      transition: all var(--transition);
+    }
+
+    .nav-mobile {
+      display: none; flex-direction: column;
+      padding: 16px 24px 24px; gap: 4px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      color: rgba(255,255,255,0.85); text-decoration: none;
+      font-size: 1rem; font-weight: 500;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-mobile a:last-child { border-bottom: none; }
+    .nav-mobile .btn { margin-top: 12px; justify-content: center; }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(160deg, rgba(26,58,42,0.96) 0%, rgba(45,92,64,0.92) 100%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: stretch;
+      padding: 120px 0 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg-leaves {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      opacity: 0.04; pointer-events: none; overflow: hidden;
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: flex-start;
+      max-width: 680px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(74,158,107,0.2); border: 1px solid rgba(74,158,107,0.35);
+      color: #7dd4a0; padding: 6px 14px; border-radius: 100px;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 28px;
+    }
+    .hero-badge svg { width: 14px; height: 14px; }
+    h1.hero-title {
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
+      font-weight: 900; color: var(--white); line-height: 1.1;
+      margin-bottom: 20px; letter-spacing: -0.02em;
+    }
+    h1.hero-title em {
+      font-style: normal; color: #7dd4a0;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(255,255,255,0.75); margin-bottom: 36px;
+      display: flex; flex-wrap: wrap; gap: 6px 0; align-items: center;
+    }
+    .hero-sub .dot { margin: 0 10px; color: var(--green-accent); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 56px; }
+
+    .hero-stats {
+      display: flex; flex-wrap: wrap; gap: 32px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 36px; width: 100%;
+    }
+    .hero-stat { display: flex; flex-direction: column; }
+    .hero-stat-num {
+      font-size: 1.9rem; font-weight: 800; color: var(--white); line-height: 1;
+      margin-bottom: 4px;
+    }
+    .hero-stat-label { font-size: 0.82rem; color: rgba(255,255,255,0.55); font-weight: 500; }
+
+    .hero-scroll {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.4); font-size: 0.7rem; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      animation: bounce 2.4s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── SERVICES ─── */
+    #services { padding: 96px 0; background: var(--white); }
+    .services-header { text-align: center; margin-bottom: 56px; }
+    .services-header .section-subtitle { margin: 0 auto; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .service-card {
+      background: var(--cream); border-radius: var(--radius-lg);
+      padding: 36px 32px; display: flex; flex-direction: column;
+      transition: all var(--transition);
+      border: 1px solid var(--cream-dark);
+      position: relative; overflow: hidden;
+    }
+    .service-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--green-mid), var(--green-accent));
+      opacity: 0; transition: opacity var(--transition);
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(74,158,107,0.2);
+    }
+    .service-card:hover::after { opacity: 1; }
+
+    .service-icon {
+      width: 60px; height: 60px;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+      border-radius: 16px; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px; flex-shrink: 0;
+    }
+    .service-icon svg { width: 28px; height: 28px; color: var(--white); }
+    .service-card h3 {
+      font-size: 1.2rem; font-weight: 700; color: var(--text-dark);
+      margin-bottom: 12px; line-height: 1.3;
+    }
+    .service-card p { font-size: 0.95rem; color: var(--text-mid); line-height: 1.7; flex: 1; }
+    .service-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 20px; font-size: 0.78rem; font-weight: 600;
+      color: var(--green-accent); letter-spacing: 0.04em;
+    }
+    .service-tag svg { width: 14px; height: 14px; }
+
+    /* ─── WHY CHOOSE US ─── */
+    #why {
+      padding: 96px 0;
+      background: linear-gradient(160deg, var(--green-dark) 0%, var(--green-mid) 100%);
+      position: relative; overflow: hidden;
+    }
+    #why::before {
+      content: '';
+      position: absolute; top: -50%; right: -10%; width: 60%; padding-top: 60%;
+      background: radial-gradient(circle, rgba(74,158,107,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .why-header { text-align: center; margin-bottom: 60px; }
+    .why-header .section-label { color: #7dd4a0; }
+    .why-header h2.section-title { color: var(--white); }
+    .why-header .section-subtitle { color: rgba(255,255,255,0.65); margin: 0 auto; }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px; position: relative; z-index: 1;
+    }
+    .why-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-lg); padding: 40px 36px;
+      text-align: center; transition: all var(--transition);
+    }
+    .why-card:hover {
+      background: rgba(255,255,255,0.11);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    }
+    .why-icon {
+      width: 72px; height: 72px; margin: 0 auto 24px;
+      background: rgba(74,158,107,0.22);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+    .why-icon svg { width: 32px; height: 32px; color: #7dd4a0; }
+    .why-card h3 { font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+    .why-card p { font-size: 0.95rem; color: rgba(255,255,255,0.68); line-height: 1.7; }
+
+    .why-award {
+      margin-top: 56px; text-align: center;
+      display: flex; justify-content: center;
+    }
+    .award-badge {
+      display: inline-flex; align-items: center; gap: 14px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 100px; padding: 14px 28px;
+    }
+    .award-badge svg { width: 28px; height: 28px; color: #f5c842; }
+    .award-badge span {
+      font-size: 0.9rem; color: rgba(255,255,255,0.8); font-weight: 500;
+    }
+    .award-badge strong { color: var(--white); font-weight: 700; }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials { padding: 96px 0; background: var(--cream); }
+    .testimonials-header { text-align: center; margin-bottom: 56px; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
+
+    .testimonial-card {
+      background: var(--white); border-radius: var(--radius-lg);
+      padding: 40px 36px; box-shadow: var(--shadow-md);
+      border: 1px solid var(--cream-dark); position: relative;
+      transition: all var(--transition);
+    }
+    .testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .testimonial-quote {
+      position: absolute; top: 24px; right: 28px;
+      font-size: 5rem; line-height: 1; color: var(--cream-dark);
+      font-family: Georgia, serif; font-weight: 900; pointer-events: none;
+    }
+    .testimonial-stars {
+      display: flex; gap: 4px; margin-bottom: 20px;
+    }
+    .testimonial-stars svg { width: 18px; height: 18px; color: #f5c842; }
+    .testimonial-card blockquote {
+      font-size: 1.05rem; color: var(--text-mid); line-height: 1.75;
+      font-style: italic; margin-bottom: 28px;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 14px; }
+    .testimonial-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-accent));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; color: var(--white); font-size: 1rem; flex-shrink: 0;
+    }
+    .testimonial-info strong { display: block; font-size: 0.95rem; color: var(--text-dark); }
+    .testimonial-info span { font-size: 0.82rem; color: var(--text-light); }
+
+    /* ─── CONTACT ─── */
+    #contact { padding: 96px 0; background: var(--white); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1.5fr; gap: 64px; align-items: start;
+    }
+    @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+    .contact-info {}
+    .contact-info h2.section-title { margin-bottom: 20px; }
+    .contact-info .section-subtitle { margin-bottom: 36px; }
+
+    .contact-details { display: flex; flex-direction: column; gap: 20px; }
+    .contact-detail {
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .contact-detail-icon {
+      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+      background: var(--cream); border: 1px solid var(--cream-dark);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .contact-detail-icon svg { width: 20px; height: 20px; color: var(--green-mid); }
+    .contact-detail-text strong { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+    .contact-detail-text span { font-size: 1rem; color: var(--text-dark); font-weight: 500; }
+
+    /* Form */
+    .contact-form {
+      background: var(--cream); border-radius: var(--radius-lg);
+      padding: 44px 40px; border: 1px solid var(--cream-dark);
+    }
+    .contact-form h3 {
+      font-size: 1.35rem; font-weight: 700; color: var(--text-dark); margin-bottom: 28px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-mid); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 12px 16px; border-radius: 8px;
+      border: 1.5px solid var(--cream-dark);
+      background: var(--white); color: var(--text-dark);
+      font-size: 0.95rem; font-family: inherit;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--green-accent);
+      box-shadow: 0 0 0 3px rgba(74,158,107,0.12);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-submit { width: 100%; justify-content: center; padding: 16px; font-size: 1rem; margin-top: 8px; }
+    .form-note { font-size: 0.8rem; color: var(--text-light); text-align: center; margin-top: 12px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--green-dark); padding: 56px 0 32px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px;
+      padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    @media (max-width: 700px) { .footer-top { grid-template-columns: 1fr; gap: 32px; } }
+
+    .footer-brand {}
+    .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .footer-logo strong { font-size: 1.05rem; font-weight: 800; color: var(--white); }
+    .footer-brand p { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.7; max-width: 260px; }
+
+    .footer-col h4 { font-size: 0.8rem; font-weight: 700; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a {
+      color: rgba(255,255,255,0.7); text-decoration: none;
+      font-size: 0.9rem; transition: color var(--transition);
+    }
+    .footer-col ul li a:hover { color: var(--white); }
+
+    .footer-bottom {
+      padding-top: 28px;
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .footer-bottom p { font-size: 0.82rem; color: rgba(255,255,255,0.4); }
+    .footer-bottom a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    .footer-bottom a:hover { color: rgba(255,255,255,0.7); }
+
+    /* ─── SCROLL ANIMATIONS ─── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ─── SUCCESS TOAST ─── */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      background: var(--green-dark); color: var(--white);
+      padding: 14px 22px; border-radius: 10px; box-shadow: var(--shadow-lg);
+      font-size: 0.95rem; font-weight: 500;
+      display: flex; align-items: center; gap: 10px;
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast svg { width: 20px; height: 20px; color: #7dd4a0; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─── -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <!-- Leaf SVG logo mark -->
+        <svg class="nav-logo-icon" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="19" cy="19" r="19" fill="rgba(74,158,107,0.18)"/>
+          <path d="M19 8C13 8 9 13.5 9 19C9 24.5 13.5 29 19 29C19 29 19 23 22 18C25 13 30 12 30 12C30 12 25 8 19 8Z" fill="#4a9e6b"/>
+          <path d="M19 29C19 29 19 22 16 17.5" stroke="#7dd4a0" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="nav-logo-text">
+          <strong>Twisted Landscaping</strong>
+          <span>Property Detailing Inc.</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#why">About</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="#contact" class="btn btn-primary">Get Free Estimate</a>
+      </div>
+
+      <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="nav-mobile" id="mobile-menu">
+    <a href="#services" class="mobile-link">Services</a>
+    <a href="#why" class="mobile-link">About</a>
+    <a href="#testimonials" class="mobile-link">Reviews</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+    <a href="#contact" class="btn btn-primary">Get Free Estimate</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-bg-leaves" aria-hidden="true">
+    <svg width="100%" height="100%" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1200 100C1100 80 900 200 800 350C700 500 750 650 900 700C1050 750 1200 600 1250 450C1300 300 1300 120 1200 100Z" fill="white"/>
+      <path d="M200 200C150 180 50 280 30 400C10 520 80 620 200 640C320 660 420 560 430 450C440 340 250 220 200 200Z" fill="white"/>
+      <path d="M1350 500C1320 490 1270 540 1260 600C1250 660 1290 710 1340 700C1390 690 1420 640 1410 590C1400 540 1380 510 1350 500Z" fill="white"/>
+    </svg>
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill="#7dd4a0"/>
+        </svg>
+        St. Albert, Alberta · Est. Family Business
+      </div>
+      <h1 class="hero-title">
+        St. Albert's Trusted<br/><em>Landscaping</em> Professionals
+      </h1>
+      <p class="hero-sub">
+        Licensed &amp; Insured
+        <span class="dot">·</span>
+        Free Estimates
+        <span class="dot">·</span>
+        Year-Round Service
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l1.28-1.29a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          Get Free Estimate
+        </a>
+        <a href="#services" class="btn btn-outline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 16 12 12 16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          View Services
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num">15+</span>
+          <span class="hero-stat-label">Years Serving St. Albert</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">100%</span>
+          <span class="hero-stat-label">Licensed &amp; Insured</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">Free</span>
+          <span class="hero-stat-label">On-Site Estimates</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">4</span>
+          <span class="hero-stat-label">Seasons of Service</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="#services" class="hero-scroll" aria-label="Scroll down">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </a>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section id="services">
+  <div class="container">
+    <div class="services-header reveal">
+      <span class="section-label">What We Do</span>
+      <h2 class="section-title">Full-Service Landscaping<br/>Year-Round</h2>
+      <p class="section-subtitle">From spring cleanups to winter snow clearing — we handle every season so you don't have to.</p>
+    </div>
+    <div class="services-grid">
+
+      <!-- Landscape Maintenance -->
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22V12M12 12C12 12 8 8.5 4 8C4 8 5 14 12 12ZM12 12C12 12 16 8.5 20 8C20 8 19 14 12 12Z"/>
+            <path d="M5 22h14"/>
+            <circle cx="12" cy="6" r="3"/>
+          </svg>
+        </div>
+        <h3>Landscape Maintenance</h3>
+        <p>Keep your property pristine year-round with our comprehensive maintenance plans. We offer spring and fall cleanups, weekly lawn mowing, edging, fertilization, and full property detailing.</p>
+        <span class="service-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Spring · Summer · Fall
+        </span>
+      </div>
+
+      <!-- Planting & Removal -->
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22V12"/>
+            <path d="M12 12C9 9 5 9 3 12C3 12 4.5 18 12 18C19.5 18 21 12 21 12C19 9 15 9 12 12Z"/>
+            <path d="M12 12V7"/>
+            <path d="M9 4.5C9 3.12 10.34 2 12 2C13.66 2 15 3.12 15 4.5"/>
+          </svg>
+        </div>
+        <h3>Planting &amp; Removal</h3>
+        <p>Transform your yard with expert planting of trees, shrubs, and plants. We also handle removal of unwanted vegetation, giving your landscape a fresh start or a dramatic new look.</p>
+        <span class="service-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Trees · Shrubs · Plants
+        </span>
+      </div>
+
+      <!-- Snow Removal -->
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="2" x2="12" y2="22"/>
+            <path d="M17 5l-5 5-5-5"/>
+            <path d="M17 19l-5-5-5 5"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M5 7l5 5-5 5"/>
+            <path d="M19 7l-5 5 5 5"/>
+          </svg>
+        </div>
+        <h3>Snow Removal &amp; De-icing</h3>
+        <p>Stay safe and accessible all winter long. Our team handles snow removal, sanding, salting, and de-icing for residential and commercial properties throughout the St. Albert area.</p>
+        <span class="service-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Snow · Salt · Sand
+        </span>
+      </div>
+
+      <!-- Stump Grinding -->
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+            <path d="M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+            <path d="M8 16H5a2 2 0 000 4h14a2 2 0 000-4h-3"/>
+          </svg>
+        </div>
+        <h3>Stump Grinding</h3>
+        <p>Remove unsightly stumps quickly and cleanly with our professional grinding service. We grind stumps down below grade, leaving your yard level, safe, and ready for new landscaping.</p>
+        <span class="service-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Fast · Clean · Complete
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Commercial callout -->
+    <div style="margin-top: 32px; background: linear-gradient(135deg, var(--green-dark), var(--green-mid)); border-radius: var(--radius-lg); padding: 36px 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;" class="reveal">
+      <div>
+        <div class="section-label" style="color: #7dd4a0;">Commercial Service Available</div>
+        <h3 style="font-size: 1.4rem; font-weight: 700; color: white; margin: 0;">We serve businesses too.</h3>
+        <p style="color: rgba(255,255,255,0.7); margin: 8px 0 0; font-size: 0.95rem;">Strata, commercial properties, and business parks — reliable, professional, and on schedule.</p>
+      </div>
+      <a href="#contact" class="btn btn-primary">Request Commercial Quote</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHY CHOOSE US ─── -->
+<section id="why">
+  <div class="container">
+    <div class="why-header reveal">
+      <span class="section-label">Why Twisted</span>
+      <h2 class="section-title">The Twisted Difference</h2>
+      <p class="section-subtitle">We're not a big box franchise — we're your neighbours, and we treat your property like our own.</p>
+    </div>
+    <div class="why-grid">
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <h3>Local &amp; Family-Owned</h3>
+        <p>We're proud to be a St. Albert family business. That means you get personalized service, real accountability, and people who genuinely care about your property and community.</p>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h3>Licensed &amp; Insured</h3>
+        <p>Work with confidence. Twisted Landscaping is fully licensed and insured, giving you complete peace of mind on every job — residential or commercial, big or small.</p>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/>
+            <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+          </svg>
+        </div>
+        <h3>Free Custom Estimates</h3>
+        <p>No pressure, no obligation. We come to you, assess your property, and provide a detailed personalized plan and quote — completely free. Call us and find out what's possible.</p>
+      </div>
+
+    </div>
+
+    <div class="why-award reveal">
+      <div class="award-badge">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 2L17 10H26L19 15L21.5 24L14 19L6.5 24L9 15L2 10H11L14 2Z" fill="#f5c842" stroke="#f5c842" stroke-width="1"/>
+        </svg>
+        <span><strong>2020 Nominee</strong> — Outstanding Business (1–9 Employees) · St. Albert</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section id="testimonials">
+  <div class="container">
+    <div class="testimonials-header reveal">
+      <span class="section-label">Happy Customers</span>
+      <h2 class="section-title">What St. Albert Says</h2>
+      <p class="section-subtitle" style="margin: 0 auto;">Don't take our word for it — hear from real customers in the community.</p>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card reveal">
+        <span class="testimonial-quote">"</span>
+        <div class="testimonial-stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <blockquote>Excellent quality service. Excellent customer service. Give them a call if you want your spring clean up done right. Very impressed — our yard has never looked better!</blockquote>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">S</div>
+          <div class="testimonial-info">
+            <strong>Sarah M.</strong>
+            <span>St. Albert Homeowner</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal">
+        <span class="testimonial-quote">"</span>
+        <div class="testimonial-stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <blockquote>Great service! Awesome people! We've been using Twisted Landscaping for both summer and winter maintenance and they never disappoint. Highly recommend to anyone in the area.</blockquote>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">D</div>
+          <div class="testimonial-info">
+            <strong>Dave R.</strong>
+            <span>St. Albert Resident</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <span class="section-label">Get In Touch</span>
+        <h2 class="section-title">Let's Transform Your Property</h2>
+        <p class="section-subtitle">Ready to get started? Reach out for your free no-obligation estimate. We serve St. Albert and surrounding areas.</p>
+
+        <div class="contact-details" style="margin-top: 36px;">
+          <div class="contact-detail">
+            <div class="contact-detail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l1.28-1.29a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div class="contact-detail-text">
+              <strong>Phone</strong>
+              <span>Call for your free estimate</span>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="contact-detail-text">
+              <strong>Location</strong>
+              <span>St. Albert, Alberta</span>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="contact-detail-text">
+              <strong>Service Hours</strong>
+              <span>Year-round · All seasons</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="contact-form">
+          <h3>Request a Free Estimate</h3>
+          <form id="estimate-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Jane Smith" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="jane@example.com" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="(780) 555-0123" />
+            </div>
+            <div class="form-group">
+              <label for="service">Service Needed</label>
+              <select id="service" name="service">
+                <option value="">— Select a service —</option>
+                <option value="maintenance">Landscape Maintenance</option>
+                <option value="planting">Planting &amp; Removal</option>
+                <option value="snow">Snow Removal &amp; De-icing</option>
+                <option value="stump">Stump Grinding</option>
+                <option value="commercial">Commercial Service</option>
+                <option value="other">Other / Multiple Services</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Tell us about your project</label>
+              <textarea id="message" name="message" placeholder="Describe your property, what you're looking for, and any specific requirements..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-dark form-submit">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Send My Request
+            </button>
+            <p class="form-note">🔒 Your info stays private. We'll follow up within 1 business day.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg width="32" height="32" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="19" cy="19" r="19" fill="rgba(74,158,107,0.18)"/>
+            <path d="M19 8C13 8 9 13.5 9 19C9 24.5 13.5 29 19 29C19 29 19 23 22 18C25 13 30 12 30 12C30 12 25 8 19 8Z" fill="#4a9e6b"/>
+            <path d="M19 29C19 29 19 22 16 17.5" stroke="#7dd4a0" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <strong>Twisted Landscaping</strong>
+        </div>
+        <p>Property Detailing Inc. — St. Albert's local, family-owned landscaping professionals. Licensed, insured, and dedicated to making your property beautiful year-round.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Landscape Maintenance</a></li>
+          <li><a href="#services">Planting &amp; Removal</a></li>
+          <li><a href="#services">Snow Removal</a></li>
+          <li><a href="#services">Stump Grinding</a></li>
+          <li><a href="#services">Commercial Service</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#why">About Us</a></li>
+          <li><a href="#testimonials">Reviews</a></li>
+          <li><a href="#contact">Free Estimate</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Twisted Landscaping &amp; Property Detailing Inc. · St. Albert, AB · All Rights Reserved.</p>
+      <p><a href="#hero">Back to top ↑</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── TOAST ─── -->
+<div id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  Request sent! We'll be in touch soon.
+</div>
+
+<!-- ─── JS ─── -->
+<script>
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.mobile-link, .nav-mobile .btn').forEach(el => {
+    el.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  // Intersection observer for reveal animations
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // Stagger siblings in a grid
+        const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal'));
+        const idx = siblings.indexOf(entry.target);
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, idx * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Form submission (demo)
+  document.getElementById('estimate-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    this.reset();
+    setTimeout(() => toast.classList.remove('show'), 4000);
+  });
+
+  // Smooth scroll polyfill for older Safari
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
