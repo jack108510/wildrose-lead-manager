@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VA Electric — Edmonton's Trusted Master Electrician</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #111827;
+      --bg2:      #1f2937;
+      --bg3:      #374151;
+      --accent:   #f59e0b;
+      --accent2:  #d97706;
+      --white:    #ffffff;
+      --muted:    #9ca3af;
+      --light:    #f3f4f6;
+      --radius:   8px;
+      --shadow:   0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(17,24,39,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--bg3);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+    .nav-logo-bolt {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-logo-bolt svg { width: 20px; height: 20px; fill: var(--bg); }
+    .nav-logo-text {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
+    .nav-logo-text span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--accent);
+      color: var(--bg) !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: var(--radius);
+      font-weight: 700 !important;
+      font-size: 0.88rem !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--accent2) !important; }
+
+    /* hamburger */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 68px;
+        left: 0; right: 0;
+        background: var(--bg2);
+        flex-direction: column;
+        gap: 0;
+        border-bottom: 1px solid var(--bg3);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links li { width: 100%; }
+      .nav-links a {
+        display: block;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--bg3);
+        font-size: 1rem !important;
+      }
+      .nav-cta { border-radius: 0; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0a0f1a 0%, #111827 50%, #1a1f2e 100%);
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245,158,11,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,158,11,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-glow {
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(245,158,11,0.12);
+      border: 1px solid rgba(245,158,11,0.3);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -1px;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-outline {
+      display: inline-block;
+      border: 2px solid var(--bg3);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.83rem 1.8rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--accent); background: rgba(245,158,11,0.08); }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--bg3);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--bg3);
+    }
+    .hero-stat {
+      background: var(--bg2);
+      padding: 1.5rem 1rem;
+      text-align: center;
+    }
+    .hero-stat-num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .hero-stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .hero-visual {
+      position: relative;
+    }
+    .hero-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg3);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    .hero-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      color: var(--white);
+    }
+    .service-list { list-style: none; }
+    .service-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--bg3);
+      font-size: 0.9rem;
+      color: var(--light);
+    }
+    .service-list li:last-child { border-bottom: none; }
+    .service-list li::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      min-width: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    .hero-card-footer {
+      margin-top: 1.2rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--bg3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .rating {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .stars {
+      display: flex;
+      gap: 2px;
+    }
+    .star {
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    .rating-text { font-size: 0.78rem; color: var(--muted); }
+    .badge-licensed {
+      background: rgba(245,158,11,0.12);
+      border: 1px solid rgba(245,158,11,0.25);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-visual { order: -1; }
+    }
+    @media (max-width: 480px) {
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+      .hero-stat { padding: 1rem 0.5rem; }
+      .hero-stat-num { font-size: 1.5rem; }
+    }
+
+    /* ── SECTIONS SHARED ── */
+    section { padding: 5rem 1.5rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      display: inline-block;
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+    }
+    .section-title span { color: var(--accent); }
+    .section-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ── SERVICES ── */
+    .services { background: var(--bg); }
+    .services-header { margin-bottom: 3rem; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg3);
+      border-radius: 12px;
+      padding: 1.8rem;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .service-card:hover {
+      border-color: rgba(245,158,11,0.4);
+      transform: translateY(-3px);
+    }
+    .service-card:hover::after { opacity: 1; }
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(245,158,11,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .service-icon svg { width: 24px; height: 24px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .service-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .service-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── WHY CHOOSE US ── */
+    .why { background: var(--bg2); }
+    .why-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .why-features { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .why-feature {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .why-icon {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      background: rgba(245,158,11,0.12);
+      border: 1px solid rgba(245,158,11,0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .why-icon svg { width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .why-feature h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .why-feature p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+    .why-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--bg3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .stat-card:first-child {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04));
+      border-color: rgba(245,158,11,0.25);
+    }
+    .stat-card-num {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-card-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .stat-card-sub {
+      font-size: 0.78rem;
+      color: var(--bg3);
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 860px) {
+      .why-inner { grid-template-columns: 1fr; }
+      .why-right { order: -1; grid-template-columns: repeat(3, 1fr); }
+      .stat-card:first-child { grid-column: span 3; }
+    }
+    @media (max-width: 540px) {
+      .why-right { grid-template-columns: 1fr 1fr; }
+      .stat-card:first-child { grid-column: span 2; }
+    }
+
+    /* ── CONTACT ── */
+    .contact { background: var(--bg); }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .contact-info-items { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem;
+      background: var(--bg2);
+      border: 1px solid var(--bg3);
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .contact-item:hover { border-color: rgba(245,158,11,0.4); }
+    .contact-item-icon {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      background: rgba(245,158,11,0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .contact-item-icon svg { width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .contact-item-label { font-size: 0.75rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .contact-item-value { font-size: 1rem; font-weight: 700; color: var(--white); }
+
+    .contact-form {
+      background: var(--bg2);
+      border: 1px solid var(--bg3);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+    .contact-form h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 1.5rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--bg);
+      border: 1px solid var(--bg3);
+      border-radius: var(--radius);
+      color: var(--white);
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-group select option { background: var(--bg2); }
+    .form-submit {
+      width: 100%;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 0.9rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      font-family: inherit;
+    }
+    .form-submit:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    @media (max-width: 860px) {
+      .contact-inner { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0a0f1a;
+      border-top: 1px solid var(--bg3);
+      padding: 3rem 1.5rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--bg3);
+    }
+    .footer-brand p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 0.8rem;
+      max-width: 300px;
+      line-height: 1.7;
+    }
+    .footer-col h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-copy { font-size: 0.82rem; color: var(--muted); }
+    .footer-copy span { color: var(--accent); }
+    .footer-license {
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.15);
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 720px) {
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: span 2; }
+    }
+    @media (max-width: 420px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-brand { grid-column: auto; }
+    }
+
+    /* ── DIVIDER STRIP ── */
+    .strip {
+      background: var(--accent);
+      padding: 1.2rem 1.5rem;
+      text-align: center;
+    }
+    .strip-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .strip p {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--bg);
+    }
+    .strip a {
+      background: var(--bg);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 0.45rem 1.2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .strip a:hover { background: var(--bg2); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-bolt">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 2L4.09 12.11a1 1 0 00.7 1.71H10l-1 8 8.91-10.11a1 1 0 00-.7-1.71H12l1-8z"/>
+        </svg>
+      </div>
+      <span class="nav-logo-text">VA <span>Electric</span></span>
+    </a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="nav-cta">Book Free Estimate</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">Edmonton's Trusted Master Electrician</div>
+      <h1>Edmonton's<br>Master Electrician —<br><span>21+ Years of<br>Excellence</span></h1>
+      <p class="hero-sub">
+        From panel upgrades to EV chargers, VA Electric delivers expert electrical work for residential and commercial clients across Edmonton. Licensed, insured, and top-rated.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Book a Free Estimate</a>
+        <a href="tel:7808507455" class="btn-outline">780.850.7455</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <p class="hero-card-title">Our Services</p>
+        <ul class="service-list">
+          <li>Panel Upgrades &amp; Electrical Panels</li>
+          <li>Emergency Electrical Repairs</li>
+          <li>Residential &amp; Commercial Wiring</li>
+          <li>EV Charger Installation</li>
+          <li>LED Retrofit &amp; Lighting</li>
+          <li>Fire Alarm Systems</li>
+        </ul>
+        <div class="hero-card-footer">
+          <div class="rating">
+            <div class="stars">
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+            </div>
+            <span class="rating-text">Top Rated in Edmonton</span>
+          </div>
+          <span class="badge-licensed">Master Licensed</span>
+        </div>
+      </div>
+      <div style="margin-top:1rem;">
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">21+</div>
+            <div class="hero-stat-label">Years Experience</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">5★</div>
+            <div class="hero-stat-label">Top Rated</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">100%</div>
+            <div class="hero-stat-label">Licensed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STRIP ── -->
+<div class="strip">
+  <div class="strip-inner">
+    <p>Electrical emergency? We're available — call us now.</p>
+    <a href="tel:7808507455">Call 780.850.7455</a>
+  </div>
+</div>
+
+<!-- ── SERVICES ── -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="services-header">
+      <span class="section-label">What We Do</span>
+      <h2 class="section-title">Complete Electrical <span>Services</span></h2>
+      <p class="section-sub">From routine residential work to complex commercial installations — VA Electric handles it all with the precision of a master electrician.</p>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+        </div>
+        <h3>Panel Upgrades</h3>
+        <p>Modernize your electrical panel for safety and capacity. We handle full upgrades, replacements, and sub-panel installations to meet today's demands.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3>Emergency Repairs</h3>
+        <p>Electrical issues don't keep business hours. We're available when you need fast, reliable emergency repair service to restore power and safety quickly.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3>Residential</h3>
+        <p>New builds, renovations, and upgrades for your home. Outlets, lighting, circuits, hot tubs — we handle every residential electrical need.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 012-2h8a2 2 0 012 2v18"/><path d="M6 12H4a2 2 0 00-2 2v8h20v-8a2 2 0 00-2-2h-2"/><rect x="10" y="18" width="4" height="4"/></svg>
+        </div>
+        <h3>Commercial &amp; Warehouse</h3>
+        <p>Full electrical for commercial spaces, warehouses, and shops. We understand the demands of industrial environments and meet them to code.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h3>Fire Alarm Systems</h3>
+        <p>Installation and maintenance of fire alarm systems for residential and commercial buildings. Stay compliant and protected with certified solutions.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="1" y="6" width="15" height="13" rx="2"/><polyline points="16 10 20 10 23 13 23 19 16 19"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h3>EV Charger Installation</h3>
+        <p>Level 2 EV charger installation for homes and commercial properties. Future-proof your property with a professional, permitted EV charging setup.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </div>
+        <h3>LED Retrofit &amp; Lighting</h3>
+        <p>Upgrade to modern, energy-efficient LED lighting for homes, offices, warehouses, and retail spaces. Cut energy costs with a professional retrofit.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Garages &amp; Custom</h3>
+        <p>Dedicated garage circuits, workshop wiring, custom electrical for unique projects. We bring master-level expertise to jobs of every shape and size.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY CHOOSE US ── -->
+<section class="why" id="why">
+  <div class="container">
+    <div class="why-inner">
+      <div class="why-left">
+        <span class="section-label">Why VA Electric</span>
+        <h2 class="section-title">Edmonton's Most <span>Trusted</span> Choice</h2>
+        <p class="section-sub">When it comes to electrical work, experience and licensing aren't optional — they're everything. Here's what sets us apart.</p>
+        <div class="why-features">
+          <div class="why-feature">
+            <div class="why-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <h4>Master Licensed Electrician</h4>
+              <p>VA Electric holds a Master Electrician license — the highest certification available. Every project is completed to code, safely, and with full permits where required.</p>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="why-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <h4>21+ Years of Experience</h4>
+              <p>Over two decades serving Edmonton homeowners and businesses. We've seen — and solved — every electrical challenge imaginable, from the routine to the complex.</p>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="why-icon">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            </div>
+            <div>
+              <h4>Free Estimates</h4>
+              <p>No obligation, no pressure. Get a clear, transparent quote before any work begins. We believe you should know what you're getting before you commit.</p>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="why-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div>
+              <h4>Top Rated in Edmonton</h4>
+              <p>Consistently 5-star reviews from residential and commercial clients across the Edmonton area. Our reputation is built one satisfied customer at a time.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="why-right">
+        <div class="stat-card">
+          <div class="stat-card-num">21+</div>
+          <div class="stat-card-label">Years Serving Edmonton</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num">5★</div>
+          <div class="stat-card-label">Average Rating</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num">100%</div>
+          <div class="stat-card-label">Licensed &amp; Insured</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num">Free</div>
+          <div class="stat-card-label">Estimates Always</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div style="margin-bottom:3rem;">
+      <span class="section-label">Get In Touch</span>
+      <h2 class="section-title">Book Your <span>Free Estimate</span></h2>
+      <p class="section-sub">Ready to get started? Reach out by phone, email, or fill out the form. We'll get back to you fast.</p>
+    </div>
+    <div class="contact-inner">
+      <div class="contact-info">
+        <div class="contact-info-items">
+          <a href="tel:7808507455" class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.4 10.84a19.79 19.79 0 01-3.07-8.67A2 2 0 012.31 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.4a16 16 0 006.72 6.72l.77-.77a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Phone</div>
+              <div class="contact-item-value">780.850.7455</div>
+            </div>
+          </a>
+          <a href="mailto:admin@vaedm.com" class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Email</div>
+              <div class="contact-item-value">admin@vaedm.com</div>
+            </div>
+          </a>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Location</div>
+              <div class="contact-item-value">Edmonton, Alberta</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:2rem; padding:1.5rem; background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.15); border-radius:10px;">
+          <p style="font-size:0.88rem; color:var(--muted); line-height:1.7;">
+            VA Electric proudly serves Edmonton and surrounding areas. Whether it's a residential upgrade or a full commercial installation, our master electrician is ready to help you get it done right — safely, on time, and on budget.
+          </p>
+        </div>
+      </div>
+      <div class="contact-form">
+        <h3>Send Us a Message</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" placeholder="John" />
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" placeholder="Smith" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" placeholder="780-000-0000" />
+        </div>
+        <div class="form-group">
+          <label for="service">Service Needed</label>
+          <select id="service">
+            <option value="">Select a service...</option>
+            <option>Panel Upgrade</option>
+            <option>Emergency Repair</option>
+            <option>Residential Wiring</option>
+            <option>Commercial Electrical</option>
+            <option>EV Charger Installation</option>
+            <option>LED Retrofit</option>
+            <option>Fire Alarm System</option>
+            <option>Garage / Custom Project</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Tell us about your project..."></textarea>
+        </div>
+        <button class="form-submit" type="button" onclick="handleSubmit(this)">Request Free Estimate</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="text-decoration:none;">
+          <div class="nav-logo-bolt">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 2L4.09 12.11a1 1 0 00.7 1.71H10l-1 8 8.91-10.11a1 1 0 00-.7-1.71H12l1-8z"/>
+            </svg>
+          </div>
+          <span class="nav-logo-text">VA <span>Electric</span></span>
+        </a>
+        <p>Edmonton's trusted master electrician for over 21 years. Residential and commercial electrical services delivered with expertise, integrity, and a commitment to safety.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Panel Upgrades</a></li>
+          <li><a href="#services">Emergency Repairs</a></li>
+          <li><a href="#services">Residential</a></li>
+          <li><a href="#services">Commercial</a></li>
+          <li><a href="#services">EV Chargers</a></li>
+          <li><a href="#services">LED Retrofit</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:7808507455">780.850.7455</a></li>
+          <li><a href="mailto:admin@vaedm.com">admin@vaedm.com</a></li>
+          <li><a href="#contact">Free Estimate</a></li>
+          <li><a href="#home">Edmonton, AB</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2024 <span>VA Electric</span>. All rights reserved. Edmonton, Alberta.</p>
+      <span class="footer-license">Master Electrician Licensed</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  const toggle = document.getElementById('nav-toggle');
+  const links  = document.getElementById('nav-links');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  // Form submission handler
+  function handleSubmit(btn) {
+    const fname   = document.getElementById('fname').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const service = document.getElementById('service').value;
+    if (!fname || !email) {
+      btn.textContent = 'Please fill in required fields';
+      btn.style.background = '#ef4444';
+      setTimeout(() => { btn.textContent = 'Request Free Estimate'; btn.style.background = ''; }, 2500);
+      return;
+    }
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Request Sent! We\'ll be in touch.';
+      btn.style.background = '#10b981';
+      setTimeout(() => { btn.textContent = 'Request Free Estimate'; btn.style.background = ''; btn.disabled = false; }, 4000);
+    }, 1200);
+  }
+
+  // Scroll-based nav shadow
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.boxShadow = window.scrollY > 10 ? '0 2px 20px rgba(0,0,0,0.5)' : '';
+  });
+</script>
+</body>
+</html>
