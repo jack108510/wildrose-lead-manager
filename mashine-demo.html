@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ma-Shine Pressure Wash & Steaming Services | Red Deer, AB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #06090f;
+      --surface: #0a0e18;
+      --card: #0f1520;
+      --border: #182030;
+      --blue: #0d6ee8;
+      --blue-light: #2080f5;
+      --blue-dim: rgba(13,110,232,0.1);
+      --cyan: #00b4d8;
+      --cream: #edf4ff;
+      --text: #b8ccde;
+      --muted: #4e6070;
+      --light: #7a9ab0;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 68px;
+      background: rgba(6,9,15,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(13,110,232,0.25);
+    }
+
+    .nav-logo img { height: 46px; object-fit: contain; }
+
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: var(--light); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-phone { font-size: 0.88rem; font-weight: 700; color: var(--cyan); text-decoration: none; }
+    .nav-cta { background: var(--blue); color: white !important; padding: 0.45rem 1.2rem; border-radius: 3px; font-weight: 600; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--blue-light) !important; }
+
+    /* HERO */
+    .hero { margin-top: 68px; display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 68px); }
+
+    .hero-left {
+      background: var(--surface);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 6% 5rem 8%;
+      border-right: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan);
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.4rem;
+    }
+    .eyebrow::before { content: ''; display: block; width: 22px; height: 1px; background: var(--cyan); }
+
+    .hero-left h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.6rem, 4.5vw, 4.2rem); font-weight: 800; line-height: 1.05;
+      text-transform: uppercase; color: var(--cream); margin-bottom: 1.25rem;
+    }
+    .hero-left h1 span { color: var(--cyan); }
+
+    .hero-left p { font-size: 0.97rem; color: var(--muted); line-height: 1.85; margin-bottom: 2.5rem; max-width: 460px; }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+
+    .btn-blue { background: var(--blue); color: white; padding: 0.8rem 1.8rem; border-radius: 3px; text-decoration: none; font-weight: 700; font-size: 0.88rem; transition: background 0.2s, transform 0.15s; display: inline-block; }
+    .btn-blue:hover { background: var(--blue-light); transform: translateY(-2px); }
+    .btn-outline { border: 1.5px solid rgba(0,180,216,0.4); color: var(--cyan); padding: 0.8rem 1.8rem; border-radius: 3px; text-decoration: none; font-weight: 600; font-size: 0.88rem; transition: border-color 0.2s, transform 0.15s; }
+    .btn-outline:hover { border-color: var(--cyan); transform: translateY(-2px); }
+
+    .hero-badges { display: flex; gap: 1.5rem; flex-wrap: wrap; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .badge-item { font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; }
+    .badge-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--cyan); }
+
+    .hero-right { overflow: hidden; }
+    .hero-right img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* STAT STRIP */
+    .stat-strip { background: var(--blue); display: flex; justify-content: center; flex-wrap: wrap; }
+    .stat-item { padding: 1.25rem 3rem; text-align: center; border-right: 1px solid rgba(255,255,255,0.18); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; color: white; line-height: 1; }
+    .stat-label { font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+
+    /* SECTIONS */
+    section { padding: 5rem 8%; }
+    .sec-header { margin-bottom: 2.5rem; }
+    .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(1.8rem, 3.2vw, 2.8rem); font-weight: 800; text-transform: uppercase; color: var(--cream); line-height: 1.1; margin-bottom: 0.75rem; }
+    .sec-sub { color: var(--muted); font-size: 0.93rem; line-height: 1.8; max-width: 560px; }
+
+    /* SERVICES */
+    #services { background: var(--surface); }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .svc-card { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--blue); border-radius: 5px; padding: 1.75rem 1.5rem; transition: transform 0.2s; }
+    .svc-card:hover { transform: translateY(-3px); }
+    .svc-icon { font-size: 1.6rem; margin-bottom: 0.75rem; }
+    .svc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; font-weight: 700; text-transform: uppercase; color: var(--cream); margin-bottom: 0.45rem; }
+    .svc-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+    /* ABOUT */
+    #about { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+
+    .about-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .about-imgs img { width: 100%; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); display: block; }
+    .about-imgs img:first-child { grid-column: span 2; height: 230px; }
+    .about-imgs img:not(:first-child) { height: 160px; }
+
+    .about-body .sec-sub { margin-bottom: 1.25rem; }
+    .spec-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 1.5rem; margin-top: 1.5rem; }
+    .spec-item { font-size: 0.83rem; color: var(--light); display: flex; align-items: center; gap: 0.4rem; }
+    .spec-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--cyan); flex-shrink: 0; }
+
+    /* ELLIOTTS */
+    #elliots { background: var(--surface); }
+    .elliots-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .elliots-img { border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+    .elliots-img img { width: 100%; height: 380px; object-fit: cover; display: block; }
+
+    /* CONTACT */
+    #contact { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-info .sec-sub { margin: 0.75rem 0 2rem; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.4rem; align-items: flex-start; }
+    .ci-icon { width: 38px; height: 38px; background: var(--blue-dim); border: 1px solid rgba(13,110,232,0.22); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+    .ci-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cyan); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+
+    .fg { margin-bottom: 1rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 0.78rem 1rem; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input::placeholder, .fg textarea::placeholder { color: var(--muted); }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--blue); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fg select option { background: var(--card); }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* FOOTER */
+    footer { background: #030508; padding: 1.75rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(13,110,232,0.15); }
+    footer img { height: 36px; object-fit: contain; }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    .footer-demo { font-size: 0.68rem; color: rgba(13,110,232,0.35); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 280px; }
+      #about { grid-template-columns: 1fr; gap: 2.5rem; }
+      .elliots-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav .nav-links { display: none; }
+      .stat-item { padding: 1rem 1.5rem; }
+    }
+    @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } .fr { grid-template-columns: 1fr; } .spec-list { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="https://static.wixstatic.com/media/ba2cd3_21183f5b584440aeb8aa38dd64e310fa~mv2.png" alt="Ma-Shine Pressure Wash" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="tel:4035509555" class="nav-phone">403-550-9555</a></li>
+      <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="eyebrow">Red Deer & Central Alberta · 24/7 Service</div>
+      <h1>Pressure Wash<br />&amp; <span>Steam</span><br />Specialists</h1>
+      <p>Mobile pressure washing and steam cleaning for commercial, residential, industrial, agricultural, and oilfield properties across Central Alberta. Available 24/7 with same-day booking.</p>
+      <div class="hero-buttons">
+        <a href="tel:4035509555" class="btn-blue">📞 403-550-9555</a>
+        <a href="#services" class="btn-outline">Our Services</a>
+      </div>
+      <div class="hero-badges">
+        <div class="badge-item"><div class="badge-dot"></div> 24/7 Mobile Service</div>
+        <div class="badge-item"><div class="badge-dot"></div> 3,000 PSI / 425°F</div>
+        <div class="badge-item"><div class="badge-dot"></div> Oilfield & Industrial</div>
+        <div class="badge-item"><div class="badge-dot"></div> Now incl. Elliott's Steam Team</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="https://static.wixstatic.com/media/ba2cd3_b87b3ca913044329939f5c776305db6b~mv2.jpg/v1/fit/w_2500,h_1330,al_c/ba2cd3_b87b3ca913044329939f5c776305db6b~mv2.jpg" alt="Roof pressure washing" />
+    </div>
+  </div>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip">
+    <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">Mobile Service</div></div>
+    <div class="stat-item"><div class="stat-num">3K</div><div class="stat-label">PSI Water Pressure</div></div>
+    <div class="stat-item"><div class="stat-num">425°</div><div class="stat-label">Max Temperature</div></div>
+    <div class="stat-item"><div class="stat-num">1M</div><div class="stat-label">BTU Steam Capacity</div></div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="sec-header">
+      <div class="eyebrow">What We Do</div>
+      <div class="sec-title">Our Services</div>
+      <p class="sec-sub">From oilfield equipment to residential driveways — we clean it all with professional-grade pressure and steam equipment.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-icon">🏭</div>
+        <div class="svc-name">Industrial & Oilfield</div>
+        <p class="svc-desc">Heavy machinery, oil rigs, drilling equipment, industrial pipes, and construction equipment. We maintain your safety and hygiene standards.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🚜</div>
+        <div class="svc-name">Farm & Agricultural</div>
+        <p class="svc-desc">Farm equipment, barns, and livestock facilities cleaned with biodegradable, eco-friendly solutions safe for crops, animals, and farmers.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🏢</div>
+        <div class="svc-name">Commercial</div>
+        <p class="svc-desc">Commercial buildings, parking lots, loading docks, shopping carts, walk-in coolers, and swimming pools disinfected and cleaned.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🏠</div>
+        <div class="svc-name">Residential</div>
+        <p class="svc-desc">Home exteriors, driveways, decks, fences, and roofs cleaned to restore their look and protect against damage from mold and buildup.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">❄️</div>
+        <div class="svc-name">Winter Thawing</div>
+        <p class="svc-desc">Sewer and drain thawing, frozen pipe thawing, culvert thawing, and ice dam removal from eavestroughs and roof surfaces.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">💧</div>
+        <div class="svc-name">Steam Cleaning</div>
+        <p class="svc-desc">Wet and dry steam cleaning for surfaces that can't get wet. Graffiti removal, deep degreasing, and sanitization at up to 425°F.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-imgs">
+      <img src="https://static.wixstatic.com/media/ba2cd3_07323e702544440c979a841de09da5a0~mv2.jpeg/v1/crop/x_0,y_0,w_460,h_314/fill/w_643,h_440,al_c,lg_1,q_80,enc_avif,quality_auto/Ma-ShinePressure-AB-003.jpeg" alt="Heavy equipment cleaning" />
+      <img src="https://static.wixstatic.com/media/ba2cd3_120ba7eea5704413925cfd96b22cff79~mv2.png/v1/fill/w_598,h_586,al_c,lg_1,q_85,enc_avif,quality_auto/Ma-ShinePressure-AB-001.png" alt="Barn floor steam cleaning" />
+      <img src="https://static.wixstatic.com/media/ba2cd3_776a7d5a840b42c4ba4f75e4e5acf925~mv2.jpg" alt="Pressure washing water droplets" />
+    </div>
+    <div class="about-body">
+      <div class="eyebrow">About Us</div>
+      <div class="sec-title">Red Deer's Pressure Wash Experts</div>
+      <p class="sec-sub">Ma-Shine Pressure Wash & Steaming Services was founded over a decade ago with a focus on top-quality pressure cleaning. Being a fully mobile service, we operate 24/7 and can work around your business hours.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">Our specialized high-pressure equipment reaches 3,000 PSI at up to 425°F — powerful enough to tackle oilfield equipment, grease, graffiti, and heavy industrial build-up. We do both wet and dry cleanups depending on the job.</p>
+      <div class="spec-list">
+        <div class="spec-item"><div class="spec-dot"></div> Same-day / next-day booking</div>
+        <div class="spec-item"><div class="spec-dot"></div> Wet and dry steam</div>
+        <div class="spec-item"><div class="spec-dot"></div> Eco-friendly ag chemicals</div>
+        <div class="spec-item"><div class="spec-dot"></div> Graffiti removal</div>
+        <div class="spec-item"><div class="spec-dot"></div> 100% satisfaction guarantee</div>
+        <div class="spec-item"><div class="spec-dot"></div> Winter thawing services</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELLIOTT'S STEAM TEAM -->
+  <section id="elliots" style="background: var(--surface);">
+    <div class="elliots-layout">
+      <div>
+        <div class="eyebrow">Recent Acquisition</div>
+        <div class="sec-title">Now Including Elliott's Steam Team</div>
+        <p class="sec-sub">Ma-Shine is proud to have acquired Elliott's Steam Team — a Central Alberta institution with over 30 years of experience serving Commercial, Industrial, Farm, Oilfield, and Residential sectors.</p>
+        <p class="sec-sub" style="margin-top:0.75rem;">Elliott's brings state-of-the-art equipment capable of up to 1,000,000 BTU's — handling wet and dry steaming and pressure washing at any scale. This acquisition strengthens our capacity to serve the entire Central Alberta region.</p>
+        <div style="margin-top:2rem;">
+          <a href="tel:4035509555" class="btn-blue">Call 403-550-9555</a>
+        </div>
+      </div>
+      <div class="elliots-img">
+        <img src="https://static.wixstatic.com/media/92d89f_c2be5080605f4a66b64e162a787f94e0~mv2.jpg/v1/fill/w_1874,h_828,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Elliott%273.jpg" alt="Elliott's Steam Team truck" />
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <div class="eyebrow">Get in Touch</div>
+      <div class="sec-title">Request a Quote</div>
+      <p class="sec-sub">Available 24/7. Call us for urgent jobs or fill in the form for a quote.</p>
+      <div class="ci">
+        <div class="ci-icon">📞</div>
+        <div><div class="ci-label">Phone (24/7)</div><div class="ci-val">403-550-9555</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">✉</div>
+        <div><div class="ci-label">Email</div><div class="ci-val">mashineltd@gmail.com</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">📍</div>
+        <div><div class="ci-label">Service Area</div><div class="ci-val">Red Deer & Central Alberta</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="fr">
+        <div class="fg"><input type="text" placeholder="First Name" /></div>
+        <div class="fg"><input type="text" placeholder="Last Name" /></div>
+      </div>
+      <div class="fg"><input type="tel" placeholder="Phone Number" /></div>
+      <div class="fg"><input type="email" placeholder="Email Address" /></div>
+      <div class="fg">
+        <select>
+          <option value="" disabled selected>Service Type</option>
+          <option>Industrial / Oilfield</option>
+          <option>Farm / Agricultural</option>
+          <option>Commercial</option>
+          <option>Residential</option>
+          <option>Winter Thawing</option>
+          <option>Steam Cleaning</option>
+          <option>Graffiti Removal</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><textarea placeholder="Describe what needs to be cleaned and any access or timing requirements…"></textarea></div>
+      <a href="mailto:mashineltd@gmail.com" class="btn-blue" style="display:block; width:100%; text-align:center;">Request Quote →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="https://static.wixstatic.com/media/ba2cd3_21183f5b584440aeb8aa38dd64e310fa~mv2.png" alt="Ma-Shine Pressure Wash" />
+    <div class="footer-copy">© 2026 Ma-Shine Pressure Wash & Steaming Services Ltd. · Red Deer, AB · 403-550-9555</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
