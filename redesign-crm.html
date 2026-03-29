@@ -36,42 +36,78 @@
   .topbar {
     background: var(--bg2);
     border-bottom: 2px solid var(--gold);
-    padding: 14px 24px;
+    padding: 10px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
     position: sticky;
     top: 0;
     z-index: 100;
   }
   .topbar-title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     letter-spacing: -0.5px;
   }
   .topbar-title span { color: var(--gold); }
   .stats {
     display: flex;
-    gap: 20px;
+    gap: 24px;
     flex-wrap: wrap;
   }
   .stat {
     text-align: center;
   }
   .stat-val {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 26px;
+    font-weight: 800;
     color: var(--gold);
     line-height: 1;
   }
   .stat-label {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-top: 2px;
+  }
+
+  /* FILTER BAR — sticky */
+  .sticky-filters {
+    position: sticky;
+    top: 56px;
+    z-index: 90;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--bg3);
+    padding: 8px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .filter-bar {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--bg3);
+    background: var(--bg2);
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+    font-weight: 600;
   }
 
   /* TABS */
@@ -83,7 +119,7 @@
     border-bottom: 1px solid var(--bg3);
   }
   .tab-btn {
-    padding: 12px 24px;
+    padding: 10px 22px;
     background: none;
     border: none;
     color: var(--muted);
@@ -100,7 +136,7 @@
   .tab-btn:hover:not(.active) { color: var(--text); }
 
   /* MAIN CONTENT */
-  .main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+  .main { padding: 16px 24px; max-width: 1400px; margin: 0 auto; }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
@@ -110,47 +146,26 @@
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  .filter-bar {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  .filter-btn {
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--bg3);
-    background: var(--bg2);
-    color: var(--muted);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .filter-btn.active, .filter-btn:hover {
-    background: var(--gold);
-    color: #000;
-    border-color: var(--gold);
-    font-weight: 600;
+    gap: 10px;
+    margin-bottom: 14px;
   }
   .search-input {
-    padding: 8px 14px;
+    padding: 7px 12px;
     border-radius: var(--radius);
     border: 1px solid var(--bg3);
     background: var(--bg2);
     color: var(--white);
-    font-size: 14px;
-    min-width: 220px;
+    font-size: 13px;
+    min-width: 200px;
     outline: none;
     transition: border-color 0.2s;
   }
   .search-input:focus { border-color: var(--gold); }
   .btn {
-    padding: 9px 18px;
+    padding: 8px 16px;
     border-radius: var(--radius);
     border: none;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -171,16 +186,31 @@
   }
   .btn-danger:hover { background: var(--red); color: #fff; }
   .btn-sm {
-    padding: 5px 10px;
-    font-size: 12px;
+    padding: 4px 9px;
+    font-size: 11px;
     border-radius: 6px;
   }
+  .btn-icon {
+    background: var(--bg3);
+    color: var(--muted);
+    border: none;
+    border-radius: 6px;
+    padding: 5px 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .btn-icon:hover { background: #4b5563; color: var(--text); }
+  .btn-icon.danger:hover { background: var(--red); color: #fff; }
+  .btn-icon svg { display: block; }
 
   /* CARDS GRID */
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 12px;
   }
   @media (max-width: 1100px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 680px) { .cards-grid { grid-template-columns: 1fr; } }
@@ -189,31 +219,35 @@
     background: var(--bg2);
     border-radius: var(--radius);
     border: 1px solid var(--bg3);
-    padding: 16px;
+    border-left: 4px solid var(--bg3);
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    gap: 8px;
+    transition: box-shadow 0.2s;
   }
-  .card:hover {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 1px var(--gold)22;
-  }
+  .card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .card[data-stage="Prospect"]    { border-left-color: #6b7280; }
+  .card[data-stage="Demo Sent"]   { border-left-color: #3b82f6; }
+  .card[data-stage="Negotiating"] { border-left-color: #f59e0b; }
+  .card[data-stage="Closed Won"]  { border-left-color: #10b981; }
+  .card[data-stage="Recurring"]   { border-left-color: #d97706; }
+
   .card-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
   }
   .company-name {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--white);
     line-height: 1.2;
   }
   .industry-badge {
-    font-size: 11px;
-    padding: 2px 8px;
+    font-size: 10px;
+    padding: 2px 7px;
     border-radius: 20px;
     background: var(--bg3);
     color: var(--muted);
@@ -223,7 +257,7 @@
   .card-sites {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
     font-size: 12px;
   }
   .site-link {
@@ -235,7 +269,11 @@
     display: block;
   }
   .site-link:hover { color: var(--text); }
-  .site-link.demo { color: var(--gold); }
+  .site-link.demo {
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 12px;
+  }
   .site-link.demo:hover { color: var(--gold-dark); }
   .card-contact {
     font-size: 12px;
@@ -251,15 +289,17 @@
   .card-contact a:hover { color: var(--text); }
   .card-badges {
     display: flex;
-    gap: 6px;
+    gap: 5px;
     flex-wrap: wrap;
     align-items: center;
   }
   .badge {
     font-size: 11px;
-    padding: 3px 8px;
+    padding: 2px 8px;
     border-radius: 20px;
     font-weight: 600;
+    cursor: pointer;
+    position: relative;
   }
   .badge-gray { background: #374151; color: #9ca3af; }
   .badge-blue { background: #1e3a5f; color: #60a5fa; }
@@ -269,7 +309,7 @@
   .badge-red { background: #450a0a; color: #f87171; }
   .score-badge {
     font-size: 11px;
-    padding: 3px 8px;
+    padding: 2px 8px;
     border-radius: 20px;
     font-weight: 700;
   }
@@ -284,19 +324,104 @@
   .card-notes {
     font-size: 12px;
     color: var(--muted);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    line-height: 1.4;
+    line-height: 1.5;
+    white-space: pre-wrap;
   }
+
+  /* Quick action pills */
+  .quick-actions {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    padding-top: 4px;
+  }
+  .pill {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid var(--bg3);
+    background: var(--bg3);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .pill:hover { filter: brightness(1.2); color: var(--text); }
+  .pill.active-contacted { background: #1e3a5f; color: #60a5fa; border-color: #3b82f6; }
+  .pill.active-needswork { background: #422006; color: #fbbf24; border-color: #f59e0b; }
+  .pill.active-closed    { background: #064e3b; color: #34d399; border-color: #10b981; }
+  .pill.active-recurring { background: #451a03; color: var(--gold); border-color: #d97706; }
+
+  /* Card actions bar */
   .card-actions {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 6px;
     margin-top: auto;
-    padding-top: 4px;
+    padding-top: 6px;
     border-top: 1px solid var(--bg3);
   }
+  .card-actions-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .card-actions-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Inline note input */
+  .add-note-area {
+    display: none;
+    gap: 4px;
+    margin-top: 2px;
+  }
+  .add-note-area.visible {
+    display: flex;
+  }
+  .add-note-area input {
+    flex: 1;
+    background: var(--bg3);
+    border: 1px solid #4b5563;
+    border-radius: 6px;
+    color: var(--white);
+    padding: 6px 10px;
+    font-size: 12px;
+    outline: none;
+    font-family: inherit;
+  }
+  .add-note-area input:focus { border-color: var(--gold); }
+
+  /* Stage dropdown inline */
+  .stage-dropdown-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .stage-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: var(--bg2);
+    border: 1px solid var(--bg3);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    z-index: 200;
+    min-width: 140px;
+    overflow: hidden;
+    display: none;
+  }
+  .stage-dropdown.open { display: block; }
+  .stage-dropdown-item {
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text);
+    transition: background 0.15s;
+  }
+  .stage-dropdown-item:hover { background: var(--bg3); }
 
   /* EMPTY STATE */
   .empty-state {
@@ -304,7 +429,6 @@
     padding: 60px 20px;
     color: var(--muted);
   }
-  .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
   .empty-state-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
 
   /* LOADING */
@@ -336,18 +460,18 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-width: 360px;
+    max-width: 320px;
   }
   .toast {
-    padding: 12px 18px;
+    padding: 10px 16px;
     border-radius: var(--radius);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     box-shadow: var(--shadow);
     animation: toastIn 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
   .toast-success { background: #064e3b; color: #34d399; border-left: 4px solid #34d399; }
   .toast-error { background: #450a0a; color: #f87171; border-left: 4px solid #f87171; }
@@ -380,14 +504,14 @@
   .modal-wide { max-width: 720px; }
   @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(-10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
   .modal-header {
-    padding: 20px 24px 16px;
+    padding: 18px 22px 14px;
     border-bottom: 1px solid var(--bg3);
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
   .modal-title {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
     color: var(--white);
   }
@@ -395,7 +519,7 @@
     background: none;
     border: none;
     color: var(--muted);
-    font-size: 22px;
+    font-size: 20px;
     cursor: pointer;
     line-height: 1;
     padding: 4px;
@@ -403,9 +527,9 @@
     transition: color 0.2s;
   }
   .modal-close:hover { color: var(--white); }
-  .modal-body { padding: 20px 24px; }
+  .modal-body { padding: 18px 22px; }
   .modal-footer {
-    padding: 16px 24px 20px;
+    padding: 14px 22px 18px;
     display: flex;
     gap: 10px;
     justify-content: flex-end;
@@ -416,7 +540,7 @@
   .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    gap: 12px;
   }
   .form-grid .full { grid-column: 1 / -1; }
   @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
@@ -426,7 +550,7 @@
     gap: 5px;
   }
   label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--muted);
     text-transform: uppercase;
@@ -437,8 +561,8 @@
     border: 1px solid #4b5563;
     border-radius: 8px;
     color: var(--white);
-    padding: 9px 12px;
-    font-size: 14px;
+    padding: 8px 11px;
+    font-size: 13px;
     outline: none;
     transition: border-color 0.2s;
     width: 100%;
@@ -463,25 +587,25 @@
     background: var(--bg2);
     border: 1px solid var(--bg3);
     border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 18px;
+    margin-bottom: 18px;
   }
   .score-section h3 {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     color: var(--white);
   }
   .toggle-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 9px 0;
     border-bottom: 1px solid var(--bg3);
   }
   .toggle-row:last-child { border-bottom: none; }
   .toggle-info { display: flex; flex-direction: column; gap: 2px; }
-  .toggle-label { font-size: 14px; font-weight: 500; }
+  .toggle-label { font-size: 13px; font-weight: 500; }
   .toggle-pts { font-size: 11px; color: var(--muted); }
   .toggle {
     position: relative;
@@ -550,7 +674,7 @@
   .payment-item {
     background: var(--bg3);
     border-radius: 8px;
-    padding: 12px 14px;
+    padding: 11px 13px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -563,13 +687,13 @@
   .divider {
     border: none;
     border-top: 1px solid var(--bg3);
-    margin: 16px 0;
+    margin: 14px 0;
   }
   .add-payment-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--white);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   #billing-cycle-row { transition: all 0.2s; }
 
@@ -578,15 +702,15 @@
     background: var(--bg2);
     border: 1px solid var(--red);
     border-radius: 14px;
-    padding: 28px 28px 20px;
+    padding: 26px 26px 18px;
     max-width: 380px;
     width: 100%;
     text-align: center;
     box-shadow: var(--shadow);
     animation: modalIn 0.25s ease;
   }
-  .confirm-dialog h3 { font-size: 18px; margin-bottom: 10px; color: var(--white); }
-  .confirm-dialog p { color: var(--muted); margin-bottom: 20px; }
+  .confirm-dialog h3 { font-size: 17px; margin-bottom: 10px; color: var(--white); }
+  .confirm-dialog p { color: var(--muted); margin-bottom: 18px; }
   .confirm-actions { display: flex; gap: 10px; justify-content: center; }
 
   /* scrollbar */
@@ -631,8 +755,24 @@
 
 <!-- TABS -->
 <div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('companies')">🏢 Companies</button>
-  <button class="tab-btn" onclick="switchTab('analyzer')">🔍 Site Analyzer</button>
+  <button class="tab-btn active" onclick="switchTab('companies', this)">Companies</button>
+  <button class="tab-btn" onclick="switchTab('analyzer', this)">Site Analyzer</button>
+</div>
+
+<!-- STICKY FILTERS (only shown on companies tab) -->
+<div class="sticky-filters" id="stickyFilters">
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('Prospect', this)">Prospect</button>
+      <button class="filter-btn" onclick="setFilter('Demo Sent', this)">Demo Sent</button>
+      <button class="filter-btn" onclick="setFilter('Negotiating', this)">Negotiating</button>
+      <button class="filter-btn" onclick="setFilter('Closed Won', this)">Closed Won</button>
+      <button class="filter-btn" onclick="setFilter('Recurring', this)">Recurring</button>
+    </div>
+    <input class="search-input" type="text" id="searchInput" placeholder="Search companies…" oninput="renderCards()">
+  </div>
+  <button class="btn btn-gold btn-sm" onclick="openAddCompany()" title="N">+ Add Company</button>
 </div>
 
 <!-- MAIN -->
@@ -640,23 +780,8 @@
 
   <!-- TAB: COMPANIES -->
   <div class="tab-content active" id="tab-companies">
-    <div class="toolbar">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-        <div class="filter-bar" id="filterBar">
-          <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-          <button class="filter-btn" onclick="setFilter('Prospect', this)">Prospect</button>
-          <button class="filter-btn" onclick="setFilter('Demo Sent', this)">Demo Sent</button>
-          <button class="filter-btn" onclick="setFilter('Negotiating', this)">Negotiating</button>
-          <button class="filter-btn" onclick="setFilter('Closed Won', this)">Closed Won</button>
-          <button class="filter-btn" onclick="setFilter('Recurring', this)">Recurring</button>
-        </div>
-        <input class="search-input" type="text" id="searchInput" placeholder="Search companies…" oninput="renderCards()">
-      </div>
-      <button class="btn btn-gold" onclick="openAddCompany()">+ Add Company</button>
-    </div>
     <div class="cards-grid" id="cardsGrid">
       <div class="empty-state" style="grid-column:1/-1">
-        <div class="empty-state-icon">⏳</div>
         <div class="empty-state-title">Loading companies…</div>
       </div>
     </div>
@@ -673,7 +798,7 @@
       <div id="analyzerForm" style="display:none">
         <div class="score-result">
           <div>
-            <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">Website Score</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Website Score</div>
             <div class="score-big" id="scoreBig" style="color:var(--gold)">0</div>
             <div style="font-size:12px;color:var(--muted);margin-top:4px;">out of 10</div>
           </div>
@@ -685,11 +810,10 @@
           <div id="toggleRows"></div>
         </div>
 
-        <button class="btn btn-gold" style="width:100%" onclick="saveScoreAndAdd()">💾 Save Score &amp; Add to CRM</button>
+        <button class="btn btn-gold" style="width:100%" onclick="saveScoreAndAdd()">Save Score &amp; Add to CRM</button>
       </div>
 
       <div id="analyzerPlaceholder" style="text-align:center;padding:60px 20px;color:var(--muted)">
-        <div style="font-size:48px;margin-bottom:16px">🔍</div>
         <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px">Analyze Any Website</div>
         <div style="font-size:13px">Enter a URL above and score it manually using the checklist.<br>Save the score and add the company to your CRM.</div>
       </div>
@@ -702,7 +826,7 @@
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title" id="companyModalTitle">Add Company</div>
-      <button class="modal-close" onclick="closeCompanyModal()">✕</button>
+      <button class="modal-close" onclick="closeCompanyModal()">&times;</button>
     </div>
     <div class="modal-body">
       <div class="form-grid">
@@ -770,7 +894,7 @@
   <div class="modal modal-wide">
     <div class="modal-header">
       <div class="modal-title" id="paymentsModalTitle">Payments</div>
-      <button class="modal-close" onclick="closePaymentsModal()">✕</button>
+      <button class="modal-close" onclick="closePaymentsModal()">&times;</button>
     </div>
     <div class="modal-body">
       <div class="payments-list" id="paymentsList">
@@ -778,7 +902,7 @@
       </div>
 
       <hr class="divider">
-      <div class="add-payment-title">➕ Add Payment / Charge</div>
+      <div class="add-payment-title">Add Payment / Charge</div>
       <div class="form-grid">
         <div class="form-group">
           <label>Type</label>
@@ -913,18 +1037,19 @@ function toast(msg, type = 'info') {
   const c = document.getElementById('toastContainer');
   const el = document.createElement('div');
   el.className = `toast toast-${type}`;
-  const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
-  el.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
+  const label = type === 'success' ? 'Saved' : type === 'error' ? 'Error' : 'Info';
+  el.innerHTML = `<strong>${label}:</strong><span>${msg}</span>`;
   c.appendChild(el);
   setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity 0.4s'; setTimeout(() => el.remove(), 400); }, 3500);
 }
 
 // ─────────── TABS ───────────
-function switchTab(tab) {
+function switchTab(tab, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(`tab-${tab}`).classList.add('active');
-  event.target.classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('stickyFilters').style.display = tab === 'companies' ? 'flex' : 'none';
 }
 
 // ─────────── LOAD & SEED ───────────
@@ -978,10 +1103,9 @@ function updateStats() {
   document.getElementById('stat-demos').textContent = allCompanies.filter(c => c.stage === 'Demo Sent').length;
   document.getElementById('stat-won').textContent = allCompanies.filter(c => c.stage === 'Closed Won').length;
 
-  // MRR: sum recurring active payments
   let mrr = 0;
   for (const c of allCompanies) {
-    const payments = c.payments || [];
+    const payments = c.redesign_payments || c.payments || [];
     for (const p of payments) {
       if (p.type === 'recurring' && p.status === 'active') {
         const amt = parseFloat(p.amount) || 0;
@@ -1002,7 +1126,7 @@ function setFilter(f, btn) {
 }
 
 function getRecurringPayment(company) {
-  const payments = company.payments || [];
+  const payments = company.redesign_payments || company.payments || [];
   return payments.find(p => p.type === 'recurring' && p.status === 'active') || null;
 }
 
@@ -1011,14 +1135,16 @@ function renderCards() {
   const search = document.getElementById('searchInput').value.toLowerCase().trim();
 
   let companies = allCompanies.filter(c => {
-    if (search && !c.company_name.toLowerCase().includes(search)) return false;
+    if (search) {
+      const haystack = [c.company_name, c.industry, c.contact_name, c.contact_email, c.contact_phone].join(' ').toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
     if (currentFilter === 'all') return true;
     return c.stage === currentFilter;
   });
 
   if (companies.length === 0) {
     grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
-      <div class="empty-state-icon">🏜️</div>
       <div class="empty-state-title">No companies found</div>
       <div style="color:var(--muted);margin-top:8px">Try a different filter or add a new company.</div>
     </div>`;
@@ -1028,22 +1154,16 @@ function renderCards() {
   grid.innerHTML = companies.map(c => buildCard(c)).join('');
 }
 
-function stageBadge(stage) {
-  const map = {
-    'Prospect': 'badge-gray',
-    'Demo Sent': 'badge-blue',
-    'Negotiating': 'badge-yellow',
-    'Closed Won': 'badge-green',
-    'Recurring': 'badge-gold'
-  };
-  return `<span class="badge ${map[stage] || 'badge-gray'}">${stage || 'Unknown'}</span>`;
+function stageBadgeClass(stage) {
+  const map = { 'Prospect': 'badge-gray', 'Demo Sent': 'badge-blue', 'Negotiating': 'badge-yellow', 'Closed Won': 'badge-green', 'Recurring': 'badge-gold' };
+  return map[stage] || 'badge-gray';
 }
 
 function scoreBadge(score) {
   if (!score) return '';
   const n = parseInt(score);
   let cls = n <= 4 ? 'score-red' : n <= 7 ? 'score-yellow' : 'score-green';
-  return `<span class="score-badge ${cls}">⭐ ${n}/10</span>`;
+  return `<span class="score-badge ${cls}">${n}/10</span>`;
 }
 
 function truncateUrl(url) {
@@ -1051,41 +1171,179 @@ function truncateUrl(url) {
   return url.replace(/^https?:\/\//, '').replace(/\/$/, '').substring(0, 32) + (url.length > 40 ? '…' : '');
 }
 
+function todayStr() {
+  return new Date().toISOString().substring(0, 10);
+}
+
 function buildCard(c) {
   const rec = getRecurringPayment(c);
   const siteUrl = c.current_site ? (c.current_site.startsWith('http') ? c.current_site : 'https://' + c.current_site) : '';
   const demoUrl = c.demo_site || '';
+  const stage = c.stage || 'Prospect';
+  const cid = esc(c.id);
+  const cname = esc(c.company_name);
 
-  return `<div class="card">
+  // Quick action pill active classes
+  const pillContacted = (stage === 'Demo Sent') ? 'active-contacted' : '';
+  const pillNeedsWork = (stage === 'Negotiating') ? 'active-needswork' : '';
+  const pillClosed    = (stage === 'Closed Won') ? 'active-closed' : '';
+  const pillRecurring = (stage === 'Recurring') ? 'active-recurring' : '';
+
+  // SVG icons
+  const pencilSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+  const trashSVG  = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>`;
+
+  const notesHtml = c.notes ? `<div class="card-notes">${esc(c.notes)}</div>` : '';
+
+  return `<div class="card" data-stage="${esc(stage)}" data-id="${cid}">
     <div class="card-header">
-      <div class="company-name">${esc(c.company_name)}</div>
+      <div class="company-name">${cname}</div>
       <span class="industry-badge">${esc(c.industry || '')}</span>
     </div>
-    <div class="card-sites">
-      ${siteUrl ? `<a href="${esc(siteUrl)}" target="_blank" class="site-link">🌐 ${esc(truncateUrl(siteUrl))}</a>` : '<span style="color:var(--bg3);font-size:12px">No current site</span>'}
-      ${demoUrl ? `<a href="${esc(demoUrl)}" target="_blank" class="site-link demo">✨ View Demo</a>` : ''}
-    </div>
+    ${siteUrl || demoUrl ? `<div class="card-sites">
+      ${siteUrl ? `<a href="${esc(siteUrl)}" target="_blank" class="site-link">${esc(truncateUrl(siteUrl))}</a>` : ''}
+      ${demoUrl ? `<a href="${esc(demoUrl)}" target="_blank" class="site-link demo">View Demo &rarr;</a>` : ''}
+    </div>` : ''}
     <div class="card-contact">
-      ${c.contact_email ? `<a href="mailto:${esc(c.contact_email)}">✉️ ${esc(c.contact_email)}</a>` : ''}
-      ${c.contact_phone ? `<a href="tel:${esc(c.contact_phone)}">📞 ${esc(c.contact_phone)}</a>` : ''}
-      ${!c.contact_email && !c.contact_phone ? '<span style="color:var(--bg3)">No contact info</span>' : ''}
+      ${c.contact_email ? `<a href="mailto:${esc(c.contact_email)}">${esc(c.contact_email)}</a>` : ''}
+      ${c.contact_phone ? `<a href="tel:${esc(c.contact_phone)}">${esc(c.contact_phone)}</a>` : ''}
     </div>
     <div class="card-badges">
-      ${stageBadge(c.stage)}
+      <div class="stage-dropdown-wrap">
+        <span class="badge ${stageBadgeClass(stage)}" onclick="toggleStageDropdown('${cid}', event)">${esc(stage)}</span>
+        <div class="stage-dropdown" id="sd-${cid}">
+          ${['Prospect','Demo Sent','Negotiating','Closed Won','Recurring'].map(s =>
+            `<div class="stage-dropdown-item" onclick="quickSetStage('${cid}','${s}')">${s}</div>`
+          ).join('')}
+        </div>
+      </div>
       ${scoreBadge(c.website_score)}
+      ${c.last_contacted ? `<span style="font-size:10px;color:var(--muted)">Contacted: ${c.last_contacted.substring(0,10)}</span>` : ''}
     </div>
-    ${rec ? `<div class="recurring-info">💰 ${rec.currency || 'CAD'} $${parseFloat(rec.amount).toLocaleString()}/${rec.billing_cycle || 'mo'}</div>` : ''}
-    ${c.notes ? `<div class="card-notes">${esc(c.notes)}</div>` : ''}
+    ${rec ? `<div class="recurring-info">${rec.currency || 'CAD'} $${parseFloat(rec.amount).toLocaleString()}/${rec.billing_cycle || 'mo'}</div>` : ''}
+    ${notesHtml}
+    <div class="add-note-area" id="note-area-${cid}">
+      <input type="text" placeholder="Add a note… (Enter to save)" id="note-input-${cid}"
+        onkeydown="if(event.key==='Enter')saveNote('${cid}'); if(event.key==='Escape')toggleNoteArea('${cid}')">
+      <button class="btn btn-gold btn-sm" onclick="saveNote('${cid}')">Save</button>
+    </div>
+    <div class="quick-actions">
+      <button class="pill ${pillContacted}" onclick="quickAction('${cid}','contacted')">Contacted</button>
+      <button class="pill ${pillNeedsWork}" onclick="quickAction('${cid}','needswork')">Needs Work</button>
+      <button class="pill ${pillClosed}"    onclick="quickAction('${cid}','closed')">Closed</button>
+      <button class="pill ${pillRecurring}" onclick="quickAction('${cid}','recurring')">Recurring</button>
+    </div>
     <div class="card-actions">
-      <button class="btn btn-ghost btn-sm" onclick="openEditCompany('${c.id}')">✏️ Edit</button>
-      <button class="btn btn-ghost btn-sm" onclick="openPayments('${c.id}', '${esc(c.company_name)}')">💳 Payments</button>
-      <button class="btn btn-danger btn-sm" onclick="openConfirmDelete('${c.id}', '${esc(c.company_name)}')">🗑️</button>
+      <div class="card-actions-left">
+        <button class="btn btn-sm btn-ghost" onclick="contactedToday('${cid}')" title="Set contacted today">Today</button>
+        <button class="btn btn-sm btn-ghost" onclick="toggleNoteArea('${cid}')">+ Note</button>
+      </div>
+      <div class="card-actions-right">
+        <button class="btn-icon" onclick="openEditCompany('${cid}')" title="Edit">${pencilSVG}</button>
+        <button class="btn-icon" onclick="openPayments('${cid}', '${cname}')" title="Payments">$</button>
+        <button class="btn-icon danger" onclick="openConfirmDelete('${cid}', '${cname}')" title="Delete">${trashSVG}</button>
+      </div>
     </div>
   </div>`;
 }
 
 function esc(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ─────────── STAGE DROPDOWN ───────────
+function toggleStageDropdown(id, e) {
+  e.stopPropagation();
+  const dd = document.getElementById('sd-' + id);
+  const isOpen = dd.classList.contains('open');
+  // close all
+  document.querySelectorAll('.stage-dropdown.open').forEach(d => d.classList.remove('open'));
+  if (!isOpen) dd.classList.add('open');
+}
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.stage-dropdown.open').forEach(d => d.classList.remove('open'));
+});
+
+async function quickSetStage(id, stage) {
+  document.querySelectorAll('.stage-dropdown.open').forEach(d => d.classList.remove('open'));
+  const c = allCompanies.find(x => x.id === id);
+  if (!c) return;
+  try {
+    await apiCall({ action: 'update_company', id, data: { stage } });
+    c.stage = stage;
+    updateStats();
+    renderCards();
+    toast(stage, 'success');
+  } catch (e) {
+    toast('Update failed: ' + e.message, 'error');
+  }
+}
+
+// ─────────── QUICK ACTIONS ───────────
+async function quickAction(id, action) {
+  const c = allCompanies.find(x => x.id === id);
+  if (!c) return;
+  let data = {};
+  if (action === 'contacted') {
+    data = { stage: 'Demo Sent', last_contacted: todayStr() };
+  } else if (action === 'needswork') {
+    data = { stage: 'Negotiating' };
+  } else if (action === 'closed') {
+    data = { stage: 'Closed Won' };
+  } else if (action === 'recurring') {
+    data = { stage: 'Recurring' };
+  }
+  try {
+    await apiCall({ action: 'update_company', id, data });
+    Object.assign(c, data);
+    updateStats();
+    renderCards();
+    toast(action === 'contacted' ? 'Marked as Demo Sent' : data.stage, 'success');
+  } catch (e) {
+    toast('Update failed: ' + e.message, 'error');
+  }
+}
+
+async function contactedToday(id) {
+  const c = allCompanies.find(x => x.id === id);
+  if (!c) return;
+  const today = todayStr();
+  try {
+    await apiCall({ action: 'update_company', id, data: { last_contacted: today } });
+    c.last_contacted = today;
+    renderCards();
+    toast('Contacted today set', 'success');
+  } catch (e) {
+    toast('Update failed: ' + e.message, 'error');
+  }
+}
+
+// ─────────── INLINE NOTES ───────────
+function toggleNoteArea(id) {
+  const area = document.getElementById('note-area-' + id);
+  const input = document.getElementById('note-input-' + id);
+  const visible = area.classList.toggle('visible');
+  if (visible) { input.value = ''; input.focus(); }
+}
+
+async function saveNote(id) {
+  const input = document.getElementById('note-input-' + id);
+  const text = input.value.trim();
+  if (!text) return;
+  const c = allCompanies.find(x => x.id === id);
+  if (!c) return;
+  const ts = new Date().toLocaleDateString('en-CA', { year:'numeric', month:'short', day:'numeric' });
+  const newNote = `[${ts}] ${text}`;
+  const existing = c.notes ? c.notes + '\n' + newNote : newNote;
+  try {
+    await apiCall({ action: 'update_company', id, data: { notes: existing } });
+    c.notes = existing;
+    renderCards();
+    toast('Note added', 'success');
+  } catch (e) {
+    toast('Failed to save note: ' + e.message, 'error');
+  }
 }
 
 // ─────────── COMPANY MODAL ───────────
@@ -1152,10 +1410,10 @@ async function saveCompany() {
   try {
     if (editingCompanyId) {
       await apiCall({ action: 'update_company', id: editingCompanyId, data });
-      toast('Company updated!', 'success');
+      toast('Company updated', 'success');
     } else {
       await apiCall({ action: 'add_company', data });
-      toast('Company added!', 'success');
+      toast('Company added', 'success');
     }
     closeCompanyModal();
     await loadCompanies();
@@ -1194,7 +1452,7 @@ async function confirmDelete() {
 // ─────────── PAYMENTS ───────────
 async function openPayments(companyId, name) {
   paymentsCompanyId = companyId;
-  document.getElementById('paymentsModalTitle').textContent = `💳 Payments — ${name}`;
+  document.getElementById('paymentsModalTitle').textContent = `Payments — ${name}`;
   document.getElementById('paymentsModal').style.display = 'flex';
   clearPaymentForm();
   await loadPayments(companyId);
@@ -1209,9 +1467,8 @@ async function loadPayments(companyId) {
   const list = document.getElementById('paymentsList');
   list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:20px">Loading…</div>';
   try {
-    // Try from nested data first
     const c = allCompanies.find(x => x.id === companyId);
-    let payments = c?.payments || [];
+    let payments = c?.redesign_payments || c?.payments || [];
     if (payments.length === 0) {
       const res = await apiCall({ action: 'get_payments', company_id: companyId });
       payments = Array.isArray(res) ? res : (res.payments || res.data || []);
@@ -1272,7 +1529,7 @@ async function savePayment() {
   showSpinner();
   try {
     await apiCall({ action: 'add_payment', data });
-    toast('Payment added!', 'success');
+    toast('Payment added', 'success');
     clearPaymentForm();
     await loadPayments(paymentsCompanyId);
     await loadCompanies();
@@ -1325,11 +1582,8 @@ function recalcScore() {
 function analyzeUrl() {
   const url = document.getElementById('analyzerUrl').value.trim();
   if (!url) { toast('Enter a URL first', 'error'); return; }
-
-  // Auto-detect SSL from URL
   const hasSSL = url.startsWith('https://');
   document.getElementById(`tog-has_ssl`).checked = hasSSL;
-
   document.getElementById('analyzerPlaceholder').style.display = 'none';
   document.getElementById('analyzerForm').style.display = 'block';
   recalcScore();
@@ -1342,7 +1596,6 @@ function saveScoreAndAdd() {
   openAddCompany(url, score);
 }
 
-// Also log when saving score with company info
 async function saveScoreForCompany(companyId, url, score) {
   try {
     const checks = {};
@@ -1371,10 +1624,17 @@ async function saveScoreForCompany(companyId, url, score) {
 
 // ─────────── KEYBOARD SHORTCUTS ───────────
 document.addEventListener('keydown', e => {
+  const tag = document.activeElement.tagName.toLowerCase();
+  const inInput = ['input','textarea','select'].includes(tag);
   if (e.key === 'Escape') {
     closeCompanyModal();
     closePaymentsModal();
     closeConfirm();
+    document.querySelectorAll('.stage-dropdown.open').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.add-note-area.visible').forEach(a => a.classList.remove('visible'));
+  }
+  if (!inInput && e.key === 'n') {
+    openAddCompany();
   }
 });
 
