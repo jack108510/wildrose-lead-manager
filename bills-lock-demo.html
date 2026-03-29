@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bill's Lock & Key | Licensed Locksmith | Taber, Alberta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0d1b2e;
+      --navy-mid: #162540;
+      --blue: #1a3a6b;
+      --accent: #e8a020;
+      --accent-light: #f0b840;
+      --bg: #f5f6f8;
+      --surface: #ffffff;
+      --border: #dde3ec;
+      --muted: #6b7a90;
+      --dark-text: #0d1b2e;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--dark-text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 66px;
+      background: var(--navy);
+      border-bottom: 3px solid var(--accent);
+    }
+    .nav-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 1.35rem; font-weight: 700; color: white; text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; }
+    .nav-brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: white; }
+    .nav-phone { background: var(--accent); color: var(--navy) !important; padding: 0.45rem 1.1rem; border-radius: 2px; font-weight: 700; transition: background 0.2s !important; }
+    .nav-phone:hover { background: var(--accent-light) !important; }
+
+    /* HERO */
+    .hero { margin-top: 66px; position: relative; min-height: calc(100vh - 66px); display: flex; align-items: center; }
+    .hero-bg { position: absolute; inset: 0; background: url('assets/bills-lock/lock.jpg') center/cover no-repeat; filter: brightness(0.2); }
+    .hero-content { position: relative; z-index: 2; padding: 5rem 8%; max-width: 720px; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+    .hero-eyebrow::before { content: ''; display: block; width: 22px; height: 2px; background: var(--accent); }
+    .hero h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(3rem, 6.5vw, 6rem); font-weight: 800; text-transform: uppercase; line-height: 0.95; color: white; margin-bottom: 1.25rem; }
+    .hero h1 em { color: var(--accent); font-style: normal; display: block; }
+    .hero p { font-size: 0.92rem; color: rgba(255,255,255,0.55); line-height: 1.9; max-width: 460px; margin-bottom: 2rem; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn-accent { background: var(--accent); color: var(--navy); padding: 0.85rem 2rem; text-decoration: none; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; transition: background 0.2s; display: inline-block; }
+    .btn-accent:hover { background: var(--accent-light); }
+    .btn-ghost { border: 2px solid rgba(255,255,255,0.2); color: white; padding: 0.85rem 2rem; text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; transition: border-color 0.2s; display: inline-block; }
+    .btn-ghost:hover { border-color: white; }
+    .hero-trust { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .trust-item { font-size: 0.78rem; color: rgba(255,255,255,0.45); display: flex; align-items: center; gap: 0.5rem; }
+    .trust-dot { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+    /* ACCENT STRIP */
+    .accent-strip { background: var(--accent); padding: 1rem 8%; display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .as-item { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--navy); display: flex; align-items: center; gap: 0.5rem; }
+    .as-div { width: 1px; height: 14px; background: rgba(13,27,46,0.25); }
+
+    /* SECTIONS */
+    section { padding: 5rem 8%; }
+    .sec-eyebrow { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.75rem; }
+    .sec-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--accent); }
+    .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; text-transform: uppercase; color: var(--navy); line-height: 1; margin-bottom: 1rem; }
+    .sec-sub { color: var(--muted); font-size: 0.88rem; line-height: 1.85; max-width: 560px; }
+
+    /* SERVICES */
+    #services { background: var(--surface); }
+    .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+    .svc-card { border: 1px solid var(--border); border-top: 3px solid var(--accent); padding: 2rem 1.75rem; border-radius: 0 0 4px 4px; transition: box-shadow 0.2s, transform 0.2s; }
+    .svc-card:hover { box-shadow: 0 6px 24px rgba(13,27,46,0.1); transform: translateY(-3px); }
+    .svc-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+    .svc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; color: var(--navy); margin-bottom: 0.5rem; }
+    .svc-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+
+    /* ABOUT */
+    #about { background: var(--bg); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .about-img { border-radius: 4px; overflow: hidden; border: 3px solid var(--accent); }
+    .about-img img { width: 100%; height: 460px; object-fit: cover; display: block; }
+    .about-body .sec-sub { margin-bottom: 0.85rem; }
+    .about-creds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .cred-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2.4rem; font-weight: 800; color: var(--accent); line-height: 1; }
+    .cred-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* GALLERY */
+    .gallery-strip { display: grid; grid-template-columns: repeat(4, 1fr); height: 240px; }
+    .gallery-strip div { overflow: hidden; }
+    .gallery-strip img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s, filter 0.3s; filter: brightness(0.85); }
+    .gallery-strip div:hover img { transform: scale(1.06); filter: brightness(1); }
+
+    /* CONTACT */
+    #contact { background: var(--navy-mid); }
+    #contact .sec-title { color: white; }
+    #contact .sec-eyebrow { color: var(--accent); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 2.5rem; align-items: start; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+    .ci-icon { width: 40px; height: 40px; background: rgba(232,160,32,0.12); border: 1px solid rgba(232,160,32,0.25); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .ci-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.25rem; }
+    .ci-val { font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.5; }
+    .ci-val a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .ci-val a:hover { color: var(--accent); }
+    .service-area { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 1.25rem; margin-top: 1rem; }
+    .sa-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.5rem; }
+    .sa-text { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+    .fg { margin-bottom: 0.9rem; }
+    .fg label { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); display: block; margin-bottom: 0.4rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-bottom: 2px solid rgba(255,255,255,0.1); padding: 0.78rem 1rem; color: white; font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-bottom-color: var(--accent); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fg select option { background: var(--navy); }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn-submit { background: var(--accent); color: var(--navy); border: none; width: 100%; padding: 1rem; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--accent-light); }
+
+    /* FOOTER */
+    footer { background: var(--navy); padding: 1.5rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 3px solid var(--accent); }
+    .footer-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.05em; }
+    .footer-brand span { color: var(--accent); }
+    .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.2); }
+    .footer-demo { font-size: 0.65rem; color: rgba(232,160,32,0.25); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      nav .nav-links { display: none; }
+      .nav-mobile-cta { display: inline-block !important; }
+      section { padding: 4rem 6%; }
+      #about { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-img img { height: 280px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .gallery-strip { grid-template-columns: repeat(2, 1fr); height: auto; }
+      .gallery-strip img { height: 180px; }
+      .accent-strip { gap: 1rem; }
+      .as-div { display: none; }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 3rem; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .about-creds { grid-template-columns: repeat(3, 1fr); }
+      .fr { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
+      .accent-strip { flex-direction: column; align-items: flex-start; padding: 1rem 6%; gap: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-brand">Bill's <span>Lock & Key</span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-phone">📞 587-370-1494</a></li>
+    </ul>
+    <a href="tel:5873701494" class="nav-mobile-cta" style="display:none; font-size:0.78rem; font-weight:700; background:var(--accent); color:var(--navy); padding:0.45rem 1rem; border-radius:2px; text-decoration:none;">📞 Call Now</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Taber, Alberta & Surrounding Area</div>
+      <h1>Your Trusted<br /><em>Local Locksmith</em></h1>
+      <p>Bill's Lock & Key has been providing reliable, professional locksmith services to Taber and the surrounding area for over 30 years. Licensed, bonded, and always on the move.</p>
+      <div class="hero-buttons">
+        <a href="tel:5873701494" class="btn-accent">📞 Call 587-370-1494</a>
+        <a href="#services" class="btn-ghost">Our Services</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><div class="trust-dot"></div>30+ Years in Business</div>
+        <div class="trust-item"><div class="trust-dot"></div>Licensed & Bonded</div>
+        <div class="trust-item"><div class="trust-dot"></div>Mobile Service</div>
+        <div class="trust-item"><div class="trust-dot"></div>Taber & Area</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCENT STRIP -->
+  <div class="accent-strip">
+    <div class="as-item">🔑 Key Cutting</div>
+    <div class="as-div"></div>
+    <div class="as-item">🔒 Lock Installation</div>
+    <div class="as-div"></div>
+    <div class="as-item">🚪 Lockouts</div>
+    <div class="as-div"></div>
+    <div class="as-item">🔧 Rekeying</div>
+    <div class="as-div"></div>
+    <div class="as-item">🗄 Safes</div>
+    <div class="as-div"></div>
+    <div class="as-item">🚗 Mobile Service</div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem; margin-bottom:0.5rem;">
+      <div>
+        <div class="sec-eyebrow">What We Offer</div>
+        <div class="sec-title">Our Services</div>
+        <p class="sec-sub">Full-service locksmith solutions for residential and commercial needs — we come to you.</p>
+      </div>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="svc-icon">🔑</div>
+        <div class="svc-name">Key Cutting</div>
+        <p class="svc-desc">Precision key cutting for home, business, and vehicle keys. Duplicates made on the spot.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🔒</div>
+        <div class="svc-name">Lock Installation</div>
+        <p class="svc-desc">New lock installation for doors, deadbolts, gates, and commercial properties of all types.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🚪</div>
+        <div class="svc-name">Lockouts</div>
+        <p class="svc-desc">Locked out of your home, office, or vehicle? We'll get you back in quickly and without damage.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🔧</div>
+        <div class="svc-name">Rekeying</div>
+        <p class="svc-desc">Change who has access without replacing your locks. Fast, affordable, and done on-site.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🗄</div>
+        <div class="svc-name">Keys & Safes</div>
+        <p class="svc-desc">Safe opening, combination changes, and a selection of quality safes and locks available for purchase.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🚗</div>
+        <div class="svc-name">Mobile Service</div>
+        <p class="svc-desc">We come to you. Serving Taber and the surrounding area — no need to haul anything in.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <div class="gallery-strip">
+    <div><img src="assets/bills-lock/keys.jpg" alt="Keys" /></div>
+    <div><img src="assets/bills-lock/locksmith.jpg" alt="Locksmith" /></div>
+    <div><img src="assets/bills-lock/safe.jpg" alt="Safe" /></div>
+    <div><img src="assets/bills-lock/door.jpg" alt="Door lock" /></div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img">
+      <img src="assets/bills-lock/locksmith.jpg" alt="Bill's Lock & Key" />
+    </div>
+    <div class="about-body">
+      <div class="sec-eyebrow">About Us</div>
+      <div class="sec-title">Over 30 Years of<br />Trusted Service</div>
+      <p class="sec-sub">Bill's Lock & Key has been a fixture in the Taber community for over three decades. As a fully licensed and bonded locksmith, Bill brings professional expertise and genuine local knowledge to every job.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">From a simple lockout to a full commercial rekeying job, every call gets the same attention and care. No call centres, no strangers — just your local locksmith.</p>
+      <div class="about-creds">
+        <div><div class="cred-num">30+</div><div class="cred-label">Years Experience</div></div>
+        <div><div class="cred-num">✓</div><div class="cred-label">Licensed & Bonded</div></div>
+        <div><div class="cred-num">📍</div><div class="cred-label">Taber & Area</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="sec-eyebrow">Get In Touch</div>
+    <div class="sec-title">Ready to Help</div>
+    <div class="contact-grid">
+      <div>
+        <div class="ci">
+          <div class="ci-icon">📞</div>
+          <div><div class="ci-label">Cell</div><div class="ci-val"><a href="tel:5873701494">587-370-1494</a></div></div>
+        </div>
+        <div class="ci">
+          <div class="ci-icon">☎</div>
+          <div><div class="ci-label">Home</div><div class="ci-val"><a href="tel:4032231929">403-223-1929</a></div></div>
+        </div>
+        <div class="ci">
+          <div class="ci-icon">📍</div>
+          <div><div class="ci-label">Address</div><div class="ci-val">Taber, Alberta T1G 2E1</div></div>
+        </div>
+        <div class="service-area">
+          <div class="sa-label">Service Area</div>
+          <p class="sa-text">Currently serving Taber, Alberta and surrounding communities. Call to confirm coverage in your area.</p>
+        </div>
+      </div>
+      <div>
+        <div class="fr">
+          <div class="fg"><label>First Name</label><input type="text" placeholder="Jane" /></div>
+          <div class="fg"><label>Last Name</label><input type="text" placeholder="Smith" /></div>
+        </div>
+        <div class="fg"><label>Phone</label><input type="tel" placeholder="587-000-0000" /></div>
+        <div class="fg"><label>Email</label><input type="email" placeholder="you@example.com" /></div>
+        <div class="fg">
+          <label>Service Needed</label>
+          <select>
+            <option value="" disabled selected>Select a service…</option>
+            <option>Lockout — Home</option>
+            <option>Lockout — Vehicle</option>
+            <option>Lockout — Business</option>
+            <option>Key Cutting</option>
+            <option>Lock Installation</option>
+            <option>Rekeying</option>
+            <option>Safe Service</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Message</label><textarea placeholder="Describe what you need and your location…"></textarea></div>
+        <button class="btn-submit">Send Message →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">Bill's <span>Lock & Key</span></div>
+    <div class="footer-copy">© 2026 Bill's Lock & Key · Taber, Alberta · 587-370-1494</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
