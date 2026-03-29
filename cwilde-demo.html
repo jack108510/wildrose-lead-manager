@@ -35,8 +35,9 @@
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo { flex-shrink: 0; max-width: 120px; }
-    .nav-logo img { height: 36px; max-width: 120px; width: auto; object-fit: contain; display: block; }
+    .nav-logo { flex-shrink: 0; }
+    .nav-logo img { height: 30px; width: auto; max-width: 100px; object-fit: contain; display: block; }
+    .nav-wordmark { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 400; color: var(--charcoal); letter-spacing: 0.08em; white-space: nowrap; display: none; }
     .nav-links { display: flex; gap: 1.2rem; list-style: none; align-items: center; flex-shrink: 0; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; white-space: nowrap; }
     .nav-links a:hover { color: var(--charcoal); }
@@ -223,7 +224,9 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#"><img src="assets/cwilde/logo.png" alt="C. Wilde Designs Inc." /></a>
+    <a href="#" class="nav-logo" style="text-decoration:none; display:flex; align-items:center; gap:0.6rem;">
+      <img src="assets/cwilde/logo.png" alt="C. Wilde Designs Inc." style="height:30px;width:auto;max-width:90px;" />
+    </a>
     <ul class="nav-links">
       <li><a href="#portfolio">Portfolio</a></li>
       <li><a href="#services">Services</a></li>
@@ -389,17 +392,23 @@
     <p class="sec-sub">Carmen's deep connection to nature is expressed through her vivid original paintings — available for purchase or rent to complete any interior.</p>
     <div class="art-grid">
       <div class="art-card">
-        <img src="assets/cwilde/project2.jpg" alt="Artwork 1" />
+        <img src="assets/cwilde/art1.jpg" alt="Original painting by Carmen Wilde" />
         <div class="art-overlay"><div class="art-label">Original Painting · Available</div></div>
       </div>
       <div class="art-card">
-        <img src="assets/cwilde/project4.jpg" alt="Artwork 2" />
+        <img src="assets/cwilde/art4.jpg" alt="Original painting by Carmen Wilde" />
         <div class="art-overlay"><div class="art-label">Original Painting · Available</div></div>
       </div>
       <div class="art-card">
-        <img src="assets/cwilde/project5.jpg" alt="Artwork 3" />
+        <img src="assets/cwilde/art6.jpg" alt="Original painting by Carmen Wilde" />
         <div class="art-overlay"><div class="art-label">Original Painting · Available</div></div>
       </div>
+    </div>
+    <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:2px; margin-top:2px;">
+      <div class="art-card"><img src="assets/cwilde/art2.jpg" alt="Painting" style="height:200px;" /><div class="art-overlay"><div class="art-label">Original · Available</div></div></div>
+      <div class="art-card"><img src="assets/cwilde/art3.jpg" alt="Painting" style="height:200px;" /><div class="art-overlay"><div class="art-label">Original · Available</div></div></div>
+      <div class="art-card"><img src="assets/cwilde/art5.jpg" alt="Painting" style="height:200px;" /><div class="art-overlay"><div class="art-label">Original · Available</div></div></div>
+      <div class="art-card"><img src="assets/cwilde/art7.jpg" alt="Painting" style="height:200px;" /><div class="art-overlay"><div class="art-label">Original · Available</div></div></div>
     </div>
     <div style="text-align:center; margin-top:2.5rem;">
       <a href="https://www.cwildedesigns.com/artwork" target="_blank" class="btn-gold">View All Artwork →</a>
