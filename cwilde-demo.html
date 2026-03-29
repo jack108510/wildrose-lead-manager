@@ -30,26 +30,27 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 6%; height: 72px;
+      padding: 0 4%; height: 64px;
       background: rgba(250,249,247,0.97);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo img { height: 42px; max-width: 160px; width: auto; object-fit: contain; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-logo { flex-shrink: 0; max-width: 120px; }
+    .nav-logo img { height: 36px; max-width: 120px; width: auto; object-fit: contain; display: block; }
+    .nav-links { display: flex; gap: 1.2rem; list-style: none; align-items: center; flex-shrink: 0; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; white-space: nowrap; }
     .nav-links a:hover { color: var(--charcoal); }
     .nav-cta {
       background: transparent; border: 1px solid var(--gold); color: var(--gold) !important;
-      padding: 0.45rem 1.3rem; border-radius: 2px; letter-spacing: 0.1em !important;
+      padding: 0.38rem 1rem; border-radius: 2px; letter-spacing: 0.08em !important;
       transition: background 0.2s, color 0.2s !important;
     }
     .nav-cta:hover { background: var(--gold) !important; color: white !important; }
 
     /* HERO */
     .hero {
-      margin-top: 72px; position: relative;
-      height: calc(100vh - 72px); overflow: hidden;
+      margin-top: 64px; position: relative;
+      height: calc(100vh - 64px); overflow: hidden;
     }
     .hero-bg {
       position: absolute; inset: 0;
