@@ -359,6 +359,24 @@
 
     .demo-card-meta span { display: flex; align-items: center; gap: 5px; }
 
+    /* ── Site Dev Status ── */
+    .dev-status-bar {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      padding: 10px 0 4px;
+      border-top: 1px solid var(--border);
+      margin-top: 10px;
+    }
+    .dev-status-btn {
+      flex: 1; padding: 7px 10px; border-radius: 6px; font-size: 12px;
+      font-weight: 600; cursor: pointer; border: 1.5px solid var(--border);
+      background: none; color: var(--text-muted); transition: all 0.15s;
+      text-align: center; white-space: nowrap;
+    }
+    .dev-status-btn:hover { border-color: var(--text-muted); color: var(--text); }
+    .dev-status-btn.active-dev { background: rgba(245,158,11,0.12); border-color: #f59e0b; color: #f59e0b; }
+    .dev-status-btn.active-ready { background: rgba(59,130,246,0.12); border-color: #3b82f6; color: #3b82f6; }
+    .dev-status-btn.active-contacted { background: rgba(34,197,94,0.12); border-color: #22c55e; color: #22c55e; }
+
     .demo-card-actions {
       display: flex;
       gap: 8px;
@@ -402,7 +420,7 @@
 <nav class="tabs">
   <button class="active" onclick="switchTab('overview', this)">Overview</button>
   <button onclick="switchTab('leads', this)">Leads</button>
-  <button onclick="switchTab('demos', this)">Demos</button>
+  <button onclick="switchTab('demos', this)">Site Development</button>
 </nav>
 
 <main>
@@ -537,6 +555,11 @@
           <a class="btn btn-outline-accent" href="https://bhurjee.ca" target="_blank">Live Site</a>
           <button class="btn btn-ghost" onclick="openPitch('Bhurjee Industries', 'info@bhurjee.ca', 'https://jack108510.github.io/wildrose-lead-manager/bhurjee-demo.html')">Pitch</button>
         </div>
+        <div class="dev-status-bar" id="status-bar-bhurjee">
+          <button class="dev-status-btn" onclick="setDevStatus('bhurjee', 'in-development', this)">🔧 In Development</button>
+          <button class="dev-status-btn" onclick="setDevStatus('bhurjee', 'ready', this)">✅ Ready for Contact</button>
+          <button class="dev-status-btn" onclick="setDevStatus('bhurjee', 'contacted', this)">📬 Contacted</button>
+        </div>
       </div>
 
       <!-- Edmonton Collections -->
@@ -557,6 +580,11 @@
           <a class="btn btn-primary" href="https://jack108510.github.io/wildrose-lead-manager/edmonton-collections-demo.html" target="_blank">View Demo</a>
           <a class="btn btn-outline-accent" href="https://edmontoncollections.com" target="_blank">Live Site</a>
           <button class="btn btn-ghost" onclick="openPitch('Edmonton Collections', 'sales@edmontoncollections.com', 'https://jack108510.github.io/wildrose-lead-manager/edmonton-collections-demo.html')">Pitch</button>
+        </div>
+        <div class="dev-status-bar" id="status-bar-edmonton-collections">
+          <button class="dev-status-btn" onclick="setDevStatus('edmonton-collections', 'in-development', this)">🔧 In Development</button>
+          <button class="dev-status-btn" onclick="setDevStatus('edmonton-collections', 'ready', this)">✅ Ready for Contact</button>
+          <button class="dev-status-btn" onclick="setDevStatus('edmonton-collections', 'contacted', this)">📬 Contacted</button>
         </div>
       </div>
 
@@ -765,8 +793,45 @@ wildroseautomations.ca`
     } catch { return ts; }
   }
 
+  // ── Site Development Status ────────────────────────────
+  const STATUS_CLASS = {
+    'in-development': 'active-dev',
+    'ready':          'active-ready',
+    'contacted':      'active-contacted',
+  };
+
+  function setDevStatus(id, status, clickedBtn) {
+    // Save to localStorage
+    localStorage.setItem('devStatus_' + id, status);
+    // Update button styles in this bar
+    const bar = document.getElementById('status-bar-' + id);
+    if (!bar) return;
+    bar.querySelectorAll('.dev-status-btn').forEach(btn => {
+      btn.classList.remove('active-dev', 'active-ready', 'active-contacted');
+    });
+    clickedBtn.classList.add(STATUS_CLASS[status] || '');
+  }
+
+  function loadDevStatuses() {
+    ['bhurjee', 'edmonton-collections'].forEach(id => {
+      const saved = localStorage.getItem('devStatus_' + id);
+      if (!saved) return;
+      const bar = document.getElementById('status-bar-' + id);
+      if (!bar) return;
+      bar.querySelectorAll('.dev-status-btn').forEach(btn => {
+        btn.classList.remove('active-dev', 'active-ready', 'active-contacted');
+        // Match by button text content
+        const action = btn.getAttribute('onclick') || '';
+        if (action.includes("'" + saved + "'")) {
+          btn.classList.add(STATUS_CLASS[saved] || '');
+        }
+      });
+    });
+  }
+
   // ── Init ───────────────────────────────────────────────
   fetchLeads();
+  loadDevStatuses();
 </script>
 </body>
 </html>
