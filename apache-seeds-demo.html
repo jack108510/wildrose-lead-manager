@@ -104,7 +104,32 @@
 
     /* CATEGORIES */
     #categories { background: var(--warm); }
-    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .cat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+
+    /* Icon-only cat cards for categories without photos */
+    .cat-card-icon { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; text-decoration: none; display: flex; flex-direction: column; }
+    .cat-card-icon:hover { box-shadow: 0 6px 24px rgba(28,42,14,0.12); transform: translateY(-3px); }
+    .cat-icon-top { background: var(--warm); height: 110px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; border-bottom: 1px solid var(--border); }
+
+    /* FAQ */
+    .faq-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 12px; }
+    .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .faq-q { padding: 1rem 1.25rem; font-weight: 600; font-size: 0.9rem; color: var(--dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .faq-q:hover { background: var(--warm); }
+    .faq-a { padding: 0 1.25rem 1rem; font-size: 0.85rem; color: var(--muted); line-height: 1.7; display: none; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s; color: var(--green); }
+
+    /* Blog */
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 2rem; }
+    .blog-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; text-decoration: none; display: block; transition: box-shadow 0.2s, transform 0.2s; }
+    .blog-card:hover { box-shadow: 0 4px 20px rgba(28,42,14,0.1); transform: translateY(-2px); }
+    .blog-card-top { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: var(--warm); border-bottom: 1px solid var(--border); }
+    .blog-card-body { padding: 1rem 1.2rem 1.25rem; }
+    .blog-tag { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 0.4rem; }
+    .blog-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--dark); line-height: 1.3; margin-bottom: 0.3rem; }
+    .blog-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
     .cat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; text-decoration: none; display: block; }
     .cat-card:hover { box-shadow: 0 6px 24px rgba(28,42,14,0.12); transform: translateY(-3px); }
     .cat-img { width: 100%; height: 160px; object-fit: cover; display: block; }
@@ -179,6 +204,8 @@
     <ul class="nav-links">
       <li><a href="#categories">Shop</a></li>
       <li><a href="#about">About</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#faq">FAQ</a></li>
       <li><a href="#contact" class="nav-cta">Visit Us</a></li>
     </ul>
   </nav>
@@ -220,33 +247,45 @@
       <p class="sec-sub">Everything you need from seed to harvest — and everything in between.</p>
     </div>
     <div class="cat-grid">
+      <a href="https://www.apacheseeds.ca/seasonal-products" target="_blank" class="cat-card-icon">
+        <div class="cat-icon-top">🌷</div>
+        <div class="cat-body"><div class="cat-name">Seasonal Products</div><p class="cat-desc">What's fresh right now — spring bulbs, summer annuals, fall planting essentials.</p></div>
+      </a>
       <a href="https://www.apacheseeds.ca/seeds" target="_blank" class="cat-card">
-        <img class="cat-img" src="assets/apache-seeds/seeds.jpg" alt="Seeds" />
-        <div class="cat-body">
-          <div class="cat-name">Seeds</div>
-          <p class="cat-desc">Vegetables, herbs, flowers, and more. 2026 varieties now in stock.</p>
-        </div>
+        <img class="cat-img" src="assets/apache-seeds/seeds.jpg" alt="Seeds" style="height:110px;" />
+        <div class="cat-body"><div class="cat-name">Seeds</div><p class="cat-desc">Vegetables, herbs, flowers, and more. 2026 varieties now in stock.</p></div>
       </a>
       <a href="https://www.apacheseeds.ca/soils" target="_blank" class="cat-card">
-        <img class="cat-img" src="assets/apache-seeds/soil.jpg" alt="Soils & Compost" />
-        <div class="cat-body">
-          <div class="cat-name">Soils & Compost</div>
-          <p class="cat-desc">Potting mixes, compost, peat, and specialty growing media for every application.</p>
-        </div>
+        <img class="cat-img" src="assets/apache-seeds/soil.jpg" alt="Soils & Compost" style="height:110px;" />
+        <div class="cat-body"><div class="cat-name">Soils & Compost</div><p class="cat-desc">Potting mixes, compost, peat, and specialty growing media.</p></div>
       </a>
       <a href="https://www.apacheseeds.ca/fertilizers" target="_blank" class="cat-card">
-        <img class="cat-img" src="assets/apache-seeds/fertilizer.jpg" alt="Fertilizers" />
-        <div class="cat-body">
-          <div class="cat-name">Fertilizers & Amendments</div>
-          <p class="cat-desc">Organic and synthetic fertilizers, soil amendments, and micronutrients for healthy plants.</p>
-        </div>
+        <img class="cat-img" src="assets/apache-seeds/fertilizer.jpg" alt="Fertilizers" style="height:110px;" />
+        <div class="cat-body"><div class="cat-name">Fertilizers & Amendments</div><p class="cat-desc">Organic and synthetic fertilizers, soil amendments, and micronutrients.</p></div>
+      </a>
+      <a href="https://www.apacheseeds.ca/grower-supplies-1" target="_blank" class="cat-card-icon">
+        <div class="cat-icon-top">🌿</div>
+        <div class="cat-body"><div class="cat-name">Grower Supplies</div><p class="cat-desc">Trays, propagation supplies, grow lights, humidity domes, and more.</p></div>
+      </a>
+      <a href="https://www.apacheseeds.ca/pots" target="_blank" class="cat-card-icon">
+        <div class="cat-icon-top">🪴</div>
+        <div class="cat-body"><div class="cat-name">Pots</div><p class="cat-desc">Standard pots, azalea pots, hanging baskets, and specialty containers.</p></div>
+      </a>
+      <a href="https://www.apacheseeds.ca/feed-1" target="_blank" class="cat-card-icon">
+        <div class="cat-icon-top">🐦</div>
+        <div class="cat-body"><div class="cat-name">Feed</div><p class="cat-desc">Bird feed, suet, and wildlife food to attract and support local birds and animals.</p></div>
       </a>
       <a href="https://www.apacheseeds.ca/pesticides" target="_blank" class="cat-card">
-        <img class="cat-img" src="assets/apache-seeds/pest.jpg" alt="Pest Control" />
-        <div class="cat-body">
-          <div class="cat-name">Pest & Disease Control</div>
-          <p class="cat-desc">Insecticides, fungicides, herbicides, animal repellents, and bio-controls.</p>
-        </div>
+        <img class="cat-img" src="assets/apache-seeds/pest.jpg" alt="Pest Control" style="height:110px;" />
+        <div class="cat-body"><div class="cat-name">Pest & Disease Control</div><p class="cat-desc">Insecticides, fungicides, herbicides, animal repellents, bio-controls.</p></div>
+      </a>
+      <a href="https://www.apacheseeds.ca/orchids-bonsai" target="_blank" class="cat-card">
+        <img class="cat-img" src="assets/apache-seeds/orchid.jpg" alt="Orchids & Bonsai" style="height:110px;" />
+        <div class="cat-body"><div class="cat-name">Orchids & Bonsai</div><p class="cat-desc">Specialist orchid and bonsai products, media, fertilizers, and tools.</p></div>
+      </a>
+      <a href="https://www.apacheseeds.ca/tools" target="_blank" class="cat-card-icon">
+        <div class="cat-icon-top">🛠️</div>
+        <div class="cat-body"><div class="cat-name">Tools & Hardware</div><p class="cat-desc">Hand tools, pruners, pole saws, and garden hardware for every project.</p></div>
       </a>
     </div>
   </section>
@@ -275,6 +314,77 @@
         <div class="about-stat"><div class="about-stat-num">Local</div><div class="about-stat-label">Owned & Operated</div></div>
         <div class="about-stat"><div class="about-stat-num">All</div><div class="about-stat-label">Skill Levels Welcome</div></div>
       </div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section id="blog" style="background: var(--warm);">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Plant Care & Garden Guides</div>
+      <div class="sec-title">From Our Blog</div>
+      <p class="sec-sub">Tips, guides, and seasonal advice from our team of gardening experts.</p>
+    </div>
+    <div class="blog-grid">
+      <a href="https://www.apacheseeds.ca/blog" target="_blank" class="blog-card">
+        <div class="blog-card-top">🌱</div>
+        <div class="blog-card-body">
+          <div class="blog-tag">Seed Starting</div>
+          <div class="blog-title">Getting Started With Seeds Indoors</div>
+          <p class="blog-desc">Everything you need to know about starting seeds indoors — timing, light, soil, and transplanting.</p>
+        </div>
+      </a>
+      <a href="https://www.apacheseeds.ca/blog" target="_blank" class="blog-card">
+        <div class="blog-card-top">🌿</div>
+        <div class="blog-card-body">
+          <div class="blog-tag">Soil Health</div>
+          <div class="blog-title">How to Improve Your Garden Soil</div>
+          <p class="blog-desc">Simple amendments and compost tips to build rich, healthy soil that your plants will love.</p>
+        </div>
+      </a>
+      <a href="https://www.apacheseeds.ca/blog" target="_blank" class="blog-card">
+        <div class="blog-card-top">🐛</div>
+        <div class="blog-card-body">
+          <div class="blog-tag">Pest Control</div>
+          <div class="blog-title">Identifying & Treating Common Garden Pests</div>
+          <p class="blog-desc">Spot the signs early and treat effectively — a guide to keeping your garden pest-free.</p>
+        </div>
+      </a>
+    </div>
+    <div style="text-align:center; margin-top:2rem;">
+      <a href="https://www.apacheseeds.ca/blog" target="_blank" class="btn-green">Read More on Our Blog →</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="background: var(--surface);">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Common Questions</div>
+      <div class="sec-title">FAQ</div>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">When do your 2026 seeds arrive? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">2026 seeds have now arrived in store! Come in to browse our full selection of vegetable, herb, and flower seeds.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do you carry organic products? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Yes — we carry a wide range of organic fertilizers, amendments, and pest control products. Ask our staff for recommendations.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I get help choosing the right soil or fertilizer? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Absolutely. Our knowledgeable staff are happy to help you find the right products for your specific plants and growing conditions — just ask when you visit.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do you have a houseplant index? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Yes! We maintain a houseplant care index on our website with care guides for a wide variety of popular houseplants. <a href="https://www.apacheseeds.ca/houseplant-index" target="_blank" style="color:var(--green);">View the Houseplant Index →</a></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Are you open on Sundays? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">No — Apache Seeds is closed on Sundays and statutory holidays. We're open Monday to Saturday, 8:30 AM to 6:00 PM.</div>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem; text-align:center;">
+      <a href="https://www.apacheseeds.ca/faq" target="_blank" class="btn-outline" style="border-color:var(--border); color:var(--muted); display:inline-block; padding:0.7rem 1.6rem;">View Full FAQ →</a>
     </div>
   </section>
 
