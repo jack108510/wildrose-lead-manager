@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Namao Auto & RV Repair | Edmonton Area</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09090c;
+      --surface: #0e0e12;
+      --card: #15151c;
+      --border: #1f1f2c;
+      --yellow: #f5c518;
+      --yellow-dim: rgba(245,197,24,0.1);
+      --cream: #f0eeea;
+      --text: #d8d4cc;
+      --muted: #6b6860;
+      --light: #a8a298;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 68px;
+      background: rgba(9,9,12,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(245,197,24,0.2);
+    }
+
+    .nav-logo img { height: 44px; object-fit: contain; }
+
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: var(--light); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--yellow); }
+    .nav-cta { border: 1.5px solid var(--yellow); color: var(--yellow) !important; padding: 0.42rem 1.1rem; border-radius: 3px; font-weight: 600; transition: background 0.2s, color 0.2s !important; }
+    .nav-cta:hover { background: var(--yellow) !important; color: #09090c !important; }
+
+    /* HERO — full-width banner image, text below */
+    .hero-banner {
+      margin-top: 68px;
+      width: 100%; height: 480px; overflow: hidden; position: relative;
+    }
+    .hero-banner img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.6); }
+    .hero-banner-text {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+      padding: 0 8%;
+    }
+    .eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--yellow);
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.2rem;
+    }
+    .eyebrow::before { content: ''; display: block; width: 22px; height: 1px; background: var(--yellow); }
+
+    .hero-banner-text h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 800; line-height: 1.0;
+      text-transform: uppercase; color: var(--cream); margin-bottom: 1rem; max-width: 700px;
+    }
+    .hero-banner-text h1 span { color: var(--yellow); }
+    .hero-banner-text p { font-size: 1rem; color: var(--light); max-width: 540px; line-height: 1.7; margin-bottom: 1.75rem; }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-yellow { background: var(--yellow); color: #09090c; padding: 0.8rem 1.8rem; border-radius: 3px; text-decoration: none; font-weight: 700; font-size: 0.88rem; transition: opacity 0.2s, transform 0.15s; display: inline-block; }
+    .btn-yellow:hover { opacity: 0.9; transform: translateY(-2px); }
+    .btn-outline { border: 1.5px solid rgba(245,197,24,0.5); color: var(--yellow); padding: 0.8rem 1.8rem; border-radius: 3px; text-decoration: none; font-weight: 600; font-size: 0.88rem; transition: border-color 0.2s, transform 0.15s; }
+    .btn-outline:hover { border-color: var(--yellow); transform: translateY(-2px); }
+
+    /* STAT STRIP */
+    .stat-strip {
+      background: var(--yellow); display: flex;
+      justify-content: center; gap: 0; flex-wrap: wrap;
+    }
+    .stat-item {
+      padding: 1.25rem 3rem; text-align: center;
+      border-right: 1px solid rgba(9,9,12,0.15);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; color: #09090c; line-height: 1; }
+    .stat-label { font-size: 0.72rem; font-weight: 600; color: rgba(9,9,12,0.6); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+
+    /* SECTIONS */
+    section { padding: 5rem 8%; }
+
+    .sec-header { margin-bottom: 2.5rem; }
+    .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(1.8rem, 3.2vw, 2.8rem); font-weight: 800; text-transform: uppercase; color: var(--cream); line-height: 1.1; margin-bottom: 0.75rem; }
+    .sec-sub { color: var(--muted); font-size: 0.93rem; line-height: 1.8; max-width: 560px; }
+
+    /* SERVICES */
+    #services { background: var(--surface); }
+
+    .services-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+
+    .services-img { border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+    .services-img img { width: 100%; height: 420px; object-fit: cover; display: block; }
+
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .svc-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 5px;
+      padding: 1.25rem 1.25rem; transition: border-color 0.2s;
+    }
+    .svc-card:hover { border-color: rgba(245,197,24,0.35); }
+    .svc-icon { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .svc-name { font-size: 0.88rem; font-weight: 700; color: var(--cream); margin-bottom: 0.3rem; }
+    .svc-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
+
+    /* RV SECTION */
+    #rv { background: var(--bg); }
+    .rv-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .rv-img { border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+    .rv-img img { width: 100%; height: 380px; object-fit: cover; display: block; }
+    .rv-list { margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 1.5rem; }
+    .rv-item { font-size: 0.83rem; color: var(--light); display: flex; align-items: center; gap: 0.4rem; }
+    .rv-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--yellow); flex-shrink: 0; }
+
+    /* ABOUT */
+    #about { background: var(--surface); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .about-img { border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+    .about-img img { width: 100%; height: 420px; object-fit: cover; display: block; }
+    .about-body .sec-sub { margin-bottom: 1.25rem; }
+
+    /* CONTACT */
+    #contact { background: var(--bg); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-info .sec-sub { margin: 0.75rem 0 2rem; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.4rem; align-items: flex-start; }
+    .ci-icon { width: 38px; height: 38px; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.2); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+    .ci-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--yellow); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+
+    .fg { margin-bottom: 1rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 0.78rem 1rem; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input::placeholder, .fg textarea::placeholder { color: var(--muted); }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--yellow); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fg select option { background: var(--card); }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* FOOTER */
+    footer { background: #060608; padding: 1.75rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(245,197,24,0.12); }
+    footer img { height: 36px; object-fit: contain; opacity: 0.75; }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    .footer-demo { font-size: 0.68rem; color: rgba(245,197,24,0.35); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .services-layout { grid-template-columns: 1fr; }
+      .rv-layout { grid-template-columns: 1fr; }
+      #about { grid-template-columns: 1fr; gap: 2.5rem; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav .nav-links { display: none; }
+      .hero-banner { height: 360px; }
+      .stat-strip { gap: 0; }
+      .stat-item { padding: 1rem 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .fr { grid-template-columns: 1fr; }
+      .rv-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="https://static.wixstatic.com/media/b40c80_11e4f12ab876431da3487b56d79dbd0e~mv2.jpeg/v1/crop/x_0,y_0,w_617,h_208/fill/w_676,h_230,al_c,lg_1,q_80,enc_avif,quality_auto/Namao%20Logo%20Official.jpeg" alt="Namao Auto & RV Repair" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#rv">RV Repair</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Book Service</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO BANNER -->
+  <div class="hero-banner">
+    <img src="https://static.wixstatic.com/media/b40c80_eec09cc18a7f43a798fafdcb3b5953f6~mv2.jpg/v1/crop/x_0,y_802,w_5000,h_1729/fill/w_1880,h_650,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/RV%20Tech%20Fixing%20AC%20Unit%20Shutter.jpg" alt="RV Repair" />
+    <div class="hero-banner-text">
+      <div class="eyebrow">Sturgeon County · Edmonton · St. Albert</div>
+      <h1>Auto, Truck<br /><span>&amp; RV Repair</span></h1>
+      <p>Family owned and operated since 1972. Cars, trucks, diesel, fleet, and RVs of all sizes — we've been taking care of vehicles in the Edmonton area for over 50 years.</p>
+      <div class="hero-buttons">
+        <a href="tel:780-973-3373" class="btn-yellow">📞 (780) 973-3373</a>
+        <a href="#services" class="btn-outline">Our Services</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip">
+    <div class="stat-item"><div class="stat-num">50+</div><div class="stat-label">Years in Business</div></div>
+    <div class="stat-item"><div class="stat-num">1972</div><div class="stat-label">Family Est.</div></div>
+    <div class="stat-item"><div class="stat-num">CVIP</div><div class="stat-label">Licensed Inspection</div></div>
+    <div class="stat-item"><div class="stat-num">All</div><div class="stat-label">RV Sizes Serviced</div></div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="services-layout">
+      <div>
+        <div class="sec-header">
+          <div class="eyebrow">What We Do</div>
+          <div class="sec-title">Auto & Truck Services</div>
+          <p class="sec-sub">Complete automotive care for cars, trucks, diesel, and fleet vehicles — all under one roof.</p>
+        </div>
+        <div class="services-grid">
+          <div class="svc-card">
+            <div class="svc-icon">🔍</div>
+            <div class="svc-name">Diagnostics</div>
+            <p class="svc-desc">Complete computer diagnostics, check engine lights, ABS, electrical, and driveability issues.</p>
+          </div>
+          <div class="svc-card">
+            <div class="svc-icon">🔧</div>
+            <div class="svc-name">Engine & Transmission</div>
+            <p class="svc-desc">Engine repairs, rebuilds, timing belts, fuel injection, and transmission service.</p>
+          </div>
+          <div class="svc-card">
+            <div class="svc-icon">🛑</div>
+            <div class="svc-name">Brakes & Suspension</div>
+            <p class="svc-desc">Brake repair and replacement, steering, suspension, and alignment services.</p>
+          </div>
+          <div class="svc-card">
+            <div class="svc-icon">❄️</div>
+            <div class="svc-name">Air Conditioning</div>
+            <p class="svc-desc">A/C recharge, leak detection, and full heating and cooling system service.</p>
+          </div>
+          <div class="svc-card">
+            <div class="svc-icon">🔩</div>
+            <div class="svc-name">Preventative Maintenance</div>
+            <p class="svc-desc">Oil changes, fluid services, filters, tires, balancing, and scheduled maintenance.</p>
+          </div>
+          <div class="svc-card">
+            <div class="svc-icon">📋</div>
+            <div class="svc-name">Inspections</div>
+            <p class="svc-desc">CVIP, out-of-province, insurance, and pre-purchase inspections — licensed facility.</p>
+          </div>
+        </div>
+      </div>
+      <div class="services-img">
+        <img src="https://static.wixstatic.com/media/b40c80_b1d5463ace63494a88c218d610f51fbf~mv2.png/v1/fill/w_950,h_1150,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9497_HEIC.png" alt="RV in service bay" />
+      </div>
+    </div>
+  </section>
+
+  <!-- RV REPAIR -->
+  <section id="rv">
+    <div class="rv-layout">
+      <div>
+        <div class="sec-header">
+          <div class="eyebrow">RV Specialists</div>
+          <div class="sec-title">No RV Too Big</div>
+          <p class="sec-sub">From Class A Diesel Pushers to tow trailers — we're equipped and licensed to work on both the coach and chassis. Size doesn't matter.</p>
+        </div>
+        <div class="rv-list">
+          <div class="rv-item"><div class="rv-dot"></div> Slide Outs</div>
+          <div class="rv-item"><div class="rv-dot"></div> Awnings</div>
+          <div class="rv-item"><div class="rv-dot"></div> Structural Damage</div>
+          <div class="rv-item"><div class="rv-dot"></div> Appliances</div>
+          <div class="rv-item"><div class="rv-dot"></div> Hail Damage</div>
+          <div class="rv-item"><div class="rv-dot"></div> Roof Repairs</div>
+          <div class="rv-item"><div class="rv-dot"></div> Leveling Systems</div>
+          <div class="rv-item"><div class="rv-dot"></div> Solar Panels</div>
+          <div class="rv-item"><div class="rv-dot"></div> Winterize / Summerize</div>
+          <div class="rv-item"><div class="rv-dot"></div> Mechanical Repairs</div>
+          <div class="rv-item"><div class="rv-dot"></div> Tires</div>
+          <div class="rv-item"><div class="rv-dot"></div> Maintenance</div>
+        </div>
+        <div style="margin-top:2rem;">
+          <a href="#contact" class="btn-yellow">Book RV Service</a>
+        </div>
+      </div>
+      <div class="rv-img">
+        <img src="https://static.wixstatic.com/media/b40c80_dc1f210ca4584e2193220fe350772013~mv2.png/v1/crop/x_0,y_65,w_1170,h_506/fill/w_1170,h_506,al_c,q_90,enc_avif,quality_auto/commercial%20lift.png" alt="RV on commercial lift" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img">
+      <img src="https://static.wixstatic.com/media/b40c80_3e6bd58f517b40d09e4a166ed7d8dede~mv2_d_2712_2729_s_4_2.jpg/v1/fill/w_1286,h_696,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/56310262_830910843930583_114059628420215.jpg" alt="Namao team" />
+    </div>
+    <div class="about-body">
+      <div class="eyebrow">About Us</div>
+      <div class="sec-title">Family Owned Since 1972</div>
+      <p class="sec-sub">For over 50 years, Namao Auto & RV Repair has been locally owned and operated by the Suranyi Family — serving Sturgeon County, Edmonton, St. Albert, and surrounding areas.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">As a second-generation small business, we take the time to explain every job in advance. Our technicians are trained to repair your vehicle or RV right the first time — no matter the age, shape, or size.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">We also have a courtesy vehicle available for reservation when your vehicle is in the shop.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <div class="eyebrow">Get in Touch</div>
+      <div class="sec-title">Book Your Service</div>
+      <p class="sec-sub">Give us a call or fill out the form — we'll get back to you promptly.</p>
+      <div class="ci">
+        <div class="ci-icon">📞</div>
+        <div><div class="ci-label">Phone</div><div class="ci-val">(780) 973-3373</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">✉</div>
+        <div><div class="ci-label">Email</div><div class="ci-val">service@namaorv.ca</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">📍</div>
+        <div><div class="ci-label">Address</div><div class="ci-val">24400 Alberta Hwy 37<br />Sturgeon County, AB T8T 0E9</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">🕐</div>
+        <div><div class="ci-label">Hours</div><div class="ci-val">Mon–Thu: 8:00am – 4:30/5:00pm<br />Fri: 8:00am – 5:00pm</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="fr">
+        <div class="fg"><input type="text" placeholder="First Name" /></div>
+        <div class="fg"><input type="text" placeholder="Last Name" /></div>
+      </div>
+      <div class="fg"><input type="email" placeholder="Email Address" /></div>
+      <div class="fg"><input type="tel" placeholder="Phone Number" /></div>
+      <div class="fg"><input type="text" placeholder="Vehicle or RV (Year, Make, Model)" /></div>
+      <div class="fg">
+        <select>
+          <option value="" disabled selected>Service Needed</option>
+          <option>Diagnostics / Check Engine Light</option>
+          <option>Engine or Transmission</option>
+          <option>Brakes & Suspension</option>
+          <option>Air Conditioning</option>
+          <option>Preventative Maintenance</option>
+          <option>RV Repair & Service</option>
+          <option>CVIP / Inspection</option>
+          <option>Tires</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><textarea placeholder="Describe the issue or anything we should know…"></textarea></div>
+      <a href="mailto:service@namaorv.ca" class="btn-yellow" style="display:block; width:100%; text-align:center;">Request Appointment →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="https://static.wixstatic.com/media/b40c80_11e4f12ab876431da3487b56d79dbd0e~mv2.jpeg/v1/crop/x_0,y_0,w_617,h_208/fill/w_676,h_230,al_c,lg_1,q_80,enc_avif,quality_auto/Namao%20Logo%20Official.jpeg" alt="Namao Auto & RV Repair" />
+    <div class="footer-copy">© 2026 Namao Auto & RV Repair · 24400 Alberta Hwy 37, Sturgeon County · (780) 973-3373</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
