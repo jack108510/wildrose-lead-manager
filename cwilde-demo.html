@@ -201,22 +201,58 @@
       .portfolio-row { grid-template-columns: repeat(3, 1fr); }
     }
     @media (max-width: 860px) {
+      nav { padding: 0 5%; }
       nav .nav-links { display: none; }
+      .nav-mobile-cta { display: inline-block !important; }
+      section { padding: 4rem 6%; }
       .portfolio-main { grid-template-columns: 1fr; }
-      .portfolio-main .port-img { height: 280px; }
-      #about { grid-template-columns: 1fr; gap: 3rem; }
-      #contact { grid-template-columns: 1fr; gap: 3rem; }
+      .portfolio-main .port-img { height: 260px; }
+      .portfolio-row { grid-template-columns: repeat(2, 1fr); }
+      #services { padding: 4rem 6%; }
+      .svc-grid { grid-template-columns: repeat(2, 1fr); }
+      #about { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 6%; }
+      .about-img img { height: 360px; }
+      .about-img::after { display: none; }
+      .about-creds { gap: 1.5rem; }
+      #process { padding: 4rem 6%; }
+      .process-steps { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 6%; }
       .art-grid { grid-template-columns: 1fr 1fr; }
-      .hero h1 { font-size: 2.8rem; }
+      .art-grid + div { grid-template-columns: repeat(2, 1fr) !important; }
+      .hero h1 { font-size: 2.6rem; }
+      .hero p { font-size: 0.85rem; }
+      .hero-buttons { flex-direction: column; gap: 0.75rem; }
+      .hero-buttons a { text-align: center; }
+      .gold-strip { gap: 1.2rem; padding: 0.85rem 6%; }
+      footer { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .footer-links { flex-wrap: wrap; gap: 1rem; }
     }
     @media (max-width: 600px) {
+      nav { height: 58px; }
+      section { padding: 3rem 5%; }
+      .hero { height: auto; min-height: calc(100vh - 58px); }
+      .hero-content { padding: 3rem 5%; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero-eyebrow { font-size: 0.6rem; }
+      .hero-scroll { display: none; }
       .svc-grid { grid-template-columns: 1fr; }
       .process-steps { grid-template-columns: 1fr; }
       .portfolio-row { grid-template-columns: repeat(2, 1fr); }
+      .portfolio-row .port-thumb img { height: 130px; }
       .fr { grid-template-columns: 1fr; }
       .art-grid { grid-template-columns: 1fr; }
-      .gold-strip { gap: 1rem; }
+      .art-grid + div { grid-template-columns: repeat(2, 1fr) !important; }
+      .art-card img { height: 220px !important; }
+      .gold-strip { flex-direction: column; gap: 0.6rem; align-items: flex-start; padding: 1rem 5%; }
       .gs-divider { display: none; }
+      .about-img img { height: 280px; }
+      .about-quote p { font-size: 1rem; }
+      .about-creds { gap: 1rem; }
+      .sec-title { font-size: 1.8rem; }
+      .portfolio-intro { flex-direction: column; align-items: flex-start; }
+      footer { padding: 1.5rem 5%; }
+      .footer-links { gap: 0.75rem; }
+      .footer-links a { font-size: 0.65rem; }
     }
   </style>
 </head>
@@ -232,6 +268,7 @@
       <li><a href="#artwork">Artwork</a></li>
       <li><a href="#contact" class="nav-cta">Contact</a></li>
     </ul>
+    <a href="#contact" class="nav-mobile-cta" style="display:none; font-size:0.72rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); text-decoration:none; border:1px solid var(--gold); padding:0.4rem 0.9rem; border-radius:2px;">Contact</a>
   </nav>
 
   <!-- HERO -->
