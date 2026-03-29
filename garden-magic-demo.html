@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Garden Magic Landscaping | Edmonton & St. Albert</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:      #1a3a2a;
+      --green-mid:  #254d38;
+      --green-light:#2e6347;
+      --gold:       #d4a843;
+      --gold-light: #e8c06a;
+      --cream:      #f9f5ec;
+      --white:      #ffffff;
+      --text-dark:  #1a1a1a;
+      --text-muted: #5a6a60;
+      --shadow-sm:  0 2px 8px rgba(0,0,0,.10);
+      --shadow-md:  0 6px 24px rgba(0,0,0,.14);
+      --shadow-lg:  0 12px 48px rgba(0,0,0,.18);
+      --radius:     10px;
+      --transition: .25s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, sans-serif;
+      color: var(--text-dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 70px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .nav-brand {
+      display: flex; flex-direction: column; gap: 1px;
+      text-decoration: none;
+    }
+    .nav-brand .brand-name {
+      font-size: 1.25rem; font-weight: 700;
+      color: var(--gold); letter-spacing: .02em;
+    }
+    .nav-brand .brand-tag {
+      font-size: .65rem; color: rgba(255,255,255,.65);
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none; align-items: center;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,.85); text-decoration: none;
+      font-size: .9rem; font-weight: 500; letter-spacing: .02em;
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      background: var(--gold); color: var(--green) !important;
+      padding: .5rem 1.2rem; border-radius: 5px; font-weight: 700 !important;
+      transition: background var(--transition), transform var(--transition) !important;
+    }
+    .nav-cta:hover { background: var(--gold-light) !important; transform: translateY(-1px); }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px; cursor: pointer;
+      background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white); border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* ─── HERO ────────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(160deg, rgba(26,58,42,.92) 0%, rgba(26,58,42,.70) 60%, rgba(212,168,67,.25) 100%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(46,99,71,.18) 0px,
+          rgba(46,99,71,.18) 2px,
+          transparent 2px,
+          transparent 16px
+        ),
+        linear-gradient(135deg, #1a3a2a 0%, #254d38 40%, #1e4a30 70%, #2d6040 100%);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 5% 80px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 60%, rgba(212,168,67,.12) 0%, transparent 70%),
+        radial-gradient(circle at 20% 80%, rgba(46,99,71,.4) 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(46,99,71,.3) 0%, transparent 35%);
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 760px; }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(212,168,67,.15);
+      border: 1px solid rgba(212,168,67,.4);
+      color: var(--gold); font-size: .8rem; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: .4rem 1.2rem; border-radius: 20px; margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5.5vw, 3.6rem);
+      font-weight: 800; color: var(--white);
+      line-height: 1.15; letter-spacing: -.02em;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 span { color: var(--gold); }
+
+    .hero-sub {
+      font-size: clamp(.95rem, 2vw, 1.15rem);
+      color: rgba(255,255,255,.80);
+      max-width: 560px; margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 2rem; border-radius: 6px;
+      font-size: 1rem; font-weight: 600; cursor: pointer;
+      text-decoration: none; border: none;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--gold); color: var(--green);
+      box-shadow: 0 4px 20px rgba(212,168,67,.4);
+    }
+    .btn-primary:hover { background: var(--gold-light); box-shadow: 0 6px 28px rgba(212,168,67,.55); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      border: 2px solid rgba(255,255,255,.45);
+    }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,.08); }
+
+    .hero-stats {
+      display: flex; justify-content: center; gap: 3rem;
+      margin-top: 4rem; padding-top: 2.5rem;
+      border-top: 1px solid rgba(255,255,255,.15);
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-number {
+      display: block; font-size: 2rem; font-weight: 800;
+      color: var(--gold); line-height: 1;
+    }
+    .stat-label {
+      font-size: .78rem; color: rgba(255,255,255,.65);
+      letter-spacing: .08em; text-transform: uppercase; margin-top: .3rem;
+    }
+
+    /* ─── SECTION SHARED ─────────────────────────────────────────── */
+    section { padding: 90px 5%; }
+
+    .section-header {
+      text-align: center; margin-bottom: 3.5rem;
+    }
+    .section-label {
+      display: inline-block; color: var(--gold);
+      font-size: .75rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; margin-bottom: .75rem;
+    }
+    .section-header h2 {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 800; color: var(--green);
+      letter-spacing: -.02em; line-height: 1.2;
+      margin-bottom: .85rem;
+    }
+    .section-header p {
+      font-size: 1.05rem; color: var(--text-muted);
+      max-width: 540px; margin: 0 auto; line-height: 1.7;
+    }
+
+    /* ─── SERVICES ───────────────────────────────────────────────── */
+    .services { background: var(--cream); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+
+    .service-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem 1.75rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(26,58,42,.07);
+      transition: transform var(--transition), box-shadow var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .service-card::after {
+      content: "";
+      position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--green), var(--gold));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .35s ease;
+    }
+    .service-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+    .service-card:hover::after { transform: scaleX(1); }
+
+    .service-icon {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, var(--green), var(--green-light));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .service-icon svg { width: 26px; height: 26px; fill: none; stroke: var(--gold); stroke-width: 1.8; }
+
+    .service-card h3 {
+      font-size: 1.15rem; font-weight: 700; color: var(--green);
+      margin-bottom: .6rem;
+    }
+    .service-card p {
+      font-size: .92rem; color: var(--text-muted); line-height: 1.65;
+    }
+
+    /* ─── WHY CHOOSE US ─────────────────────────────────────────── */
+    .why { background: var(--white); }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      max-width: 1100px; margin: 0 auto;
+      align-items: center;
+    }
+
+    .why-visual {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      color: var(--white);
+      position: relative; overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .why-visual::before {
+      content: "";
+      position: absolute; top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: rgba(212,168,67,.15);
+      border-radius: 50%;
+    }
+    .why-visual::after {
+      content: "";
+      position: absolute; bottom: -60px; left: -20px;
+      width: 160px; height: 160px;
+      background: rgba(212,168,67,.10);
+      border-radius: 50%;
+    }
+    .why-visual-inner { position: relative; z-index: 1; }
+    .why-visual-quote {
+      font-size: 1.4rem; font-weight: 700; line-height: 1.4;
+      color: var(--white); margin-bottom: 1.5rem;
+    }
+    .why-visual-quote span { color: var(--gold); }
+    .why-visual-sub {
+      font-size: .9rem; color: rgba(255,255,255,.75); line-height: 1.6;
+    }
+    .why-visual-divider {
+      width: 40px; height: 3px;
+      background: var(--gold); border-radius: 2px;
+      margin: 1.5rem 0;
+    }
+
+    .why-features { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .feature-item {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      padding: 1.5rem;
+      background: var(--cream); border-radius: var(--radius);
+      border: 1px solid rgba(26,58,42,.07);
+      transition: transform var(--transition);
+    }
+    .feature-item:hover { transform: translateX(4px); }
+
+    .feature-icon {
+      width: 46px; height: 46px; flex-shrink: 0;
+      background: var(--green); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .feature-icon svg { width: 22px; height: 22px; fill: none; stroke: var(--gold); stroke-width: 1.8; }
+
+    .feature-text h3 {
+      font-size: 1rem; font-weight: 700; color: var(--green);
+      margin-bottom: .3rem;
+    }
+    .feature-text p {
+      font-size: .88rem; color: var(--text-muted); line-height: 1.6;
+    }
+
+    /* ─── PROCESS ────────────────────────────────────────────────── */
+    .process { background: var(--green); }
+    .process .section-header h2 { color: var(--white); }
+    .process .section-header p { color: rgba(255,255,255,.7); }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px; margin: 0 auto;
+    }
+
+    .process-step {
+      text-align: center; padding: 2rem 1.5rem;
+      position: relative;
+    }
+    .process-step::after {
+      content: "";
+      position: absolute; top: 35px; right: -10%;
+      width: 20%; height: 1px;
+      background: rgba(212,168,67,.3);
+    }
+    .process-step:last-child::after { display: none; }
+
+    .step-num {
+      width: 64px; height: 64px; margin: 0 auto 1.25rem;
+      background: rgba(212,168,67,.15);
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; font-weight: 800; color: var(--gold);
+    }
+    .process-step h3 {
+      font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: .5rem;
+    }
+    .process-step p {
+      font-size: .85rem; color: rgba(255,255,255,.65); line-height: 1.6;
+    }
+
+    /* ─── CONTACT ────────────────────────────────────────────────── */
+    .contact { background: var(--cream); }
+
+    .contact-wrap {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-size: 1.5rem; font-weight: 800; color: var(--green);
+      margin-bottom: .75rem;
+    }
+    .contact-info p {
+      font-size: .95rem; color: var(--text-muted); line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .contact-detail {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.2rem;
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid rgba(26,58,42,.10);
+      margin-bottom: .85rem;
+      text-decoration: none;
+      color: var(--text-dark);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .contact-detail:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+
+    .contact-detail-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--green), var(--green-light));
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .contact-detail-icon svg { width: 18px; height: 18px; stroke: var(--gold); stroke-width: 2; fill: none; }
+    .contact-detail-text { display: flex; flex-direction: column; }
+    .contact-detail-label { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); }
+    .contact-detail-value { font-size: .95rem; font-weight: 600; color: var(--green); }
+
+    .contact-form {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(26,58,42,.08);
+    }
+    .contact-form h3 {
+      font-size: 1.15rem; font-weight: 700; color: var(--green); margin-bottom: 1.5rem;
+    }
+
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label {
+      display: block; font-size: .8rem; font-weight: 600;
+      color: var(--text-dark); margin-bottom: .4rem;
+      letter-spacing: .03em;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%; padding: .75rem 1rem;
+      border: 1.5px solid rgba(26,58,42,.2);
+      border-radius: 6px; font-size: .92rem;
+      font-family: inherit; color: var(--text-dark);
+      background: var(--white);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(26,58,42,.1);
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .form-submit {
+      width: 100%;
+      padding: .9rem;
+      background: linear-gradient(135deg, var(--green), var(--green-light));
+      color: var(--white);
+      font-size: .95rem; font-weight: 700;
+      border: none; border-radius: 6px; cursor: pointer;
+      letter-spacing: .04em;
+      transition: transform var(--transition), box-shadow var(--transition);
+      margin-top: .5rem;
+    }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,58,42,.35); }
+
+    /* ─── FOOTER ─────────────────────────────────────────────────── */
+    footer {
+      background: #0f2318;
+      padding: 3.5rem 5% 2rem;
+      color: rgba(255,255,255,.65);
+    }
+
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 2rem; flex-wrap: wrap;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand .brand-name { font-size: 1.4rem; font-weight: 700; color: var(--gold); margin-bottom: .3rem; }
+    .footer-brand .brand-tag { font-size: .78rem; color: rgba(255,255,255,.5); letter-spacing: .08em; text-transform: uppercase; }
+    .footer-brand p { font-size: .88rem; color: rgba(255,255,255,.55); margin-top: .75rem; max-width: 260px; line-height: 1.6; }
+
+    .footer-links h4 {
+      font-size: .8rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--gold); margin-bottom: 1rem;
+    }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .footer-links a {
+      font-size: .88rem; color: rgba(255,255,255,.6); text-decoration: none;
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: .8rem; color: rgba(255,255,255,.4);
+    }
+
+    /* ─── RIBBON ─────────────────────────────────────────────────── */
+    .ribbon {
+      background: var(--gold);
+      text-align: center;
+      padding: .65rem 1rem;
+      font-size: .82rem; font-weight: 600; color: var(--green);
+      letter-spacing: .06em;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .why-grid { grid-template-columns: 1fr; }
+      .why-visual { order: -1; }
+      .contact-wrap { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      nav { padding: 0 4%; }
+      .nav-links { display: none; flex-direction: column; gap: 0; }
+      .nav-links.open {
+        display: flex;
+        position: absolute; top: 70px; left: 0; right: 0;
+        background: var(--green);
+        padding: 1rem 0;
+        box-shadow: var(--shadow-md);
+      }
+      .nav-links.open li { border-bottom: 1px solid rgba(255,255,255,.08); }
+      .nav-links.open a { display: block; padding: .85rem 5%; }
+      .hamburger { display: flex; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .hero-stats { gap: 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .process-step::after { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 70px 4%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ribbon -->
+  <div class="ribbon">Serving Edmonton &amp; St. Albert — Call us today: 587 589 7798</div>
+
+  <!-- Nav -->
+  <nav id="main-nav">
+    <a class="nav-brand" href="#">
+      <span class="brand-name">Garden Magic</span>
+      <span class="brand-tag">Landscaping</span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Edmonton &amp; St. Albert</div>
+      <h1>25+ Years Creating<br><span>Beautiful Outdoor</span><br>Spaces in Edmonton</h1>
+      <p class="hero-sub">
+        Family owned and operated, we transform your yard into a stunning outdoor oasis — 
+        with a genuine love for the craft and deep respect for the environment.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Get a Free Quote</a>
+        <a href="#services" class="btn btn-outline">Our Services</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">25+</span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Projects Completed</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Family Owned</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="services" id="services">
+    <div class="section-header">
+      <span class="section-label">What We Do</span>
+      <h2>Full-Service Landscaping</h2>
+      <p>From conception to completion, we handle every aspect of your outdoor living space with care and expertise.</p>
+    </div>
+    <div class="services-grid">
+
+      <!-- Lawn Care -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 17c3-3 6-5 9-5s6 2 9 5"/>
+            <path d="M12 12V7"/>
+            <path d="M8 9c1-2 2.5-3 4-3s3 1 4 3"/>
+          </svg>
+        </div>
+        <h3>Lawn Care</h3>
+        <p>Regular mowing, edging, fertilization, aeration, and seasonal treatments to keep your lawn lush, healthy, and vibrant all year round.</p>
+      </div>
+
+      <!-- Garden Design -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+        </div>
+        <h3>Garden Design</h3>
+        <p>Custom garden installations tailored to your vision and Edmonton's climate — perennials, annuals, native plants, raised beds, and more.</p>
+      </div>
+
+      <!-- Outdoor Spaces -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <path d="M8 21h8M12 17v4"/>
+          </svg>
+        </div>
+        <h3>Outdoor Spaces</h3>
+        <p>Patios, pathways, retaining walls, pergolas, and water features — we design and build functional outdoor living areas that complement your home.</p>
+      </div>
+
+      <!-- Seasonal Cleanup -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9"/>
+            <path d="M22 16H2"/>
+            <path d="M9 22h6"/>
+            <path d="M12 16v6"/>
+          </svg>
+        </div>
+        <h3>Seasonal Cleanup</h3>
+        <p>Spring and fall cleanups, leaf removal, mulching, debris clearing, and winterization services to keep your property pristine every season.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="why" id="why">
+    <div class="why-grid">
+      <div class="why-visual">
+        <div class="why-visual-inner">
+          <div class="why-visual-quote">
+            "Working for you and <span>your environment</span>"
+          </div>
+          <div class="why-visual-divider"></div>
+          <p class="why-visual-sub">
+            For over 25 years, Garden Magic has been transforming Edmonton and St. Albert properties into the outdoor spaces families love. We are not just landscapers — we are your neighbours.
+          </p>
+        </div>
+      </div>
+      <div class="why-features">
+        <div class="section-header" style="text-align:left; margin-bottom:2rem;">
+          <span class="section-label">Why Choose Us</span>
+          <h2 style="margin-bottom:.5rem;">The Garden Magic Difference</h2>
+          <p style="max-width:100%; text-align:left;">Backed by decades of experience and a genuine passion for creating beautiful, sustainable outdoor environments.</p>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>Family Owned &amp; Operated</h3>
+            <p>Not a franchise, not a corporation. A real local family that takes pride in every project and treats your property as our own.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>25+ Years of Expertise</h3>
+            <p>Decades of experience with Edmonton's unique climate, soil conditions, and growing seasons — we know what works here.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+              <path d="M12 8v4l3 3"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>Environmental Focus</h3>
+            <p>We use sustainable practices, native plant selections, and eco-conscious methods to create landscapes that are good for you and good for the planet.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="process" id="process">
+    <div class="section-header">
+      <span class="section-label">How It Works</span>
+      <h2 style="color:#fff;">Simple. Reliable. Beautiful.</h2>
+      <p>From your first call to the final walkthrough, we make the process easy.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-num">1</div>
+        <h3>Free Consultation</h3>
+        <p>Tell us your vision. We visit your property and listen — no pressure, just ideas.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">2</div>
+        <h3>Custom Design</h3>
+        <p>We design a plan tailored to your property, budget, and the Edmonton climate.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">3</div>
+        <h3>Expert Installation</h3>
+        <p>Our experienced crew gets to work — on time, on budget, with pride in every detail.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">4</div>
+        <h3>Enjoy Your Space</h3>
+        <p>Step back and enjoy your new outdoor oasis. We are here if you need ongoing care.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <div class="section-header">
+      <span class="section-label">Get In Touch</span>
+      <h2>Ready to Transform Your Yard?</h2>
+      <p>Reach out today for a free, no-obligation consultation. We would love to hear about your project.</p>
+    </div>
+    <div class="contact-wrap">
+      <div class="contact-info">
+        <h3>Let's Talk</h3>
+        <p>Whether you have a detailed plan or just a rough idea, we are here to help bring your outdoor vision to life. Contact us any time.</p>
+
+        <a href="tel:5875897798" class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.27 18a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 3.18 2 2 0 0 1 4.11 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
+          <div class="contact-detail-text">
+            <span class="contact-detail-label">Phone</span>
+            <span class="contact-detail-value">587 589 7798</span>
+          </div>
+        </a>
+
+        <div class="contact-detail" style="cursor:default;">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div class="contact-detail-text">
+            <span class="contact-detail-label">Service Area</span>
+            <span class="contact-detail-value">Edmonton &amp; St. Albert, AB</span>
+          </div>
+        </div>
+
+        <div class="contact-detail" style="cursor:default;">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="contact-detail-text">
+            <span class="contact-detail-label">Hours</span>
+            <span class="contact-detail-value">Mon – Sat, 7am – 6pm</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="contact-form">
+        <h3>Request a Free Quote</h3>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" placeholder="Jane" required />
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" placeholder="Smith" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="780 555 0000" required />
+          </div>
+          <div class="form-group">
+            <label for="service">Service Needed</label>
+            <select id="service">
+              <option value="">Select a service...</option>
+              <option>Lawn Care</option>
+              <option>Garden Design</option>
+              <option>Outdoor Spaces</option>
+              <option>Seasonal Cleanup</option>
+              <option>Multiple Services</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Tell Us About Your Project</label>
+            <textarea id="message" placeholder="Brief description of your property and what you are hoping to achieve..."></textarea>
+          </div>
+          <button type="submit" class="form-submit">Send My Request</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-name">Garden Magic Landscaping</div>
+        <div class="brand-tag">Working for you and your environment</div>
+        <p>Local, family owned, and passionate about creating beautiful outdoor oases for Edmonton and St. Albert homeowners since 1999.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Lawn Care</a></li>
+          <li><a href="#services">Garden Design</a></li>
+          <li><a href="#services">Outdoor Spaces</a></li>
+          <li><a href="#services">Seasonal Cleanup</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#why">About Us</a></li>
+          <li><a href="#process">Our Process</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="tel:5875897798">587 589 7798</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 Garden Magic Landscaping. All rights reserved.</span>
+      <span>Edmonton &amp; St. Albert, Alberta</span>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+    // Close on link click
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    // Sticky nav style on scroll
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.style.boxShadow = window.scrollY > 10
+        ? '0 4px 30px rgba(0,0,0,.35)'
+        : '0 6px 24px rgba(0,0,0,.14)';
+    });
+
+    // Form submit handler
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.form-submit');
+      btn.textContent = 'Request Sent — We will be in touch!';
+      btn.style.background = 'linear-gradient(135deg, #d4a843, #c49030)';
+      btn.style.color = '#1a3a2a';
+      btn.disabled = true;
+    }
+  </script>
+</body>
+</html>
