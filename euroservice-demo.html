@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Euroservice Autohaus — European Auto Repair | St. Albert</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0c10;
+      --surface: #0e1117;
+      --card: #151b24;
+      --border: #1e2a38;
+      --blue: #1a6bdc;
+      --blue-light: #2d7ee8;
+      --blue-dim: rgba(26,107,220,0.12);
+      --cream: #f0f4f8;
+      --text: #d8e2ed;
+      --muted: #6b7f94;
+      --light: #a8bccf;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 68px;
+      background: rgba(10,12,16,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(26,107,220,0.2);
+    }
+
+    .nav-logo img { height: 46px; object-fit: contain; }
+
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: var(--light); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--blue-light); }
+    .nav-cta { border: 1.5px solid var(--blue); color: var(--blue) !important; padding: 0.42rem 1.1rem; border-radius: 3px; font-weight: 600; transition: background 0.2s, color 0.2s !important; }
+    .nav-cta:hover { background: var(--blue) !important; color: white !important; }
+
+    /* HERO */
+    .hero { margin-top: 68px; display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 68px); }
+
+    .hero-left {
+      background: var(--surface);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 6% 5rem 8%;
+      border-right: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue);
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.4rem;
+    }
+    .eyebrow::before { content: ''; display: block; width: 22px; height: 1px; background: var(--blue); }
+
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.6rem, 4.5vw, 4.2rem); font-weight: 800; line-height: 1.05;
+      text-transform: uppercase; color: var(--cream); margin-bottom: 1.25rem;
+    }
+    .hero h1 span { color: var(--blue); }
+
+    .hero-left p { font-size: 0.97rem; color: var(--muted); line-height: 1.85; margin-bottom: 2.5rem; max-width: 460px; }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+
+    .btn-blue { background: var(--blue); color: white; padding: 0.8rem 1.8rem; border-radius: 3px; text-decoration: none; font-weight: 700; font-size: 0.88rem; transition: background 0.2s, transform 0.15s; display: inline-block; }
+    .btn-blue:hover { background: var(--blue-light); transform: translateY(-2px); }
+
+    .btn-outline { border: 1.5px solid rgba(26,107,220,0.4); color: var(--blue); padding: 0.8rem 1.8rem; border-radius: 3px; text-decoration: none; font-weight: 600; font-size: 0.88rem; transition: border-color 0.2s, transform 0.15s; }
+    .btn-outline:hover { border-color: var(--blue); transform: translateY(-2px); }
+
+    .hero-badges { display: flex; gap: 1.5rem; flex-wrap: wrap; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .badge-item { font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; }
+    .badge-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--blue); }
+
+    .hero-right { overflow: hidden; }
+    .hero-right img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* BRAND LOGOS */
+    #brands { background: var(--surface); padding: 2.5rem 8%; border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); }
+
+    .brands-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; text-align: center; }
+
+    .brands-row { display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+
+    .brands-row img { height: 38px; object-fit: contain; filter: grayscale(1) brightness(0.7); transition: filter 0.2s; }
+    .brands-row img:hover { filter: grayscale(0) brightness(1); }
+
+    /* SERVICES */
+    #services { background: var(--bg); padding: 5rem 8%; }
+
+    .sec-header { margin-bottom: 2.5rem; }
+    .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(1.8rem, 3.2vw, 2.8rem); font-weight: 800; text-transform: uppercase; color: var(--cream); line-height: 1.1; margin-bottom: 0.75rem; }
+    .sec-sub { color: var(--muted); font-size: 0.93rem; line-height: 1.8; max-width: 560px; }
+
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+    .svc-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 5px;
+      padding: 1.75rem 1.5rem; transition: border-color 0.2s, transform 0.2s;
+    }
+    .svc-card:hover { border-color: rgba(26,107,220,0.45); transform: translateY(-3px); }
+
+    .svc-icon { font-size: 1.6rem; margin-bottom: 0.75rem; }
+    .svc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; color: var(--cream); margin-bottom: 0.45rem; letter-spacing: 0.02em; }
+    .svc-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+    /* ABOUT */
+    #about { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; background: var(--surface); padding: 5rem 8%; }
+
+    .about-img { border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+    .about-img img { width: 100%; height: 460px; object-fit: cover; display: block; }
+
+    .about-body .sec-sub { margin-bottom: 1.5rem; }
+
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.75rem; }
+    .about-stat { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: 3px; padding: 0.85rem 1rem; }
+    .about-stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--blue); line-height: 1; }
+    .about-stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* BOSCH CERT */
+    #cert { background: var(--bg); padding: 3rem 8%; display: flex; align-items: center; gap: 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .cert-logo img { height: 60px; object-fit: contain; filter: grayscale(0.3); }
+    .cert-text { flex: 1; }
+    .cert-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; text-transform: uppercase; color: var(--cream); margin-bottom: 0.3rem; }
+    .cert-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+    /* CONTACT */
+    #contact { background: var(--surface); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; padding: 5rem 8%; }
+
+    .contact-info .sec-sub { margin: 0.75rem 0 2rem; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.4rem; align-items: flex-start; }
+    .ci-icon { width: 38px; height: 38px; background: var(--blue-dim); border: 1px solid rgba(26,107,220,0.22); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+    .ci-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+
+    .fg { margin-bottom: 1rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 0.78rem 1rem; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input::placeholder, .fg textarea::placeholder { color: var(--muted); }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--blue); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fg select option { background: var(--card); }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* FOOTER */
+    footer { background: #060810; padding: 1.75rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(26,107,220,0.15); }
+    footer img { height: 32px; object-fit: contain; opacity: 0.75; }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    .footer-demo { font-size: 0.68rem; color: rgba(26,107,220,0.4); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 280px; }
+      #about { grid-template-columns: 1fr; gap: 2.5rem; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav .nav-links { display: none; }
+    }
+    @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } .fr { grid-template-columns: 1fr; } .about-stats { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="https://www.euroserviceautohaus.com/wp-content/uploads/2016/10/logo.png" alt="Euroservice Autohaus" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Book Service</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="eyebrow">St. Albert, Alberta · Since 1999</div>
+      <h1>St. Albert's<br /><span>European</span><br />Auto Experts</h1>
+      <p>Honest service, quality parts, fair prices. Euroservice Autohaus is St. Albert's premier repair facility for VW, Audi, BMW, MINI, and Mercedes-Benz — and an authorized Bosch Service Centre.</p>
+      <div class="hero-buttons">
+        <a href="tel:780-459-0546" class="btn-blue">📞 780-459-0546</a>
+        <a href="#services" class="btn-outline">Our Services</a>
+      </div>
+      <div class="hero-badges">
+        <div class="badge-item"><div class="badge-dot"></div> Bosch Service Centre</div>
+        <div class="badge-item"><div class="badge-dot"></div> European Specialists</div>
+        <div class="badge-item"><div class="badge-dot"></div> 14 Rowland Crescent, St. Albert</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="https://www.euroserviceautohaus.com/wp-content/uploads/2019/05/20190506_104908-1.jpg" alt="Euroservice Autohaus shop exterior" />
+    </div>
+  </div>
+
+  <!-- BRAND LOGOS -->
+  <div id="brands">
+    <div class="brands-label">Specializing in European Vehicles</div>
+    <div class="brands-row">
+      <img src="https://www.euroserviceautohaus.com/wp-content/uploads/2016/11/audi.png" alt="Audi" />
+      <img src="https://www.euroserviceautohaus.com/wp-content/uploads/2016/11/Volkswagen.png" alt="Volkswagen" />
+      <img src="https://www.euroserviceautohaus.com/wp-content/uploads/2016/11/BMW.png" alt="BMW" />
+      <img src="https://www.euroserviceautohaus.com/wp-content/uploads/2016/11/Mercedes.png" alt="Mercedes-Benz" />
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="sec-header">
+      <div class="eyebrow">What We Do</div>
+      <div class="sec-title">Our Services</div>
+      <p class="sec-sub">From diagnostics to full engine rebuilds — complete automotive care for European vehicles.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-icon">🔍</div>
+        <div class="svc-name">Computer Diagnostics</div>
+        <p class="svc-desc">Complete OBD and factory-level diagnostics. Check engine lights, ABS, driveability issues, and electrical faults diagnosed accurately the first time.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🔧</div>
+        <div class="svc-name">Engine & Transmission</div>
+        <p class="svc-desc">Full engine and transmission repair, rebuilds, and replacements. Timing belt service, fuel injection, and all internal work handled in-house.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🛑</div>
+        <div class="svc-name">Brakes & Suspension</div>
+        <p class="svc-desc">Brake repair and replacement, steering and suspension diagnostics, and alignment. We keep your European vehicle handling the way it was built to.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">❄️</div>
+        <div class="svc-name">Air Conditioning</div>
+        <p class="svc-desc">A/C recharge, leak detection, and full system repair. We also service heating and cooling systems to keep your cabin comfortable year-round.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🔩</div>
+        <div class="svc-name">Preventative Maintenance</div>
+        <p class="svc-desc">Oil changes, fluid services, filters, tire rotation and balancing, and manufacturer-scheduled maintenance. Stay on top of it before issues arise.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">📋</div>
+        <div class="svc-name">Pre-Purchase Inspections</div>
+        <p class="svc-desc">Buying a used European vehicle? Our comprehensive pre-purchase and insurance inspections give you the full picture before you commit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img">
+      <img src="https://www.euroserviceautohaus.com/wp-content/uploads/2019/05/20190506_104908.jpg" alt="Euroservice Autohaus facility" />
+    </div>
+    <div class="about-body">
+      <div class="eyebrow">About Us</div>
+      <div class="sec-title">St. Albert's European Specialists</div>
+      <p class="sec-sub">Euroservice Autohaus has been St. Albert's go-to for European vehicle repair since 1999. We started with a simple commitment — honest service, quality parts, at a fair price — and that hasn't changed.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">As an authorized Bosch Service Centre, we have access to the tools, training, and parts to service your European vehicle to manufacturer standards — without the dealership price tag.</p>
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-num">25+</div>
+          <div class="about-stat-label">Years in Business</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">Bosch</div>
+          <div class="about-stat-label">Authorized Service Centre</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">5</div>
+          <div class="about-stat-label">European Brands Served</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">5★</div>
+          <div class="about-stat-label">Customer Rated</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOSCH CERTIFICATION -->
+  <div id="cert">
+    <div class="cert-logo">
+      <img src="https://www.euroserviceautohaus.com/wp-content/uploads/2016/09/bosch.jpg" alt="Bosch Service Centre" />
+    </div>
+    <div class="cert-text">
+      <div class="cert-title">Authorized Bosch Service Centre</div>
+      <p class="cert-desc">As a certified Bosch Service Centre, Euroservice Autohaus meets the highest standards in automotive diagnostics, equipment, and technician training — giving you dealer-quality service at an independent price.</p>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <div class="eyebrow">Get in Touch</div>
+      <div class="sec-title">Book Your Service</div>
+      <p class="sec-sub">Call us, email, or fill out the form and we'll get back to you shortly.</p>
+      <div class="ci">
+        <div class="ci-icon">📞</div>
+        <div><div class="ci-label">Phone</div><div class="ci-val">780-459-0546</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">✉</div>
+        <div><div class="ci-label">Email</div><div class="ci-val">info@euroserviceautohaus.com</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">📍</div>
+        <div><div class="ci-label">Address</div><div class="ci-val">14 Rowland Crescent<br />St. Albert, Alberta T8N 4B3</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="fr">
+        <div class="fg"><input type="text" placeholder="First Name" /></div>
+        <div class="fg"><input type="text" placeholder="Last Name" /></div>
+      </div>
+      <div class="fg"><input type="email" placeholder="Email Address" /></div>
+      <div class="fg"><input type="tel" placeholder="Phone Number" /></div>
+      <div class="fg"><input type="text" placeholder="Vehicle (Year, Make, Model)" /></div>
+      <div class="fg">
+        <select>
+          <option value="" disabled selected>Service Needed</option>
+          <option>Diagnostics / Check Engine Light</option>
+          <option>Engine or Transmission Repair</option>
+          <option>Brakes & Suspension</option>
+          <option>Air Conditioning</option>
+          <option>Preventative Maintenance / Oil Change</option>
+          <option>Pre-Purchase Inspection</option>
+          <option>Tires</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><textarea placeholder="Any additional details…"></textarea></div>
+      <a href="mailto:info@euroserviceautohaus.com" class="btn-blue" style="display:block; width:100%; text-align:center;">Request Appointment →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="https://www.euroserviceautohaus.com/wp-content/uploads/2016/10/logo.png" alt="Euroservice Autohaus" />
+    <div class="footer-copy">© 2026 Euroservice Autohaus Ltd. · 14 Rowland Crescent, St. Albert, AB · 780-459-0546</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
