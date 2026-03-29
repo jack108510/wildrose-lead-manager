@@ -3,705 +3,1438 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Rick's Auto Service Inc. — St. Albert's Honda Specialists. AMVIC Licensed auto repair, oil & lube, brake service, tune-ups, and auto parts. Walk-ins welcome." />
-  <title>Rick's Auto Service Inc. | Honda Specialists — St. Albert, AB</title>
+  <title>Rick's Auto Service Inc. | Honda Specialists | St. Albert, Alberta</title>
+  <meta name="description" content="Rick's Auto Service Inc. — St. Albert's trusted Honda specialists. AMVIC licensed. Oil & lube, brakes, tune-ups, auto repair. Call (780) 418-1066." />
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --dark: #1a1a2e;
-      --dark-mid: #16213e;
-      --dark-light: #0f3460;
+      --navy: #0f172a;
+      --navy-light: #1e293b;
+      --navy-mid: #162032;
       --red: #e63946;
       --red-dark: #c1121f;
       --white: #ffffff;
-      --off-white: #f4f4f5;
-      --grey: #9ca3af;
-      --grey-light: #e5e7eb;
-      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      --text: #1e293b;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --transition: 0.25s ease;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.14), 0 4px 10px rgba(0,0,0,0.08);
+      --radius: 10px;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; font-size: 16px; }
 
     body {
       font-family: var(--font);
+      color: var(--text);
       background: var(--white);
-      color: var(--dark);
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* ─── NAV ─────────────────────────────────────────── */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      background: var(--dark);
-      border-bottom: 2px solid var(--red);
-      padding: 0 1.5rem;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-logo {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
-      text-decoration: none;
-    }
-
-    .nav-logo-main {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--white);
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-    }
-
-    .nav-logo-sub {
-      font-size: 0.65rem;
-      font-weight: 500;
-      color: var(--red);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: var(--grey);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover {
-      color: var(--white);
-    }
-
-    .btn-nav {
-      background: var(--red);
-      color: var(--white);
-      border: none;
-      padding: 0.5rem 1.25rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      text-decoration: none;
-      cursor: pointer;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
-
-    .btn-nav:hover {
-      background: var(--red-dark);
-    }
-
-    /* Hamburger */
-    .nav-toggle {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 4px;
-    }
-
-    .nav-toggle span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--white);
-      transition: all 0.3s;
-    }
-
-    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-toggle.open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* Mobile menu */
-    .nav-mobile {
-      display: none;
-      position: fixed;
-      top: 64px;
-      left: 0;
-      right: 0;
-      background: var(--dark);
-      border-bottom: 2px solid var(--red);
-      padding: 1.5rem;
-      flex-direction: column;
-      gap: 1rem;
-      z-index: 999;
-    }
-
-    .nav-mobile.open {
-      display: flex;
-    }
-
-    .nav-mobile a {
-      color: var(--grey);
-      text-decoration: none;
-      font-size: 1rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .nav-mobile a:hover { color: var(--white); }
-
-    .nav-mobile .btn-nav {
-      margin-top: 0.5rem;
-      text-align: center;
-      padding: 0.75rem;
-    }
-
-    /* ─── SECTIONS ────────────────────────────────────── */
-    section {
-      padding: 5rem 1.5rem;
-    }
-
+    /* ── UTILITIES ──────────────────────────────── */
     .container {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
+      padding: 0 24px;
     }
 
     .section-label {
-      font-size: 0.72rem;
+      display: inline-block;
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--red);
-      margin-bottom: 0.75rem;
+      margin-bottom: 10px;
     }
 
     .section-title {
       font-size: clamp(1.75rem, 4vw, 2.5rem);
       font-weight: 800;
-      color: var(--dark);
-      line-height: 1.15;
+      line-height: 1.2;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+
+    .section-title.light { color: var(--white); }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--gray-600);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    .section-desc.light { color: var(--gray-400); }
+
+    /* fade-in animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── NAV ──────────────────────────────────── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: var(--navy);
+      border-bottom: 2px solid rgba(230,57,70,0.25);
+      transition: box-shadow 0.3s ease, background 0.3s ease;
+    }
+
+    #navbar.scrolled {
+      background: rgba(15, 23, 42, 0.97);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      gap: 20px;
+    }
+
+    .nav-logo {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .nav-logo-main {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    .nav-logo-sub {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 8px 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      border-radius: 6px;
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 20px;
+      background: var(--red);
+      color: var(--white) !important;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-radius: 7px;
+      text-decoration: none;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .nav-cta:hover {
+      background: var(--red-dark) !important;
+      transform: translateY(-1px);
+    }
+
+    .nav-cta svg { flex-shrink: 0; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      padding: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background var(--transition);
+    }
+
+    .hamburger:hover { background: rgba(255,255,255,0.1); }
+
+    .hamburger span {
+      display: block;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      background: var(--navy-light);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .mobile-menu.open { display: block; }
+
+    .mobile-menu ul {
+      list-style: none;
+      padding: 12px 0;
+    }
+
+    .mobile-menu ul li a {
+      display: block;
+      padding: 13px 24px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .mobile-menu ul li a:hover {
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+    }
+
+    .mobile-menu .mobile-cta-wrap {
+      padding: 12px 24px 20px;
+    }
+
+    .mobile-menu .mobile-cta {
+      display: block;
+      text-align: center;
+      padding: 14px;
+      background: var(--red);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background var(--transition);
+    }
+
+    .mobile-menu .mobile-cta:hover { background: var(--red-dark); }
+
+    /* ── HERO ──────────────────────────────────── */
+    #hero {
+      position: relative;
+      background: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 0 80px;
+      overflow: hidden;
+    }
+
+    /* Geometric SVG pattern background */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23ffffff' stroke-width='0.4' stroke-opacity='0.05'%3E%3Cpath d='M0 0l40 40M40 0l40 40M0 40l40 40M40 40l40 40'/%3E%3Crect x='0' y='0' width='80' height='80'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* Red accent glow */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -100px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(230,57,70,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(230,57,70,0.15);
+      border: 1px solid rgba(230,57,70,0.35);
+      color: #fca5a5;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      display: block;
+      width: 7px;
+      height: 7px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    #hero h1 {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--white);
       letter-spacing: -0.02em;
-      margin-bottom: 1rem;
+      margin-bottom: 22px;
+      max-width: 760px;
     }
 
-    .section-sub {
+    #hero h1 span { color: var(--red); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(255,255,255,0.65);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 64px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 28px;
+      background: var(--red);
+      color: var(--white);
       font-size: 1rem;
-      color: #6b7280;
-      max-width: 540px;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 14px rgba(230,57,70,0.35);
     }
 
-    .section-header {
-      margin-bottom: 3rem;
+    .btn-primary:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(230,57,70,0.45);
     }
 
-    /* ─── SERVICES ────────────────────────────────────── */
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 28px;
+      background: transparent;
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: 2px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat {
+      flex: 1;
+      min-width: 160px;
+      padding-right: 32px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      margin-right: 32px;
+    }
+
+    .hero-stat:last-child {
+      border-right: none;
+      margin-right: 0;
+      padding-right: 0;
+    }
+
+    .hero-stat-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 3px;
+    }
+
+    .hero-stat-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── SERVICES ──────────────────────────────── */
     #services {
-      background: var(--off-white);
+      padding: 96px 0;
+      background: var(--gray-100);
+    }
+
+    .services-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .services-header .section-desc {
+      margin: 0 auto;
     }
 
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
     }
 
     .service-card {
       background: var(--white);
-      border-top: 3px solid transparent;
-      padding: 2rem 1.75rem;
-      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-      position: relative;
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      border: 2px solid var(--gray-200);
+      border-top: 4px solid var(--gray-200);
+      transition: transform var(--transition), box-shadow var(--transition), border-top-color var(--transition);
+      cursor: default;
     }
 
     .service-card:hover {
-      border-color: var(--red);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-      transform: translateY(-3px);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-top-color: var(--red);
     }
 
     .service-icon {
-      width: 48px;
-      height: 48px;
-      background: rgba(230, 57, 70, 0.08);
+      width: 52px;
+      height: 52px;
+      background: rgba(230,57,70,0.08);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1.25rem;
+      margin-bottom: 20px;
     }
 
-    .service-icon svg {
-      color: var(--red);
-    }
+    .service-icon svg { color: var(--red); }
 
     .service-card h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 0.6rem;
-      letter-spacing: -0.01em;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 10px;
     }
 
     .service-card p {
-      font-size: 0.875rem;
-      color: #6b7280;
+      font-size: 0.92rem;
+      color: var(--gray-600);
       line-height: 1.65;
     }
 
-    /* ─── WHY CHOOSE US ───────────────────────────────── */
-    #about {
-      background: var(--dark);
+    /* ── WHY CHOOSE US ──────────────────────────── */
+    #why {
+      padding: 96px 0;
+      background: var(--navy);
     }
 
-    #about .section-title {
-      color: var(--white);
-    }
-
-    #about .section-sub {
-      color: var(--grey);
+    .why-header {
+      text-align: center;
+      margin-bottom: 60px;
     }
 
     .why-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
+      gap: 24px;
     }
 
     .why-card {
-      border-left: 3px solid var(--red);
-      padding-left: 1.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      transition: background var(--transition), border-color var(--transition);
     }
 
-    .why-number {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 0.75rem;
+    .why-card:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(230,57,70,0.35);
+    }
+
+    .why-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(230,57,70,0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
     }
 
     .why-card h3 {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 800;
       color: var(--white);
-      margin-bottom: 0.75rem;
-      line-height: 1.2;
+      margin-bottom: 10px;
     }
 
     .why-card p {
       font-size: 0.9rem;
-      color: var(--grey);
-      line-height: 1.7;
+      color: var(--gray-400);
+      line-height: 1.65;
     }
 
-    .why-icon {
-      width: 42px;
-      height: 42px;
-      margin-bottom: 1rem;
-      color: var(--red);
-      opacity: 0.8;
-    }
-
-    /* ─── LOCATION ────────────────────────────────────── */
+    /* ── HOURS & LOCATION ───────────────────────── */
     #location {
+      padding: 96px 0;
       background: var(--white);
+    }
+
+    .location-header {
+      margin-bottom: 52px;
     }
 
     .location-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      gap: 40px;
       align-items: start;
     }
 
-    @media (max-width: 700px) {
-      .location-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hours-card, .address-card {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 36px 32px;
     }
 
-    .location-info h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--dark);
+    .hours-card h3, .address-card h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 20px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--red);
-      display: inline-block;
-    }
-
-    .info-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .info-row svg {
-      color: var(--red);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .info-row-text {
-      font-size: 0.95rem;
-      color: #374151;
-      line-height: 1.5;
-    }
-
-    .info-row-text a {
-      color: var(--red);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .info-row-text a:hover {
-      text-decoration: underline;
+      font-size: 0.8rem;
+      color: var(--gray-600);
     }
 
     .hours-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
     }
 
-    .hours-table tr {
-      border-bottom: 1px solid var(--grey-light);
+    .hours-table tr td {
+      padding: 10px 0;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--gray-200);
     }
 
-    .hours-table tr:last-child {
-      border-bottom: none;
-    }
+    .hours-table tr:last-child td { border-bottom: none; }
 
-    .hours-table td {
-      padding: 0.6rem 0;
-      color: #374151;
+    .hours-table td:first-child {
+      font-weight: 600;
+      color: var(--navy);
     }
 
     .hours-table td:last-child {
       text-align: right;
-      font-weight: 600;
-      color: var(--dark);
+      color: var(--gray-600);
     }
 
-    .closed {
-      color: var(--grey) !important;
-      font-style: italic;
-    }
+    .hours-table tr.closed td { color: var(--gray-400); }
+    .hours-table tr.closed td:first-child { color: var(--gray-400); }
 
-    /* ─── CONTACT CTA ─────────────────────────────────── */
-    #contact {
-      background: var(--red);
-      padding: 4.5rem 1.5rem;
-      text-align: center;
-    }
-
-    #contact h2 {
-      font-size: clamp(1.75rem, 4vw, 2.75rem);
-      font-weight: 900;
-      color: var(--white);
-      letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
-    }
-
-    #contact p {
-      color: rgba(255,255,255,0.8);
-      font-size: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .phone-display {
-      display: inline-block;
-      font-size: clamp(1.75rem, 5vw, 3rem);
-      font-weight: 900;
-      color: var(--white);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      margin-bottom: 1.5rem;
-      line-height: 1;
-    }
-
-    .phone-display:hover {
-      text-decoration: underline;
-    }
-
-    .btn-white {
-      background: var(--white);
-      color: var(--red);
-      text-decoration: none;
-      padding: 0.9rem 2.25rem;
-      font-size: 0.9rem;
+    .open-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      display: inline-block;
-      transition: background 0.2s, transform 0.1s;
+      margin-top: 18px;
+      padding: 7px 14px;
+      border-radius: 100px;
     }
 
-    .btn-white:hover {
-      background: var(--off-white);
+    .open-indicator.open {
+      background: rgba(34,197,94,0.12);
+      color: #16a34a;
+      border: 1px solid rgba(34,197,94,0.25);
+    }
+
+    .open-indicator.closed {
+      background: rgba(148,163,184,0.1);
+      color: var(--gray-400);
+      border: 1px solid rgba(148,163,184,0.2);
+    }
+
+    .open-indicator::before {
+      content: '';
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    .open-indicator.open::before { background: #16a34a; }
+    .open-indicator.closed::before { background: var(--gray-400); }
+
+    .address-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      color: var(--gray-600);
+    }
+
+    .address-detail:last-child { margin-bottom: 0; }
+
+    .address-detail svg { 
+      flex-shrink: 0; 
+      margin-top: 2px;
+      color: var(--red);
+    }
+
+    .address-detail a {
+      color: var(--navy);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color var(--transition);
+    }
+
+    .address-detail a:hover { color: var(--red); }
+
+    .map-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 22px;
+      padding: 11px 20px;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 7px;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .map-link:hover {
+      background: var(--red);
       transform: translateY(-1px);
     }
 
-    .contact-sub {
-      margin-top: 1.25rem;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.6);
+    /* ── CONTACT ────────────────────────────────── */
+    #contact {
+      padding: 96px 0;
+      background: var(--gray-100);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .contact-info h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .contact-info p {
+      color: var(--gray-600);
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .contact-phone {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 28px;
+      background: var(--navy);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background var(--transition), transform var(--transition);
+      margin-bottom: 24px;
+    }
+
+    .contact-phone:hover {
+      background: var(--red);
+      transform: translateY(-2px);
+    }
+
+    .contact-phone-number {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+    }
+
+    .contact-phone-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      opacity: 0.7;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
 
-    /* ─── FOOTER ──────────────────────────────────────── */
-    footer {
-      background: #0d0d1a;
-      color: var(--grey);
-      padding: 2rem 1.5rem;
-      text-align: center;
-      font-size: 0.82rem;
-      border-top: 1px solid rgba(255,255,255,0.05);
-    }
-
-    footer a {
-      color: var(--grey);
-      text-decoration: none;
-    }
-
-    footer a:hover { color: var(--white); }
-
-    .footer-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .footer-logo {
+    .contact-address-block {
+      margin-top: 16px;
       font-size: 0.95rem;
+      color: var(--gray-600);
+      line-height: 1.7;
+    }
+
+    .contact-address-block strong {
+      display: block;
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    /* Form */
+    .contact-form-wrap {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 40px 36px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-200);
+    }
+
+    .form-title {
+      font-size: 1.15rem;
       font-weight: 800;
-      color: var(--white);
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .form-subtitle {
+      font-size: 0.88rem;
+      color: var(--gray-600);
+      margin-bottom: 28px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 7px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
 
-    .footer-amvic {
-      display: inline-flex;
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--gray-100);
+      border: 2px solid var(--gray-200);
+      border-radius: 7px;
+      font-size: 0.95rem;
+      font-family: var(--font);
+      color: var(--text);
+      transition: border-color var(--transition), background var(--transition);
+      outline: none;
+      appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--red);
+      background: var(--white);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 44px;
+      cursor: pointer;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background: var(--red);
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: var(--font);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      margin-top: 4px;
+    }
+
+    .btn-submit:hover {
+      background: var(--red-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(230,57,70,0.35);
+    }
+
+    /* Thank you state */
+    .form-thanks {
+      display: none;
+      text-align: center;
+      padding: 48px 20px;
+    }
+
+    .form-thanks.visible { display: block; }
+
+    .form-thanks-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(34,197,94,0.12);
+      border-radius: 50%;
+      display: flex;
       align-items: center;
-      gap: 0.4rem;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-top: 0.25rem;
+      justify-content: center;
+      margin: 0 auto 20px;
     }
 
-    /* ─── RESPONSIVE ──────────────────────────────────── */
-    @media (max-width: 768px) {
-      .nav-links, .btn-nav { display: none; }
-      .nav-toggle { display: flex; }
-
-      section { padding: 3.5rem 1.25rem; }
-
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .why-grid {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-      }
+    .form-thanks h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 10px;
     }
 
-    @media (min-width: 769px) {
-      .nav-mobile { display: none !important; }
+    .form-thanks p {
+      font-size: 0.95rem;
+      color: var(--gray-600);
+      line-height: 1.6;
     }
 
-    /* ─── SCROLL OFFSET ───────────────────────────────── */
-    :target { scroll-margin-top: 80px; }
-  
-    /* ── HERO PHOTO BG ── */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
-    /* ── SPLIT PHOTO SECTIONS ── */
-    .split-section {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 480px;
+    /* ── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--navy);
+      border-top: 2px solid rgba(230,57,70,0.25);
+      padding: 40px 0;
     }
-    .split-section.reverse > .split-img { order: 2; }
-    .split-section.reverse > .split-text { order: 1; }
-    .split-img { overflow: hidden; }
-    .split-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .split-text {
-      padding: 80px 60px;
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
       display: flex;
       flex-direction: column;
-      justify-content: center;
     }
-    .split-text h2 { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2; }
-    .split-text p { opacity: 0.8; margin-bottom: 1.5rem; font-size: 1.05rem; line-height: 1.7; }
-    .split-cta {
-      display: inline-block;
-      padding: 13px 28px;
-      font-weight: 700;
-      font-size: 0.88rem;
-      text-decoration: none;
-      text-transform: uppercase;
+
+    .footer-brand-name {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--white);
+    }
+
+    .footer-brand-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--red);
       letter-spacing: 0.06em;
-      transition: opacity 0.2s, transform 0.15s;
-      align-self: flex-start;
+      text-transform: uppercase;
+      margin-top: 2px;
     }
-    .split-cta:hover { opacity: 0.85; transform: translateY(-1px); }
-    /* ── PHOTO STRIP ── */
-    .photo-strip {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      height: 280px;
+
+    .footer-details {
+      font-size: 0.85rem;
+      color: var(--gray-400);
+      text-align: right;
+      line-height: 1.7;
     }
-    .photo-strip-item { overflow: hidden; }
-    .photo-strip-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
-    .photo-strip-item:hover img { transform: scale(1.04); }
+
+    .footer-details a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .footer-details a:hover { color: var(--white); }
+
+    .footer-copy {
+      text-align: center;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.25);
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────── */
     @media (max-width: 768px) {
-      .split-section { grid-template-columns: 1fr; min-height: auto; }
-      .split-section.reverse > .split-img { order: 0; }
-      .split-section.reverse > .split-text { order: 0; }
-      .split-img { height: 280px; }
-      .split-text { padding: 48px 24px; }
-      .photo-strip { height: 200px; }
+      .nav-links, .nav-cta-wrap { display: none; }
+      .hamburger { display: flex; }
+
+      #hero { padding: 100px 0 60px; min-height: auto; }
+      .hero-stats { gap: 20px 0; }
+      .hero-stat { min-width: 50%; padding-right: 0; border-right: none; margin-right: 0; }
+      .hero-stat:nth-child(odd) { padding-right: 16px; }
+      .hero-stat:nth-child(1), .hero-stat:nth-child(2) { 
+        border-bottom: 1px solid rgba(255,255,255,0.08); 
+        padding-bottom: 20px; 
+        margin-bottom: 0;
+      }
+
+      .location-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-form-wrap { padding: 28px 20px; }
+
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .footer-details { text-align: left; }
+
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
     }
-    
+
+    @media (max-width: 480px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .hero-ctas { flex-direction: column; }
+      .btn-primary, .btn-outline { justify-content: center; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════════════
-       NAV
-  ════════════════════════════════════════════════════ -->
-  <nav>
-    <a href="#" class="nav-logo">
-      <span class="nav-logo-main">Rick's Auto Service</span>
-      <span class="nav-logo-sub">Honda Specialists &mdash; St. Albert, AB</span>
-    </a>
+  <!-- ══ NAV ══════════════════════════════════════ -->
+  <nav id="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo">
+          <span class="nav-logo-main">Rick's Auto Service</span>
+          <span class="nav-logo-sub">Honda Specialists</span>
+        </a>
 
-    <ul class="nav-links">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+        <ul class="nav-links">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#why">About</a></li>
+          <li><a href="#location">Hours</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li style="margin-left:8px;">
+            <a href="tel:7804181066" class="nav-cta">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.09 2.18 2 2 0 012.08.00h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.06-1.06a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              Call Now
+            </a>
+          </li>
+        </ul>
 
-    <a href="tel:7804181066" class="btn-nav">Book Appointment</a>
-
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <ul>
+        <li><a href="#services" class="mobile-nav-link">Services</a></li>
+        <li><a href="#why" class="mobile-nav-link">About</a></li>
+        <li><a href="#location" class="mobile-nav-link">Hours</a></li>
+        <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+      </ul>
+      <div class="mobile-cta-wrap">
+        <a href="tel:7804181066" class="mobile-cta">Call (780) 418-1066</a>
+      </div>
+    </div>
   </nav>
 
-  <!-- Hero -->
-<section id="contact">
-    <div class="container">
-      <h2>Book Your Appointment Today</h2>
-      <p>Give us a call or stop by — walk-ins are always welcome.</p>
+  <!-- ══ HERO ══════════════════════════════════════ -->
+  <section id="hero">
+    <div class="container hero-inner">
 
-      <div>
-        <a href="tel:7804181066" class="phone-display">780-418-1066</a>
+      <div class="hero-badge">AMVIC Licensed &middot; St. Albert, Alberta</div>
+
+      <h1>St. Albert's Trusted<br><span>Honda Specialists</span></h1>
+
+      <p class="hero-sub">Expert auto repair &amp; maintenance &mdash; honest pricing, quality work, walk-ins welcome.</p>
+
+      <div class="hero-ctas">
+        <a href="tel:7804181066" class="btn-primary">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.09 2.18 2 2 0 012.08.00h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.06-1.06a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          Call (780) 418-1066
+        </a>
+        <a href="#services" class="btn-outline">
+          Our Services
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
       </div>
 
-      <a href="tel:7804181066" class="btn-white">Call to Book</a>
+      <div class="hero-stats">
+        <div class="hero-stat fade-in">
+          <div class="hero-stat-value">Honda</div>
+          <div class="hero-stat-label">Specialists</div>
+        </div>
+        <div class="hero-stat fade-in" style="transition-delay:0.1s">
+          <div class="hero-stat-value">AMVIC</div>
+          <div class="hero-stat-label">Certified</div>
+        </div>
+        <div class="hero-stat fade-in" style="transition-delay:0.2s">
+          <div class="hero-stat-value">Mon &ndash; Sat</div>
+          <div class="hero-stat-label">Open</div>
+        </div>
+      </div>
 
-      <p class="contact-sub">16 Renault Cres, Unit 300 &bull; St. Albert, AB &bull; Mon&ndash;Fri 8am&ndash;5pm &bull; Sat 9am&ndash;3pm</p>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════════════
-       FOOTER
-  ════════════════════════════════════════════════════ -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-logo">Rick's Auto Service Inc.</div>
-      <div class="footer-amvic">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
-        AMVIC Licensed
+  <!-- ══ SERVICES ═══════════════════════════════════ -->
+  <section id="services">
+    <div class="container">
+      <div class="services-header fade-in">
+        <span class="section-label">What We Do</span>
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-desc">From routine maintenance to full diagnostics, we keep your vehicle running right &mdash; with parts and service you can trust.</p>
       </div>
-      <p>&copy; <span id="year"></span> Rick's Auto Service Inc. &mdash; St. Albert, Alberta. All rights reserved.</p>
-      <p>16 Renault Cres, Unit 300, St. Albert, AB T8N 4B8 &bull; <a href="tel:7804181066">780-418-1066</a></p>
+
+      <div class="services-grid">
+
+        <div class="service-card fade-in">
+          <div class="service-icon">
+            <!-- Oil drop SVG -->
+            <svg width="26" height="26" fill="none" stroke="#e63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <path d="M12 2C6 9 4 13 4 16a8 8 0 0016 0c0-3-2-7-8-14z"/>
+              <path d="M12 18a4 4 0 004-4" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3>Oil &amp; Lube</h3>
+          <p>Regular oil changes and fluid top-ups to protect your engine and keep everything running smoothly. We use quality oil for every vehicle.</p>
+        </div>
+
+        <div class="service-card fade-in" style="transition-delay:0.1s">
+          <div class="service-icon">
+            <!-- Brake / circle SVG -->
+            <svg width="26" height="26" fill="none" stroke="#e63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="4"/>
+              <line x1="12" y1="2" x2="12" y2="6"/>
+              <line x1="12" y1="18" x2="12" y2="22"/>
+              <line x1="2" y1="12" x2="6" y2="12"/>
+              <line x1="18" y1="12" x2="22" y2="12"/>
+            </svg>
+          </div>
+          <h3>Brake Service</h3>
+          <p>Full brake inspections, pad and rotor replacement, and brake fluid service. Your safety depends on it &mdash; we take it seriously.</p>
+        </div>
+
+        <div class="service-card fade-in" style="transition-delay:0.2s">
+          <div class="service-icon">
+            <!-- Tune-up / zap SVG -->
+            <svg width="26" height="26" fill="none" stroke="#e63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <h3>Tune-Ups</h3>
+          <p>Spark plug replacement, fuel and air filter service, and ignition system checks to restore peak performance and fuel efficiency.</p>
+        </div>
+
+        <div class="service-card fade-in" style="transition-delay:0.3s">
+          <div class="service-icon">
+            <!-- Wrench SVG -->
+            <svg width="26" height="26" fill="none" stroke="#e63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <h3>Auto Repair</h3>
+          <p>Engine diagnostics, general mechanical repairs, and auto parts &amp; supplies. If something's wrong, we'll find it and fix it right the first time.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ WHY CHOOSE US ══════════════════════════════ -->
+  <section id="why">
+    <div class="container">
+      <div class="why-header fade-in">
+        <span class="section-label" style="color:#fca5a5;">Why Choose Rick's</span>
+        <h2 class="section-title light">Three Reasons Customers Come Back</h2>
+      </div>
+
+      <div class="why-grid">
+
+        <div class="why-card fade-in">
+          <div class="why-icon">
+            <svg width="22" height="22" fill="none" stroke="#e63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3>AMVIC Licensed</h3>
+          <p>We're fully licensed under Alberta's Automotive Business Regulation program, meaning you're protected by provincial standards every time you bring your vehicle in.</p>
+        </div>
+
+        <div class="why-card fade-in" style="transition-delay:0.1s">
+          <div class="why-icon">
+            <svg width="22" height="22" fill="none" stroke="#e63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
+              <path d="M15.54 8.46a5 5 0 010 7.07M8.46 8.46a5 5 0 000 7.07"/>
+            </svg>
+          </div>
+          <h3>Honda Specialists</h3>
+          <p>Years of focused experience on Honda vehicles means we know the quirks, common issues, and best solutions &mdash; better than a general shop ever could.</p>
+        </div>
+
+        <div class="why-card fade-in" style="transition-delay:0.2s">
+          <div class="why-icon">
+            <svg width="22" height="22" fill="none" stroke="#e63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+            </svg>
+          </div>
+          <h3>Honest Pricing</h3>
+          <p>No upsells, no surprises. We'll tell you exactly what your vehicle needs and what it costs before we do any work. That's how we've built trust in St. Albert.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ HOURS & LOCATION ═══════════════════════════ -->
+  <section id="location">
+    <div class="container">
+      <div class="location-header fade-in">
+        <span class="section-label">Find Us</span>
+        <h2 class="section-title">Hours &amp; Location</h2>
+      </div>
+
+      <div class="location-grid">
+
+        <div class="hours-card fade-in">
+          <h3>Business Hours</h3>
+          <table class="hours-table">
+            <tr>
+              <td>Monday</td>
+              <td>8:00 AM &ndash; 5:00 PM</td>
+            </tr>
+            <tr>
+              <td>Tuesday</td>
+              <td>8:00 AM &ndash; 5:00 PM</td>
+            </tr>
+            <tr>
+              <td>Wednesday</td>
+              <td>8:00 AM &ndash; 5:00 PM</td>
+            </tr>
+            <tr>
+              <td>Thursday</td>
+              <td>8:00 AM &ndash; 5:00 PM</td>
+            </tr>
+            <tr>
+              <td>Friday</td>
+              <td>8:00 AM &ndash; 5:00 PM</td>
+            </tr>
+            <tr>
+              <td>Saturday</td>
+              <td>9:00 AM &ndash; 3:00 PM</td>
+            </tr>
+            <tr class="closed">
+              <td>Sunday</td>
+              <td>Closed</td>
+            </tr>
+          </table>
+          <div class="open-indicator closed" id="openIndicator">Closed</div>
+        </div>
+
+        <div class="address-card fade-in" style="transition-delay:0.15s">
+          <h3>Our Location</h3>
+
+          <div class="address-detail">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div>
+              <strong>16 Renault Cres, #300</strong>
+              St. Albert, Alberta T8N 4B8
+            </div>
+          </div>
+
+          <div class="address-detail">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.09 2.18 2 2 0 012.08.00h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.06-1.06a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            <div>
+              <a href="tel:7804181066">(780) 418-1066</a>
+            </div>
+          </div>
+
+          <div class="address-detail">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <div>Walk-ins welcome during business hours</div>
+          </div>
+
+          <a href="https://www.google.com/maps/search/16+Renault+Crescent+300+St.+Albert+Alberta" target="_blank" rel="noopener" class="map-link">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Get Directions
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CONTACT ════════════════════════════════════ -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-grid">
+
+        <div class="contact-info fade-in">
+          <span class="section-label">Get In Touch</span>
+          <h2>Book a Service or<br>Ask a Question</h2>
+          <p>Give us a call or fill out the form to inquire about service. We're straightforward people &mdash; you'll hear back from us, not a call center.</p>
+
+          <a href="tel:7804181066" class="contact-phone">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.09 2.18 2 2 0 012.08.00h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.06-1.06a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            <div>
+              <div class="contact-phone-label">Call us directly</div>
+              <div class="contact-phone-number">(780) 418-1066</div>
+            </div>
+          </a>
+
+          <div class="contact-address-block">
+            <strong>Rick's Auto Service Inc.</strong>
+            16 Renault Cres, #300<br>
+            St. Albert, Alberta T8N 4B8
+          </div>
+        </div>
+
+        <div class="contact-form-wrap fade-in" style="transition-delay:0.15s">
+          <div id="formContent">
+            <div class="form-title">Send a Service Inquiry</div>
+            <div class="form-subtitle">We'll follow up by phone or email within one business day.</div>
+
+            <form id="contactForm" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fname">Full Name</label>
+                  <input type="text" id="fname" name="name" placeholder="Jane Smith" required />
+                </div>
+                <div class="form-group">
+                  <label for="fphone">Phone Number</label>
+                  <input type="tel" id="fphone" name="phone" placeholder="(780) 000-0000" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="fservice">Service Needed</label>
+                <select id="fservice" name="service">
+                  <option value="" disabled selected>Select a service...</option>
+                  <option value="oil-lube">Oil &amp; Lube</option>
+                  <option value="brakes">Brake Service</option>
+                  <option value="tuneup">Tune-Up</option>
+                  <option value="repair">General Auto Repair</option>
+                  <option value="parts">Auto Parts &amp; Supplies</option>
+                  <option value="other">Other / Not Sure</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="fmessage">Message (optional)</label>
+                <textarea id="fmessage" name="message" placeholder="Briefly describe what's going on with your vehicle..."></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit">Submit Inquiry</button>
+            </form>
+          </div>
+
+          <div class="form-thanks" id="formThanks">
+            <div class="form-thanks-icon">
+              <svg width="28" height="28" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3>Message Received</h3>
+            <p>Thanks for reaching out. We'll be in touch shortly.<br>Or call us directly at <a href="tel:7804181066" style="color:var(--red);font-weight:700;">(780) 418-1066</a>.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ═════════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="footer-brand-name">Rick's Auto Service Inc.</span>
+          <span class="footer-brand-tag">Honda Specialists · AMVIC Licensed</span>
+        </div>
+        <div class="footer-details">
+          16 Renault Cres, #300, St. Albert, Alberta T8N 4B8<br>
+          <a href="tel:7804181066">(780) 418-1066</a>
+        </div>
+      </div>
+      <div class="footer-copy">
+        &copy; <span id="fyear"></span> Rick's Auto Service Inc. All rights reserved.
+      </div>
     </div>
   </footer>
 
-  <!-- ═══════════════════════════════════════════════════
-       JS
-  ════════════════════════════════════════════════════ -->
+  <!-- ══ SCRIPTS ════════════════════════════════════ -->
   <script>
-    // Dynamic year
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // Footer year
+    document.getElementById('fyear').textContent = new Date().getFullYear();
 
-    // Mobile nav toggle
-    const toggle = document.getElementById('navToggle');
-    const mobileMenu = document.getElementById('navMobile');
-
-    toggle.addEventListener('click', () => {
-      const isOpen = mobileMenu.classList.toggle('open');
-      toggle.classList.toggle('open', isOpen);
-      toggle.setAttribute('aria-expanded', isOpen);
-    });
-
-    function closeMenu() {
-      mobileMenu.classList.remove('open');
-      toggle.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-    }
-
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('nav') && !e.target.closest('.nav-mobile')) {
-        closeMenu();
-      }
-    });
-
-    // Sticky nav shadow on scroll
-    const nav = document.querySelector('nav');
+    // Nav scroll effect
+    const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 10) {
-        nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.4)';
-      } else {
-        nav.style.boxShadow = 'none';
-      }
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
     }, { passive: true });
+
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // Open/Closed indicator
+    function updateOpenIndicator() {
+      const now = new Date();
+      const day = now.getDay(); // 0 Sun, 1 Mon... 6 Sat
+      const hour = now.getHours();
+      const min = now.getMinutes();
+      const time = hour + min / 60;
+
+      let isOpen = false;
+      let nextStatus = '';
+
+      if (day >= 1 && day <= 5) {
+        // Mon-Fri: 8:00 - 17:00
+        isOpen = time >= 8 && time < 17;
+        nextStatus = isOpen ? 'Closes at 5:00 PM' : (time < 8 ? 'Opens at 8:00 AM' : 'Closed today');
+      } else if (day === 6) {
+        // Sat: 9:00 - 15:00
+        isOpen = time >= 9 && time < 15;
+        nextStatus = isOpen ? 'Closes at 3:00 PM' : (time < 9 ? 'Opens at 9:00 AM' : 'Closed today');
+      } else {
+        // Sun
+        isOpen = false;
+        nextStatus = 'Opens Monday at 8:00 AM';
+      }
+
+      const el = document.getElementById('openIndicator');
+      if (isOpen) {
+        el.className = 'open-indicator open';
+        el.textContent = 'Open Now \u2014 ' + nextStatus;
+      } else {
+        el.className = 'open-indicator closed';
+        el.textContent = 'Currently Closed \u2014 ' + nextStatus;
+      }
+    }
+    updateOpenIndicator();
+
+    // IntersectionObserver fade-in
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => observer.observe(el));
+
+    // Contact form
+    const form = document.getElementById('contactForm');
+    const formContent = document.getElementById('formContent');
+    const formThanks = document.getElementById('formThanks');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      formContent.style.display = 'none';
+      formThanks.classList.add('visible');
+    });
   </script>
 
 </body>
