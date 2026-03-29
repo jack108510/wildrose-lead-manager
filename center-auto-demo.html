@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Center Auto Repair &amp; Maintenance | Edmonton, AB</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:      #1e3a5f;
+      --blue-dark: #152c4a;
+      --blue-mid:  #254a78;
+      --red:       #dc2626;
+      --red-dark:  #b91c1c;
+      --white:     #ffffff;
+      --offwhite:  #f5f7fa;
+      --gray-light:#e8ecf1;
+      --gray:      #6b7280;
+      --gray-dark: #374151;
+      --text:      #1f2937;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--blue);
+      box-shadow: 0 2px 12px rgba(0,0,0,.35);
+    }
+
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .nav-logo .brand {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: .5px;
+    }
+
+    .nav-logo .sub {
+      font-size: .7rem;
+      font-weight: 500;
+      color: var(--red);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,.85);
+      text-decoration: none;
+      font-size: .88rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 4px;
+      transition: color .2s, background .2s;
+    }
+
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.1); }
+
+    .nav-cta {
+      background: var(--red) !important;
+      color: var(--white) !important;
+      padding: 8px 18px !important;
+      border-radius: 6px !important;
+      font-weight: 700 !important;
+      transition: background .2s !important;
+    }
+
+    .nav-cta:hover { background: var(--red-dark) !important; }
+
+    /* hamburger */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+
+    @media (max-width: 720px) {
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 68px; left: 0; right: 0;
+        background: var(--blue-dark);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px 24px 20px;
+        gap: 4px;
+        border-top: 1px solid rgba(255,255,255,.1);
+      }
+
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 10px 12px; font-size: .95rem; }
+    }
+
+    /* ── HERO ────────────────────────────────────────── */
+    .hero {
+      padding-top: 68px; /* offset for fixed nav */
+      background: linear-gradient(145deg, var(--blue-dark) 0%, var(--blue) 60%, var(--blue-mid) 100%);
+      position: relative;
+      overflow: hidden;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+    }
+
+    /* decorative grid lines */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* red stripe accent */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 6px;
+      height: 100%;
+      background: var(--red);
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 80px 24px 100px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(220,38,38,.2);
+      border: 1px solid rgba(220,38,38,.5);
+      color: #fca5a5;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span { color: var(--red); }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,.78);
+      max-width: 480px;
+      margin-bottom: 36px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: var(--white);
+      padding: 14px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+      box-shadow: 0 4px 16px rgba(220,38,38,.45);
+    }
+
+    .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+    .btn-outline {
+      border: 2px solid rgba(255,255,255,.45);
+      color: var(--white);
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color .2s, background .2s;
+    }
+
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,.08); }
+
+    /* stat boxes */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-box {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .stat-box .num {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .stat-box .num span { color: var(--red); }
+
+    .stat-box .label {
+      font-size: .78rem;
+      font-weight: 600;
+      color: rgba(255,255,255,.6);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 820px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 60px 24px 80px;
+      }
+
+      .hero p { margin: 0 auto 36px; }
+      .hero-actions { justify-content: center; }
+      .hero-badge { margin: 0 auto 20px; }
+      .hero-stats { max-width: 360px; margin: 0 auto; }
+    }
+
+    /* ── SECTION SHARED ──────────────────────────────── */
+    section { padding: 80px 24px; }
+
+    .section-inner { max-width: 1140px; margin: 0 auto; }
+
+    .section-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      font-weight: 900;
+      color: var(--blue);
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--gray);
+      max-width: 560px;
+      margin-bottom: 52px;
+    }
+
+    /* ── SERVICES ────────────────────────────────────── */
+    #services { background: var(--offwhite); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .service-card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 36px 28px;
+      box-shadow: 0 2px 16px rgba(30,58,95,.08);
+      border-top: 4px solid transparent;
+      transition: border-color .25s, box-shadow .25s, transform .2s;
+      position: relative;
+    }
+
+    .service-card:hover {
+      border-top-color: var(--red);
+      box-shadow: 0 8px 30px rgba(30,58,95,.14);
+      transform: translateY(-3px);
+    }
+
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--blue);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .service-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--white);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .service-card h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+
+    .service-card p {
+      font-size: .9rem;
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    /* ── WHY CHOOSE US ───────────────────────────────── */
+    #why {
+      background: var(--blue);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #why::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    #why .section-title { color: var(--white); }
+    #why .section-sub   { color: rgba(255,255,255,.65); }
+    #why .section-label { color: #fca5a5; }
+
+    .why-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .why-card {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 36px 28px;
+      backdrop-filter: blur(4px);
+      transition: background .25s, transform .2s;
+    }
+
+    .why-card:hover {
+      background: rgba(255,255,255,.12);
+      transform: translateY(-2px);
+    }
+
+    .why-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--red);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .why-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--white);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .why-card h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .why-card p {
+      font-size: .9rem;
+      color: rgba(255,255,255,.65);
+      line-height: 1.65;
+    }
+
+    /* ── CONTACT ─────────────────────────────────────── */
+    #contact { background: var(--white); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .contact-item-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--offwhite);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-item-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--blue);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .contact-item-text .label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 2px;
+    }
+
+    .contact-item-text a,
+    .contact-item-text span {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+      display: block;
+    }
+
+    .contact-item-text a:hover { color: var(--red); }
+
+    /* book form */
+    .contact-form {
+      background: var(--offwhite);
+      border-radius: 16px;
+      padding: 36px 32px;
+      border: 1px solid var(--gray-light);
+    }
+
+    .contact-form h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 24px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--gray-dark);
+      letter-spacing: .5px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 11px 14px;
+      border: 1.5px solid var(--gray-light);
+      border-radius: 8px;
+      font-size: .95rem;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--white);
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--blue);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 90px; }
+
+    .form-row .form-group { margin-bottom: 0; }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .2s;
+      margin-top: 6px;
+    }
+
+    .btn-submit:hover { background: var(--red-dark); }
+
+    @media (max-width: 820px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 540px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* ── DIVIDER STRIP ───────────────────────────────── */
+    .strip {
+      background: var(--red);
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    .strip p {
+      color: var(--white);
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .strip a {
+      color: var(--white);
+      font-weight: 800;
+      text-decoration: underline;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: var(--blue-dark);
+      color: rgba(255,255,255,.65);
+      padding: 48px 24px 32px;
+    }
+
+    .footer-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 40px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      margin-bottom: 28px;
+    }
+
+    .footer-brand .brand {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--white);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .footer-brand .tagline {
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--red);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .footer-brand p {
+      font-size: .88rem;
+      line-height: 1.6;
+    }
+
+    .footer-col h4 {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col ul li { margin-bottom: 8px; }
+
+    .footer-col ul li a {
+      color: rgba(255,255,255,.6);
+      text-decoration: none;
+      font-size: .88rem;
+      transition: color .2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--white); }
+
+    .footer-col address {
+      font-style: normal;
+      font-size: .88rem;
+      line-height: 1.75;
+    }
+
+    .footer-col address a {
+      color: rgba(255,255,255,.65);
+      text-decoration: none;
+    }
+
+    .footer-col address a:hover { color: var(--white); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .8rem;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer-bottom span { color: rgba(255,255,255,.4); }
+
+    .footer-bottom .red { color: var(--red); }
+
+    @media (max-width: 720px) {
+      .footer-top { grid-template-columns: 1fr; gap: 28px; }
+    }
+
+    /* ── TOAST ───────────────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--blue-dark);
+      color: var(--white);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: .95rem;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,.3);
+      border-left: 4px solid var(--red);
+      transition: transform .35s ease;
+      z-index: 999;
+      white-space: nowrap;
+    }
+
+    #toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <span class="brand">Center Auto Repair</span>
+      <span class="sub">Family Owned, Fine Tuned</span>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="nav-cta">Book Now</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────── -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">Edmonton's Trusted Auto Shop</div>
+      <h1>Family Owned Auto Repair &mdash; <span>Edmonton's Trusted Shop</span> Since Day One</h1>
+      <p>Honest repairs, fair prices, and expert service you can count on. We treat your vehicle like it's our own — because that's what family does.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Book Your Appointment</a>
+        <a href="tel:7804259132" class="btn-outline">Call 780-425-9132</a>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-box">
+        <div class="num">20<span>+</span></div>
+        <div class="label">Years Experience</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">5K<span>+</span></div>
+        <div class="label">Vehicles Serviced</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">100<span>%</span></div>
+        <div class="label">Family Owned</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">1<span>st</span></div>
+        <div class="label">For Honest Service</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ──────────────────────────────────────── -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Complete Auto Services, Done Right</h2>
+    <p class="section-sub">From a quick oil change to complex engine work, our experienced team handles it all with care and transparency.</p>
+
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-icon">
+          <!-- wrench icon -->
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3>General Repair</h3>
+        <p>Brakes, suspension, steering, exhaust, and everything in between. We diagnose and fix the problem correctly — the first time.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <!-- shield / maintenance icon -->
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Maintenance</h3>
+        <p>Scheduled maintenance keeps your vehicle running longer and safer. We follow manufacturer specs and keep your records up to date.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <!-- cpu / diagnostics icon -->
+          <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+        </div>
+        <h3>Diagnostics</h3>
+        <p>Check engine light? Strange noise? Our modern diagnostic equipment reads your vehicle's systems fast and accurately so nothing gets missed.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <!-- droplets / oil icon -->
+          <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+        </div>
+        <h3>Oil &amp; Filters</h3>
+        <p>Regular oil changes and filter replacements are the simplest way to protect your engine. Fast service, no upselling — just what your car needs.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY CHOOSE US ─────────────────────────────────── -->
+<section id="why">
+  <div class="section-inner">
+    <div class="section-label">Why Center Auto</div>
+    <h2 class="section-title">Built on Trust, Driven by Quality</h2>
+    <p class="section-sub">We're not a chain. We're your neighbors — and we've been taking care of Edmonton drivers since the beginning.</p>
+
+    <div class="why-grid">
+
+      <div class="why-card">
+        <div class="why-icon">
+          <!-- home icon -->
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3>Family Owned</h3>
+        <p>No corporate pressure, no quotas. As a family-owned shop, we make decisions based on what's best for you — not a bottom line in a head office somewhere.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">
+          <!-- dollar sign icon -->
+          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3>Honest Pricing</h3>
+        <p>Clear estimates before any work starts. No surprise charges, no unnecessary add-ons. What we quote is what you pay — we stand behind every invoice.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">
+          <!-- users icon -->
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Experienced Team</h3>
+        <p>Our technicians bring decades of combined experience across all makes and models. When your car is with us, it's in skilled, reliable hands.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── RED STRIP ─────────────────────────────────────── -->
+<div class="strip">
+  <p>Ready to book your next service? Call us at <a href="tel:7804259132">780-425-9132</a> or send us a message below.</p>
+</div>
+
+<!-- ── CONTACT ───────────────────────────────────────── -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Book Your Appointment</h2>
+    <p class="section-sub">Reach out by phone, email, or use the form below. We'll get back to you promptly to confirm your booking.</p>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6.29 6.29l.96-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <div class="label">Phone</div>
+            <a href="tel:7804259132">780-425-9132</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <div class="label">Email</div>
+            <a href="mailto:centerautorepair@shaw.ca">centerautorepair@shaw.ca</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <div class="label">Location</div>
+            <span>Edmonton, Alberta</span>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <div class="label">Hours</div>
+            <span>Mon – Fri: 8:00 AM – 5:30 PM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <h3>Request a Service Appointment</h3>
+        <form id="bookingForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" name="fname" placeholder="John" required />
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" name="lname" placeholder="Smith" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="780-000-0000" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="service">Service Needed</label>
+            <select id="service" name="service">
+              <option value="">Select a service...</option>
+              <option>General Repair</option>
+              <option>Scheduled Maintenance</option>
+              <option>Diagnostics</option>
+              <option>Oil &amp; Filter Change</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="vehicle">Vehicle (Year, Make, Model)</label>
+            <input type="text" id="vehicle" name="vehicle" placeholder="e.g. 2018 Toyota Camry" />
+          </div>
+
+          <div class="form-group">
+            <label for="message">Additional Details</label>
+            <textarea id="message" name="message" placeholder="Describe the issue or any other details..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit">Send Appointment Request</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="brand">Center Auto Repair &amp; Maintenance</span>
+        <span class="tagline">Family Owned, Fine Tuned</span>
+        <p>Edmonton's trusted auto repair shop. Honest work, fair prices, and a team that treats your vehicle with the same care we'd give our own.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">General Repair</a></li>
+          <li><a href="#services">Maintenance</a></li>
+          <li><a href="#services">Diagnostics</a></li>
+          <li><a href="#services">Oil &amp; Filters</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <address>
+          Edmonton, Alberta<br />
+          <a href="tel:7804259132">780-425-9132</a><br />
+          <a href="mailto:centerautorepair@shaw.ca">centerautorepair@shaw.ca</a>
+        </address>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2025 Center Auto Repair &amp; Maintenance. All rights reserved.</span>
+      <span>Made with <span class="red">care</span> in Edmonton, AB</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── TOAST ─────────────────────────────────────────── -->
+<div id="toast">Your request has been sent! We'll be in touch shortly.</div>
+
+<!-- ── JS ────────────────────────────────────────────── -->
+<script>
+  // Mobile nav toggle
+  const toggle = document.getElementById('navToggle');
+  const links  = document.getElementById('navLinks');
+
+  toggle.addEventListener('click', () => {
+    links.classList.toggle('open');
+  });
+
+  // Close nav on link click
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => links.classList.remove('open'));
+  });
+
+  // Nav scroll shadow
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.boxShadow = window.scrollY > 10
+      ? '0 4px 20px rgba(0,0,0,.45)'
+      : '0 2px 12px rgba(0,0,0,.35)';
+  });
+
+  // Form submission
+  const form  = document.getElementById('bookingForm');
+  const toast = document.getElementById('toast');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const fname = form.fname.value.trim();
+    const phone = form.phone.value.trim();
+
+    if (!fname || !phone) {
+      alert('Please fill in your name and phone number so we can reach you.');
+      return;
+    }
+
+    // Simulate form send
+    toast.classList.add('show');
+    form.reset();
+
+    setTimeout(() => toast.classList.remove('show'), 4000);
+  });
+
+  // Smooth active nav highlight on scroll
+  const sections = document.querySelectorAll('section[id], .hero');
+  const navAs    = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navAs.forEach(a => {
+          a.style.color = a.getAttribute('href') === '#' + entry.target.id
+            ? '#ffffff'
+            : '';
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
