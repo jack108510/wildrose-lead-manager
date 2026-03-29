@@ -38,8 +38,6 @@
       border-bottom: 1px solid rgba(184,134,11,0.3);
     }
 
-    .nav-logo img { height: 38px; max-width: 140px; width: auto; object-fit: contain; mix-blend-mode: lighten; filter: brightness(1.1); }
-
     .nav-links { display: flex; gap: 1.75rem; list-style: none; }
     .nav-links a { color: #c8b090; text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em; transition: color 0.2s; }
     .nav-links a:hover { color: var(--gold-light); }
@@ -180,7 +178,7 @@
 
     /* FOOTER */
     footer { background: var(--dark); padding: 2rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(184,134,11,0.15); }
-    footer img { height: 44px; object-fit: contain; }
+    footer img { height: 44px; max-width: 120px; object-fit: contain; mix-blend-mode: lighten; opacity: 0.7; }
     .footer-copy { font-size: 0.75rem; color: #4a3520; }
     .footer-demo { font-size: 0.68rem; color: rgba(184,134,11,0.35); }
 
@@ -202,9 +200,7 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#">
-      <img src="https://wildroseantiquecollectors.ca/wp-content/uploads/2019/10/wildrose-logo.png" alt="Wild Rose Antique Collectors Society" />
-    </a>
+    <a href="#" style="text-decoration:none; font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:#e8d5a0; letter-spacing:0.04em; white-space:nowrap; line-height:1.2;">Wild Rose<br /><span style="font-weight:400; font-style:italic; font-size:0.78rem; letter-spacing:0.08em; color:#b8960a;">Antique Collectors Society</span></a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#events">Events</a></li>
