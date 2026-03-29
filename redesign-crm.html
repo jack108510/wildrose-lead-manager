@@ -718,6 +718,121 @@
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+
+  /* LEAD QUEUE */
+  .lead-queue-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .lead-filter-bar {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  .leads-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .lead-row {
+    background: var(--bg2);
+    border: 1px solid var(--bg3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    transition: background 0.15s;
+  }
+  .lead-row:hover { background: #1a2535; }
+  .lead-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    min-width: 140px;
+  }
+  .lead-industry {
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    background: var(--bg3);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .lead-site {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 180px;
+  }
+  .lead-site:hover { color: var(--text); }
+  .lead-city {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .lead-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 12px;
+  }
+  .lead-contact a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .lead-contact a:hover { color: var(--text); }
+  .lead-source {
+    font-size: 10px;
+    color: #6b7280;
+    white-space: nowrap;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--bg3);
+  }
+  .lead-date {
+    font-size: 11px;
+    color: #6b7280;
+    white-space: nowrap;
+  }
+  .lead-actions {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .btn-approve {
+    background: #10b981;
+    color: #fff;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-approve:hover { background: #059669; }
+  .btn-reject {
+    background: transparent;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-reject:hover { background: #450a0a; }
 </style>
 </head>
 <body>
@@ -756,6 +871,7 @@
 <!-- TABS -->
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('companies', this)">Companies</button>
+  <button class="tab-btn" onclick="switchTab('leadqueue', this)">Lead Queue <span id="lq-badge"></span></button>
   <button class="tab-btn" onclick="switchTab('analyzer', this)">Site Analyzer</button>
 </div>
 
@@ -784,6 +900,21 @@
       <div class="empty-state" style="grid-column:1/-1">
         <div class="empty-state-title">Loading companies…</div>
       </div>
+    </div>
+  </div>
+
+  <!-- TAB: LEAD QUEUE -->
+  <div class="tab-content" id="tab-leadqueue">
+    <div class="lead-queue-header">
+      <div class="lead-filter-bar" id="lqFilterBar">
+        <button class="filter-btn active" onclick="setLqFilter('all', this)">All</button>
+        <button class="filter-btn" onclick="setLqFilter('priority', this)">High Priority (score &le; 4)</button>
+        <button class="filter-btn" onclick="setLqFilter('email', this)">Has Email</button>
+        <button class="filter-btn" onclick="setLqFilter('phone', this)">Has Phone</button>
+      </div>
+    </div>
+    <div class="leads-list" id="leadsList">
+      <div class="empty-state"><div class="empty-state-title">Loading leads…</div></div>
     </div>
   </div>
 
@@ -1050,6 +1181,7 @@ function switchTab(tab, btn) {
   document.getElementById(`tab-${tab}`).classList.add('active');
   btn.classList.add('active');
   document.getElementById('stickyFilters').style.display = tab === 'companies' ? 'flex' : 'none';
+  if (tab === 'leadqueue') loadLeadQueue();
 }
 
 // ─────────── LOAD & SEED ───────────
@@ -1637,6 +1769,168 @@ document.addEventListener('keydown', e => {
     openAddCompany();
   }
 });
+
+// ─────────── LEAD QUEUE ───────────
+let allLeads = [];
+let lqFilter = 'all';
+
+function setLqFilter(f, btn) {
+  lqFilter = f;
+  document.querySelectorAll('#lqFilterBar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLeads();
+}
+
+function relativeDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now - d;
+  const diffDays = Math.floor(diffMs / 86400000);
+  if (diffDays === 0) return 'today';
+  if (diffDays === 1) return '1 day ago';
+  if (diffDays < 30) return diffDays + ' days ago';
+  const diffMonths = Math.floor(diffDays / 30);
+  return diffMonths + ' month' + (diffMonths > 1 ? 's' : '') + ' ago';
+}
+
+function leadScoreBadge(score) {
+  if (!score) return '';
+  const n = parseInt(score);
+  let cls = n <= 4 ? 'score-red' : n <= 6 ? 'score-yellow' : 'score-green';
+  return `<span class="score-badge ${cls}">${n}/10</span>`;
+}
+
+async function loadLeadQueue() {
+  const list = document.getElementById('leadsList');
+  list.innerHTML = '<div class="empty-state"><div class="empty-state-title">Loading leads…</div></div>';
+  try {
+    const res = await fetch(SUPA_URL + '/redesign_leads?status=eq.pending&order=website_score.asc', { headers: SUPA_HEADERS });
+    if (!res.ok) throw new Error(await res.text());
+    const text = await res.text();
+    allLeads = text ? JSON.parse(text) : [];
+    updateLqBadge();
+    renderLeads();
+  } catch (e) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-state-title" style="color:var(--red)">Failed to load leads: ${esc(e.message)}</div></div>`;
+  }
+}
+
+function updateLqBadge() {
+  const badge = document.getElementById('lq-badge');
+  if (allLeads.length > 0) {
+    badge.textContent = '(' + allLeads.length + ')';
+  } else {
+    badge.textContent = '';
+  }
+}
+
+function renderLeads() {
+  const list = document.getElementById('leadsList');
+  let leads = allLeads.filter(l => {
+    if (lqFilter === 'priority') return parseInt(l.website_score) <= 4;
+    if (lqFilter === 'email') return !!l.contact_email;
+    if (lqFilter === 'phone') return !!l.contact_phone;
+    return true;
+  });
+
+  if (leads.length === 0) {
+    const msg = allLeads.length === 0
+      ? 'No pending leads. Your queue is clear.'
+      : 'No leads match this filter.';
+    list.innerHTML = `<div class="empty-state">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--bg3)" stroke-width="1.5" style="margin:0 auto 12px;display:block"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+      <div class="empty-state-title">${esc(msg)}</div>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = leads.map(l => {
+    const name = l.company_name || 'Unknown';
+    const siteUrl = l.current_site ? (l.current_site.startsWith('http') ? l.current_site : 'https://' + l.current_site) : '';
+    return `<div class="lead-row" id="lead-row-${esc(l.id)}">
+      <div class="lead-name">${esc(name)}</div>
+      ${l.industry ? `<span class="lead-industry">${esc(l.industry)}</span>` : ''}
+      ${siteUrl ? `<a href="${esc(siteUrl)}" target="_blank" class="lead-site">${esc(siteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '').substring(0, 30))}${siteUrl.length > 36 ? '…' : ''}</a>` : ''}
+      ${l.city ? `<span class="lead-city">${esc(l.city)}</span>` : ''}
+      ${leadScoreBadge(l.website_score)}
+      <div class="lead-contact">
+        ${l.contact_email ? `<a href="mailto:${esc(l.contact_email)}">${esc(l.contact_email)}</a>` : ''}
+        ${l.contact_phone ? `<a href="tel:${esc(l.contact_phone)}">${esc(l.contact_phone)}</a>` : ''}
+      </div>
+      ${l.source ? `<span class="lead-source">${esc(l.source)}</span>` : ''}
+      ${l.scraped_at ? `<span class="lead-date">${relativeDate(l.scraped_at)}</span>` : ''}
+      <div class="lead-actions">
+        <button class="btn-approve" onclick="approveLead('${esc(l.id)}')">Approve</button>
+        <button class="btn-reject" onclick="rejectLead('${esc(l.id)}')">Reject</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function approveLead(id) {
+  const lead = allLeads.find(l => l.id === id || String(l.id) === String(id));
+  if (!lead) return;
+  showSpinner();
+  try {
+    // 1. Update lead status
+    const patchRes = await fetch(SUPA_URL + '/redesign_leads?id=eq.' + id, {
+      method: 'PATCH',
+      headers: SUPA_HEADERS,
+      body: JSON.stringify({ status: 'approved', reviewed_at: new Date().toISOString() })
+    });
+    if (!patchRes.ok) throw new Error(await patchRes.text());
+
+    // 2. Insert into redesign_companies
+    const companyData = {
+      company_name: lead.company_name || 'Unknown',
+      industry: lead.industry || null,
+      current_site: lead.current_site || null,
+      contact_email: lead.contact_email || null,
+      contact_phone: lead.contact_phone || null,
+      stage: 'Prospect',
+      website_score: lead.website_score || null,
+      notes: lead.notes || null
+    };
+    const postRes = await fetch(SUPA_URL + '/redesign_companies', {
+      method: 'POST',
+      headers: SUPA_HEADERS,
+      body: JSON.stringify(companyData)
+    });
+    if (!postRes.ok) throw new Error(await postRes.text());
+
+    // Remove from local queue
+    allLeads = allLeads.filter(l => String(l.id) !== String(id));
+    updateLqBadge();
+    renderLeads();
+    toast('Lead approved and added to CRM', 'success');
+  } catch (e) {
+    toast('Approve failed: ' + e.message, 'error');
+  } finally {
+    hideSpinner();
+  }
+}
+
+async function rejectLead(id) {
+  showSpinner();
+  try {
+    const patchRes = await fetch(SUPA_URL + '/redesign_leads?id=eq.' + id, {
+      method: 'PATCH',
+      headers: SUPA_HEADERS,
+      body: JSON.stringify({ status: 'rejected', reviewed_at: new Date().toISOString() })
+    });
+    if (!patchRes.ok) throw new Error(await patchRes.text());
+
+    allLeads = allLeads.filter(l => String(l.id) !== String(id));
+    updateLqBadge();
+    renderLeads();
+    toast('Lead rejected', 'info');
+  } catch (e) {
+    toast('Reject failed: ' + e.message, 'error');
+  } finally {
+    hideSpinner();
+  }
+}
 
 // ─────────── INIT ───────────
 buildToggles();
