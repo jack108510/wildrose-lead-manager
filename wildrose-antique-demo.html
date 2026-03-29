@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wild Rose Antique Collectors Society | Edmonton, AB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf6f0;
+      --surface: #ffffff;
+      --card: #ffffff;
+      --border: #e8ddd0;
+      --warm: #f5ece0;
+      --dark: #2a1e14;
+      --red: #8b1a1a;
+      --red-light: #a82020;
+      --red-dim: rgba(139,26,26,0.08);
+      --gold: #b8860b;
+      --gold-light: #d4a017;
+      --text: #3a2c1e;
+      --muted: #7a6550;
+      --light: #a89070;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 72px;
+      background: rgba(42,30,20,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(184,134,11,0.3);
+    }
+
+    .nav-logo img { height: 52px; object-fit: contain; }
+
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: #c8b090; text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-cta { border: 1.5px solid var(--gold); color: var(--gold) !important; padding: 0.42rem 1.2rem; border-radius: 2px; font-weight: 600; transition: background 0.2s, color 0.2s !important; }
+    .nav-cta:hover { background: var(--gold) !important; color: var(--dark) !important; }
+
+    /* HERO */
+    .hero {
+      margin-top: 72px;
+      background: var(--dark);
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 72px);
+    }
+
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 6% 5rem 8%;
+      border-right: 1px solid rgba(184,134,11,0.2);
+    }
+
+    .eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-light);
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.5rem;
+    }
+    .eyebrow::before { content: ''; display: block; width: 22px; height: 1px; background: var(--gold-light); }
+
+    .hero-left h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 4vw, 3.8rem); font-weight: 800; line-height: 1.1;
+      color: #f5ece0; margin-bottom: 1.25rem;
+    }
+    .hero-left h1 em { font-style: italic; color: var(--gold-light); }
+
+    .hero-left p { font-size: 0.97rem; color: #7a6550; line-height: 1.85; margin-bottom: 2.5rem; max-width: 460px; }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+
+    .btn-gold { background: var(--gold); color: var(--dark); padding: 0.8rem 1.8rem; border-radius: 2px; text-decoration: none; font-weight: 700; font-size: 0.88rem; transition: background 0.2s, transform 0.15s; display: inline-block; }
+    .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-outline { border: 1.5px solid rgba(184,134,11,0.4); color: var(--gold-light); padding: 0.8rem 1.8rem; border-radius: 2px; text-decoration: none; font-weight: 600; font-size: 0.88rem; transition: border-color 0.2s, transform 0.15s; }
+    .btn-outline:hover { border-color: var(--gold-light); transform: translateY(-2px); }
+
+    .hero-badges { display: flex; gap: 1.5rem; flex-wrap: wrap; padding-top: 2rem; border-top: 1px solid rgba(184,134,11,0.15); }
+    .badge-item { font-size: 0.78rem; color: #5a4535; display: flex; align-items: center; gap: 0.4rem; }
+    .badge-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
+
+    .hero-right { overflow: hidden; display: flex; align-items: center; justify-content: center; background: #1e1408; }
+    .hero-right img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.9; }
+
+    /* SHOW BANNER */
+    .show-banner {
+      background: var(--red); padding: 1.5rem 8%;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .show-banner-text { color: white; }
+    .show-banner-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .show-banner-sub { font-size: 0.85rem; color: rgba(255,255,255,0.8); }
+    .show-banner .btn-gold { background: #f5ece0; color: var(--red); font-size: 0.85rem; padding: 0.65rem 1.5rem; }
+
+    /* SECTIONS */
+    section { padding: 5rem 8%; }
+    .sec-eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--red); display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.7rem; }
+    .sec-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--red); }
+    .sec-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.2vw, 2.6rem); font-weight: 700; color: var(--dark); line-height: 1.15; margin-bottom: 1rem; }
+    .sec-sub { color: var(--muted); font-size: 0.93rem; line-height: 1.8; }
+
+    /* ABOUT */
+    #about { background: var(--surface); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+
+    .about-img { position: relative; }
+    .about-img img { width: 100%; height: 460px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); display: block; }
+    .about-quote {
+      position: absolute; bottom: -1.5rem; right: -1.5rem;
+      background: var(--red); color: white;
+      padding: 1.25rem 1.5rem; border-radius: 4px;
+      max-width: 220px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 0.9rem; line-height: 1.5;
+    }
+    .about-quote cite { display: block; font-style: normal; font-size: 0.72rem; margin-top: 0.5rem; color: rgba(255,255,255,0.7); font-family: 'Inter', sans-serif; }
+
+    .about-body .sec-sub { margin-bottom: 1.5rem; }
+
+    /* EVENTS */
+    #events { background: var(--warm); }
+
+    .events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+    .event-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+      overflow: hidden; transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .event-card:hover { box-shadow: 0 4px 20px rgba(42,30,20,0.1); transform: translateY(-3px); }
+
+    .event-top { background: var(--red); padding: 1.25rem 1.5rem; }
+    .event-date { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; color: white; line-height: 1; }
+    .event-month { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; }
+    .event-body { padding: 1.25rem 1.5rem 1.5rem; }
+    .event-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 0.4rem; }
+    .event-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    /* MEMBERSHIP */
+    #membership { background: var(--dark); }
+    #membership .sec-title { color: #f5ece0; }
+    #membership .sec-sub { color: #5a4535; }
+    #membership .sec-eyebrow { color: var(--gold-light); }
+    #membership .sec-eyebrow::before { background: var(--gold-light); }
+
+    .membership-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+
+    .membership-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(184,134,11,0.2);
+      border-radius: 6px; padding: 2rem;
+    }
+    .mem-price { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 800; color: var(--gold-light); line-height: 1; }
+    .mem-period { font-size: 0.85rem; color: #5a4535; margin-top: 0.3rem; margin-bottom: 1.5rem; }
+    .mem-features { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.75rem; }
+    .mem-feature { font-size: 0.85rem; color: #c8b090; display: flex; gap: 0.5rem; align-items: flex-start; }
+    .mem-check { color: var(--gold); }
+
+    .membership-img img { width: 100%; border-radius: 4px; object-fit: contain; }
+
+    /* CONTACT */
+    #contact { background: var(--surface); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-info .sec-sub { margin: 0.75rem 0 2rem; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.4rem; align-items: flex-start; }
+    .ci-icon { width: 38px; height: 38px; background: var(--red-dim); border: 1px solid rgba(139,26,26,0.15); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+    .ci-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+    .ci-val a { color: var(--red); text-decoration: none; }
+
+    .fg { margin-bottom: 1rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: var(--warm); border: 1px solid var(--border); border-radius: 3px; padding: 0.78rem 1rem; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--red); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* FOOTER */
+    footer { background: var(--dark); padding: 2rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(184,134,11,0.15); }
+    footer img { height: 44px; object-fit: contain; }
+    .footer-copy { font-size: 0.75rem; color: #4a3520; }
+    .footer-demo { font-size: 0.68rem; color: rgba(184,134,11,0.35); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .events-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 280px; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      .membership-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav .nav-links { display: none; }
+      .about-quote { display: none; }
+    }
+    @media (max-width: 600px) { .events-grid { grid-template-columns: 1fr; } .fr { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#">
+      <img src="https://wildroseantiquecollectors.ca/wp-content/uploads/2019/10/wildrose-logo.png" alt="Wild Rose Antique Collectors Society" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#membership">Membership</a></li>
+      <li><a href="#contact" class="nav-cta">Join Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="eyebrow">Edmonton, Alberta · Est. 1975</div>
+      <h1>Discover<br /><em>Treasures</em><br />With Us</h1>
+      <p>The Wild Rose Antique Collectors Society unites over 50 passionate members in Edmonton who share a love for history, antiques, and the thrill of discovery. Every find is a festivity.</p>
+      <div class="hero-buttons">
+        <a href="#membership" class="btn-gold">Become a Member</a>
+        <a href="#events" class="btn-outline">Upcoming Events</a>
+      </div>
+      <div class="hero-badges">
+        <div class="badge-item"><div class="badge-dot"></div> 50+ Members</div>
+        <div class="badge-item"><div class="badge-dot"></div> Monthly Outings</div>
+        <div class="badge-item"><div class="badge-dot"></div> Annual Antique Show</div>
+        <div class="badge-item"><div class="badge-dot"></div> Heritage Donations</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="https://wildroseantiquecollectors.ca/wp-content/uploads/2026/03/ChatGPT-Image-Mar-25-2026-03_55_15-PM.png" alt="50th Annual Antique Show" />
+    </div>
+  </div>
+
+  <!-- SHOW BANNER -->
+  <div class="show-banner">
+    <div class="show-banner-text">
+      <div class="show-banner-title">🎉 50th Annual Antique Collectible Show — May 8 & 9, 2026</div>
+      <div class="show-banner-sub">Edmonton Inn & Conference Centre · Friday 5pm–9pm · Saturday 9am–5pm · $10 admission · Tables available at $225</div>
+    </div>
+    <a href="tel:7809196314" class="btn-gold">Book a Table — Call Vicky</a>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img">
+      <img src="https://wildroseantiquecollectors.ca/wp-content/uploads/2026/03/ChatGPT-Image-Mar-25-2026-03_55_15-PM.png" alt="Antique collectibles" />
+      <div class="about-quote">
+        "Every find is a festivity — and treasures are often beyond mere monetary value."
+        <cite>— Clinton Beck, President</cite>
+      </div>
+    </div>
+    <div class="about-body">
+      <div class="sec-eyebrow">Who We Are</div>
+      <div class="sec-title">A Community of Collectors</div>
+      <p class="sec-sub">The Wild Rose Antique Collectors Society has enriched Edmonton's collector community for 50 years. Our vibrant group of over 50 passionate individuals thrives on a shared love for history, antiques, collecting, and engaging outings.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">Antiques, in our perspective, aren't just relics of the past — they resonate with the contemporary, reminding us that nothing in design or fashion truly starts from scratch. For us, treasure hunting is about those delightful eureka moments.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">Our legacy includes heritage donations and proactive contributions to projects, museums, and charities across Alberta.</p>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section id="events">
+    <div style="margin-bottom:2.5rem;">
+      <div class="sec-eyebrow">What's On</div>
+      <div class="sec-title">Upcoming Events</div>
+      <p class="sec-sub">Monthly outings, guest speakers, and our flagship annual show — there's always something happening.</p>
+    </div>
+    <div class="events-grid">
+      <div class="event-card">
+        <div class="event-top">
+          <div class="event-date">May 8–9</div>
+          <div class="event-month">2026 · Edmonton</div>
+        </div>
+        <div class="event-body">
+          <div class="event-title">50th Annual Antique Collectible Show</div>
+          <p class="event-desc">Our flagship event at Edmonton Inn & Conference Centre. Friday 5–9pm, Saturday 9am–5pm. $10 admission, $15 two-day pass. Vendor tables at $225 — almost sold out!</p>
+        </div>
+      </div>
+      <div class="event-card">
+        <div class="event-top" style="background:#7a5520;">
+          <div class="event-date">Monthly</div>
+          <div class="event-month">Outings & Meetings</div>
+        </div>
+        <div class="event-body">
+          <div class="event-title">Monthly Collector Outings</div>
+          <p class="event-desc">We organize regular outings to antique markets, estate sales, shops, and points of interest across the Edmonton area. Members always welcome!</p>
+        </div>
+      </div>
+      <div class="event-card">
+        <div class="event-top" style="background:#4a3520;">
+          <div class="event-date">Ongoing</div>
+          <div class="event-month">Year-Round</div>
+        </div>
+        <div class="event-body">
+          <div class="event-title">Heritage Donations & Community Projects</div>
+          <p class="event-desc">We actively contribute to museums, charities, and heritage projects across Alberta — preserving history for future generations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERSHIP -->
+  <section id="membership">
+    <div class="membership-layout">
+      <div>
+        <div class="sec-eyebrow">Join the Society</div>
+        <div class="sec-title">Become a Member</div>
+        <p class="sec-sub" style="margin-bottom:2rem;">Join a warm and welcoming community of over 50 passionate collectors in Edmonton. Access monthly events, our annual show, and a network of fellow enthusiasts.</p>
+        <div class="membership-card">
+          <div class="mem-price">$—</div>
+          <div class="mem-period">Annual Membership · Contact for current rates</div>
+          <ul class="mem-features">
+            <li class="mem-feature"><span class="mem-check">✦</span> Access to all monthly outings and meetings</li>
+            <li class="mem-feature"><span class="mem-check">✦</span> Discounted entry to the Annual Antique Show</li>
+            <li class="mem-feature"><span class="mem-check">✦</span> Access to member antique shop & services lists</li>
+            <li class="mem-feature"><span class="mem-check">✦</span> Community events and social gatherings</li>
+            <li class="mem-feature"><span class="mem-check">✦</span> Heritage donation & charitable projects</li>
+          </ul>
+          <a href="mailto:president@wildroseantiquecollectors.ca" class="btn-gold" style="display:block; text-align:center;">Apply for Membership →</a>
+        </div>
+      </div>
+      <div class="membership-img">
+        <img src="https://wildroseantiquecollectors.ca/wp-content/uploads/2019/10/wildrose-logo.png" alt="Wild Rose Antique Collectors Society" style="max-width:360px; margin:0 auto; display:block;" />
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <div class="sec-eyebrow">Get in Touch</div>
+      <div class="sec-title">Contact Us</div>
+      <p class="sec-sub">Interested in joining, booking a show table, or just want to know more? We'd love to hear from you.</p>
+      <div class="ci">
+        <div class="ci-icon">📞</div>
+        <div><div class="ci-label">Show Tables (Vicky)</div><div class="ci-val"><a href="tel:7809196314">1-780-919-6314</a></div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">✉</div>
+        <div><div class="ci-label">President</div><div class="ci-val"><a href="mailto:president@wildroseantiquecollectors.ca">president@wildroseantiquecollectors.ca</a></div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">✉</div>
+        <div><div class="ci-label">General Inquiries</div><div class="ci-val"><a href="mailto:wildroseantiqueclub@gmail.com">wildroseantiqueclub@gmail.com</a></div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">📍</div>
+        <div><div class="ci-label">Show Location</div><div class="ci-val">Edmonton Inn & Conference Centre<br />11834 Kingsway Avenue, Edmonton, AB</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="fr">
+        <div class="fg"><input type="text" placeholder="First Name" /></div>
+        <div class="fg"><input type="text" placeholder="Last Name" /></div>
+      </div>
+      <div class="fg"><input type="email" placeholder="Email Address" /></div>
+      <div class="fg"><input type="tel" placeholder="Phone Number" /></div>
+      <div class="fg">
+        <select>
+          <option value="" disabled selected>I'm interested in…</option>
+          <option>Joining as a Member</option>
+          <option>Booking a Show Table</option>
+          <option>Attending the Annual Show</option>
+          <option>Monthly Outings</option>
+          <option>General Question</option>
+        </select>
+      </div>
+      <div class="fg"><textarea placeholder="Your message…"></textarea></div>
+      <a href="mailto:wildroseantiqueclub@gmail.com" class="btn-gold" style="display:block; width:100%; text-align:center; background:var(--red); color:white;">Send Message →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="https://wildroseantiquecollectors.ca/wp-content/uploads/2019/10/wildrose-logo.png" alt="Wild Rose Antique Collectors Society" />
+    <div class="footer-copy">© 2026 Wild Rose Antique Collectors Society · Edmonton, Alberta · wildroseantiqueclub@gmail.com</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
