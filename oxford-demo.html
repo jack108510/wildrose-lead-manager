@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oxford Machine & Welding Ltd. — Edmonton, AB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #08090d;
+      --surface: #0c0e14;
+      --card: #121620;
+      --border: #1c2130;
+      --blue: #1a5bbf;
+      --blue-light: #2670d4;
+      --blue-dim: rgba(26,91,191,0.12);
+      --cream: #edf2f7;
+      --text: #c8d4e0;
+      --muted: #5a6a7e;
+      --light: #8fa4ba;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 68px;
+      background: rgba(8,9,13,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(26,91,191,0.25);
+    }
+
+    .nav-logo img { height: 40px; object-fit: contain; }
+
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: var(--light); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta { background: var(--blue); color: white !important; padding: 0.42rem 1.2rem; border-radius: 3px; font-weight: 600; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--blue-light) !important; }
+
+    /* HERO */
+    .hero { margin-top: 68px; display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 68px); }
+
+    .hero-left {
+      background: var(--surface);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 6% 5rem 8%;
+      border-right: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue-light);
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.4rem;
+    }
+    .eyebrow::before { content: ''; display: block; width: 22px; height: 1px; background: var(--blue-light); }
+
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.6rem, 4.5vw, 4.2rem); font-weight: 800; line-height: 1.05;
+      text-transform: uppercase; color: var(--cream); margin-bottom: 1.25rem;
+    }
+    .hero h1 span { color: var(--blue-light); }
+
+    .hero-left p { font-size: 0.97rem; color: var(--muted); line-height: 1.85; margin-bottom: 2.5rem; max-width: 460px; }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+
+    .btn-blue { background: var(--blue); color: white; padding: 0.8rem 1.8rem; border-radius: 3px; text-decoration: none; font-weight: 700; font-size: 0.88rem; transition: background 0.2s, transform 0.15s; display: inline-block; }
+    .btn-blue:hover { background: var(--blue-light); transform: translateY(-2px); }
+    .btn-outline { border: 1.5px solid rgba(26,91,191,0.45); color: var(--blue-light); padding: 0.8rem 1.8rem; border-radius: 3px; text-decoration: none; font-weight: 600; font-size: 0.88rem; transition: border-color 0.2s, transform 0.15s; }
+    .btn-outline:hover { border-color: var(--blue-light); transform: translateY(-2px); }
+
+    .hero-badges { display: flex; gap: 1.5rem; flex-wrap: wrap; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .badge-item { font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; }
+    .badge-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--blue-light); }
+
+    .hero-right { overflow: hidden; }
+    .hero-right img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* STAT STRIP */
+    .stat-strip { background: var(--blue); display: flex; justify-content: center; flex-wrap: wrap; }
+    .stat-item { padding: 1.25rem 3rem; text-align: center; border-right: 1px solid rgba(255,255,255,0.15); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; color: white; line-height: 1; }
+    .stat-label { font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+
+    /* SECTIONS */
+    section { padding: 5rem 8%; }
+    .sec-header { margin-bottom: 2.5rem; }
+    .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(1.8rem, 3.2vw, 2.8rem); font-weight: 800; text-transform: uppercase; color: var(--cream); line-height: 1.1; margin-bottom: 0.75rem; }
+    .sec-sub { color: var(--muted); font-size: 0.93rem; line-height: 1.8; max-width: 560px; }
+
+    /* CAPABILITIES */
+    #capabilities { background: var(--surface); }
+
+    .cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+    .cap-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 5px;
+      overflow: hidden; transition: border-color 0.2s, transform 0.2s;
+    }
+    .cap-card:hover { border-color: rgba(26,91,191,0.5); transform: translateY(-3px); }
+    .cap-img { width: 100%; height: 180px; object-fit: cover; display: block; filter: brightness(0.85); transition: filter 0.3s; }
+    .cap-card:hover .cap-img { filter: brightness(1); }
+    .cap-body { padding: 1.1rem 1.25rem 1.3rem; }
+    .cap-num { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.1em; color: var(--blue-light); margin-bottom: 0.3rem; }
+    .cap-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; font-weight: 700; text-transform: uppercase; color: var(--cream); margin-bottom: 0.4rem; }
+    .cap-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    /* ABOUT */
+    #about { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+
+    .about-img { border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+    .about-img img { width: 100%; height: 460px; object-fit: cover; display: block; }
+
+    .about-body .sec-sub { margin-bottom: 1.25rem; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.75rem; }
+    .about-stat { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--blue-light); border-radius: 3px; padding: 0.85rem 1rem; }
+    .about-stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--blue-light); line-height: 1; }
+    .about-stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* CWB CERT */
+    #cert { background: var(--surface); padding: 3rem 8%; display: flex; align-items: center; gap: 3rem; flex-wrap: wrap; border-top: 1px solid var(--border); }
+    .cert-img img { height: 80px; object-fit: contain; border-radius: 4px; }
+    .cert-text { flex: 1; }
+    .cert-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 700; text-transform: uppercase; color: var(--cream); margin-bottom: 0.3rem; }
+    .cert-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+    /* CONTACT */
+    #contact { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-info .sec-sub { margin: 0.75rem 0 2rem; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.4rem; align-items: flex-start; }
+    .ci-icon { width: 38px; height: 38px; background: var(--blue-dim); border: 1px solid rgba(26,91,191,0.22); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+    .ci-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue-light); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+
+    .fg { margin-bottom: 1rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 0.78rem 1rem; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input::placeholder, .fg textarea::placeholder { color: var(--muted); }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--blue-light); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fg select option { background: var(--card); }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* FOOTER */
+    footer { background: #050609; padding: 1.75rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(26,91,191,0.15); }
+    footer img { height: 32px; object-fit: contain; opacity: 0.75; }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    .footer-demo { font-size: 0.68rem; color: rgba(26,91,191,0.4); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .cap-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 280px; }
+      #about { grid-template-columns: 1fr; gap: 2.5rem; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav .nav-links { display: none; }
+      .stat-item { padding: 1rem 1.5rem; }
+    }
+    @media (max-width: 600px) { .cap-grid { grid-template-columns: 1fr; } .fr { grid-template-columns: 1fr; } .about-stats { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="https://www.oxfordmachine.net/wp-content/uploads/2025/03/Medium-oxford-logo.png" alt="Oxford Machine & Welding" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Request Estimate</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="eyebrow">Edmonton, AB · Est. 60+ Years</div>
+      <h1>Precision<br /><span>Machining</span><br />&amp; Welding</h1>
+      <p>Oxford Machine & Welding Ltd. delivers unmatched steel fabrication and precision machining from our 25,000 sq ft Edmonton facility. From prototyping to full-scale production — we handle projects of any size.</p>
+      <div class="hero-buttons">
+        <a href="tel:780-451-6424" class="btn-blue">📞 780.451.6424</a>
+        <a href="#capabilities" class="btn-outline">Our Capabilities</a>
+      </div>
+      <div class="hero-badges">
+        <div class="badge-item"><div class="badge-dot"></div> CWB Certified Welding</div>
+        <div class="badge-item"><div class="badge-dot"></div> 10-Ton Lifting Capacity</div>
+        <div class="badge-item"><div class="badge-dot"></div> 25,000 Sq Ft Facility</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="https://www.oxfordmachine.net/wp-content/uploads/2025/03/hero-web.jpg" alt="Oxford Machine & Welding facility" />
+    </div>
+  </div>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip">
+    <div class="stat-item"><div class="stat-num">60+</div><div class="stat-label">Years in Business</div></div>
+    <div class="stat-item"><div class="stat-num">25K</div><div class="stat-label">Sq Ft Facility</div></div>
+    <div class="stat-item"><div class="stat-num">10T</div><div class="stat-label">Lifting Capacity</div></div>
+    <div class="stat-item"><div class="stat-num">CWB</div><div class="stat-label">Certified Welding</div></div>
+  </div>
+
+  <!-- CAPABILITIES -->
+  <section id="capabilities">
+    <div class="sec-header">
+      <div class="eyebrow">What We Do</div>
+      <div class="sec-title">Our Capabilities</div>
+      <p class="sec-sub">Advanced machining, fabrication, and welding — all under one roof with industry-leading equipment.</p>
+    </div>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <img class="cap-img" src="https://www.oxfordmachine.net/wp-content/uploads/2025/04/MachiningGallery2.jpg" alt="CNC Machining" />
+        <div class="cap-body">
+          <div class="cap-num">01</div>
+          <div class="cap-name">CNC Machining</div>
+          <p class="cap-desc">Milling, turning, boring, and precision machining of complex components to tight tolerances. From one-offs to production runs.</p>
+        </div>
+      </div>
+      <div class="cap-card">
+        <img class="cap-img" src="https://www.oxfordmachine.net/wp-content/uploads/2025/04/WeldingGallery2.jpg" alt="Welding" />
+        <div class="cap-body">
+          <div class="cap-num">02</div>
+          <div class="cap-name">Welding & Fabrication</div>
+          <p class="cap-desc">CWB certified welding and custom steel fabrication. Structural, structural, MIG, TIG, and stick welding for industrial applications.</p>
+        </div>
+      </div>
+      <div class="cap-card">
+        <img class="cap-img" src="https://www.oxfordmachine.net/wp-content/uploads/2025/04/SteelPlateRolling.jpg" alt="Plate Rolling" />
+        <div class="cap-body">
+          <div class="cap-num">03</div>
+          <div class="cap-name">Plate Rolling</div>
+          <p class="cap-desc">Steel plate and pipe rolling for cylinders, cones, and curved sections of any diameter. Precision forming for pressure vessels and structural components.</p>
+        </div>
+      </div>
+      <div class="cap-card">
+        <img class="cap-img" src="https://www.oxfordmachine.net/wp-content/uploads/2024/12/PlasmaCutting.jpg" alt="Plasma Cutting" />
+        <div class="cap-body">
+          <div class="cap-num">04</div>
+          <div class="cap-name">Plasma Cutting</div>
+          <p class="cap-desc">High-definition plasma cutting for precise profiles in steel plate and structural shapes. Fast, accurate, and ready for downstream fabrication.</p>
+        </div>
+      </div>
+      <div class="cap-card">
+        <img class="cap-img" src="https://www.oxfordmachine.net/wp-content/uploads/2025/04/RollingBay.jpg" alt="Heavy Fabrication" />
+        <div class="cap-body">
+          <div class="cap-num">05</div>
+          <div class="cap-name">Heavy Fabrication</div>
+          <p class="cap-desc">Multiple overhead cranes and up to 10-ton lifting capacity. We handle large, heavy structures that other shops can't.</p>
+        </div>
+      </div>
+      <div class="cap-card">
+        <img class="cap-img" src="https://www.oxfordmachine.net/wp-content/uploads/2024/12/WorkerWithMachine.jpg" alt="Custom Parts & Repair" />
+        <div class="cap-body">
+          <div class="cap-num">06</div>
+          <div class="cap-name">Custom Parts & Repairs</div>
+          <p class="cap-desc">Prototype, reverse-engineer, or repair components to exact spec. We work with clients to fully understand requirements before a single cut is made.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" style="background: var(--surface);">
+    <div class="about-img">
+      <img src="https://www.oxfordmachine.net/wp-content/uploads/2025/04/mod-img-web.jpg" alt="Oxford Machine shop" />
+    </div>
+    <div class="about-body">
+      <div class="eyebrow">About Us</div>
+      <div class="sec-title">60 Years of Edmonton Precision</div>
+      <p class="sec-sub">Oxford Machine & Welding Ltd. has proudly served Edmonton and the surrounding area for over 60 years. Our 25,000 square-foot facility is equipped with advanced machinery to support manufacturing needs across a wide range of industries.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">Whether you're overseeing a large industrial operation or running a small manufacturing business, our team is equipped to manage projects of any size — ensuring efficiency, reliability, and a commitment to excellence.</p>
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-num">60+</div>
+          <div class="about-stat-label">Years Serving Edmonton</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">25K</div>
+          <div class="about-stat-label">Sq Ft Facility</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">CWB</div>
+          <div class="about-stat-label">Certified Welders</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">Any</div>
+          <div class="about-stat-label">Scale — Prototype to Production</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CWB CERTIFICATION -->
+  <div id="cert">
+    <div class="cert-img">
+      <img src="https://www.oxfordmachine.net/wp-content/uploads/2025/03/CWBCertifiedWeldingServices.jpg" alt="CWB Certified" />
+    </div>
+    <div class="cert-text">
+      <div class="cert-title">CWB Certified Welding Services</div>
+      <p class="cert-desc">Oxford Machine & Welding holds Canadian Welding Bureau (CWB) certification — the gold standard in welding quality assurance. This means every weld meets rigorous national standards for structural integrity, traceability, and consistency.</p>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <div class="eyebrow">Get in Touch</div>
+      <div class="sec-title">Request an Estimate</div>
+      <p class="sec-sub">Tell us about your project and we'll get back to you with a quote. No job too big or too small.</p>
+      <div class="ci">
+        <div class="ci-icon">📞</div>
+        <div><div class="ci-label">Phone</div><div class="ci-val">780.451.6424</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">📍</div>
+        <div><div class="ci-label">Location</div><div class="ci-val">Edmonton, Alberta</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="fr">
+        <div class="fg"><input type="text" placeholder="First Name" /></div>
+        <div class="fg"><input type="text" placeholder="Last Name" /></div>
+      </div>
+      <div class="fg"><input type="email" placeholder="Email Address" /></div>
+      <div class="fg"><input type="tel" placeholder="Phone Number" /></div>
+      <div class="fg"><input type="text" placeholder="Company Name" /></div>
+      <div class="fg">
+        <select>
+          <option value="" disabled selected>Service Required</option>
+          <option>CNC Machining</option>
+          <option>Welding & Fabrication</option>
+          <option>Plate Rolling</option>
+          <option>Plasma Cutting</option>
+          <option>Heavy Fabrication</option>
+          <option>Custom Parts / Repair</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><textarea placeholder="Describe your project, materials, tolerances, and quantity…"></textarea></div>
+      <a href="tel:780-451-6424" class="btn-blue" style="display:block; width:100%; text-align:center;">Request Estimate →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="https://www.oxfordmachine.net/wp-content/uploads/2025/03/Medium-oxford-logo.png" alt="Oxford Machine & Welding" />
+    <div class="footer-copy">© 2026 Oxford Machine & Welding Ltd. · Edmonton, AB · 780.451.6424</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
