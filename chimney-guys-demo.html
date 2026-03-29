@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chimney Guys — Fireplace & Chimney Experts | St. Albert & Edmonton</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0c0a08;
+      --surface: #110f0c;
+      --card: #1a1612;
+      --border: #2c2620;
+      --red: #c0392b;
+      --red-light: #e74c3c;
+      --red-dim: rgba(192,57,43,0.12);
+      --cream: #f5efe6;
+      --text: #e8ddd0;
+      --muted: #8a7d6e;
+      --light: #cdc0ae;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 68px;
+      background: rgba(12,10,8,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(192,57,43,0.2);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-flame {
+      width: 34px; height: 34px;
+      background: var(--red);
+      border-radius: 50% 50% 40% 40%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .nav-logo-text { display: flex; flex-direction: column; }
+
+    .nav-logo-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--cream); line-height: 1.1;
+    }
+
+    .nav-logo-sub {
+      font-size: 0.58rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--red);
+    }
+
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+
+    .nav-links a {
+      color: var(--light); text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.04em; transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--red); }
+
+    .nav-cta {
+      border: 1.5px solid var(--red);
+      color: var(--red) !important;
+      padding: 0.42rem 1.1rem;
+      border-radius: 2px; font-weight: 600;
+      font-size: 0.82rem !important;
+      transition: background 0.2s, color 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--red) !important; color: white !important; }
+
+    /* ── HERO ── */
+    .hero {
+      margin-top: 68px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 68px);
+    }
+
+    .hero-left {
+      background: var(--surface);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 6% 5rem 8%;
+      border-right: 1px solid var(--border);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--red);
+      display: flex; align-items: center; gap: 0.7rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 24px; height: 1px; background: var(--red);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 4vw, 3.8rem);
+      font-weight: 800; line-height: 1.1;
+      color: var(--cream); margin-bottom: 1.25rem;
+    }
+
+    .hero h1 em { font-style: italic; color: var(--red); }
+
+    .hero-left p {
+      font-size: 0.97rem; color: var(--muted);
+      line-height: 1.85; margin-bottom: 2.5rem; max-width: 460px;
+    }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+
+    .btn-red {
+      background: var(--red); color: white;
+      padding: 0.8rem 1.8rem; border-radius: 2px;
+      text-decoration: none; font-weight: 700; font-size: 0.88rem;
+      letter-spacing: 0.04em; transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+
+    .btn-red:hover { background: var(--red-light); transform: translateY(-2px); }
+
+    .btn-outline {
+      border: 1.5px solid rgba(192,57,43,0.4);
+      color: var(--red); padding: 0.8rem 1.8rem; border-radius: 2px;
+      text-decoration: none; font-weight: 600; font-size: 0.88rem;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+
+    .btn-outline:hover { border-color: var(--red); transform: translateY(-2px); }
+
+    .hero-badges {
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+      padding-top: 2rem; border-top: 1px solid var(--border);
+    }
+
+    .badge-item {
+      font-size: 0.78rem; color: var(--muted);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+
+    .badge-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--red); }
+
+    .hero-right { overflow: hidden; }
+
+    .hero-right img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      filter: brightness(0.85);
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 8%; }
+
+    .eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--red);
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.7rem;
+    }
+
+    .eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--red); }
+
+    .sec-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+      font-weight: 700; color: var(--cream);
+      line-height: 1.15; margin-bottom: 1rem;
+    }
+
+    .sec-sub { color: var(--muted); font-size: 0.93rem; line-height: 1.8; }
+
+    /* ── SERVICES ── */
+    #services { background: var(--surface); }
+
+    .services-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem;
+    }
+
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    }
+
+    .svc-card {
+      background: var(--card);
+      border: 1px solid var(--border); border-radius: 6px;
+      overflow: hidden; transition: border-color 0.2s, transform 0.2s;
+      text-decoration: none; display: block;
+    }
+
+    .svc-card:hover { border-color: rgba(192,57,43,0.5); transform: translateY(-3px); }
+
+    .svc-img { width: 100%; height: 190px; object-fit: cover; display: block; }
+
+    .svc-body { padding: 1.2rem 1.3rem 1.4rem; }
+
+    .svc-num {
+      font-size: 0.67rem; font-weight: 700;
+      letter-spacing: 0.1em; color: var(--red); margin-bottom: 0.3rem;
+    }
+
+    .svc-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--cream); margin-bottom: 0.4rem;
+    }
+
+    .svc-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+
+    .about-imgs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+
+    .about-imgs img {
+      width: 100%; object-fit: cover;
+      border-radius: 4px; border: 1px solid var(--border);
+      display: block;
+    }
+
+    .about-imgs img:first-child { grid-column: span 2; height: 230px; }
+    .about-imgs img:not(:first-child) { height: 155px; }
+
+    .about-body .sec-sub { margin-bottom: 1.75rem; }
+
+    .about-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      margin-top: 1.75rem;
+    }
+
+    .about-stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      border-radius: 3px; padding: 0.85rem 1rem;
+    }
+
+    .about-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 800;
+      color: var(--red); line-height: 1;
+    }
+
+    .about-stat-label {
+      font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem;
+    }
+
+    /* ── GALLERY ── */
+    .gallery-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr); height: 280px;
+      overflow: hidden;
+    }
+
+    .gallery-strip img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      filter: brightness(0.7);
+      transition: filter 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+
+    .gallery-strip img:hover { filter: brightness(1); transform: scale(1.05); z-index: 2; position: relative; }
+
+    /* ── WHY US ── */
+    #why { background: var(--surface); }
+
+    .why-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+      margin-top: 2.5rem;
+    }
+
+    .why-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--red);
+      border-radius: 5px; padding: 2rem 1.75rem;
+    }
+
+    .why-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+
+    .why-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--cream); margin-bottom: 0.6rem;
+    }
+
+    .why-text { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── CONTACT ── */
+    #contact {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: start;
+    }
+
+    .contact-info .sec-sub { margin: 0.75rem 0 2rem; }
+
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.4rem; align-items: flex-start; }
+
+    .ci-icon {
+      width: 38px; height: 38px;
+      background: var(--red-dim);
+      border: 1px solid rgba(192,57,43,0.22);
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; flex-shrink: 0;
+    }
+
+    .ci-label {
+      font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--red); margin-bottom: 0.2rem;
+    }
+
+    .ci-val { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+
+    .fg { margin-bottom: 1rem; }
+
+    .fg input, .fg textarea, .fg select {
+      width: 100%; background: var(--card);
+      border: 1px solid var(--border); border-radius: 3px;
+      padding: 0.78rem 1rem; color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 0.875rem;
+      outline: none; transition: border-color 0.2s;
+    }
+
+    .fg input::placeholder, .fg textarea::placeholder { color: var(--muted); }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--red); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fg select option { background: var(--card); }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #080604;
+      padding: 1.75rem 8%;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      border-top: 1px solid rgba(192,57,43,0.15);
+    }
+
+    .footer-logo {
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .footer-flame {
+      width: 26px; height: 26px;
+      background: var(--red); border-radius: 50% 50% 40% 40%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .footer-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem; font-weight: 700; color: var(--cream);
+    }
+
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    .footer-demo { font-size: 0.68rem; color: rgba(192,57,43,0.4); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 280px; }
+      #about { grid-template-columns: 1fr; gap: 2.5rem; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+      .why-grid { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+      .gallery-strip { grid-template-columns: repeat(2, 1fr); height: auto; }
+      .gallery-strip img { height: 180px; }
+    }
+
+    @media (max-width: 600px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .fr { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <div class="nav-flame">🔥</div>
+      <div class="nav-logo-text">
+        <div class="nav-logo-name">Chimney Guys</div>
+        <div class="nav-logo-sub">St. Albert · Edmonton</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#contact" class="nav-cta">Book Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">St. Albert & Edmonton · Since 1993</div>
+      <h1>Your Local<br /><em>Fireplace &</em><br />Chimney Experts</h1>
+      <p>Family-owned and operated for over 30 years. We sweep chimneys, install fireplaces, and keep your home safe and warm — serving St. Albert and the greater Edmonton area.</p>
+      <div class="hero-buttons">
+        <a href="tel:780-458-6040" class="btn-red">📞 Call 780-458-6040</a>
+        <a href="#services" class="btn-outline">Our Services</a>
+      </div>
+      <div class="hero-badges">
+        <div class="badge-item"><div class="badge-dot"></div> WETT Certified</div>
+        <div class="badge-item"><div class="badge-dot"></div> HPBA Member</div>
+        <div class="badge-item"><div class="badge-dot"></div> 30+ Years Serving Edmonton</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Fireplace_Burning.jpg/500px-Fireplace_Burning.jpg" alt="Roaring fire in a brick fireplace" />
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="services-header">
+      <div>
+        <div class="eyebrow">What We Do</div>
+        <div class="sec-title">Our Services</div>
+      </div>
+      <p class="sec-sub" style="max-width:360px;">From sweeping your chimney to a full custom fireplace install — we handle everything.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card">
+        <img class="svc-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Chimney.stack.london.arp.jpg/500px-Chimney.stack.london.arp.jpg" alt="Chimney Sweep and Repair" />
+        <div class="svc-body">
+          <div class="svc-num">01</div>
+          <div class="svc-name">Chimney Sweeping & Repair</div>
+          <p class="svc-desc">Regular chimney cleaning removes dangerous creosote buildup. We also handle tuckpointing, relining, cap installation, and full structural repairs.</p>
+        </div>
+      </div>
+      <div class="svc-card">
+        <img class="svc-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/NT_Typical_gas_log_fireplace_%285114230942%29.jpg/500px-NT_Typical_gas_log_fireplace_%285114230942%29.jpg" alt="Gas Fireplace Services" />
+        <div class="svc-body">
+          <div class="svc-num">02</div>
+          <div class="svc-name">Gas Fireplace Services</div>
+          <p class="svc-desc">Gas fireplace installation, conversion, cleaning, and repair. We service all major brands and can advise on the best model for your home.</p>
+        </div>
+      </div>
+      <div class="svc-card">
+        <img class="svc-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/WoodStoveSpencer.jpg/500px-WoodStoveSpencer.jpg" alt="Wood Fireplace and Stove" />
+        <div class="svc-body">
+          <div class="svc-num">03</div>
+          <div class="svc-name">Wood Fireplaces & Stoves</div>
+          <p class="svc-desc">Wood-burning fireplace and stove installation, maintenance, and WETT inspections. We carry inserts, freestanding units, and custom masonry options.</p>
+        </div>
+      </div>
+      <div class="svc-card">
+        <img class="svc-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Electric_Fireplace.jpg/500px-Electric_Fireplace.jpg" alt="Electric Fireplace" />
+        <div class="svc-body">
+          <div class="svc-num">04</div>
+          <div class="svc-name">Electric Fireplaces</div>
+          <p class="svc-desc">Beautiful, zero-maintenance electric fireplace units for any room. We supply and install linear, traditional, and built-in electric models.</p>
+        </div>
+      </div>
+      <div class="svc-card">
+        <img class="svc-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Montana_16_bg_062406.jpg/500px-Montana_16_bg_062406.jpg" alt="BBQ and Fire Pits" />
+        <div class="svc-body">
+          <div class="svc-num">05</div>
+          <div class="svc-name">BBQ & Outdoor Fire Pits</div>
+          <p class="svc-desc">Extend your living space outdoors. We supply and install BBQ grills, outdoor fireplaces, and fire pits for year-round entertaining.</p>
+        </div>
+      </div>
+      <div class="svc-card">
+        <img class="svc-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Fireplace_Burning.jpg/500px-Fireplace_Burning.jpg" alt="Custom Fireplace Renovation" />
+        <div class="svc-body">
+          <div class="svc-num">06</div>
+          <div class="svc-name">Custom Fireplace Renovation</div>
+          <p class="svc-desc">Full fireplace makeovers including framing, tiling, masonry, and finishing. Traditional, contemporary, or modern — we'll match your vision.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-imgs">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/NT_Typical_gas_log_fireplace_%285114230942%29.jpg/500px-NT_Typical_gas_log_fireplace_%285114230942%29.jpg" alt="Cozy fireplace" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Fireplace_Burning.jpg/500px-Fireplace_Burning.jpg" alt="Burning fireplace" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/WoodStoveSpencer.jpg/500px-WoodStoveSpencer.jpg" alt="Wood stove" />
+    </div>
+    <div class="about-body">
+      <div class="eyebrow">Our Story</div>
+      <div class="sec-title">30 Years Keeping Alberta Homes Safe & Warm</div>
+      <p class="sec-sub">What started as a chimney cleaning service has grown into one of the most trusted fireplace and hearth companies in the Edmonton area. We're family-owned, WETT certified, and proud members of the Hearth, Patio & Barbecue Association of Canada.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">From our showroom in St. Albert, we can help you select, install, and maintain the perfect fireplace — from wood and gas to electric and outdoor.</p>
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-num">30+</div>
+          <div class="about-stat-label">Years in Business</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">WETT</div>
+          <div class="about-stat-label">Certified Technicians</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">HPBA</div>
+          <div class="about-stat-label">Certified Member</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">5★</div>
+          <div class="about-stat-label">Customer Rated</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY STRIP -->
+  <div class="gallery-strip">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Fireplace_Burning.jpg/500px-Fireplace_Burning.jpg" alt="Fireplace" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/NT_Typical_gas_log_fireplace_%285114230942%29.jpg/500px-NT_Typical_gas_log_fireplace_%285114230942%29.jpg" alt="Gas Fireplace" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Electric_Fireplace.jpg/500px-Electric_Fireplace.jpg" alt="Electric Fireplace" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Montana_16_bg_062406.jpg/500px-Montana_16_bg_062406.jpg" alt="Fire Pit" />
+  </div>
+
+  <!-- WHY US -->
+  <section id="why">
+    <div class="eyebrow">The Chimney Guys Difference</div>
+    <div class="sec-title">Why Homeowners Trust Us</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🔥</div>
+        <div class="why-title">One-Stop Shop</div>
+        <p class="why-text">From sweeping to full installation, gas to wood to electric — we do it all. No need to call multiple contractors. One company, complete service.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🏠</div>
+        <div class="why-title">Showroom in St. Albert</div>
+        <p class="why-text">Visit our showroom at 310 Carleton Drive to see fireplaces in person. Our staff will help you find the perfect fit for your home and budget.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔒</div>
+        <div class="why-title">Safety First</div>
+        <p class="why-text">WETT certified technicians, proper inspections, and code-compliant installations. Your family's safety is what drives everything we do.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <div class="eyebrow">Get in Touch</div>
+      <div class="sec-title">Book a Service or Visit the Showroom</div>
+      <p class="sec-sub">Call us, email us, or stop by — we're happy to help you find the right fireplace solution for your home.</p>
+      <div class="ci">
+        <div class="ci-icon">📞</div>
+        <div>
+          <div class="ci-label">Phone</div>
+          <div class="ci-val">780-458-6040</div>
+        </div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">✉</div>
+        <div>
+          <div class="ci-label">Email</div>
+          <div class="ci-val">john@chimneyguys.com</div>
+        </div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">📍</div>
+        <div>
+          <div class="ci-label">Showroom</div>
+          <div class="ci-val">Unit 190, 310 Carleton Drive<br />St. Albert, Alberta T8N 7L3</div>
+        </div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">🕐</div>
+        <div>
+          <div class="ci-label">Hours</div>
+          <div class="ci-val">Mon–Fri: 10am – 6pm<br />Sat: By appointment</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="fr">
+        <div class="fg"><input type="text" placeholder="First Name" /></div>
+        <div class="fg"><input type="text" placeholder="Last Name" /></div>
+      </div>
+      <div class="fg"><input type="email" placeholder="Email Address" /></div>
+      <div class="fg"><input type="tel" placeholder="Phone Number" /></div>
+      <div class="fg">
+        <select>
+          <option value="" disabled selected>Service Needed</option>
+          <option>Chimney Sweep & Inspection</option>
+          <option>Gas Fireplace Service</option>
+          <option>Wood Fireplace / Stove</option>
+          <option>Electric Fireplace</option>
+          <option>BBQ / Fire Pit</option>
+          <option>Custom Renovation</option>
+          <option>Showroom Visit</option>
+        </select>
+      </div>
+      <div class="fg"><textarea placeholder="Describe what you need or any questions you have…"></textarea></div>
+      <a href="mailto:john@chimneyguys.com" class="btn-red" style="display:block; width:100%; text-align:center;">Send Message →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <div class="footer-flame">🔥</div>
+      <div class="footer-name">Chimney Guys</div>
+    </div>
+    <div class="footer-copy">© 2026 St. Albert Chimney Sweep Service Ltd. · St. Albert & Edmonton, AB · 780-458-6040</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
