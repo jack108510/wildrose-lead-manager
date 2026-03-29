@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uncle John's Fireworks | Edmonton, Sherwood Park & Egremont</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0608;
+      --surface: #100810;
+      --card: #180c18;
+      --border: #2a1a2a;
+      --red: #dd1a1a;
+      --red-light: #f02020;
+      --red-dim: rgba(221,26,26,0.1);
+      --gold: #f5c518;
+      --gold-dim: rgba(245,197,24,0.1);
+      --cream: #fff8e8;
+      --text: #e8d8d0;
+      --muted: #7a5858;
+      --light: #b08880;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 68px;
+      background: rgba(10,6,8,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(221,26,26,0.3);
+    }
+
+    .nav-logo img { height: 44px; object-fit: contain; }
+
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: var(--light); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta { background: var(--red); color: white !important; padding: 0.45rem 1.2rem; border-radius: 3px; font-weight: 700; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--red-light) !important; }
+
+    /* HERO BANNER */
+    .hero-banner {
+      margin-top: 68px; position: relative;
+      width: 100%; height: 560px; overflow: hidden;
+    }
+    .hero-banner img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.55); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(10,6,8,0.75) 0%, transparent 60%);
+      display: flex; flex-direction: column; justify-content: center; padding: 0 8%;
+    }
+
+    .eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold);
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.4rem;
+    }
+    .eyebrow::before { content: ''; display: block; width: 22px; height: 1px; background: var(--gold); }
+
+    .hero-overlay h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(3rem, 6vw, 6rem); font-weight: 900; line-height: 0.95;
+      text-transform: uppercase; color: var(--cream); margin-bottom: 1rem; max-width: 700px;
+    }
+    .hero-overlay h1 span { color: var(--gold); display: block; }
+    .hero-overlay p { font-size: 1rem; color: var(--light); max-width: 500px; line-height: 1.7; margin-bottom: 2rem; }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-red { background: var(--red); color: white; padding: 0.85rem 2rem; border-radius: 3px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: background 0.2s, transform 0.15s; display: inline-block; }
+    .btn-red:hover { background: var(--red-light); transform: translateY(-2px); }
+    .btn-gold { background: var(--gold); color: #0a0608; padding: 0.85rem 2rem; border-radius: 3px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: opacity 0.2s, transform 0.15s; display: inline-block; }
+    .btn-gold:hover { opacity: 0.9; transform: translateY(-2px); }
+
+    /* PROMO STRIP */
+    .promo-strip { background: var(--gold); padding: 0.9rem 8%; display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .promo-item { font-size: 0.85rem; font-weight: 700; color: #0a0608; display: flex; align-items: center; gap: 0.5rem; }
+
+    /* SECTIONS */
+    section { padding: 5rem 8%; }
+    .sec-header { margin-bottom: 2.5rem; }
+    .sec-eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.6rem; }
+    .sec-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--gold); }
+    .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 800; text-transform: uppercase; color: var(--cream); line-height: 1.05; margin-bottom: 0.75rem; }
+    .sec-sub { color: var(--muted); font-size: 0.93rem; line-height: 1.8; max-width: 560px; }
+
+    /* PRODUCTS */
+    #products { background: var(--surface); }
+    .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .prod-card { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--red); border-radius: 5px; padding: 1.75rem 1.5rem; transition: transform 0.2s; }
+    .prod-card:hover { transform: translateY(-3px); }
+    .prod-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .prod-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; color: var(--cream); margin-bottom: 0.45rem; letter-spacing: 0.02em; }
+    .prod-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+    /* GALLERY STRIP */
+    .gallery-strip { display: grid; grid-template-columns: repeat(3, 1fr); height: 300px; overflow: hidden; }
+    .gallery-strip img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.8); transition: filter 0.3s, transform 0.4s; cursor: pointer; }
+    .gallery-strip img:hover { filter: brightness(1); transform: scale(1.05); z-index: 2; position: relative; }
+
+    /* LOCATIONS */
+    #locations { background: var(--bg); }
+    .locations-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .loc-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .loc-img { width: 100%; height: 180px; object-fit: cover; display: block; filter: brightness(0.85); }
+    .loc-body { padding: 1.25rem 1.4rem 1.5rem; }
+    .loc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; text-transform: uppercase; color: var(--cream); margin-bottom: 0.5rem; letter-spacing: 0.03em; }
+    .loc-phone { font-size: 0.88rem; color: var(--gold); font-weight: 600; margin-bottom: 0.3rem; text-decoration: none; display: block; }
+    .loc-addr { font-size: 0.8rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.5rem; }
+    .loc-hours { font-size: 0.78rem; color: var(--light); line-height: 1.5; }
+    .loc-email { font-size: 0.78rem; color: var(--muted); text-decoration: none; display: block; margin-top: 0.4rem; }
+    .loc-email:hover { color: var(--gold); }
+
+    /* DELIVERY */
+    #delivery { background: var(--surface); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .delivery-img { border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+    .delivery-img img { width: 100%; height: 380px; object-fit: cover; display: block; }
+    .delivery-body .sec-sub { margin-bottom: 1.75rem; }
+    .delivery-areas { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.25rem; }
+    .area-pill { background: var(--red-dim); border: 1px solid rgba(221,26,26,0.25); color: var(--red-light); padding: 0.35rem 0.9rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+
+    /* CONTACT */
+    #contact { background: var(--bg); }
+    .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .contact-card { background: var(--card); border: 1px solid var(--border); border-radius: 5px; padding: 1.5rem; text-align: center; }
+    .contact-icon { font-size: 1.75rem; margin-bottom: 0.6rem; }
+    .contact-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; color: var(--cream); margin-bottom: 0.5rem; }
+    .contact-val { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+    .contact-val a { color: var(--gold); text-decoration: none; }
+    .contact-val a:hover { text-decoration: underline; }
+
+    /* FOOTER */
+    footer { background: #060408; padding: 1.75rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(221,26,26,0.2); }
+    footer img { height: 36px; object-fit: contain; }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    .footer-demo { font-size: 0.68rem; color: rgba(245,197,24,0.35); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .products-grid { grid-template-columns: repeat(2, 1fr); } .locations-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      .hero-banner { height: 400px; }
+      #delivery { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav .nav-links { display: none; }
+      .gallery-strip { grid-template-columns: 1fr 1fr; height: auto; }
+      .gallery-strip img { height: 180px; }
+      .promo-strip { gap: 1rem; }
+    }
+    @media (max-width: 600px) { .products-grid { grid-template-columns: 1fr; } .locations-grid { grid-template-columns: 1fr; } .contact-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#">
+      <img src="assets/uncle-johns/logo.png" alt="Uncle John's Fireworks" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#locations">Locations</a></li>
+      <li><a href="#delivery">Delivery</a></li>
+      <li><a href="https://www.unclejohns.ca" target="_blank" class="nav-cta">Shop Online</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero-banner">
+    <img src="assets/uncle-johns/fireworks3.jpg" alt="Fireworks display" />
+    <div class="hero-overlay">
+      <div class="eyebrow">Edmonton · Sherwood Park · Egremont</div>
+      <h1>Alberta's<br /><span>Fireworks</span><br />Experts</h1>
+      <p>Uncle John's is Alberta's #1 locally owned and operated fireworks shop — with 3 locations and free delivery to Edmonton, Calgary, and Red Deer.</p>
+      <div class="hero-buttons">
+        <a href="tel:17804819911" class="btn-red">📞 Call Edmonton</a>
+        <a href="https://www.unclejohns.ca" target="_blank" class="btn-gold">🛒 Shop Online</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMO STRIP -->
+  <div class="promo-strip">
+    <div class="promo-item">🚚 Free Delivery on Orders Over $100</div>
+    <div class="promo-item">📍 Edmonton, Calgary & Red Deer</div>
+    <div class="promo-item">🎆 Custom Professional Show Design</div>
+    <div class="promo-item">✅ If You See It, It's In Stock</div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section id="products">
+    <div class="sec-header">
+      <div class="sec-eyebrow">What We Carry</div>
+      <div class="sec-title">Fireworks for Every Occasion</div>
+      <p class="sec-sub">From backyard celebrations to professional displays — we carry it all, and every product you see online is in stock.</p>
+    </div>
+    <div class="products-grid">
+      <div class="prod-card">
+        <div class="prod-icon">🎆</div>
+        <div class="prod-name">Aerial Shells & Mortars</div>
+        <p class="prod-desc">High-altitude shells for breathtaking displays. Perfect for large open areas and professional shows.</p>
+      </div>
+      <div class="prod-card">
+        <div class="prod-icon">🎇</div>
+        <div class="prod-name">Sparklers & Fountains</div>
+        <p class="prod-desc">Wedding sparklers, colourful fountains, and ground effects — perfect for intimate celebrations and photos.</p>
+      </div>
+      <div class="prod-card">
+        <div class="prod-icon">🎑</div>
+        <div class="prod-name">Cake & Multi-Shot</div>
+        <p class="prod-desc">Pre-loaded cake batteries and multi-shot pieces that fire multiple effects in sequence — easy to use, spectacular results.</p>
+      </div>
+      <div class="prod-card">
+        <div class="prod-icon">🪄</div>
+        <div class="prod-name">Novelty & Smoke</div>
+        <p class="prod-desc">Smoke bombs, confetti cannons, party poppers, and novelty items for events of all kinds.</p>
+      </div>
+      <div class="prod-card">
+        <div class="prod-icon">🎆</div>
+        <div class="prod-name">Professional Shows</div>
+        <p class="prod-desc">Email us your budget and we'll design a custom professional show with a discount. Full show design service available.</p>
+      </div>
+      <div class="prod-card">
+        <div class="prod-icon">📦</div>
+        <div class="prod-name">Bulk & Value Packs</div>
+        <p class="prod-desc">Great value assortment packs for any budget. Buy more, save more — discounts on every online order.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <div class="gallery-strip">
+    <img src="assets/uncle-johns/fireworks1.jpg" alt="Fireworks wedding sparklers" />
+    <img src="assets/uncle-johns/fireworks2.jpg" alt="Fireworks crowd display" />
+    <img src="assets/uncle-johns/fireworks3.jpg" alt="Fireworks night sky" />
+  </div>
+
+  <!-- LOCATIONS -->
+  <section id="locations">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Find Us</div>
+      <div class="sec-title">Our Locations</div>
+    </div>
+    <div class="locations-grid">
+      <div class="loc-card">
+        <img class="loc-img" src="assets/uncle-johns/building-ed.png" alt="Edmonton location" />
+        <div class="loc-body">
+          <div class="loc-name">Edmonton</div>
+          <a class="loc-phone" href="tel:17804819911">1-780-481-9911</a>
+          <div class="loc-addr">11098 156 St NW<br />Edmonton, AB T5P 4M8</div>
+          <div class="loc-hours">Mon–Sat: 10AM–6PM<br />Special Holiday Hours: Open every day in June. Open late Jun 26–30, 9AM–9PM</div>
+          <a class="loc-email" href="mailto:john@unclejohns.ca">john@unclejohns.ca</a>
+        </div>
+      </div>
+      <div class="loc-card">
+        <img class="loc-img" src="assets/uncle-johns/building-sp.png" alt="Sherwood Park location" />
+        <div class="loc-body">
+          <div class="loc-name">Sherwood Park</div>
+          <a class="loc-phone" href="tel:17804173999">1-780-417-3999</a>
+          <div class="loc-addr">99 Wye Rd #25<br />Sherwood Park, AB T8B 1M1</div>
+          <div class="loc-hours">Mon–Sat: 10AM–6PM<br />Special Holiday Hours: Open every day in June</div>
+          <a class="loc-email" href="mailto:sp@unclejohns.ca">sp@unclejohns.ca</a>
+        </div>
+      </div>
+      <div class="loc-card">
+        <img class="loc-img" src="assets/uncle-johns/building-eg.png" alt="Egremont location" />
+        <div class="loc-body">
+          <div class="loc-name">Egremont / Hwy 28</div>
+          <a class="loc-phone" href="tel:17809363451">1-780-936-3451</a>
+          <div class="loc-addr">22009 AB-28<br />Egremont, AB T0A 0Z0</div>
+          <div class="loc-hours">Open Every Day<br />11AM–7PM</div>
+          <a class="loc-email" href="mailto:egremont@unclejohns.ca">egremont@unclejohns.ca</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DELIVERY -->
+  <section id="delivery">
+    <div class="delivery-img">
+      <img src="assets/uncle-johns/shipping.jpg" alt="Free delivery service" />
+    </div>
+    <div class="delivery-body">
+      <div class="sec-eyebrow">Online Orders</div>
+      <div class="sec-title">Free Delivery Available</div>
+      <p class="sec-sub">Order online and get free delivery on orders over $100 to Edmonton, Calgary, and Red Deer. Every product listed online is in stock — no backorders, no surprises.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">Need a custom professional show? Email us your budget at <strong style="color:var(--gold);">john@unclejohns.ca</strong> and we'll design a full show with a discount.</p>
+      <div class="delivery-areas">
+        <div class="area-pill">Edmonton</div>
+        <div class="area-pill">Sherwood Park</div>
+        <div class="area-pill">Calgary</div>
+        <div class="area-pill">Red Deer</div>
+        <div class="area-pill">Egremont</div>
+      </div>
+      <div style="margin-top:2rem;">
+        <a href="https://www.unclejohns.ca" target="_blank" class="btn-gold">Shop Online →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Get in Touch</div>
+      <div class="sec-title">Contact Us</div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <div class="contact-title">Edmonton</div>
+        <div class="contact-val"><a href="tel:17804819911">1-780-481-9911</a><br /><a href="mailto:john@unclejohns.ca">john@unclejohns.ca</a><br />11098 156 St NW</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <div class="contact-title">Sherwood Park</div>
+        <div class="contact-val"><a href="tel:17804173999">1-780-417-3999</a><br /><a href="mailto:sp@unclejohns.ca">sp@unclejohns.ca</a><br />99 Wye Rd #25</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <div class="contact-title">Egremont / Hwy 28</div>
+        <div class="contact-val"><a href="tel:17809363451">1-780-936-3451</a><br /><a href="mailto:egremont@unclejohns.ca">egremont@unclejohns.ca</a><br />22009 AB-28</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="assets/uncle-johns/logo.png" alt="Uncle John's Fireworks" />
+    <div class="footer-copy">© 2026 Uncle John's Fireworks · Edmonton · Sherwood Park · Egremont, AB</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
