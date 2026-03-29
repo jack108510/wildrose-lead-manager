@@ -33,17 +33,14 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%;
-      height: 72px;
-      background: rgba(11,22,40,0.95);
+      padding: 0 6%;
+      height: 70px;
+      background: rgba(11,22,40,0.96);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(232,119,34,0.2);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
 
-    .nav-logo img {
-      height: 44px;
-      filter: brightness(1.1);
-    }
+    .nav-logo img { height: 40px; }
 
     .nav-links {
       display: flex; gap: 2rem; list-style: none;
@@ -52,9 +49,9 @@
     .nav-links a {
       color: var(--light);
       text-decoration: none;
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       font-weight: 500;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       transition: color 0.2s;
     }
@@ -64,151 +61,149 @@
     .nav-cta {
       background: var(--orange);
       color: white !important;
-      padding: 0.5rem 1.2rem;
-      border-radius: 4px;
+      padding: 0.45rem 1.2rem;
+      border-radius: 3px;
     }
 
-    .nav-cta:hover { background: var(--orange-light) !important; color: white !important; }
+    .nav-cta:hover { background: var(--orange-light) !important; }
 
-    /* ── HERO ── */
+    /* ── HERO (split — no text over image) ── */
     .hero {
-      position: relative;
-      height: 100vh; min-height: 600px;
-      display: flex; align-items: center;
-      overflow: hidden;
+      margin-top: 70px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 70px);
     }
 
-    .hero-bg {
-      position: absolute; inset: 0;
-      background-image: url('https://bhurjee.ca/wp-content/uploads/2020/10/gallery1-min-1-scaled.jpg');
-      background-size: cover;
-      background-position: center;
-      filter: brightness(0.35);
-    }
-
-    .hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(11,22,40,0.7) 0%, rgba(232,119,34,0.1) 100%);
-    }
-
-    .hero-content {
-      position: relative; z-index: 2;
-      padding: 0 8%;
-      max-width: 750px;
+    .hero-left {
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 6% 5rem 8%;
     }
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(232,119,34,0.15);
-      border: 1px solid var(--orange);
+      background: rgba(232,119,34,0.12);
+      border: 1px solid rgba(232,119,34,0.4);
       color: var(--orange);
-      font-size: 0.75rem; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 0.35rem 0.9rem; border-radius: 2px;
-      margin-bottom: 1.5rem;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.35rem 0.85rem; border-radius: 2px;
+      margin-bottom: 1.75rem;
+      width: fit-content;
     }
 
     .hero h1 {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-size: clamp(2.8rem, 4.5vw, 4.5rem);
       font-weight: 800;
       line-height: 1.05;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
       text-transform: uppercase;
     }
 
     .hero h1 span { color: var(--orange); }
 
-    .hero p {
-      font-size: 1.1rem;
-      color: var(--light);
-      line-height: 1.7;
+    .hero-left p {
+      font-size: 1rem;
+      color: var(--gray);
+      line-height: 1.75;
       margin-bottom: 2.5rem;
-      max-width: 560px;
+      max-width: 480px;
     }
 
     .hero-buttons {
       display: flex; gap: 1rem; flex-wrap: wrap;
+      margin-bottom: 3rem;
     }
 
     .btn-primary {
       background: var(--orange);
       color: white;
-      padding: 0.85rem 2rem;
-      border-radius: 4px;
+      padding: 0.8rem 1.8rem;
+      border-radius: 3px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.95rem;
-      transition: background 0.2s, transform 0.2s;
+      font-size: 0.9rem;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
     }
 
     .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); }
 
     .btn-outline {
-      border: 2px solid rgba(255,255,255,0.4);
-      color: white;
-      padding: 0.85rem 2rem;
-      border-radius: 4px;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: var(--light);
+      padding: 0.8rem 1.8rem;
+      border-radius: 3px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.95rem;
-      transition: border-color 0.2s, transform 0.2s;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, transform 0.15s;
     }
 
-    .btn-outline:hover { border-color: white; transform: translateY(-2px); }
+    .btn-outline:hover { border-color: white; color: white; transform: translateY(-2px); }
 
     .hero-stats {
-      position: absolute; bottom: 3rem; left: 8%; right: 8%;
-      z-index: 2;
-      display: flex; gap: 3rem;
-    }
-
-    .stat {
-      text-align: left;
+      display: flex; gap: 2.5rem; flex-wrap: wrap;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
 
     .stat-num {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2.4rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--orange);
       line-height: 1;
     }
 
     .stat-label {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--gray);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-top: 0.25rem;
+      letter-spacing: 0.07em;
+      margin-top: 0.2rem;
     }
 
-    /* ── SECTIONS ── */
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── SHARED SECTION STYLES ── */
     section { padding: 5rem 8%; }
 
     .section-tag {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--orange);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.6rem;
     }
 
     .section-title {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(1.8rem, 3.5vw, 2.75rem);
       font-weight: 800;
       text-transform: uppercase;
       line-height: 1.1;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
 
     .section-sub {
       color: var(--gray);
-      font-size: 1rem;
-      line-height: 1.7;
-      max-width: 540px;
+      font-size: 0.95rem;
+      line-height: 1.75;
     }
 
     /* ── SERVICES ── */
@@ -216,65 +211,61 @@
 
     .services-header {
       display: flex; justify-content: space-between; align-items: flex-end;
-      margin-bottom: 3rem;
+      margin-bottom: 2.5rem;
       flex-wrap: wrap; gap: 1.5rem;
     }
 
+    .services-header .section-sub { max-width: 400px; }
+
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5px;
-      background: rgba(232,119,34,0.1);
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
 
     .service-card {
       background: var(--mid);
+      border-radius: 6px;
       overflow: hidden;
-      cursor: pointer;
-      transition: background 0.2s;
-      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .service-card:hover { background: var(--steel); }
-
-    .service-card:hover .service-img { filter: brightness(0.75) saturate(1.2); }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    }
 
     .service-img {
-      width: 100%; height: 220px;
+      width: 100%; height: 200px;
       object-fit: cover;
       display: block;
-      transition: filter 0.3s;
-      filter: brightness(0.65) saturate(0.8);
     }
 
-    .service-body {
-      padding: 1.5rem;
-    }
+    .service-body { padding: 1.4rem; }
 
     .service-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
       color: var(--orange);
       letter-spacing: 0.1em;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.3rem;
     }
 
     .service-name {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 700;
       text-transform: uppercase;
       margin-bottom: 0.5rem;
     }
 
     .service-desc {
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       color: var(--gray);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
-    /* ── ABOUT ── */
+    /* ── ABOUT (split — no text over image) ── */
     #about {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -285,101 +276,99 @@
     .about-images {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: 240px 240px;
-      gap: 12px;
+      gap: 10px;
     }
 
     .about-images img {
-      width: 100%; height: 100%;
+      width: 100%;
       object-fit: cover;
-      border-radius: 4px;
-      filter: brightness(0.8) saturate(0.9);
-      transition: filter 0.3s;
+      border-radius: 5px;
+      display: block;
     }
-
-    .about-images img:hover { filter: brightness(1) saturate(1); }
 
     .about-images img:first-child {
       grid-column: span 2;
+      height: 260px;
     }
 
-    .timeline {
-      margin-top: 2.5rem;
+    .about-images img:not(:first-child) {
+      height: 180px;
     }
+
+    .timeline { margin-top: 2rem; }
 
     .tl-item {
-      display: flex; gap: 1.5rem;
-      margin-bottom: 1.5rem;
+      display: flex; gap: 1.25rem;
+      margin-bottom: 1.25rem;
       align-items: flex-start;
     }
 
     .tl-year {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--orange);
-      min-width: 55px;
+      min-width: 52px;
       padding-top: 0.1rem;
     }
 
-    .tl-bar {
-      width: 2px;
-      background: var(--orange);
-      margin-top: 0.5rem;
-      flex-shrink: 0;
+    .tl-text {
+      font-size: 0.875rem;
+      color: var(--light);
+      line-height: 1.65;
     }
 
-    .tl-text {
-      font-size: 0.9rem;
-      color: var(--light);
-      line-height: 1.6;
+    /* ── GALLERY STRIP ── */
+    .gallery-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      height: 300px;
+      overflow: hidden;
     }
+
+    .gallery-strip img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+      cursor: pointer;
+    }
+
+    .gallery-strip img:hover { transform: scale(1.06); }
 
     /* ── ADVANTAGE ── */
     #advantage { background: var(--dark); }
 
+    .advantage-header { margin-bottom: 2.5rem; }
+
     .advantage-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      margin-top: 3rem;
-      background: rgba(232,119,34,0.08);
+      gap: 16px;
     }
 
     .adv-card {
       background: var(--mid);
-      padding: 2.5rem 2rem;
-      position: relative;
-      overflow: hidden;
+      padding: 2rem 1.75rem;
+      border-radius: 6px;
+      border-top: 3px solid var(--orange);
     }
-
-    .adv-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 0;
-      background: var(--orange);
-      transition: height 0.3s;
-    }
-
-    .adv-card:hover::before { height: 100%; }
 
     .adv-num {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 4rem;
+      font-size: 3.5rem;
       font-weight: 800;
-      color: rgba(232,119,34,0.12);
+      color: rgba(232,119,34,0.1);
       line-height: 1;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
 
     .adv-title {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 700;
       text-transform: uppercase;
       margin-bottom: 0.75rem;
-      color: var(--white);
     }
 
     .adv-text {
@@ -388,75 +377,44 @@
       line-height: 1.7;
     }
 
-    /* ── GALLERY ── */
-    #gallery { padding: 0; }
-
-    .gallery-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      height: 320px;
-    }
-
-    .gallery-strip img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: brightness(0.6) grayscale(0.3);
-      transition: filter 0.4s, transform 0.4s;
-      cursor: pointer;
-    }
-
-    .gallery-strip img:hover {
-      filter: brightness(0.9) grayscale(0);
-      transform: scale(1.03);
-      z-index: 2;
-      position: relative;
-    }
-
     /* ── CERTIFICATIONS ── */
     #certs {
-      display: flex; align-items: center; gap: 4rem;
-      background: var(--dark);
+      display: flex; align-items: center; gap: 5rem;
       flex-wrap: wrap;
     }
 
     .cert-text { flex: 1; min-width: 260px; }
-
-    .cert-badges {
-      display: flex; gap: 2rem; align-items: center;
-      flex-wrap: wrap;
-    }
+    .cert-text .section-sub { margin-top: 1rem; }
 
     .cert-badge {
       background: var(--mid);
-      border: 1px solid rgba(232,119,34,0.3);
+      border: 1px solid rgba(232,119,34,0.25);
       border-radius: 8px;
-      padding: 1.5rem;
+      padding: 2rem 2.5rem;
       text-align: center;
-      min-width: 140px;
     }
 
     .cert-badge img {
-      width: 80px; height: 80px;
+      width: 90px; height: 90px;
       object-fit: contain;
-      filter: brightness(1.1);
     }
 
     .cert-badge-label {
       font-size: 0.75rem;
       color: var(--gray);
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
     }
 
     /* ── CONTACT ── */
     #contact {
-      background: var(--navy);
+      background: var(--dark);
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 5rem;
       align-items: start;
     }
 
-    .contact-info { }
+    .contact-info .section-sub { margin-bottom: 2.5rem; margin-top: 1rem; }
 
     .contact-item {
       display: flex; gap: 1rem;
@@ -465,91 +423,88 @@
     }
 
     .contact-icon {
-      width: 40px; height: 40px;
+      width: 38px; height: 38px;
       background: rgba(232,119,34,0.1);
-      border: 1px solid rgba(232,119,34,0.3);
+      border: 1px solid rgba(232,119,34,0.25);
       border-radius: 4px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1rem;
       flex-shrink: 0;
     }
 
     .contact-label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--orange);
       margin-bottom: 0.2rem;
     }
 
-    .contact-val {
-      font-size: 0.95rem;
-      color: var(--light);
-    }
+    .contact-val { font-size: 0.9rem; color: var(--light); line-height: 1.5; }
 
-    .contact-form { }
-
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
+    .form-group { margin-bottom: 1rem; }
 
     .form-group input,
     .form-group textarea,
     .form-group select {
       width: 100%;
       background: var(--mid);
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.09);
       border-radius: 4px;
-      padding: 0.85rem 1rem;
+      padding: 0.8rem 1rem;
       color: var(--white);
       font-family: 'Inter', sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       outline: none;
       transition: border-color 0.2s;
     }
 
+    .form-group select option { background: var(--mid); }
+
     .form-group input:focus,
     .form-group textarea:focus,
-    .form-group select:focus {
-      border-color: var(--orange);
-    }
+    .form-group select:focus { border-color: var(--orange); }
 
-    .form-group textarea { height: 120px; resize: vertical; }
+    .form-group textarea { height: 110px; resize: vertical; }
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
     /* ── FOOTER ── */
     footer {
       background: #060e1a;
-      padding: 2rem 8%;
+      padding: 1.75rem 8%;
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 1rem;
-      border-top: 1px solid rgba(232,119,34,0.15);
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
 
-    footer img { height: 32px; filter: brightness(0.85); }
+    footer img { height: 30px; opacity: 0.8; }
 
-    .footer-text {
-      font-size: 0.8rem;
-      color: var(--gray);
-    }
+    .footer-copy { font-size: 0.78rem; color: var(--gray); }
+
+    .footer-demo { font-size: 0.7rem; color: rgba(232,119,34,0.5); }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      nav .nav-links { display: none; }
-      #about { grid-template-columns: 1fr; gap: 3rem; }
-      #contact { grid-template-columns: 1fr; gap: 3rem; }
-      .advantage-grid { grid-template-columns: 1fr; }
-      .gallery-strip { grid-template-columns: repeat(2, 1fr); height: auto; }
-      .gallery-strip img { height: 200px; }
-      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
-      #certs { flex-direction: column; }
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    @media (max-width: 600px) {
-      section { padding: 3.5rem 6%; }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 320px; }
+      #about { grid-template-columns: 1fr; gap: 2.5rem; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+      .advantage-grid { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+      .gallery-strip { grid-template-columns: repeat(2, 1fr); height: auto; }
+      .gallery-strip img { height: 180px; }
+      #certs { flex-direction: column; gap: 2rem; }
+    }
+
+    @media (max-width: 560px) {
+      .services-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
-      .about-images { grid-template-rows: 180px 180px; }
+      .hero-left { padding: 3.5rem 6%; }
     }
   </style>
 </head>
@@ -569,11 +524,9 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
+  <!-- HERO — split layout, no text over image -->
+  <div class="hero">
+    <div class="hero-left">
       <div class="hero-badge">⚙ ISO 9001:2015 Certified</div>
       <h1>Canadian-Made.<br /><span>Global</span> Applications.</h1>
       <p>Bhurjee Industries has been Alberta's most trusted precision manufacturer for nearly 30 years — delivering high-quality CNC machined components to oil & gas, industrial, and global markets.</p>
@@ -581,26 +534,25 @@
         <a href="#services" class="btn-primary">Explore Services</a>
         <a href="#contact" class="btn-outline">Get a Quote</a>
       </div>
-    </div>
-    <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-num">30+</div>
-        <div class="stat-label">Years in Business</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">10K+</div>
-        <div class="stat-label">Sq Ft Facility</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">3</div>
-        <div class="stat-label">Global Markets</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">ISO</div>
-        <div class="stat-label">9001:2015 Certified</div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">30+</div>
+          <div class="stat-label">Years in Business</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">10K+</div>
+          <div class="stat-label">Sq Ft Facility</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Global Markets</div>
+        </div>
       </div>
     </div>
-  </section>
+    <div class="hero-right">
+      <img src="https://bhurjee.ca/wp-content/uploads/2020/10/gallery1-min-1-scaled.jpg" alt="Bhurjee Shop Floor" />
+    </div>
+  </div>
 
   <!-- SERVICES -->
   <section id="services">
@@ -663,7 +615,7 @@
     </div>
   </section>
 
-  <!-- ABOUT -->
+  <!-- ABOUT — split layout, no text over image -->
   <section id="about">
     <div class="about-images">
       <img src="https://bhurjee.ca/wp-content/uploads/2021/02/gallery1-min-1-1600x1071-1.jpg" alt="Shop Floor" />
@@ -673,7 +625,7 @@
     <div class="about-text">
       <div class="section-tag">Our Story</div>
       <div class="section-title">Nearly 30 Years of Precision</div>
-      <p class="section-sub">Founded in Edmonton in 1997, Bhurjee Industries has grown from a local machine shop into a global precision manufacturing partner.</p>
+      <p class="section-sub">Founded in Edmonton in 1997, Bhurjee Industries has grown from a local machine shop into a global precision manufacturing partner — serving Canada, the United States, and the Middle East.</p>
       <div class="timeline">
         <div class="tl-item">
           <div class="tl-year">1997</div>
@@ -689,7 +641,7 @@
         </div>
         <div class="tl-item">
           <div class="tl-year">Today</div>
-          <div class="tl-text">Delivering precision manufacturing solutions to clients in Canada, the United States, and the Middle East.</div>
+          <div class="tl-text">Delivering precision manufacturing solutions globally via supply-chain partnerships around the world.</div>
         </div>
       </div>
     </div>
@@ -705,8 +657,10 @@
 
   <!-- ADVANTAGE -->
   <section id="advantage">
-    <div class="section-tag">The Bhurjee Advantage</div>
-    <div class="section-title">Why Industry Leaders Choose Us</div>
+    <div class="advantage-header">
+      <div class="section-tag">The Bhurjee Advantage</div>
+      <div class="section-title">Why Industry Leaders Choose Us</div>
+    </div>
     <div class="advantage-grid">
       <div class="adv-card">
         <div class="adv-num">01</div>
@@ -727,17 +681,15 @@
   </section>
 
   <!-- CERTIFICATIONS -->
-  <section id="certs">
+  <section id="certs" style="background: var(--dark);">
     <div class="cert-text">
       <div class="section-tag">Certifications</div>
       <div class="section-title">Quality You Can Document</div>
       <p class="section-sub">Our ISO 9001:2015 certification isn't just a badge — it's a daily commitment to traceable materials, documented processes, and measurable outcomes.</p>
     </div>
-    <div class="cert-badges">
-      <div class="cert-badge">
-        <img src="https://bhurjee.ca/wp-content/uploads/2020/09/ISO-9001-2015-logo-1-1000x1000-150x150-1.png" alt="ISO 9001:2015" />
-        <div class="cert-badge-label">ISO 9001:2015</div>
-      </div>
+    <div class="cert-badge">
+      <img src="https://bhurjee.ca/wp-content/uploads/2020/09/ISO-9001-2015-logo-1-1000x1000-150x150-1.png" alt="ISO 9001:2015" />
+      <div class="cert-badge-label">ISO 9001:2015</div>
     </div>
   </section>
 
@@ -746,7 +698,7 @@
     <div class="contact-info">
       <div class="section-tag">Get In Touch</div>
       <div class="section-title">Request a Quote</div>
-      <p class="section-sub" style="margin-bottom: 2.5rem;">Tell us what you need. We'll get back to you with a competitive quote and timeline.</p>
+      <p class="section-sub">Tell us what you need. We'll get back to you with a competitive quote and timeline.</p>
       <div class="contact-item">
         <div class="contact-icon">📍</div>
         <div>
@@ -771,19 +723,11 @@
     </div>
     <div class="contact-form">
       <div class="form-row">
-        <div class="form-group">
-          <input type="text" placeholder="First Name" />
-        </div>
-        <div class="form-group">
-          <input type="text" placeholder="Last Name" />
-        </div>
+        <div class="form-group"><input type="text" placeholder="First Name" /></div>
+        <div class="form-group"><input type="text" placeholder="Last Name" /></div>
       </div>
-      <div class="form-group">
-        <input type="email" placeholder="Email Address" />
-      </div>
-      <div class="form-group">
-        <input type="text" placeholder="Company Name" />
-      </div>
+      <div class="form-group"><input type="email" placeholder="Email Address" /></div>
+      <div class="form-group"><input type="text" placeholder="Company Name" /></div>
       <div class="form-group">
         <select>
           <option value="" disabled selected>Service Required</option>
@@ -797,15 +741,15 @@
       <div class="form-group">
         <textarea placeholder="Describe your project or requirements..."></textarea>
       </div>
-      <a href="mailto:info@bhurjee.ca" class="btn-primary" style="display:inline-block; width:100%; text-align:center;">Send Request →</a>
+      <a href="mailto:info@bhurjee.ca" class="btn-primary" style="width:100%; text-align:center;">Send Request →</a>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
     <img src="https://bhurjee.ca/wp-content/uploads/2021/02/cropped-logo-1.png" alt="Bhurjee Industries" />
-    <div class="footer-text">© 2026 Bhurjee Industries Ltd. | Edmonton, Alberta | ISO 9001:2015 Certified</div>
-    <div class="footer-text" style="color: rgba(232,119,34,0.6); font-size:0.7rem;">Demo by Wildrose Automations</div>
+    <div class="footer-copy">© 2026 Bhurjee Industries Ltd. | Edmonton, Alberta | ISO 9001:2015 Certified</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
   </footer>
 
 </body>
