@@ -847,7 +847,14 @@
 </div>
 
 <script>
-const API = 'https://n8n.wildeautomations.com/webhook/crm';
+const SUPA_URL = 'https://xacehhtgvubcqdoltazg.supabase.co/rest/v1';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhY2VoaHRndnViY3Fkb2x0YXpnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mzk0Mjg2NywiZXhwIjoyMDg5NTE4ODY3fQ.5sqLtRtRnWEEuytTsfGhh1hmrQkTilL4Bd_rMrqmQ9A';
+const SUPA_HEADERS = {
+  'apikey': SUPA_KEY,
+  'Authorization': 'Bearer ' + SUPA_KEY,
+  'Content-Type': 'application/json',
+  'Prefer': 'return=representation'
+};
 
 let allCompanies = [];
 let currentFilter = 'all';
@@ -855,15 +862,46 @@ let editingCompanyId = null;
 let paymentsCompanyId = null;
 let deleteCompanyId = null;
 
-// ─────────── API ───────────
+// ─────────── SUPABASE API ───────────
 async function apiCall(body) {
-  const res = await fetch(API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const { action, id, data, company_id } = body;
+  let url, method, payload;
+
+  if (action === 'get_companies') {
+    url = SUPA_URL + '/redesign_companies?select=*,redesign_payments(*)&order=created_at.desc';
+    method = 'GET';
+  } else if (action === 'add_company') {
+    url = SUPA_URL + '/redesign_companies';
+    method = 'POST'; payload = JSON.stringify(data);
+  } else if (action === 'update_company') {
+    url = SUPA_URL + '/redesign_companies?id=eq.' + id;
+    method = 'PATCH'; payload = JSON.stringify(data);
+  } else if (action === 'delete_company') {
+    url = SUPA_URL + '/redesign_companies?id=eq.' + id;
+    method = 'DELETE';
+  } else if (action === 'add_payment') {
+    url = SUPA_URL + '/redesign_payments';
+    method = 'POST'; payload = JSON.stringify(data);
+  } else if (action === 'get_payments') {
+    url = SUPA_URL + '/redesign_payments?company_id=eq.' + company_id + '&order=created_at.desc';
+    method = 'GET';
+  } else if (action === 'log_activity') {
+    url = SUPA_URL + '/redesign_activity';
+    method = 'POST'; payload = JSON.stringify(data);
+  } else if (action === 'save_score') {
+    url = SUPA_URL + '/redesign_site_scores';
+    method = 'POST'; payload = JSON.stringify(data);
+  }
+
+  const opts = { method, headers: SUPA_HEADERS };
+  if (payload) opts.body = payload;
+  const res = await fetch(url, opts);
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error('Supabase error: ' + err);
+  }
   const text = await res.text();
+  if (!text) return [];
   try { return JSON.parse(text); } catch { return text; }
 }
 
