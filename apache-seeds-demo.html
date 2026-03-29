@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apache Seeds Ltd. | Local Garden Centre | Edmonton, AB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f9f4;
+      --surface: #ffffff;
+      --card: #ffffff;
+      --border: #d8e8cc;
+      --warm: #f0f5e8;
+      --dark: #1c2a0e;
+      --green: #3a6b1a;
+      --green-light: #4a8020;
+      --green-dim: rgba(58,107,26,0.08);
+      --earth: #7a5020;
+      --earth-light: #9a6828;
+      --cream: #f8f5ee;
+      --text: #1e2a10;
+      --muted: #5a6848;
+      --light: #8a9870;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* NAV — white to match logo */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 70px;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 8px rgba(28,42,14,0.07);
+    }
+
+    .nav-logo img { height: 48px; object-fit: contain; }
+
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta { background: var(--green); color: white !important; padding: 0.45rem 1.2rem; border-radius: 4px; font-weight: 700; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--green-light) !important; }
+
+    /* HERO */
+    .hero { margin-top: 70px; display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 70px); }
+
+    .hero-left {
+      background: var(--dark);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 6% 5rem 8%;
+      border-right: 1px solid rgba(58,107,26,0.3);
+    }
+
+    .eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7ab848;
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.5rem;
+    }
+    .eyebrow::before { content: ''; display: block; width: 22px; height: 1px; background: #7ab848; }
+
+    .hero-left h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 4vw, 3.8rem); font-weight: 800; line-height: 1.1;
+      color: var(--cream); margin-bottom: 1.25rem;
+    }
+    .hero-left h1 em { font-style: italic; color: #7ab848; }
+
+    .hero-left p { font-size: 0.97rem; color: #4a5a38; line-height: 1.85; margin-bottom: 2.5rem; max-width: 460px; }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+
+    .btn-green { background: var(--green); color: white; padding: 0.8rem 1.8rem; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 0.88rem; transition: background 0.2s, transform 0.15s; display: inline-block; }
+    .btn-green:hover { background: var(--green-light); transform: translateY(-2px); }
+    .btn-outline { border: 1.5px solid rgba(122,184,72,0.4); color: #7ab848; padding: 0.8rem 1.8rem; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.88rem; transition: border-color 0.2s, transform 0.15s; }
+    .btn-outline:hover { border-color: #7ab848; transform: translateY(-2px); }
+
+    .hero-badges { display: flex; gap: 1.5rem; flex-wrap: wrap; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .badge-item { font-size: 0.78rem; color: #3a4a28; display: flex; align-items: center; gap: 0.4rem; }
+    .badge-dot { width: 4px; height: 4px; border-radius: 50%; background: #7ab848; }
+
+    .hero-right { overflow: hidden; }
+    .hero-right img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* SEASONS STRIP */
+    .season-strip {
+      background: var(--green); padding: 1rem 8%;
+      display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap;
+    }
+    .season-item { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 0.5rem; }
+
+    /* SECTIONS */
+    section { padding: 5rem 8%; }
+    .sec-header { margin-bottom: 2.5rem; }
+    .sec-eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--green); display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.6rem; }
+    .sec-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--green); }
+    .sec-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; color: var(--dark); line-height: 1.15; margin-bottom: 0.75rem; }
+    .sec-sub { color: var(--muted); font-size: 0.93rem; line-height: 1.8; max-width: 560px; }
+
+    /* CATEGORIES */
+    #categories { background: var(--warm); }
+    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .cat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; text-decoration: none; display: block; }
+    .cat-card:hover { box-shadow: 0 6px 24px rgba(28,42,14,0.12); transform: translateY(-3px); }
+    .cat-img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .cat-body { padding: 1rem 1.1rem 1.2rem; }
+    .cat-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--dark); margin-bottom: 0.3rem; }
+    .cat-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
+
+    /* ABOUT */
+    #about { background: var(--surface); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .about-img { border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+    .about-img img { width: 100%; height: 460px; object-fit: cover; display: block; }
+    .about-body .sec-sub { margin-bottom: 1.25rem; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.75rem; }
+    .about-stat { background: var(--warm); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 4px; padding: 0.85rem 1rem; }
+    .about-stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 800; color: var(--green); line-height: 1; }
+    .about-stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* GALLERY */
+    .gallery-strip { display: grid; grid-template-columns: repeat(4, 1fr); height: 260px; overflow: hidden; }
+    .gallery-strip img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s, filter 0.3s; filter: brightness(0.88); cursor: pointer; }
+    .gallery-strip img:hover { transform: scale(1.06); filter: brightness(1); z-index: 2; position: relative; }
+
+    /* CONTACT */
+    #contact { background: var(--warm); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-info .sec-sub { margin: 0.75rem 0 2rem; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.4rem; align-items: flex-start; }
+    .ci-icon { width: 38px; height: 38px; background: var(--green-dim); border: 1px solid rgba(58,107,26,0.18); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+    .ci-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--green); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+
+    .hours-table { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .hours-row { display: grid; grid-template-columns: 1fr 1fr; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-day { color: var(--muted); }
+    .hours-time { color: var(--text); font-weight: 600; text-align: right; }
+    .hours-row.closed .hours-time { color: #c0392b; }
+
+    .fg { margin-bottom: 1rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: white; border: 1px solid var(--border); border-radius: 4px; padding: 0.78rem 1rem; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--green); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* FOOTER */
+    footer { background: var(--dark); padding: 2rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(58,107,26,0.3); }
+    footer img { height: 40px; object-fit: contain; }
+    .footer-copy { font-size: 0.75rem; color: #3a4a28; }
+    .footer-demo { font-size: 0.68rem; color: rgba(122,184,72,0.35); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 280px; }
+      #about { grid-template-columns: 1fr; gap: 2.5rem; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav .nav-links { display: none; }
+      .gallery-strip { grid-template-columns: repeat(2, 1fr); height: auto; }
+      .gallery-strip img { height: 180px; }
+      .season-strip { gap: 1rem; }
+    }
+    @media (max-width: 600px) { .cat-grid { grid-template-columns: 1fr; } .fr { grid-template-columns: 1fr; } .about-stats { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#">
+      <img src="assets/apache-seeds/logo.png" alt="Apache Seeds Limited" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#categories">Shop</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Visit Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="eyebrow">Edmonton, AB · Est. 1958</div>
+      <h1>Your Local<br /><em>Garden</em><br />Centre</h1>
+      <p>Apache Seeds has been Edmonton's trusted locally-owned greenhouse and garden centre since 1958 — serving home gardeners, growers, and enthusiasts with quality seeds, soils, fertilizers, and supplies.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-green">📍 Visit Our Store</a>
+        <a href="#categories" class="btn-outline">Browse Products</a>
+      </div>
+      <div class="hero-badges">
+        <div class="badge-item"><div class="badge-dot"></div> Est. 1958</div>
+        <div class="badge-item"><div class="badge-dot"></div> Locally Owned</div>
+        <div class="badge-item"><div class="badge-dot"></div> 2026 Seeds Now In!</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="assets/apache-seeds/bulbs.jpg" alt="Garden bulbs" />
+    </div>
+  </div>
+
+  <!-- SEASON STRIP -->
+  <div class="season-strip">
+    <div class="season-item">🌱 2026 Seeds Now Arrived</div>
+    <div class="season-item">🌿 Seeds · Soils · Fertilizers</div>
+    <div class="season-item">🌸 Orchids & Bonsai</div>
+    <div class="season-item">🛠 Tools & Grower Supplies</div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section id="categories">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Browse the Store</div>
+      <div class="sec-title">What We Carry</div>
+      <p class="sec-sub">Everything you need from seed to harvest — and everything in between.</p>
+    </div>
+    <div class="cat-grid">
+      <a href="https://www.apacheseeds.ca/seeds" target="_blank" class="cat-card">
+        <img class="cat-img" src="assets/apache-seeds/seeds.jpg" alt="Seeds" />
+        <div class="cat-body">
+          <div class="cat-name">Seeds</div>
+          <p class="cat-desc">Vegetables, herbs, flowers, and more. 2026 varieties now in stock.</p>
+        </div>
+      </a>
+      <a href="https://www.apacheseeds.ca/soils" target="_blank" class="cat-card">
+        <img class="cat-img" src="assets/apache-seeds/soil.jpg" alt="Soils & Compost" />
+        <div class="cat-body">
+          <div class="cat-name">Soils & Compost</div>
+          <p class="cat-desc">Potting mixes, compost, peat, and specialty growing media for every application.</p>
+        </div>
+      </a>
+      <a href="https://www.apacheseeds.ca/fertilizers" target="_blank" class="cat-card">
+        <img class="cat-img" src="assets/apache-seeds/fertilizer.jpg" alt="Fertilizers" />
+        <div class="cat-body">
+          <div class="cat-name">Fertilizers & Amendments</div>
+          <p class="cat-desc">Organic and synthetic fertilizers, soil amendments, and micronutrients for healthy plants.</p>
+        </div>
+      </a>
+      <a href="https://www.apacheseeds.ca/pesticides" target="_blank" class="cat-card">
+        <img class="cat-img" src="assets/apache-seeds/pest.jpg" alt="Pest Control" />
+        <div class="cat-body">
+          <div class="cat-name">Pest & Disease Control</div>
+          <p class="cat-desc">Insecticides, fungicides, herbicides, animal repellents, and bio-controls.</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <div class="gallery-strip">
+    <img src="assets/apache-seeds/seedlings.jpg" alt="Seedlings" />
+    <img src="assets/apache-seeds/field.jpg" alt="Farm field" />
+    <img src="assets/apache-seeds/orchid.jpg" alt="Orchids" />
+    <img src="assets/apache-seeds/bulbs.jpg" alt="Garden bulbs" />
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img">
+      <img src="assets/apache-seeds/field.jpg" alt="Apache Seeds field" />
+    </div>
+    <div class="about-body">
+      <div class="sec-eyebrow">Our Story</div>
+      <div class="sec-title">Edmonton's Garden Centre Since 1958</div>
+      <p class="sec-sub">Apache Seeds Limited has been a fixture in Edmonton's gardening community for over 65 years. We're locally owned and operated, and we're proud to be the go-to source for everything from backyard vegetable gardens to commercial growing operations.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">Our knowledgeable staff are passionate about plants and gardening. Whether you're a first-time gardener or an experienced grower, we're here to help you succeed — from seed selection to harvest.</p>
+      <div class="about-stats">
+        <div class="about-stat"><div class="about-stat-num">65+</div><div class="about-stat-label">Years Serving Edmonton</div></div>
+        <div class="about-stat"><div class="about-stat-num">1958</div><div class="about-stat-label">Established</div></div>
+        <div class="about-stat"><div class="about-stat-num">Local</div><div class="about-stat-label">Owned & Operated</div></div>
+        <div class="about-stat"><div class="about-stat-num">All</div><div class="about-stat-label">Skill Levels Welcome</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <div class="sec-eyebrow">Visit Us</div>
+      <div class="sec-title">Find Us in Edmonton</div>
+      <p class="sec-sub">Come in and browse — our staff are always happy to help with plant questions, product recommendations, and gardening advice.</p>
+      <div class="ci">
+        <div class="ci-icon">📞</div>
+        <div><div class="ci-label">Phone</div><div class="ci-val">780-489-4245</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">✉</div>
+        <div><div class="ci-label">Email</div><div class="ci-val">gardening@apacheseeds.ca</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">📍</div>
+        <div><div class="ci-label">Address</div><div class="ci-val">10136 – 149 Street<br />Edmonton, AB T5P 1L1</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">🕐</div>
+        <div>
+          <div class="ci-label">Hours</div>
+          <div style="margin-top:0.5rem;">
+            <div class="hours-table">
+              <div class="hours-row"><span class="hours-day">Mon – Sat</span><span class="hours-time">8:30 AM – 6:00 PM</span></div>
+              <div class="hours-row closed"><span class="hours-day">Sun & Holidays</span><span class="hours-time">Closed</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="fr">
+        <div class="fg"><input type="text" placeholder="First Name" /></div>
+        <div class="fg"><input type="text" placeholder="Last Name" /></div>
+      </div>
+      <div class="fg"><input type="email" placeholder="Email Address" /></div>
+      <div class="fg"><input type="tel" placeholder="Phone Number" /></div>
+      <div class="fg">
+        <select>
+          <option value="" disabled selected>I'm looking for…</option>
+          <option>Seeds</option>
+          <option>Soils & Compost</option>
+          <option>Fertilizers & Amendments</option>
+          <option>Pest & Disease Control</option>
+          <option>Grower Supplies</option>
+          <option>Orchids & Bonsai</option>
+          <option>Tools & Hardware</option>
+          <option>General Question</option>
+        </select>
+      </div>
+      <div class="fg"><textarea placeholder="What can we help you with?"></textarea></div>
+      <a href="mailto:gardening@apacheseeds.ca" class="btn-green" style="display:block; width:100%; text-align:center;">Send Message →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="assets/apache-seeds/logo.png" alt="Apache Seeds Limited" />
+    <div class="footer-copy">© 2026 Apache Seeds Ltd. · 10136 – 149 St., Edmonton, AB · 780-489-4245</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
