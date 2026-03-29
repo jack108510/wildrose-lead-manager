@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advantage Manufacturing Ltd. — Welding & Fabrication | Edmonton & Drayton Valley</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080a0e;
+      --surface: #0c0f14;
+      --card: #111520;
+      --border: #1a2030;
+      --orange: #e06820;
+      --orange-light: #f07830;
+      --orange-dim: rgba(224,104,32,0.1);
+      --cream: #eef2f7;
+      --text: #c0ccd8;
+      --muted: #566070;
+      --light: #8899aa;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* NAV — white to show logo */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 68px;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #dde4ed;
+    }
+
+    .nav-logo img { height: 44px; object-fit: contain; }
+
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: #3a4a5c; text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--orange); }
+    .nav-phone { font-size: 0.82rem; font-weight: 700; color: var(--orange); text-decoration: none; }
+    .nav-cta { background: var(--orange); color: white !important; padding: 0.42rem 1.2rem; border-radius: 3px; font-weight: 600; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--orange-light) !important; }
+
+    /* HERO — full banner */
+    .hero-banner {
+      margin-top: 68px; position: relative;
+      width: 100%; height: 520px; overflow: hidden;
+    }
+    .hero-banner img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.5); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(8,10,14,0.7) 0%, transparent 60%);
+      display: flex; flex-direction: column; justify-content: center; padding: 0 8%;
+    }
+
+    .eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange);
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.4rem;
+    }
+    .eyebrow::before { content: ''; display: block; width: 22px; height: 1px; background: var(--orange); }
+
+    .hero-overlay h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 800; line-height: 1.0;
+      text-transform: uppercase; color: var(--cream); margin-bottom: 1rem; max-width: 660px;
+    }
+    .hero-overlay h1 span { color: var(--orange); }
+    .hero-overlay p { font-size: 1rem; color: var(--light); max-width: 520px; line-height: 1.7; margin-bottom: 2rem; }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-orange { background: var(--orange); color: white; padding: 0.8rem 1.8rem; border-radius: 3px; text-decoration: none; font-weight: 700; font-size: 0.88rem; transition: background 0.2s, transform 0.15s; display: inline-block; }
+    .btn-orange:hover { background: var(--orange-light); transform: translateY(-2px); }
+    .btn-outline { border: 1.5px solid rgba(224,104,32,0.45); color: var(--orange); padding: 0.8rem 1.8rem; border-radius: 3px; text-decoration: none; font-weight: 600; font-size: 0.88rem; transition: border-color 0.2s, transform 0.15s; }
+    .btn-outline:hover { border-color: var(--orange); transform: translateY(-2px); }
+
+    /* STAT STRIP */
+    .stat-strip { background: var(--orange); display: flex; justify-content: center; flex-wrap: wrap; }
+    .stat-item { padding: 1.25rem 3rem; text-align: center; border-right: 1px solid rgba(255,255,255,0.2); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; color: white; line-height: 1; }
+    .stat-label { font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+
+    /* SECTIONS */
+    section { padding: 5rem 8%; }
+    .sec-header { margin-bottom: 2.5rem; }
+    .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(1.8rem, 3.2vw, 2.8rem); font-weight: 800; text-transform: uppercase; color: var(--cream); line-height: 1.1; margin-bottom: 0.75rem; }
+    .sec-sub { color: var(--muted); font-size: 0.93rem; line-height: 1.8; max-width: 560px; }
+
+    /* SERVICES */
+    #services { background: var(--surface); }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .svc-card { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--orange); border-radius: 5px; padding: 1.75rem 1.5rem; transition: transform 0.2s; }
+    .svc-card:hover { transform: translateY(-3px); }
+    .svc-icon { font-size: 1.6rem; margin-bottom: 0.75rem; }
+    .svc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; font-weight: 700; text-transform: uppercase; color: var(--cream); margin-bottom: 0.45rem; }
+    .svc-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+    /* ABOUT */
+    #about { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .about-img { border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+    .about-img img { width: 100%; height: 460px; object-fit: cover; display: block; }
+    .about-body .sec-sub { margin-bottom: 1.25rem; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.75rem; }
+    .about-stat { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--orange); border-radius: 3px; padding: 0.85rem 1rem; }
+    .about-stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--orange); line-height: 1; }
+    .about-stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* CWB */
+    #cert { background: var(--surface); padding: 3rem 8%; display: flex; align-items: center; gap: 3rem; flex-wrap: wrap; border-top: 1px solid var(--border); }
+    .cert-badge { background: var(--card); border: 1px solid rgba(224,104,32,0.3); border-radius: 6px; padding: 1.5rem 2rem; text-align: center; min-width: 140px; }
+    .cert-badge-icon { font-size: 2.5rem; margin-bottom: 0.4rem; }
+    .cert-badge-label { font-size: 0.78rem; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.08em; }
+    .cert-text { flex: 1; }
+    .cert-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 700; text-transform: uppercase; color: var(--cream); margin-bottom: 0.3rem; }
+    .cert-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+    /* CONTACT */
+    #contact { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-info .sec-sub { margin: 0.75rem 0 2rem; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.4rem; align-items: flex-start; }
+    .ci-icon { width: 38px; height: 38px; background: var(--orange-dim); border: 1px solid rgba(224,104,32,0.22); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+    .ci-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+
+    .fg { margin-bottom: 1rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 0.78rem 1rem; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input::placeholder, .fg textarea::placeholder { color: var(--muted); }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--orange); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fg select option { background: var(--card); }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* FOOTER */
+    footer { background: #ffffff; padding: 1.75rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid #dde4ed; }
+    footer img { height: 36px; object-fit: contain; }
+    .footer-copy { font-size: 0.75rem; color: #7a8ea0; }
+    .footer-demo { font-size: 0.68rem; color: rgba(224,104,32,0.35); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      .hero-banner { height: 380px; }
+      #about { grid-template-columns: 1fr; gap: 2.5rem; }
+      #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav .nav-links { display: none; }
+      .stat-item { padding: 1rem 1.5rem; }
+    }
+    @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } .fr { grid-template-columns: 1fr; } .about-stats { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="https://static.wixstatic.com/media/28ba5f_9f4a3ea1fd694787972d27bb8975c230~mv2.png/v1/fill/w_390,h_254,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AML_Logo_page-0001-removebg-preview.png" alt="Advantage Manufacturing Ltd" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="tel:780-621-3335" class="nav-phone">780-621-3335</a></li>
+      <li><a href="#contact" class="nav-cta">Request Quote</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero-banner">
+    <img src="https://static.wixstatic.com/media/28ba5f_2889bf433b53493bb35853440fc0f82b~mv2.jpg/v1/fill/w_2340,h_452,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AdobeStock_1569563468%20(1)_edited.jpg" alt="Welding sparks" />
+    <div class="hero-overlay">
+      <div class="eyebrow">Edmonton & Drayton Valley · 24-Hour Service</div>
+      <h1>Welding &<br /><span>Fabrication</span><br />Experts</h1>
+      <p>Edmonton and Drayton Valley's one-stop shop for welding, steel fabrication, machine shop services, and waterjet cutting. CWB approved. Available 24 hours.</p>
+      <div class="hero-buttons">
+        <a href="tel:780-621-3335" class="btn-orange">📞 780-621-3335</a>
+        <a href="#services" class="btn-outline">Our Services</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip">
+    <div class="stat-item"><div class="stat-num">24h</div><div class="stat-label">Service Available</div></div>
+    <div class="stat-item"><div class="stat-num">CWB</div><div class="stat-label">Bureau Approved</div></div>
+    <div class="stat-item"><div class="stat-num">14"</div><div class="stat-label">Waterjet Steel Capacity</div></div>
+    <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Locations</div></div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="sec-header">
+      <div class="eyebrow">What We Do</div>
+      <div class="sec-title">Our Services</div>
+      <p class="sec-sub">From stainless steel welding to waterjet cutting — complete fabrication and machining under one roof.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-icon">🔥</div>
+        <div class="svc-name">Custom Welding & Repair</div>
+        <p class="svc-desc">Experienced welders executing your projects down to the finest details. Custom welding and repair for industrial, commercial, and specialty applications.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🔩</div>
+        <div class="svc-name">Stainless Steel Welding</div>
+        <p class="svc-desc">Specialized stainless steel welding and fabrication. Portable and custom welding with a large stock of stainless steel products on hand.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">⚙️</div>
+        <div class="svc-name">Aluminum Welding & Fabrication</div>
+        <p class="svc-desc">Full aluminum welding, repair, and fabrication services. We create custom structures and shapes to your exact specifications.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🏗️</div>
+        <div class="svc-name">Steel Fabrication</div>
+        <p class="svc-desc">Custom steel product fabrication from concept to completion. No matter how complex your design, we'll deliver it with precision and quality.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">💧</div>
+        <div class="svc-name">Waterjet Cutting</div>
+        <p class="svc-desc">Cut up to 14 inches of steel, stone, tile, wood, and non-tempered glass. Our waterjet system handles the hardest materials with exceptional precision.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🔧</div>
+        <div class="svc-name">Machine Shop</div>
+        <p class="svc-desc">Machining, repair, and custom component manufacturing. We work with you to fully understand your needs before any work begins.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" style="background: var(--surface);">
+    <div class="about-img">
+      <img src="https://static.wixstatic.com/media/ba2cd3_3e6a382d7784490fbe381fc6111af34d~mv2.jpg/v1/fill/w_1404,h_271,al_c,lg_1,q_85,enc_avif,quality_auto/ba2cd3_3e6a382d7784490fbe381fc6111af34d~mv2.jpg" alt="Welding in action" style="height:460px; object-fit:cover;" />
+    </div>
+    <div class="about-body">
+      <div class="eyebrow">About Us</div>
+      <div class="sec-title">Edmonton's Trusted Welding Company</div>
+      <p class="sec-sub">Advantage Manufacturing Ltd. operates as a one-stop shop for steel products, offering construction, repair, portable, and welding services in Drayton Valley, Edmonton, and surrounding Alberta.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">With over a decade of experience handling stainless steel and aluminum, we've continuously improved our techniques and facilities. We're approved by the Canadian Welding Bureau — meeting and exceeding industry standards.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">We don't just create or repair — we collaborate. We discuss designs thoroughly with you and address every concern before we begin.</p>
+      <div class="about-stats">
+        <div class="about-stat"><div class="about-stat-num">24h</div><div class="about-stat-label">Emergency Service</div></div>
+        <div class="about-stat"><div class="about-stat-num">CWB</div><div class="about-stat-label">Bureau Approved</div></div>
+        <div class="about-stat"><div class="about-stat-num">2</div><div class="about-stat-label">Locations (Edmonton & Drayton Valley)</div></div>
+        <div class="about-stat"><div class="about-stat-num">All</div><div class="about-stat-label">Custom Projects Welcome</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CWB CERT -->
+  <div id="cert">
+    <div class="cert-badge">
+      <div class="cert-badge-icon">🏆</div>
+      <div class="cert-badge-label">CWB Approved</div>
+    </div>
+    <div class="cert-text">
+      <div class="cert-title">Canadian Welding Bureau Approved</div>
+      <p class="cert-desc">Advantage Manufacturing holds Canadian Welding Bureau (CWB) approval — proof that our welding operations meet and exceed rigorous national standards for quality, safety, and traceability. When precision and certification matter, we deliver.</p>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <div class="eyebrow">Get in Touch</div>
+      <div class="sec-title">Request a Quote</div>
+      <p class="sec-sub">Available 24 hours for service calls. Contact us to discuss your project and get a fast quote.</p>
+      <div class="ci">
+        <div class="ci-icon">📞</div>
+        <div><div class="ci-label">Phone (24h)</div><div class="ci-val">780-621-3335</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">📍</div>
+        <div><div class="ci-label">Locations</div><div class="ci-val">Edmonton, Alberta<br />Drayton Valley, Alberta</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="fr">
+        <div class="fg"><input type="text" placeholder="First Name" /></div>
+        <div class="fg"><input type="text" placeholder="Last Name" /></div>
+      </div>
+      <div class="fg"><input type="email" placeholder="Email Address" /></div>
+      <div class="fg"><input type="tel" placeholder="Phone Number" /></div>
+      <div class="fg"><input type="text" placeholder="Company Name" /></div>
+      <div class="fg">
+        <select>
+          <option value="" disabled selected>Service Required</option>
+          <option>Custom Welding & Repair</option>
+          <option>Stainless Steel Welding</option>
+          <option>Aluminum Welding & Fabrication</option>
+          <option>Steel Fabrication</option>
+          <option>Waterjet Cutting</option>
+          <option>Machine Shop</option>
+          <option>Emergency / 24h Service</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><textarea placeholder="Describe your project, materials, and requirements…"></textarea></div>
+      <a href="tel:780-621-3335" class="btn-orange" style="display:block; width:100%; text-align:center;">Request Quote →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="https://static.wixstatic.com/media/28ba5f_9f4a3ea1fd694787972d27bb8975c230~mv2.png/v1/fill/w_390,h_254,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AML_Logo_page-0001-removebg-preview.png" alt="Advantage Manufacturing Ltd" />
+    <div class="footer-copy">© 2026 Advantage Manufacturing Ltd. · Edmonton & Drayton Valley, AB · 780-621-3335</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
