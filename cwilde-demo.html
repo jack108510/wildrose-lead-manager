@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C. Wilde Designs Inc. | Interior Design | Edmonton, AB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f7;
+      --surface: #ffffff;
+      --dark: #1a1714;
+      --charcoal: #2c2824;
+      --mid: #4a4540;
+      --muted: #7a7268;
+      --light: #b0a898;
+      --border: #e8e2d8;
+      --warm: #f4f0e8;
+      --gold: #c9a84c;
+      --gold-light: #d4b86a;
+      --gold-dim: rgba(201,168,76,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--charcoal); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 72px;
+      background: rgba(250,249,247,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo img { height: 52px; width: auto; object-fit: contain; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--charcoal); }
+    .nav-cta {
+      background: transparent; border: 1px solid var(--gold); color: var(--gold) !important;
+      padding: 0.45rem 1.3rem; border-radius: 2px; letter-spacing: 0.1em !important;
+      transition: background 0.2s, color 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold) !important; color: white !important; }
+
+    /* HERO */
+    .hero {
+      margin-top: 72px; position: relative;
+      height: calc(100vh - 72px); overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('assets/cwilde/project6.jpg') center/cover no-repeat;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(26,23,20,0.88) 45%, rgba(26,23,20,0.2));
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      height: 100%; display: flex; flex-direction: column; justify-content: center;
+      padding: 0 8%;
+    }
+    .hero-eyebrow {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5.5vw, 5.5rem); font-weight: 300; line-height: 1.05;
+      color: white; margin-bottom: 1.5rem; max-width: 700px;
+    }
+    .hero h1 em { font-style: italic; color: var(--gold-light); }
+    .hero p { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.9; max-width: 420px; margin-bottom: 2.5rem; }
+    .hero-buttons { display: flex; gap: 1rem; }
+    .btn-gold { background: var(--gold); color: var(--dark); padding: 0.85rem 2rem; text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; transition: background 0.2s; display: inline-block; }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-ghost { border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 0.85rem 2rem; text-decoration: none; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; transition: border-color 0.2s, color 0.2s; display: inline-block; }
+    .btn-ghost:hover { border-color: white; color: white; }
+    .hero-scroll { position: absolute; bottom: 2.5rem; left: 8%; display: flex; align-items: center; gap: 0.75rem; }
+    .scroll-line { width: 40px; height: 1px; background: var(--gold); }
+    .scroll-text { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--light); }
+
+    /* GOLD STRIP */
+    .gold-strip {
+      background: var(--gold); padding: 1rem 8%;
+      display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap;
+    }
+    .gs-item { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dark); display: flex; align-items: center; gap: 0.5rem; }
+    .gs-divider { width: 1px; height: 16px; background: rgba(26,23,20,0.25); }
+
+    /* SECTIONS */
+    section { padding: 6rem 8%; }
+    .sec-eyebrow { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.75rem; }
+    .sec-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--gold); }
+    .sec-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 300; color: var(--dark); line-height: 1.1; margin-bottom: 1rem; }
+    .sec-sub { color: var(--muted); font-size: 0.88rem; line-height: 1.9; max-width: 560px; }
+
+    /* PORTFOLIO */
+    #portfolio { background: var(--surface); }
+    .portfolio-intro { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+    .portfolio-intro .sec-sub { margin-bottom: 0; }
+    .portfolio-link { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; white-space: nowrap; }
+
+    .portfolio-main { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 2px; }
+    .portfolio-main .port-img { width: 100%; height: 440px; object-fit: cover; display: block; transition: transform 0.5s; overflow: hidden; cursor: pointer; }
+    .portfolio-main .port-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .portfolio-main .port-img:hover img { transform: scale(1.04); }
+    .port-img { overflow: hidden; }
+
+    .portfolio-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
+    .port-thumb { overflow: hidden; }
+    .port-thumb img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.5s; cursor: pointer; }
+    .port-thumb img:hover { transform: scale(1.06); }
+    .port-label { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 0.5rem; }
+
+    /* SERVICES */
+    #services { background: var(--dark); }
+    #services .sec-title { color: white; }
+    #services .sec-sub { color: rgba(255,255,255,0.45); }
+    .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); margin-top: 3rem; }
+    .svc-card { background: var(--dark); padding: 2.5rem 2rem; border: 1px solid rgba(255,255,255,0.06); transition: border-color 0.2s; }
+    .svc-card:hover { border-color: rgba(201,168,76,0.3); }
+    .svc-num { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: rgba(201,168,76,0.2); line-height: 1; margin-bottom: 1rem; }
+    .svc-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: white; margin-bottom: 0.75rem; }
+    .svc-desc { font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.8; }
+
+    /* ABOUT / CARMEN */
+    #about { background: var(--warm); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+    .about-img { position: relative; }
+    .about-img img { width: 100%; height: 560px; object-fit: cover; object-position: top; display: block; filter: grayscale(15%); }
+    .about-img::after { content: ''; position: absolute; bottom: -12px; right: -12px; width: 60%; height: 60%; border: 1px solid var(--gold); z-index: -1; }
+    .about-body .sec-sub { margin-bottom: 1rem; }
+    .about-quote {
+      margin: 2rem 0;
+      padding: 1.5rem 1.5rem 1.5rem 2rem;
+      border-left: 2px solid var(--gold);
+      background: white;
+    }
+    .about-quote p { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; color: var(--dark); line-height: 1.6; }
+    .about-creds { display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2rem; }
+    .cred { }
+    .cred-num { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 300; color: var(--gold); line-height: 1; }
+    .cred-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* PROCESS */
+    #process { background: var(--surface); }
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; }
+    .step { position: relative; }
+    .step-num { font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 300; color: var(--gold-dim); line-height: 1; margin-bottom: 1rem; }
+    .step-line { width: 32px; height: 1px; background: var(--gold); margin-bottom: 1rem; }
+    .step-name { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; color: var(--dark); margin-bottom: 0.6rem; }
+    .step-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.8; }
+
+    /* ARTWORK */
+    #artwork { background: var(--charcoal); }
+    #artwork .sec-title { color: white; }
+    #artwork .sec-sub { color: rgba(255,255,255,0.45); max-width: 600px; }
+    .art-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 2.5rem; }
+    .art-card { overflow: hidden; position: relative; cursor: pointer; }
+    .art-card img { width: 100%; height: 300px; object-fit: cover; display: block; transition: transform 0.5s; filter: brightness(0.85); }
+    .art-card:hover img { transform: scale(1.05); filter: brightness(1); }
+    .art-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(26,23,20,0.85)); padding: 1.5rem 1rem 1rem; opacity: 0; transition: opacity 0.3s; }
+    .art-card:hover .art-overlay { opacity: 1; }
+    .art-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+
+    /* CONTACT */
+    #contact { background: var(--bg); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+    .contact-info .sec-sub { margin: 0.75rem 0 2.5rem; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start; }
+    .ci-icon { width: 40px; height: 40px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; color: var(--gold); }
+    .ci-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); margin-bottom: 0.25rem; }
+    .ci-val { font-size: 0.88rem; color: var(--mid); line-height: 1.5; }
+
+    .fg { margin-bottom: 1rem; }
+    .fg label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.4rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: white; border: 1px solid var(--border); border-bottom: 2px solid var(--border); padding: 0.8rem 1rem; color: var(--charcoal); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; border-radius: 0; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-bottom-color: var(--gold); }
+    .fg textarea { height: 120px; resize: vertical; }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* FOOTER */
+    footer { background: var(--dark); padding: 2.5rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-logo img { height: 44px; object-fit: contain; }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.2); }
+    .footer-demo { font-size: 0.62rem; color: rgba(201,168,76,0.2); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .svc-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-steps { grid-template-columns: repeat(2, 1fr); }
+      .portfolio-row { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 860px) {
+      nav .nav-links { display: none; }
+      .portfolio-main { grid-template-columns: 1fr; }
+      .portfolio-main .port-img { height: 280px; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      #contact { grid-template-columns: 1fr; gap: 3rem; }
+      .art-grid { grid-template-columns: 1fr 1fr; }
+      .hero h1 { font-size: 2.8rem; }
+    }
+    @media (max-width: 600px) {
+      .svc-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .portfolio-row { grid-template-columns: repeat(2, 1fr); }
+      .fr { grid-template-columns: 1fr; }
+      .art-grid { grid-template-columns: 1fr; }
+      .gold-strip { gap: 1rem; }
+      .gs-divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#"><img src="assets/cwilde/logo.png" alt="C. Wilde Designs Inc." /></a>
+    <ul class="nav-links">
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#artwork">Artwork</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Edmonton, AB · Est. 30+ Years</div>
+      <h1>Spaces Designed<br />with <em>Intention.</em></h1>
+      <p>C. Wilde Designs brings over 30 years of residential and commercial interior design expertise to Edmonton — creating beautiful, functional spaces rooted in green design and healthy living.</p>
+      <div class="hero-buttons">
+        <a href="#portfolio" class="btn-gold">View Portfolio</a>
+        <a href="#contact" class="btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span class="scroll-text">Scroll to Explore</span>
+    </div>
+  </div>
+
+  <!-- GOLD STRIP -->
+  <div class="gold-strip">
+    <div class="gs-item">Residential Design</div>
+    <div class="gs-divider"></div>
+    <div class="gs-item">Commercial Spaces</div>
+    <div class="gs-divider"></div>
+    <div class="gs-item">Green Design Focus</div>
+    <div class="gs-divider"></div>
+    <div class="gs-item">Original Artwork</div>
+    <div class="gs-divider"></div>
+    <div class="gs-item">30+ Years Experience</div>
+  </div>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="portfolio-intro">
+      <div>
+        <div class="sec-eyebrow">Selected Works</div>
+        <div class="sec-title">Our Portfolio</div>
+        <p class="sec-sub">A curated selection of residential and commercial projects across Edmonton and beyond.</p>
+      </div>
+      <a href="https://www.cwildedesigns.com" target="_blank" class="portfolio-link">View Full Portfolio →</a>
+    </div>
+    <div class="portfolio-main">
+      <div class="port-img"><img src="assets/cwilde/project6.jpg" alt="Modern living space with fireplace" /></div>
+      <div class="port-img"><img src="assets/cwilde/project7.jpg" alt="Luxury kitchen" /></div>
+    </div>
+    <div class="portfolio-row">
+      <div class="port-thumb"><img src="assets/cwilde/project1.jpg" alt="Modern lounge" /><div class="port-label">Commercial Lounge</div></div>
+      <div class="port-thumb"><img src="assets/cwilde/project2.jpg" alt="Dining room" /><div class="port-label">Dining Room</div></div>
+      <div class="port-thumb"><img src="assets/cwilde/project3.jpg" alt="Kitchen renovation" /><div class="port-label">Kitchen Renovation</div></div>
+      <div class="port-thumb"><img src="assets/cwilde/project4.jpg" alt="High-end lounge" /><div class="port-label">Lounge & Bar</div></div>
+      <div class="port-thumb"><img src="assets/cwilde/project5.jpg" alt="Meeting room" /><div class="port-label">Meeting Space</div></div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="sec-eyebrow">What We Do</div>
+    <div class="sec-title" style="color:white;">Full-Service Interior Design</div>
+    <p class="sec-sub">From concept to completion, we handle every detail.</p>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="svc-num">01</div>
+        <div class="svc-name">Residential Design</div>
+        <p class="svc-desc">Custom interiors for homes of any size — kitchens, living rooms, bedrooms, bathrooms, and full-home renovations tailored to your lifestyle.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">02</div>
+        <div class="svc-name">Commercial Spaces</div>
+        <p class="svc-desc">Office buildings, hospitality, retail, and multi-use commercial spaces designed to impress clients and inspire the people who work in them.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">03</div>
+        <div class="svc-name">Green Design</div>
+        <p class="svc-desc">Sustainable materials, healthy living environments, and biophilic design principles that reduce environmental impact without sacrificing beauty.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">04</div>
+        <div class="svc-name">Space Planning</div>
+        <p class="svc-desc">Thoughtful layouts that optimize flow, light, and function — whether you're building new or reimagining an existing floor plan.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">05</div>
+        <div class="svc-name">Art Consultation</div>
+        <p class="svc-desc">Original paintings and curated art available for purchase or rent, with installation guidance to complete the look of any space.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">06</div>
+        <div class="svc-name">Project Management</div>
+        <p class="svc-desc">Full coordination with trades, contractors, and suppliers — we manage the timeline and details so you don't have to.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img">
+      <img src="assets/cwilde/carmen.jpg" alt="Carmen Wilde, Lead Designer" />
+    </div>
+    <div class="about-body">
+      <div class="sec-eyebrow">Meet the Designer</div>
+      <div class="sec-title">Carmen Wilde</div>
+      <p class="sec-sub">Carmen Wilde, lead designer at C. Wilde Designs Inc., has honed her skills over the past 30 years working on a wide range of residential and commercial projects across Alberta.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">With a passion for design and a commitment to professional growth, Carmen has stayed at the forefront of industry trends. Her focus on green design elements and creating healthy living and working environments has inspired countless remarkable spaces.</p>
+      <div class="about-quote">
+        <p>"Great design isn't just about how a space looks — it's about how it makes you feel when you're in it."</p>
+      </div>
+      <p class="sec-sub">Carmen is also an accomplished painter whose deep connection to nature is reflected in her vivid original works — available for sale or rent.</p>
+      <div class="about-creds">
+        <div class="cred"><div class="cred-num">30+</div><div class="cred-label">Years of Experience</div></div>
+        <div class="cred"><div class="cred-num">Res.</div><div class="cred-label">& Commercial Projects</div></div>
+        <div class="cred"><div class="cred-num">🎨</div><div class="cred-label">Original Art Available</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="sec-eyebrow">How It Works</div>
+    <div class="sec-title">Our Design Process</div>
+    <p class="sec-sub">A clear, collaborative approach from first conversation to final reveal.</p>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-line"></div>
+        <div class="step-name">Discovery</div>
+        <p class="step-desc">We start with a conversation — understanding your space, your lifestyle, your goals, and your aesthetic preferences.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-line"></div>
+        <div class="step-name">Concept & Planning</div>
+        <p class="step-desc">We develop a design concept with mood boards, space plans, material palettes, and a detailed project scope.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-line"></div>
+        <div class="step-name">Design Development</div>
+        <p class="step-desc">Finalizing selections — furniture, finishes, fixtures, lighting, and art — and coordinating with suppliers and trades.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-line"></div>
+        <div class="step-name">Reveal</div>
+        <p class="step-desc">We manage installation and the final styling so your space is complete, cohesive, and exactly as envisioned.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTWORK -->
+  <section id="artwork">
+    <div class="sec-eyebrow">Original Works</div>
+    <div class="sec-title" style="color:white;">Art by Carmen Wilde</div>
+    <p class="sec-sub">Carmen's deep connection to nature is expressed through her vivid original paintings — available for purchase or rent to complete any interior.</p>
+    <div class="art-grid">
+      <div class="art-card">
+        <img src="assets/cwilde/project2.jpg" alt="Artwork 1" />
+        <div class="art-overlay"><div class="art-label">Original Painting · Available</div></div>
+      </div>
+      <div class="art-card">
+        <img src="assets/cwilde/project4.jpg" alt="Artwork 2" />
+        <div class="art-overlay"><div class="art-label">Original Painting · Available</div></div>
+      </div>
+      <div class="art-card">
+        <img src="assets/cwilde/project5.jpg" alt="Artwork 3" />
+        <div class="art-overlay"><div class="art-label">Original Painting · Available</div></div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:2.5rem;">
+      <a href="https://www.cwildedesigns.com/artwork" target="_blank" class="btn-gold">View All Artwork →</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <div class="sec-eyebrow">Work With Us</div>
+      <div class="sec-title">Start a Conversation</div>
+      <p class="sec-sub">Have a project in mind? We'd love to hear about it. Reach out and we'll set up an initial consultation.</p>
+      <div class="ci">
+        <div class="ci-icon">📞</div>
+        <div><div class="ci-label">Phone</div><div class="ci-val">(780) 719-5584</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">✉</div>
+        <div><div class="ci-label">Email</div><div class="ci-val">cwildedesigns@shaw.ca</div></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon">📍</div>
+        <div><div class="ci-label">Location</div><div class="ci-val">Edmonton, Alberta</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="fr">
+        <div class="fg"><label>First Name</label><input type="text" placeholder="Carmen" /></div>
+        <div class="fg"><label>Last Name</label><input type="text" placeholder="Wilde" /></div>
+      </div>
+      <div class="fg"><label>Email Address</label><input type="email" placeholder="you@example.com" /></div>
+      <div class="fg"><label>Phone Number</label><input type="tel" placeholder="(780) 000-0000" /></div>
+      <div class="fg">
+        <label>Project Type</label>
+        <select>
+          <option value="" disabled selected>Select a service…</option>
+          <option>Residential Design</option>
+          <option>Commercial Space</option>
+          <option>Green Design Consultation</option>
+          <option>Space Planning</option>
+          <option>Art Purchase / Rental</option>
+          <option>Project Management</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><label>Tell Us About Your Project</label><textarea placeholder="Describe your space, goals, and timeline…"></textarea></div>
+      <a href="mailto:cwildedesigns@shaw.ca" class="btn-gold" style="display:block; width:100%; text-align:center; padding:1rem;">Send Message →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo"><img src="assets/cwilde/logo.png" alt="C. Wilde Designs Inc." /></div>
+    <div class="footer-links">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="https://www.cwildedesigns.com/artwork" target="_blank">Artwork</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div style="text-align:right;">
+      <div class="footer-copy">© 2026 C. Wilde Designs Inc. · Edmonton, AB · (780) 719-5584</div>
+      <div class="footer-demo" style="margin-top:0.25rem;">Demo by Wildrose Automations</div>
+    </div>
+  </footer>
+
+</body>
+</html>
