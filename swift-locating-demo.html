@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swift Utility Locating | Underground Utility Locating | Alberta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #e8620a;
+      --orange-light: #f07820;
+      --dark: #0e1318;
+      --charcoal: #1a2030;
+      --mid: #2e3848;
+      --bg: #f4f5f7;
+      --surface: #ffffff;
+      --border: #dde2ec;
+      --warm: #f0f2f8;
+      --muted: #6a7890;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--dark); overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 66px;
+      background: var(--dark);
+      border-bottom: 2px solid var(--orange);
+    }
+    .nav-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; color: white; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; }
+    .nav-brand span { color: var(--orange); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: white; }
+    .nav-cta { background: var(--orange) !important; color: white !important; padding: 0.42rem 1.2rem; border-radius: 3px; font-weight: 700; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--orange-light) !important; }
+
+    .hero { margin-top: 66px; position: relative; min-height: calc(100vh - 66px); display: flex; align-items: center; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: url('assets/swift-locating/hero.jpg') center/cover no-repeat; filter: brightness(0.25); }
+    .hero-content { position: relative; z-index: 2; padding: 5rem 8%; max-width: 780px; }
+    .hero-eyebrow { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.25rem; }
+    .hero-eyebrow::before { content: ''; display: block; width: 24px; height: 2px; background: var(--orange); }
+    .hero h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(3rem, 6.5vw, 6.5rem); font-weight: 800; text-transform: uppercase; line-height: 0.95; color: white; margin-bottom: 1.25rem; }
+    .hero h1 span { color: var(--orange); display: block; }
+    .hero p { font-size: 0.92rem; color: rgba(255,255,255,0.55); line-height: 1.9; max-width: 480px; margin-bottom: 2rem; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn-orange { background: var(--orange); color: white; padding: 0.85rem 2rem; text-decoration: none; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 3px; transition: background 0.2s; display: inline-block; }
+    .btn-orange:hover { background: var(--orange-light); }
+    .btn-ghost { border: 2px solid rgba(255,255,255,0.2); color: white; padding: 0.85rem 2rem; text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 3px; transition: border-color 0.2s; display: inline-block; }
+    .btn-ghost:hover { border-color: white; }
+    .hero-trust { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .trust-item { font-size: 0.78rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 0.5rem; }
+    .trust-dot { width: 5px; height: 5px; background: var(--orange); border-radius: 50%; flex-shrink: 0; }
+
+    .orange-strip { background: var(--orange); padding: 1rem 8%; display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .os-item { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: white; }
+    .os-div { width: 1px; height: 14px; background: rgba(255,255,255,0.3); }
+
+    section { padding: 5rem 8%; }
+    .sec-eyebrow { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.75rem; }
+    .sec-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--orange); }
+    .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; text-transform: uppercase; color: var(--dark); line-height: 1; margin-bottom: 1rem; }
+    .sec-sub { color: var(--muted); font-size: 0.88rem; line-height: 1.85; max-width: 560px; }
+
+    #services { background: var(--surface); }
+    .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+    .svc-card { border: 1px solid var(--border); border-top: 3px solid var(--orange); padding: 2rem 1.5rem; border-radius: 0 0 4px 4px; transition: box-shadow 0.2s, transform 0.2s; }
+    .svc-card:hover { box-shadow: 0 6px 20px rgba(14,19,24,0.08); transform: translateY(-3px); }
+    .svc-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .svc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; color: var(--dark); margin-bottom: 0.4rem; }
+    .svc-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+
+    #about { background: var(--charcoal); display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .about-img img { width: 100%; height: 100%; min-height: 480px; object-fit: cover; display: block; filter: brightness(0.75); }
+    .about-body { padding: 5rem 4rem; display: flex; flex-direction: column; justify-content: center; }
+    #about .sec-title { color: white; }
+    #about .sec-sub { color: rgba(255,255,255,0.5); margin-bottom: 0.85rem; }
+    .about-features { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 2rem; }
+    .af { display: flex; gap: 0.75rem; font-size: 0.83rem; color: rgba(255,255,255,0.5); align-items: flex-start; }
+    .af-dot { width: 5px; height: 5px; background: var(--orange); border-radius: 50%; margin-top: 0.4rem; flex-shrink: 0; }
+
+    /* CERTS SECTION — placeholder, ready for real logos */
+    #certifications { background: var(--warm); text-align: center; }
+    #certifications .sec-sub { margin: 0.5rem auto 2.5rem; }
+    .cert-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 2rem; }
+    .cert-card { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 1.75rem 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+    .cert-icon { font-size: 2.5rem; }
+    .cert-name { font-size: 0.82rem; font-weight: 700; color: var(--dark); text-align: center; }
+    .cert-body { font-size: 0.75rem; color: var(--muted); text-align: center; line-height: 1.55; }
+    .cert-placeholder { font-size: 0.68rem; color: var(--border); font-style: italic; margin-top: 0.25rem; }
+
+    #contact { background: var(--dark); }
+    #contact .sec-title { color: white; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 2.5rem; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.25rem; }
+    .ci-icon { width: 40px; height: 40px; background: rgba(232,98,10,0.12); border: 1px solid rgba(232,98,10,0.25); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .ci-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--orange); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+    .ci-val a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .fg { margin-bottom: 0.9rem; }
+    .fg label { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); display: block; margin-bottom: 0.4rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-bottom: 2px solid rgba(255,255,255,0.1); padding: 0.78rem 1rem; color: white; font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-bottom-color: var(--orange); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fg select option { background: #1a2030; }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn-submit { background: var(--orange); color: white; border: none; width: 100%; padding: 1rem; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--orange-light); }
+
+    footer { background: #080c10; padding: 1.5rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 2px solid var(--orange); }
+    .footer-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; color: white; letter-spacing: 0.05em; }
+    .footer-brand span { color: var(--orange); }
+    .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.2); }
+    .footer-demo { font-size: 0.65rem; color: rgba(232,98,10,0.25); }
+
+    @media (max-width: 1024px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } .cert-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      nav .nav-links { display: none; }
+      .nav-mobile-cta { display: inline-block !important; }
+      section { padding: 4rem 6%; }
+      #about { grid-template-columns: 1fr; }
+      .about-img img { min-height: 260px; height: 260px; }
+      .about-body { padding: 3rem 6%; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .orange-strip { gap: 1.5rem; flex-direction: column; align-items: flex-start; padding: 1rem 6%; }
+      .os-div { display: none; }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 3rem; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .cert-grid { grid-template-columns: 1fr 1fr; }
+      .fr { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-brand">Swift <span>Utility Locating</span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+    </ul>
+    <a href="#contact" class="nav-mobile-cta" style="display:none; font-size:0.72rem; font-weight:700; background:var(--orange); color:white; padding:0.45rem 1rem; border-radius:3px; text-decoration:none;">Quote</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Alberta · Licensed & Certified</div>
+      <h1>Underground<br /><span>Utility Locating</span></h1>
+      <p>Swift Utility Locating provides professional, accurate underground utility locating services across Alberta — keeping your crew safe and your project on schedule.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-orange">Get a Quote</a>
+        <a href="#services" class="btn-ghost">Our Services</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><div class="trust-dot"></div>Licensed & Bonded</div>
+        <div class="trust-item"><div class="trust-dot"></div>Certified Locators</div>
+        <div class="trust-item"><div class="trust-dot"></div>Alberta-Wide Service</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="orange-strip">
+    <div class="os-item">📡 Utility Line Locating</div>
+    <div class="os-div"></div>
+    <div class="os-item">🗺 Mapping & Documentation</div>
+    <div class="os-div"></div>
+    <div class="os-item">⚡ Electrical & Gas Lines</div>
+    <div class="os-div"></div>
+    <div class="os-item">✅ Dig Safe Certified</div>
+  </div>
+
+  <section id="services">
+    <div class="sec-eyebrow">What We Do</div>
+    <div class="sec-title">Our Services</div>
+    <p class="sec-sub">Professional underground utility locating to protect your crew, your project, and your budget.</p>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="svc-icon">📡</div>
+        <div class="svc-name">Utility Line Locating</div>
+        <p class="svc-desc">Accurate detection and marking of underground utilities — gas, water, electric, telecom, and sewer — before any excavation begins.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🗺</div>
+        <div class="svc-name">Mapping & Documentation</div>
+        <p class="svc-desc">Detailed mapping and as-built documentation of underground infrastructure for project records and future reference.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🏗</div>
+        <div class="svc-name">Construction Site Locates</div>
+        <p class="svc-desc">Pre-dig locates for construction, renovation, and civil projects — keeping crews safe and projects compliant.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">⚡</div>
+        <div class="svc-name">Electrical & Gas Lines</div>
+        <p class="svc-desc">Specialized locating for high-risk utilities including electrical, natural gas, and communication lines.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">📋</div>
+        <div class="svc-name">Locate Reports</div>
+        <p class="svc-desc">Clear, professional locate reports delivered digitally — ready for your project files, permits, and regulatory requirements.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🚗</div>
+        <div class="svc-name">Mobile & On-Site Service</div>
+        <p class="svc-desc">We come to your site, anywhere in Alberta. Fast response times and flexible scheduling to fit your project timeline.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS — ready for real logos/details from James -->
+  <section id="certifications">
+    <div class="sec-eyebrow">Qualifications</div>
+    <div class="sec-title">Certifications & Memberships</div>
+    <p class="sec-sub">Swift Utility Locating holds industry certifications and memberships that ensure the highest standard of safe, professional service.</p>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <div class="cert-icon">🏅</div>
+        <div class="cert-name">Certification 1</div>
+        <p class="cert-body">Details coming soon.</p>
+        <div class="cert-placeholder">Logo to be added</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🏅</div>
+        <div class="cert-name">Certification 2</div>
+        <p class="cert-body">Details coming soon.</p>
+        <div class="cert-placeholder">Logo to be added</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🏅</div>
+        <div class="cert-name">Membership 1</div>
+        <p class="cert-body">Details coming soon.</p>
+        <div class="cert-placeholder">Logo to be added</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🏅</div>
+        <div class="cert-name">Membership 2</div>
+        <p class="cert-body">Details coming soon.</p>
+        <div class="cert-placeholder">Logo to be added</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" style="padding:0;">
+    <div class="about-img">
+      <img src="assets/swift-locating/site.jpg" alt="Swift Utility Locating on site" />
+    </div>
+    <div class="about-body">
+      <div class="sec-eyebrow">About Us</div>
+      <div class="sec-title">Professional.<br />Certified. Swift.</div>
+      <p class="sec-sub">Swift Utility Locating was built on a simple principle — accurate locates save lives, prevent damage, and keep projects running. We bring professionalism, precision, and speed to every job site in Alberta.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">Whether you're a contractor, municipality, or homeowner, we provide the documentation and peace of mind you need before any ground is broken.</p>
+      <div class="about-features">
+        <div class="af"><div class="af-dot"></div>Licensed and certified locating professionals</div>
+        <div class="af"><div class="af-dot"></div>Serving contractors, municipalities & homeowners</div>
+        <div class="af"><div class="af-dot"></div>Fast turnaround — same day service available</div>
+        <div class="af"><div class="af-dot"></div>Digital reports delivered to your inbox</div>
+        <div class="af"><div class="af-dot"></div>Alberta-wide coverage</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="sec-eyebrow">Get in Touch</div>
+    <div class="sec-title" style="color:white;">Request a Locate</div>
+    <div class="contact-grid">
+      <div>
+        <div class="ci"><div class="ci-icon">📧</div><div><div class="ci-label">Email</div><div class="ci-val"><a href="mailto:james@swiftlocating.ca">james@swiftlocating.ca</a></div></div></div>
+        <div class="ci"><div class="ci-icon">🌐</div><div><div class="ci-label">Website</div><div class="ci-val">swiftlocating.ca</div></div></div>
+        <div class="ci"><div class="ci-icon">📍</div><div><div class="ci-label">Service Area</div><div class="ci-val">Alberta, Canada</div></div></div>
+      </div>
+      <div>
+        <div class="fr">
+          <div class="fg"><label>First Name</label><input type="text" placeholder="John" /></div>
+          <div class="fg"><label>Last Name</label><input type="text" placeholder="Smith" /></div>
+        </div>
+        <div class="fg"><label>Company</label><input type="text" placeholder="Your company name" /></div>
+        <div class="fg"><label>Phone</label><input type="tel" placeholder="780-000-0000" /></div>
+        <div class="fg"><label>Email</label><input type="email" placeholder="you@example.com" /></div>
+        <div class="fg">
+          <label>Service Needed</label>
+          <select>
+            <option value="" disabled selected>Select…</option>
+            <option>Pre-Dig Utility Locate</option>
+            <option>Mapping & Documentation</option>
+            <option>Construction Site Locates</option>
+            <option>Locate Report</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Site Address / Details</label><textarea placeholder="Project location, scope, and preferred date…"></textarea></div>
+        <button class="btn-submit">Submit Request →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-brand">Swift <span>Utility Locating</span></div>
+    <div class="footer-copy">© 2026 Swift Utility Locating · Alberta, Canada · swiftlocating.ca</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
