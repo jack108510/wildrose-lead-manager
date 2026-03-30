@@ -84,6 +84,21 @@
     .gallery-row img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s, filter 0.3s; filter: brightness(0.85); cursor: pointer; }
     .gallery-row div:hover img { transform: scale(1.06); filter: brightness(1); }
 
+    /* INSTRUCTOR */
+    #instructor { background: var(--cream); padding: 5rem 8%; display: grid; grid-template-columns: 340px 1fr; gap: 5rem; align-items: center; }
+    .instructor-photo { position: relative; }
+    .instructor-photo img { width: 100%; height: 420px; object-fit: cover; object-position: top; display: block; border-radius: 3px; }
+    .instructor-photo-placeholder { width: 100%; height: 420px; background: linear-gradient(135deg, #d4c8a8 0%, #b8a880 100%); border-radius: 3px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
+    .instructor-photo-placeholder span { font-size: 4rem; }
+    .instructor-photo-placeholder p { font-size: 0.72rem; color: rgba(60,48,30,0.45); font-style: italic; }
+    .instructor-tag { position: absolute; bottom: -1rem; right: -1rem; background: var(--rust); color: white; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5rem 1rem; border-radius: 2px; }
+    .instructor-body .sec-title { margin-bottom: 0.5rem; }
+    .instructor-name { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 600; color: var(--dark); line-height: 1; margin-bottom: 0.35rem; }
+    .instructor-title { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 1.5rem; }
+    .instructor-body .sec-sub { margin-bottom: 0.85rem; }
+    .instructor-creds { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+    .cred { background: var(--stone); border: 1px solid var(--border); padding: 0.45rem 0.9rem; border-radius: 2px; font-size: 0.75rem; color: var(--mid); font-weight: 500; }
+
     /* SCHEDULE */
     #schedule { background: var(--dark); padding: 5rem 8%; }
     #schedule .sec-title { color: white; }
@@ -137,6 +152,8 @@
       .included-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 860px) {
+      #instructor { grid-template-columns: 1fr; gap: 3rem; }
+      .instructor-photo img, .instructor-photo-placeholder { height: 300px; }
       nav .nav-links { display: none; }
       .nav-mobile-cta { display: inline-block !important; }
       .hero { height: auto; min-height: calc(100vh - 64px); align-items: center; }
@@ -164,6 +181,7 @@
     <a href="#" class="nav-brand">Lost Lake <span>Art Weekend</span></a>
     <ul class="nav-links">
       <li><a href="#about">The Experience</a></li>
+      <li><a href="#instructor">Instructor</a></li>
       <li><a href="#schedule">Schedule</a></li>
       <li><a href="#included">What's Included</a></li>
       <li><a href="#register" class="nav-cta">Register</a></li>
@@ -223,6 +241,32 @@
     <div><img src="assets/lost-lake/kitchen3-crop.jpg" alt="Kitchen" /></div>
     <div><img src="assets/lost-lake/newbuild-crop.jpg" alt="Great room" /></div>
   </div>
+
+  <!-- INSTRUCTOR -->
+  <section id="instructor">
+    <div class="instructor-photo">
+      <div class="instructor-photo-placeholder">
+        <span>🎨</span>
+        <p>Photo coming soon</p>
+      </div>
+      <div class="instructor-tag">Your Instructor</div>
+    </div>
+    <div class="instructor-body">
+      <div class="sec-eyebrow">Meet the Instructor</div>
+      <div class="instructor-name">Willie Wong</div>
+      <div class="instructor-title">Edmonton Fine Artist & Art Teacher</div>
+      <p class="sec-sub">Willie Wong is one of Edmonton's most beloved fine art instructors — a classically trained painter with over 20 years of teaching experience. Originally from Malaysian Borneo, Willie settled in Edmonton in 1979, where the natural landscape became the new subject of his art.</p>
+      <p class="sec-sub">Known for his work in watercolour, acrylic, and oil, Willie has a rare gift for making technique accessible to all levels — from complete beginners to experienced artists. He teaches with patience, depth, and genuine enthusiasm for the craft.</p>
+      <p class="sec-sub">Willie has been a fixture in Edmonton's arts community for decades, exhibiting at The Works, the Edmonton Fringe Festival, and teaching at Kamena Gallery & Frames. The Lost Lake Art Weekend is a rare opportunity to spend a full weekend learning from him in an extraordinary setting.</p>
+      <div class="instructor-creds">
+        <span class="cred">Watercolour Specialist</span>
+        <span class="cred">20+ Years Teaching</span>
+        <span class="cred">All Skill Levels</span>
+        <span class="cred">Kamena Gallery</span>
+        <span class="cred">Edmonton Arts Community</span>
+      </div>
+    </div>
+  </section>
 
   <!-- SCHEDULE -->
   <section id="schedule">
