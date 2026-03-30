@@ -1,6 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script>
+(function() {
+  var HASH = 'e0cdb7738cec9700c868887ea12414f537df471d0fd19288bed7525629ae2632';
+  async function checkPass() {
+    var stored = sessionStorage.getItem('wrm_auth');
+    if (stored === HASH) return;
+    var input = prompt('Password:');
+    if (!input) { deny(); return; }
+    var enc = new TextEncoder().encode(input);
+    var buf = await crypto.subtle.digest('SHA-256', enc);
+    var hex = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    if (hex === HASH) {
+      sessionStorage.setItem('wrm_auth', HASH);
+    } else {
+      deny();
+    }
+  }
+  function deny() {
+    document.body.innerHTML = '<div style="background:#111;color:#fff;height:100vh;display:flex;align-items:center;justify-content:center;font-family:sans-serif;font-size:1.2rem;">Access Denied</div>';
+  }
+  checkPass();
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Redesign CRM</title>
