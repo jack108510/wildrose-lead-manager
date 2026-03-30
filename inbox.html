@@ -184,10 +184,12 @@ async function tryLogin() {
 document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
 
 // CHECK AUTH
-if (sessionStorage.getItem('wrm_auth') === HASH) {
-  document.getElementById('login-overlay').style.display = 'none';
-  loadMessages();
-}
+document.addEventListener('DOMContentLoaded', function() {
+  if (sessionStorage.getItem('wrm_auth') === HASH) {
+    document.getElementById('login-overlay').style.display = 'none';
+    loadMessages();
+  }
+});
 
 async function fetchInbox(inbox) {
   try {
@@ -263,20 +265,25 @@ function renderMessages() {
     const time = formatTime(m.created_at);
     const isUnread = m.labels && m.labels.includes('unread');
     const tagHtml = tag ? `<span class="msg-tag tag-${tag}">${tag}</span>` : '';
-    return `<div class="msg-row ${isUnread ? 'unread' : ''} ${tag === 'reply' ? 'reply' : ''}" onclick='openMsg(${JSON.stringify(JSON.stringify(m))})'>
+    const idx = allMessages.indexOf(m);
+    return `<div class="msg-row ${isUnread ? 'unread' : ''} ${tag === 'reply' ? 'reply' : ''}" onclick='openMsgByIndex(${idx})'>
       <div><div class="msg-inbox">${m._inbox}@</div>${tagHtml}</div>
       <div class="msg-main">
-        <div class="msg-from">${m.from || 'Unknown'}</div>
-        <div class="msg-subject">${m.subject || '(no subject)'}</div>
-        <div class="msg-preview">${(m.preview||'').slice(0,80)}</div>
+        <div class="msg-from">${(m.from||'Unknown').replace(/</g,'&lt;')}</div>
+        <div class="msg-subject">${(m.subject||'(no subject)').replace(/</g,'&lt;')}</div>
+        <div class="msg-preview">${(m.preview||'').slice(0,80).replace(/</g,'&lt;')}</div>
       </div>
       <div class="msg-time">${time}</div>
     </div>`;
   }).join('');
 }
 
-function openMsg(jsonStr) {
-  const m = JSON.parse(jsonStr);
+function openMsgByIndex(idx) {
+  const m = allMessages[idx];
+  openMsg(m);
+}
+
+function openMsg(m) {
   currentMsg = m;
   document.getElementById('d-subject').textContent = m.subject || '(no subject)';
   document.getElementById('d-meta').textContent = `From: ${m.from} · ${m._inbox}@wildroseautomations.ca · ${formatTime(m.created_at)}`;
