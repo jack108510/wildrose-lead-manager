@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wildrose — Unified Inbox</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --border: #30363d;
+      --green: #238636; --text: #e6edf3; --muted: #8b949e;
+      --accent: #58a6ff; --red: #f85149; --gold: #e3b341;
+    }
+    body { font-family: -apple-system, Inter, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* LOGIN */
+    #login-overlay { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 999; }
+    #login-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 2.5rem 2rem; width: 320px; text-align: center; }
+    #login-box h2 { font-size: 1.3rem; margin-bottom: 0.25rem; }
+    #login-box p { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.75rem; }
+    #login-pass { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.65rem 1rem; color: var(--text); font-size: 0.9rem; outline: none; margin-bottom: 0.75rem; }
+    #login-btn { width: 100%; background: var(--green); border: none; border-radius: 6px; padding: 0.65rem; color: white; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+    #login-err { color: var(--red); font-size: 0.78rem; margin-top: 0.75rem; display: none; }
+
+    /* HEADER */
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+    .logo { font-weight: 700; font-size: 1rem; color: var(--text); }
+    .logo span { color: var(--green); }
+    .header-actions { display: flex; gap: 0.75rem; align-items: center; }
+    .btn { background: var(--green); border: none; border-radius: 6px; padding: 0.4rem 1rem; color: white; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+    .btn-outline { background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 1rem; color: var(--muted); font-size: 0.82rem; cursor: pointer; }
+    .btn-outline:hover { color: var(--text); border-color: var(--muted); }
+    #status-bar { font-size: 0.78rem; color: var(--muted); }
+
+    /* LAYOUT */
+    .layout { display: grid; grid-template-columns: 220px 1fr; height: calc(100vh - 56px); }
+
+    /* SIDEBAR */
+    .sidebar { background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; }
+    .sidebar-header { padding: 1rem; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); border-bottom: 1px solid var(--border); }
+    .inbox-item { padding: 0.65rem 1rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; border-left: 2px solid transparent; }
+    .inbox-item:hover { background: rgba(255,255,255,0.03); }
+    .inbox-item.active { border-left-color: var(--green); background: rgba(35,134,54,0.1); color: var(--text); }
+    .inbox-item.all { font-weight: 700; color: var(--accent); }
+    .inbox-name { color: var(--muted); }
+    .inbox-item.active .inbox-name { color: var(--text); }
+    .badge { background: var(--green); color: white; font-size: 0.65rem; font-weight: 700; border-radius: 10px; padding: 0.1rem 0.45rem; }
+
+    /* MESSAGES */
+    .messages-pane { overflow-y: auto; }
+    .filters { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+    .filter-btn { background: transparent; border: 1px solid var(--border); border-radius: 20px; padding: 0.3rem 0.9rem; color: var(--muted); font-size: 0.78rem; cursor: pointer; }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+    #search { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.35rem 0.75rem; color: var(--text); font-size: 0.82rem; outline: none; width: 200px; }
+
+    .msg-list { }
+    .msg-row { padding: 0.85rem 1.5rem; border-bottom: 1px solid var(--border); cursor: pointer; display: grid; grid-template-columns: 90px 1fr auto; gap: 0.75rem; align-items: center; }
+    .msg-row:hover { background: rgba(255,255,255,0.02); }
+    .msg-row.unread { background: rgba(88,166,255,0.04); }
+    .msg-row.unread .msg-subject { font-weight: 700; color: var(--text); }
+    .msg-row.reply { background: rgba(35,134,54,0.06); }
+    .msg-inbox { font-size: 0.7rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 0.15rem 0.45rem; text-align: center; }
+    .msg-main { min-width: 0; }
+    .msg-from { font-size: 0.82rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.15rem; }
+    .msg-subject { font-size: 0.82rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .msg-preview { font-size: 0.75rem; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .msg-time { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+    .msg-tag { font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600; }
+    .tag-reply { background: rgba(35,134,54,0.2); color: #56d364; }
+    .tag-auto { background: rgba(139,148,158,0.2); color: var(--muted); }
+    .tag-bounce { background: rgba(248,81,73,0.2); color: var(--red); }
+    .tag-unread { background: rgba(88,166,255,0.2); color: var(--accent); }
+
+    /* DETAIL PANE */
+    #detail-pane { display: none; position: fixed; right: 0; top: 56px; bottom: 0; width: 480px; background: var(--surface); border-left: 1px solid var(--border); overflow-y: auto; z-index: 5; }
+    #detail-pane.open { display: block; }
+    .detail-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; }
+    .detail-subject { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .detail-meta { font-size: 0.78rem; color: var(--muted); }
+    .close-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.2rem; }
+    .detail-body { padding: 1.5rem; font-size: 0.85rem; color: var(--muted); line-height: 1.7; white-space: pre-wrap; border-bottom: 1px solid var(--border); }
+    .reply-area { padding: 1rem 1.5rem; }
+    .reply-area textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem; color: var(--text); font-family: inherit; font-size: 0.85rem; height: 120px; resize: vertical; outline: none; margin-bottom: 0.75rem; }
+    .reply-area textarea:focus { border-color: var(--accent); }
+    .reply-footer { display: flex; justify-content: space-between; align-items: center; }
+    .reply-from { font-size: 0.75rem; color: var(--muted); }
+
+    .empty { text-align: center; padding: 4rem 2rem; color: var(--muted); }
+    .loading { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.9rem; }
+
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      #detail-pane { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-overlay">
+  <div id="login-box">
+    <h2>Wildrose CRM</h2>
+    <p>Unified Inbox — Enter password to continue</p>
+    <input id="login-pass" type="password" placeholder="Password" />
+    <button id="login-btn" onclick="tryLogin()">Sign In</button>
+    <div id="login-err">Incorrect password</div>
+  </div>
+</div>
+
+<header>
+  <div class="logo">Wildrose <span>Inbox</span></div>
+  <div id="status-bar">Loading...</div>
+  <div class="header-actions">
+    <button class="btn-outline" onclick="loadMessages()">↻ Refresh</button>
+    <a href="index.html" class="btn-outline">← CRM</a>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-header">Inboxes</div>
+    <div class="inbox-item all active" onclick="filterInbox('all')">
+      <span>All Inboxes</span>
+      <span class="badge" id="badge-all">0</span>
+    </div>
+    <div id="inbox-list"></div>
+  </div>
+
+  <div class="messages-pane">
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterType('all', this)">All</button>
+      <button class="filter-btn" onclick="filterType('reply', this)">Replies</button>
+      <button class="filter-btn" onclick="filterType('unread', this)">Unread</button>
+      <input id="search" type="text" placeholder="Search..." oninput="renderMessages()" />
+    </div>
+    <div id="msg-list"><div class="loading">Loading messages...</div></div>
+  </div>
+</div>
+
+<!-- DETAIL PANE -->
+<div id="detail-pane">
+  <div class="detail-header">
+    <div>
+      <div class="detail-subject" id="d-subject"></div>
+      <div class="detail-meta" id="d-meta"></div>
+    </div>
+    <button class="close-btn" onclick="closeDetail()">✕</button>
+  </div>
+  <div class="detail-body" id="d-body"></div>
+  <div class="reply-area">
+    <textarea id="reply-text" placeholder="Write a reply..."></textarea>
+    <div class="reply-footer">
+      <div class="reply-from" id="reply-from-label"></div>
+      <button class="btn" onclick="sendReply()">Send Reply</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const HASH = 'e0cdb7738cec9700c868887ea12414f537df471d0fd19288bed7525629ae2632';
+const KEY = 'am_us_eb590201635e5a67541a0e4c6eb32c5d6b144eb5cf48a5ca7ce9bece7940c11f';
+const INBOXES = ['jack','lena','brad','kate','cole','emma','mike','sarah','ryan','hudson'];
+let allMessages = [];
+let currentFilter = 'all';
+let currentInbox = 'all';
+let currentMsg = null;
+
+// AUTH
+async function tryLogin() {
+  const val = document.getElementById('login-pass').value;
+  const enc = new TextEncoder().encode(val);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  const hex = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if (hex === HASH) {
+    sessionStorage.setItem('wrm_auth', HASH);
+    document.getElementById('login-overlay').style.display = 'none';
+    loadMessages();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+    document.getElementById('login-pass').value = '';
+  }
+}
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+
+// CHECK AUTH
+if (sessionStorage.getItem('wrm_auth') === HASH) {
+  document.getElementById('login-overlay').style.display = 'none';
+  loadMessages();
+}
+
+async function fetchInbox(inbox) {
+  try {
+    const r = await fetch(`https://api.agentmail.to/v0/inboxes/${inbox}@wildroseautomations.ca/messages?limit=50`, {
+      headers: { 'Authorization': `Bearer ${KEY}` }
+    });
+    const data = await r.json();
+    const msgs = Array.isArray(data) ? data : (data.messages || []);
+    return msgs.map(m => ({ ...m, _inbox: inbox }));
+  } catch(e) { return []; }
+}
+
+async function loadMessages() {
+  document.getElementById('status-bar').textContent = 'Loading...';
+  document.getElementById('msg-list').innerHTML = '<div class="loading">Fetching all inboxes...</div>';
+  
+  const results = await Promise.all(INBOXES.map(fetchInbox));
+  allMessages = results.flat().sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  
+  // Build sidebar counts
+  const inboxList = document.getElementById('inbox-list');
+  inboxList.innerHTML = '';
+  INBOXES.forEach(inbox => {
+    const msgs = allMessages.filter(m => m._inbox === inbox);
+    const unread = msgs.filter(m => m.labels && m.labels.includes('unread')).length;
+    const div = document.createElement('div');
+    div.className = 'inbox-item';
+    div.onclick = () => filterInbox(inbox, div);
+    div.innerHTML = `<span class="inbox-name">${inbox}@</span>${unread > 0 ? `<span class="badge">${unread}</span>` : ''}`;
+    inboxList.appendChild(div);
+  });
+
+  const totalUnread = allMessages.filter(m => m.labels && m.labels.includes('unread')).length;
+  document.getElementById('badge-all').textContent = totalUnread || allMessages.length;
+  document.getElementById('status-bar').textContent = `${allMessages.length} messages across 10 inboxes`;
+  
+  renderMessages();
+}
+
+function getTag(msg) {
+  const from = (msg.from || '').toLowerCase();
+  if (from.includes('mailer-daemon')) return 'bounce';
+  if (msg.labels && msg.labels.includes('unread') && !from.includes('wildroseautomations')) return 'reply';
+  if ((msg.subject || '').toLowerCase().includes('auto') || (msg.subject || '').toLowerCase().includes('out of office')) return 'auto';
+  if (!from.includes('wildroseautomations')) return 'reply';
+  return null;
+}
+
+function renderMessages() {
+  const search = document.getElementById('search').value.toLowerCase();
+  let msgs = allMessages.filter(m => {
+    if (currentInbox !== 'all' && m._inbox !== currentInbox) return false;
+    if (currentFilter === 'reply') {
+      const from = (m.from || '').toLowerCase();
+      return !from.includes('wildroseautomations.ca') && !from.includes('mailer-daemon');
+    }
+    if (currentFilter === 'unread') return m.labels && m.labels.includes('unread');
+    return true;
+  }).filter(m => {
+    if (!search) return true;
+    return (m.from||'').toLowerCase().includes(search) || 
+           (m.subject||'').toLowerCase().includes(search) || 
+           (m.preview||'').toLowerCase().includes(search);
+  });
+
+  if (!msgs.length) {
+    document.getElementById('msg-list').innerHTML = '<div class="empty">No messages found</div>';
+    return;
+  }
+
+  document.getElementById('msg-list').innerHTML = msgs.map(m => {
+    const tag = getTag(m);
+    const time = formatTime(m.created_at);
+    const isUnread = m.labels && m.labels.includes('unread');
+    const tagHtml = tag ? `<span class="msg-tag tag-${tag}">${tag}</span>` : '';
+    return `<div class="msg-row ${isUnread ? 'unread' : ''} ${tag === 'reply' ? 'reply' : ''}" onclick='openMsg(${JSON.stringify(JSON.stringify(m))})'>
+      <div><div class="msg-inbox">${m._inbox}@</div>${tagHtml}</div>
+      <div class="msg-main">
+        <div class="msg-from">${m.from || 'Unknown'}</div>
+        <div class="msg-subject">${m.subject || '(no subject)'}</div>
+        <div class="msg-preview">${(m.preview||'').slice(0,80)}</div>
+      </div>
+      <div class="msg-time">${time}</div>
+    </div>`;
+  }).join('');
+}
+
+function openMsg(jsonStr) {
+  const m = JSON.parse(jsonStr);
+  currentMsg = m;
+  document.getElementById('d-subject').textContent = m.subject || '(no subject)';
+  document.getElementById('d-meta').textContent = `From: ${m.from} · ${m._inbox}@wildroseautomations.ca · ${formatTime(m.created_at)}`;
+  document.getElementById('d-body').textContent = m.preview || '(no preview available)';
+  document.getElementById('reply-from-label').textContent = `Replying from: ${m._inbox}@wildroseautomations.ca`;
+  document.getElementById('reply-text').value = '';
+  document.getElementById('detail-pane').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-pane').classList.remove('open');
+  currentMsg = null;
+}
+
+async function sendReply() {
+  if (!currentMsg) return;
+  const text = document.getElementById('reply-text').value.trim();
+  if (!text) return;
+  const payload = {
+    to: [currentMsg.from],
+    subject: 'Re: ' + (currentMsg.subject || ''),
+    text: text
+  };
+  try {
+    const r = await fetch(`https://api.agentmail.to/v0/inboxes/${currentMsg._inbox}@wildroseautomations.ca/messages/send`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (r.ok) {
+      alert('Reply sent!');
+      document.getElementById('reply-text').value = '';
+      closeDetail();
+    } else {
+      alert('Failed to send. Try again.');
+    }
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+function filterInbox(inbox, el) {
+  currentInbox = inbox;
+  document.querySelectorAll('.inbox-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  else document.querySelector('.inbox-item.all').classList.add('active');
+  renderMessages();
+}
+
+function filterType(type, el) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderMessages();
+}
+
+function formatTime(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  const now = new Date();
+  const diff = now - d;
+  if (diff < 3600000) return Math.floor(diff/60000) + 'm ago';
+  if (diff < 86400000) return Math.floor(diff/3600000) + 'h ago';
+  return d.toLocaleDateString('en-CA', {month:'short', day:'numeric'});
+}
+
+// Auto refresh every 5 min
+setInterval(() => { if(sessionStorage.getItem('wrm_auth') === HASH) loadMessages(); }, 300000);
+</script>
+</body>
+</html>
