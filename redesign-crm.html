@@ -3,6 +3,55 @@
 <head><script>
 (function() {
   var HASH = 'e0cdb7738cec9700c868887ea12414f537df471d0fd19288bed7525629ae2632';
+  if (sessionStorage.getItem('wrm_auth') === HASH) return;
+  
+  // Hide page content immediately
+  document.documentElement.style.visibility = 'hidden';
+  
+  window.addEventListener('DOMContentLoaded', function() {
+    document.documentElement.style.visibility = 'visible';
+    
+    var overlay = document.createElement('div');
+    overlay.id = 'wr-login';
+    overlay.style.cssText = 'position:fixed;inset:0;background:#0d1117;display:flex;align-items:center;justify-content:center;z-index:999999;font-family:Inter,sans-serif;';
+    overlay.innerHTML = `
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:2.5rem 2rem;width:320px;text-align:center;">
+        <div style="font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:0.25rem;">Wildrose CRM</div>
+        <div style="font-size:0.8rem;color:#8b949e;margin-bottom:2rem;">Enter your password to continue</div>
+        <input id="wr-pass" type="password" placeholder="Password" style="width:100%;background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:0.65rem 1rem;color:#fff;font-size:0.9rem;outline:none;margin-bottom:0.75rem;box-sizing:border-box;" />
+        <button id="wr-btn" style="width:100%;background:#238636;border:none;border-radius:6px;padding:0.65rem;color:#fff;font-size:0.9rem;font-weight:600;cursor:pointer;">Sign In</button>
+        <div id="wr-err" style="color:#f85149;font-size:0.78rem;margin-top:0.75rem;display:none;">Incorrect password</div>
+      </div>`;
+    document.body.appendChild(overlay);
+    
+    var input = document.getElementById('wr-pass');
+    var btn = document.getElementById('wr-btn');
+    var err = document.getElementById('wr-err');
+    
+    input.focus();
+    
+    async function tryLogin() {
+      var val = input.value;
+      var enc = new TextEncoder().encode(val);
+      var buf = await crypto.subtle.digest('SHA-256', enc);
+      var hex = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+      if (hex === HASH) {
+        sessionStorage.setItem('wrm_auth', HASH);
+        overlay.remove();
+      } else {
+        err.style.display = 'block';
+        input.value = '';
+        input.focus();
+      }
+    }
+    
+    btn.addEventListener('click', tryLogin);
+    input.addEventListener('keydown', function(e) { if(e.key==='Enter') tryLogin(); });
+  });
+})();
+</script><script>
+(function() {
+  var HASH = 'e0cdb7738cec9700c868887ea12414f537df471d0fd19288bed7525629ae2632';
   async function checkPass() {
     var stored = sessionStorage.getItem('wrm_auth');
     if (stored === HASH) return;
