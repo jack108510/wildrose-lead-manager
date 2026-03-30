@@ -77,7 +77,20 @@
 
     /* EVENTS */
     #events { background: var(--cream); }
-    .events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 3rem; }
+    .events-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 3rem; }
+
+    /* Workshop section */
+    #workshop { background: var(--dark); }
+    #workshop .sec-title { color: white; }
+    #workshop .sec-sub { color: rgba(255,255,255,0.45); max-width: 600px; }
+    .workshop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; margin-top: 3rem; }
+    .workshop-img { border-radius: 4px; overflow: hidden; }
+    .workshop-img img { width: 100%; height: 420px; object-fit: cover; display: block; filter: brightness(0.9); }
+    .workshop-body { }
+    .workshop-feature { display: flex; gap: 0.75rem; margin-bottom: 1rem; align-items: flex-start; }
+    .wf-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; margin-top: 0.45rem; flex-shrink: 0; }
+    .wf-text { font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+    .wf-text strong { color: white; }
     .event-card { position: relative; overflow: hidden; cursor: pointer; }
     .event-card img { width: 100%; height: 420px; object-fit: cover; display: block; transition: transform 0.6s; filter: brightness(0.75); }
     .event-card:hover img { transform: scale(1.05); filter: brightness(0.85); }
@@ -166,6 +179,8 @@
     /* RESPONSIVE */
     @media (max-width: 1024px) {
       .events-grid { grid-template-columns: 1fr 1fr; }
+      .workshop-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .workshop-img img { height: 280px; }
       .pkg-grid { grid-template-columns: 1fr 1fr; }
       .testi-grid { grid-template-columns: 1fr 1fr; }
       .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
@@ -253,6 +268,8 @@
     <div class="feat-divider"></div>
     <div class="feat">🎉 Weekend Events</div>
     <div class="feat-divider"></div>
+    <div class="feat">🎨 Fine Art Workshops</div>
+    <div class="feat-divider"></div>
     <div class="feat">🛏 On-Site Accommodations</div>
   </div>
 
@@ -288,6 +305,37 @@
           <div class="event-tag">Unwind</div>
           <div class="event-name">Weekend Getaways</div>
           <p class="event-desc">Private BnB stays for groups — birthdays, anniversaries, reunions, or simply an escape.</p>
+        </div>
+      </div>
+      <div class="event-card">
+        <img src="assets/lost-lake/painting.jpg" alt="Fine Art Workshop" />
+        <div class="event-overlay">
+          <div class="event-tag">Create</div>
+          <div class="event-name">Fine Art Workshops</div>
+          <p class="event-desc">Immersive painting workshops in a stunning lakeside setting — guided by a professional instructor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKSHOP -->
+  <section id="workshop">
+    <div class="sec-eyebrow">Coming Soon</div>
+    <div class="sec-title" style="color:white;">Fine Art Workshop<br />at Lost Lake</div>
+    <p class="sec-sub">An intimate, immersive painting experience set against the backdrop of one of Alberta's most stunning private lakeside estates. Limited seats. Unforgettable setting.</p>
+    <div class="workshop-grid">
+      <div class="workshop-img">
+        <img src="assets/lost-lake/painting.jpg" alt="Fine art workshop" />
+      </div>
+      <div class="workshop-body">
+        <div class="workshop-feature"><div class="wf-dot"></div><div class="wf-text"><strong>Guided by a Professional Instructor</strong> — Learn technique and composition from an experienced fine art painter in a focused, distraction-free environment.</div></div>
+        <div class="workshop-feature"><div class="wf-dot"></div><div class="wf-text"><strong>All Skill Levels Welcome</strong> — Whether you've never held a brush or you paint regularly, this workshop is designed to challenge and inspire.</div></div>
+        <div class="workshop-feature"><div class="wf-dot"></div><div class="wf-text"><strong>Intimate Group Setting</strong> — Small class size means personalized attention and a genuine connection with fellow artists.</div></div>
+        <div class="workshop-feature"><div class="wf-dot"></div><div class="wf-text"><strong>The Lost Lake Setting</strong> — Paint surrounded by nature, natural light, and the peace and quiet that only a private lakeside estate can offer.</div></div>
+        <div class="workshop-feature"><div class="wf-dot"></div><div class="wf-text"><strong>Full Day Experience</strong> — Includes use of the property, materials, and a catered lunch. Overnight stays available for out-of-town guests.</div></div>
+        <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap;">
+          <a href="#contact" class="btn-primary">Register Interest</a>
+          <a href="#contact" style="border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.7); padding:0.85rem 1.8rem; text-decoration:none; font-size:0.8rem; font-weight:500; border-radius:2px; transition:border-color 0.2s; display:inline-block;">Ask About Hosting</a>
         </div>
       </div>
     </div>
