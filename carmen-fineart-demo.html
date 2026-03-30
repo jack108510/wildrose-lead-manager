@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carmen Wilde Fine Art | Edmonton Landscape Artist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f8f6f2;
+      --surface: #ffffff;
+      --dark: #1a1510;
+      --mid: #3a2e20;
+      --muted: #7a6a58;
+      --border: #e8e0d4;
+      --warm: #f5f0e8;
+      --stone: #ede5d8;
+      --forest: #2a3820;
+      --sage: #4a5e3a;
+      --gold: #a87820;
+      --gold-light: #c89838;
+      --cream: #fdf9f2;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--dark); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 64px;
+      background: rgba(248,246,242,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 400; color: var(--dark); text-decoration: none; letter-spacing: 0.04em; }
+    .nav-brand em { font-style: italic; color: var(--gold); }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; align-items: center; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.76rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--dark); }
+    .nav-cta { border: 1px solid var(--gold) !important; color: var(--gold) !important; padding: 0.4rem 1.1rem; border-radius: 2px; transition: background 0.2s, color 0.2s !important; }
+    .nav-cta:hover { background: var(--gold) !important; color: white !important; }
+
+    /* HERO */
+    .hero { margin-top: 64px; position: relative; height: calc(100vh - 64px); overflow: hidden; }
+    .hero-img { position: absolute; inset: 0; }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(26,21,16,0.75) 40%, rgba(26,21,16,0.1)); }
+    .hero-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 0 8%; max-width: 640px; }
+    .hero-eyebrow { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-light); display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.25rem; }
+    .hero-eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold-light); }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 5.5vw, 5.5rem); font-weight: 300; line-height: 1.05; color: white; margin-bottom: 1rem; }
+    .hero h1 em { font-style: italic; display: block; color: var(--gold-light); }
+    .hero p { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.9; max-width: 420px; margin-bottom: 2rem; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-gold { background: var(--gold); color: white; padding: 0.85rem 2rem; text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 2px; transition: background 0.2s; display: inline-block; }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-ghost { border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.8); padding: 0.85rem 2rem; text-decoration: none; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 2px; transition: border-color 0.2s; display: inline-block; }
+    .btn-ghost:hover { border-color: white; color: white; }
+
+    /* GALLERY */
+    #gallery { background: var(--dark); padding: 5rem 8%; }
+    .gal-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+    .sec-eyebrow { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-light); display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.75rem; }
+    .sec-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--gold-light); }
+    .sec-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; line-height: 1.1; margin-bottom: 0; }
+    .sec-sub { color: var(--muted); font-size: 0.88rem; line-height: 1.9; max-width: 560px; }
+    #gallery .sec-title { color: white; }
+    .shop-link { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-light); text-decoration: none; border-bottom: 1px solid var(--gold-light); padding-bottom: 2px; white-space: nowrap; }
+
+    .gallery-main { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-bottom: 3px; }
+    .gallery-main div { overflow: hidden; }
+    .gallery-main img { width: 100%; height: 520px; object-fit: cover; display: block; transition: transform 0.5s; cursor: pointer; }
+    .gallery-main div:hover img { transform: scale(1.04); }
+    .gallery-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+    .gallery-row div { overflow: hidden; }
+    .gallery-row img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.5s, filter 0.3s; filter: brightness(0.85); cursor: pointer; }
+    .gallery-row div:hover img { transform: scale(1.06); filter: brightness(1); }
+
+    /* ABOUT */
+    #about { background: var(--cream); display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .about-img { overflow: hidden; }
+    .about-img img { width: 100%; height: 100%; min-height: 560px; object-fit: cover; object-position: top; display: block; filter: grayscale(10%); }
+    .about-body { padding: 5rem 4.5rem; display: flex; flex-direction: column; justify-content: center; background: var(--warm); }
+    #about .sec-eyebrow { color: var(--gold); }
+    #about .sec-eyebrow::before { background: var(--gold); }
+    #about .sec-title { color: var(--dark); margin-bottom: 1rem; }
+    .about-body .sec-sub { margin-bottom: 0.85rem; }
+    .about-quote { margin: 2rem 0; padding: 1.25rem 1.5rem 1.25rem 1.75rem; border-left: 2px solid var(--gold); background: white; }
+    .about-quote p { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-style: italic; color: var(--dark); line-height: 1.6; }
+
+    /* COMMISSIONS */
+    #commissions { background: var(--surface); padding: 5rem 8%; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .comm-body .sec-eyebrow { color: var(--sage); }
+    .comm-body .sec-eyebrow::before { background: var(--sage); }
+    .comm-body .sec-title { color: var(--dark); margin-bottom: 1rem; }
+    .comm-body .sec-sub { margin-bottom: 0.85rem; }
+    .comm-steps { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+    .step { display: flex; gap: 1.25rem; align-items: flex-start; }
+    .step-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--gold); line-height: 1; flex-shrink: 0; width: 32px; }
+    .step-text strong { font-size: 0.88rem; color: var(--dark); display: block; margin-bottom: 0.2rem; }
+    .step-text p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+    .comm-img { border-radius: 4px; overflow: hidden; }
+    .comm-img img { width: 100%; height: 460px; object-fit: cover; display: block; }
+
+    /* CONTACT */
+    #contact { background: var(--forest); padding: 5rem 8%; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    #contact .sec-eyebrow { color: var(--gold-light); }
+    #contact .sec-eyebrow::before { background: var(--gold-light); }
+    #contact .sec-title { color: white; margin-bottom: 1rem; }
+    .contact-info .sec-sub { color: rgba(255,255,255,0.4); margin-bottom: 2rem; }
+    .ci { display: flex; gap: 0.75rem; margin-bottom: 1.25rem; }
+    .ci-icon { font-size: 1rem; color: var(--gold-light); flex-shrink: 0; margin-top: 0.1rem; }
+    .ci-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold-light); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+    .ci-val a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .fg { margin-bottom: 0.9rem; }
+    .fg label { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); display: block; margin-bottom: 0.4rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-bottom: 2px solid rgba(255,255,255,0.1); padding: 0.78rem 1rem; color: white; font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-bottom-color: var(--gold-light); }
+    .fg textarea { height: 120px; resize: vertical; }
+    .fg select option { background: var(--forest); }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn-submit { background: var(--gold); color: white; border: none; width: 100%; padding: 1rem; font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--gold-light); }
+
+    /* FOOTER */
+    footer { background: var(--dark); padding: 2rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(168,120,32,0.2); }
+    .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; color: rgba(255,255,255,0.4); }
+    .footer-brand em { color: var(--gold-light); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.25); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold-light); }
+    .footer-demo { font-size: 0.65rem; color: rgba(168,120,32,0.2); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .gallery-row { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 860px) {
+      nav .nav-links { display: none; }
+      .nav-mobile-cta { display: inline-block !important; }
+      .gallery-main { grid-template-columns: 1fr; }
+      .gallery-main img { height: 300px; }
+      #about { grid-template-columns: 1fr; }
+      .about-img img { min-height: 300px; height: 300px; }
+      .about-body { padding: 3.5rem 6%; }
+      #commissions { grid-template-columns: 1fr; gap: 3rem; }
+      .comm-img img { height: 300px; }
+      #contact { grid-template-columns: 1fr; gap: 3rem; }
+      .gallery-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.8rem; }
+      .gallery-row img { height: 150px; }
+      .fr { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
+      .footer-links { gap: 1rem; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-brand">Carmen Wilde <em>Fine Art</em></a>
+    <ul class="nav-links">
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#commissions">Commissions</a></li>
+      <li><a href="#contact" class="nav-cta">Inquire</a></li>
+    </ul>
+    <a href="#contact" class="nav-mobile-cta" style="display:none; font-size:0.72rem; font-weight:600; border:1px solid var(--gold); color:var(--gold); padding:0.4rem 0.9rem; border-radius:2px; text-decoration:none;">Inquire</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-img"><img src="assets/carmen-fineart/painting-new1.jpg" alt="Carmen Wilde painting" /></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Edmonton, AB · Landscape Artist</div>
+      <h1>Into the<br /><em>Wilde.</em></h1>
+      <p>Original fine art inspired by the natural beauty of Canada — lakes, forests, fields, mountains, trails, and coastlines.</p>
+      <div class="hero-buttons">
+        <a href="#gallery" class="btn-gold">View Gallery</a>
+        <a href="#commissions" class="btn-ghost">Commission a Painting</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="gal-header">
+      <div>
+        <div class="sec-eyebrow">Original Works</div>
+        <div class="sec-title" style="color:white;">Gallery</div>
+      </div>
+      <a href="https://www.carmenwildefineart.com" target="_blank" class="shop-link">View Full Collection →</a>
+    </div>
+    <div class="gallery-main">
+      <div><img src="assets/carmen-fineart/painting-new2.jpg" alt="Carmen Wilde original painting" /></div>
+      <div><img src="assets/carmen-fineart/art6.jpg" alt="Carmen Wilde original painting" /></div>
+    </div>
+    <div class="gallery-row">
+      <div><img src="assets/carmen-fineart/art1.jpg" alt="Painting" /></div>
+      <div><img src="assets/carmen-fineart/art2.jpg" alt="Painting" /></div>
+      <div><img src="assets/carmen-fineart/art4.jpg" alt="Painting" /></div>
+      <div><img src="assets/carmen-fineart/art5.jpg" alt="Painting" /></div>
+      <div><img src="assets/carmen-fineart/art7.jpg" alt="Painting" /></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" style="padding:0;">
+    <div class="about-img">
+      <img src="assets/carmen-fineart/carmen.jpg" alt="Carmen Wilde" />
+    </div>
+    <div class="about-body">
+      <div class="sec-eyebrow">The Artist</div>
+      <div class="sec-title">Carmen Wilde</div>
+      <p class="sec-sub">Carmen Wilde is an Edmonton-based landscape artist with a deep affinity for the natural world. Her work is inspired by the Canadian wilderness — lakes, forests, mountains, trails, and coastlines — capturing the essence of wild places through colour, light, and texture.</p>
+      <p class="sec-sub">With over 30 years of experience as a professional artist and interior designer, Carmen brings both technical mastery and a deep emotional connection to every piece.</p>
+      <div class="about-quote">
+        <p>"Art is how I process the world — every painting is a conversation with nature."</p>
+      </div>
+      <a href="#contact" class="btn-gold" style="display:inline-block; margin-top:0.5rem;">Get in Touch →</a>
+    </div>
+  </section>
+
+  <!-- COMMISSIONS -->
+  <section id="commissions">
+    <div class="comm-body">
+      <div class="sec-eyebrow">Custom Work</div>
+      <div class="sec-title">Commission a Painting</div>
+      <p class="sec-sub">Carmen accepts a limited number of commissions each year — custom paintings for homes, offices, gifts, and special occasions. Each commission is a one-of-a-kind original created specifically for you.</p>
+      <div class="comm-steps">
+        <div class="step"><div class="step-num">01</div><div class="step-text"><strong>Share Your Vision</strong><p>Tell Carmen about the space, subject, or feeling you want the painting to capture.</p></div></div>
+        <div class="step"><div class="step-num">02</div><div class="step-text"><strong>Concept & Quote</strong><p>Carmen will provide a concept direction and pricing based on size, complexity, and timeline.</p></div></div>
+        <div class="step"><div class="step-num">03</div><div class="step-text"><strong>Creation</strong><p>Carmen creates your painting with regular updates throughout the process.</p></div></div>
+        <div class="step"><div class="step-num">04</div><div class="step-text"><strong>Delivery</strong><p>Your finished original is delivered ready to hang — or available for pickup in Edmonton.</p></div></div>
+      </div>
+    </div>
+    <div class="comm-img">
+      <img src="assets/carmen-fineart/art3.jpg" alt="Commission example" />
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-info">
+      <div class="sec-eyebrow">Get in Touch</div>
+      <div class="sec-title">Inquire or Connect</div>
+      <p class="sec-sub">For gallery inquiries, commissions, or to purchase original work — reach out and Carmen will respond personally.</p>
+      <div class="ci"><span class="ci-icon">📍</span><div><div class="ci-label">Location</div><div class="ci-val">Edmonton, Alberta</div></div></div>
+      <div class="ci"><span class="ci-icon">🌐</span><div><div class="ci-label">Website</div><div class="ci-val"><a href="https://www.carmenwildefineart.com" target="_blank">carmenwildefineart.com</a></div></div></div>
+      <div class="ci"><span class="ci-icon">📸</span><div><div class="ci-label">Instagram</div><div class="ci-val"><a href="https://instagram.com/carmenWildefineart" target="_blank">@carmenWildefineart</a></div></div></div>
+    </div>
+    <div>
+      <div class="fr">
+        <div class="fg"><label>First Name</label><input type="text" placeholder="Jane" /></div>
+        <div class="fg"><label>Last Name</label><input type="text" placeholder="Smith" /></div>
+      </div>
+      <div class="fg"><label>Email</label><input type="email" placeholder="you@example.com" /></div>
+      <div class="fg">
+        <label>Inquiry Type</label>
+        <select>
+          <option value="" disabled selected>Select…</option>
+          <option>Purchase Original Work</option>
+          <option>Commission a Painting</option>
+          <option>Art for Rent</option>
+          <option>General Inquiry</option>
+        </select>
+      </div>
+      <div class="fg"><label>Message</label><textarea placeholder="Tell Carmen about your project or what you're looking for…"></textarea></div>
+      <button class="btn-submit">Send Message →</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">Carmen Wilde <em>Fine Art</em></div>
+    <div class="footer-links">
+      <a href="#gallery">Gallery</a>
+      <a href="#about">About</a>
+      <a href="#commissions">Commissions</a>
+      <a href="https://www.carmenwildefineart.com" target="_blank">Official Site</a>
+    </div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
+  </footer>
+
+</body>
+</html>
