@@ -305,11 +305,44 @@
             <option>Other</option>
           </select>
         </div>
-        <div class="fg"><label>Site Address / Details</label><textarea placeholder="Project location, scope, and preferred date…"></textarea></div>
-        <button class="btn-submit">Submit Request →</button>
+        <div class="fg"><label>Site Address / Details</label><textarea id="cf-details" placeholder="Project location, scope, and preferred date…"></textarea></div>
+        <button class="btn-submit" id="cf-submit" type="button" onclick="submitForm()">Submit Request →</button>
+        <div id="cf-status" style="margin-top:12px;font-size:0.8rem;display:none;padding:10px 14px;border-radius:4px;"></div>
       </div>
     </div>
   </section>
+
+  <script>
+  function submitForm() {
+    const first = document.querySelector('input[placeholder="John"]').value.trim();
+    const last = document.querySelector('input[placeholder="Smith"]').value.trim();
+    const company = document.querySelector('input[placeholder="Your company name"]').value.trim();
+    const phone = document.querySelector('input[placeholder="780-000-0000"]').value.trim();
+    const email = document.querySelector('input[placeholder="you@example.com"]').value.trim();
+    const service = document.querySelector('select').value;
+    const details = document.getElementById('cf-details').value.trim();
+    const status = document.getElementById('cf-status');
+    const btn = document.getElementById('cf-submit');
+
+    if (!first || !email || !phone) {
+      status.style.display = 'block';
+      status.style.background = 'rgba(239,68,68,0.1)';
+      status.style.color = '#ef4444';
+      status.style.border = '1px solid rgba(239,68,68,0.3)';
+      status.textContent = 'Please fill in your name, phone, and email.';
+      return;
+    }
+
+    const body = `New Locate Request\n\nName: ${first} ${last}\nCompany: ${company}\nPhone: ${phone}\nEmail: ${email}\nService: ${service}\nDetails:\n${details}`;
+    window.location.href = `mailto:james@swiftlocating.ca?subject=${encodeURIComponent('New Locate Request from '+first+' '+last)}&body=${encodeURIComponent(body)}`;
+
+    status.style.display = 'block';
+    status.style.background = 'rgba(34,197,94,0.1)';
+    status.style.color = '#22c55e';
+    status.style.border = '1px solid rgba(34,197,94,0.3)';
+    status.textContent = 'Opening your email app to send the request to James…';
+  }
+  </script>
 
   <footer>
     <div class="footer-brand">Swift <span>Utility Locating</span></div>
