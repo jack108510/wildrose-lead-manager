@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DW Land Services | Hydroseeding & Land Reclamation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --green: #2d6a2e;
+            --green-light: #4a9e4b;
+            --brown: #5c4033;
+            --cream: #f5f0e8;
+            --dark: #1a1a1a;
+        }
+        
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: var(--dark); background: var(--cream); }
+        
+        /* NAV */
+        nav { background: var(--green); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        nav .logo { color: white; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
+        nav .logo span { color: var(--green-light); }
+        nav ul { list-style: none; display: flex; gap: 2rem; }
+        nav a { color: white; text-decoration: none; font-weight: 500; }
+        nav a:hover { color: var(--green-light); }
+        nav .cta { background: white; color: var(--green); padding: 0.5rem 1.2rem; border-radius: 6px; font-weight: 700; }
+        nav .cta:hover { background: var(--cream); color: var(--green); }
+        
+        /* HERO */
+        .hero { 
+            background: linear-gradient(135deg, rgba(45,106,46,0.9), rgba(92,64,51,0.8)), 
+                        url('img/photo_0.jpg') center/cover no-repeat;
+            min-height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 2rem;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); }
+        .hero p { font-size: 1.3rem; max-width: 600px; margin: 0 auto 2rem; opacity: 0.95; }
+        .hero-btn { display: inline-block; background: white; color: var(--green); padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; transition: transform 0.2s; }
+        .hero-btn:hover { transform: scale(1.05); }
+        
+        /* SERVICES */
+        .services { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .services h2 { text-align: center; font-size: 2.5rem; color: var(--green); margin-bottom: 0.5rem; }
+        .services .subtitle { text-align: center; color: #666; margin-bottom: 3rem; font-size: 1.1rem; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+        .service-card { background: white; border-radius: 12px; padding: 2rem; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        .service-card:hover { transform: translateY(-5px); }
+        .service-card .icon { font-size: 3rem; margin-bottom: 1rem; }
+        .service-card h3 { color: var(--green); margin-bottom: 0.8rem; }
+        .service-card p { color: #555; line-height: 1.6; }
+        
+        /* ABOUT */
+        .about { background: var(--green); color: white; padding: 5rem 2rem; }
+        .about-content { max-width: 900px; margin: 0 auto; display: flex; gap: 3rem; align-items: center; flex-wrap: wrap; }
+        .about-text { flex: 1; min-width: 300px; }
+        .about-text h2 { font-size: 2.2rem; margin-bottom: 1rem; }
+        .about-text p { line-height: 1.8; opacity: 0.9; }
+        .about-stats { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat .number { font-size: 2rem; font-weight: 800; color: var(--green-light); }
+        .stat .label { font-size: 0.85rem; opacity: 0.8; }
+        
+        /* WHY CHOOSE */
+        .why { padding: 5rem 2rem; max-width: 1000px; margin: 0 auto; }
+        .why h2 { text-align: center; font-size: 2.2rem; color: var(--brown); margin-bottom: 3rem; }
+        .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .why-item { text-align: center; padding: 1.5rem; }
+        .why-item .emoji { font-size: 2.5rem; margin-bottom: 0.8rem; }
+        .why-item h3 { color: var(--green); margin-bottom: 0.5rem; }
+        .why-item p { color: #666; line-height: 1.6; }
+        
+        /* CONTACT */
+        .contact { background: var(--brown); color: white; padding: 5rem 2rem; text-align: center; }
+        .contact h2 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .contact .subtitle { opacity: 0.8; margin-bottom: 2rem; }
+        .contact-info { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .contact-item { display: flex; align-items: center; gap: 0.8rem; font-size: 1.1rem; }
+        .contact-item .icon { font-size: 1.5rem; }
+        .contact a { color: var(--green-light); text-decoration: none; }
+        .contact a:hover { text-decoration: underline; }
+        .quote-btn { display: inline-block; background: var(--green-light); color: white; padding: 1rem 3rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.2rem; margin-top: 1rem; transition: transform 0.2s; }
+        .quote-btn:hover { transform: scale(1.05); background: var(--green); }
+        
+        /* FOOTER */
+        footer { background: #111; color: #888; text-align: center; padding: 2rem; font-size: 0.9rem; }
+        
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            nav ul { display: none; }
+            .about-content { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">DW <span>Land Services</span></div>
+    <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#why">Why Us</a></li>
+        <li><a href="#contact" class="cta">Get a Quote</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div>
+        <h1>DW Land Services</h1>
+        <p>Hydroseeding & Land Reclamation for yards, acreages, and oilfield sites across Alberta</p>
+        <a href="mailto:dwlandservices9@gmail.com" class="hero-btn">Get a Free Quote</a>
+    </div>
+</section>
+
+<section class="services" id="services">
+    <h2>Our Services</h2>
+    <p class="subtitle">Fast results, solid coverage, and dependable work</p>
+    <div class="services-grid">
+        <div class="service-card">
+            <div class="icon">🌱</div>
+            <h3>Hydroseeding</h3>
+            <p>Fast, cost-effective grass planting for residential yards, acreages, and commercial properties. Get lush green results in weeks, not months.</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🏗️</div>
+            <h3>Land Reclamation</h3>
+            <p>Professional land reclamation for oilfield sites and disturbed land. We restore your property to its natural state, compliant with Alberta regulations.</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🏠</div>
+            <h3>Residential Services</h3>
+            <p>New home builds, bare dirt patches, or full yard transformations. We handle projects of every size with the same quality and care.</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">⛽</div>
+            <h3>Oilfield Services</h3>
+            <p>Specialized reclamation and seeding for oil and gas sites. Experienced with industry requirements and timelines.</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">📐</div>
+            <h3>Acreage Seeding</h3>
+            <p>Large-scale seeding solutions for acreages and rural properties. Even coverage across expansive terrain with professional equipment.</p>
+        </div>
+        <div class="service-card">
+            <div class="icon">🔧</div>
+            <h3>Skid Steer Work</h3>
+            <p>Skid steer available for storm cleanup, grading, and site preparation. Ready when you need us.</p>
+        </div>
+    </div>
+</section>
+
+<section class="about" id="about">
+    <div class="about-content">
+        <div class="about-text">
+            <h2>About DW Land Services</h2>
+            <p>DW Land Services is an Alberta-based company specializing in hydroseeding and land reclamation. We serve residential homeowners, contractors, and oilfield companies across the province.</p>
+            <br>
+            <p>Whether you've got bare dirt that needs grass or an oilfield site that needs reclaiming, we deliver fast results with solid coverage. Every project gets our full attention from start to finish.</p>
+            <div class="about-stats">
+                <div class="stat">
+                    <div class="number">2026</div>
+                    <div class="label">Booking Season Open</div>
+                </div>
+                <div class="stat">
+                    <div class="number">100%</div>
+                    <div class="label">Free Quotes</div>
+                </div>
+                <div class="stat">
+                    <div class="number">AB</div>
+                    <div class="label">Serving All Alberta</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="why" id="why">
+    <h2>Why Choose DW Land Services?</h2>
+    <div class="why-grid">
+        <div class="why-item">
+            <div class="emoji">⚡</div>
+            <h3>Fast Results</h3>
+            <p>Hydroseeding delivers visible growth in just 1-2 weeks. You'll see grass sprouting before you know it.</p>
+        </div>
+        <div class="why-item">
+            <div class="emoji">💰</div>
+            <h3>Cost Effective</h3>
+            <p>More affordable than sod and more reliable than traditional seeding. Best value for your money.</p>
+        </div>
+        <div class="why-item">
+            <div class="emoji">🌍</div>
+            <h3>Sustainable</h3>
+            <p>Our hydroseeding process uses eco-friendly materials that promote healthy, long-lasting growth.</p>
+        </div>
+        <div class="why-item">
+            <div class="emoji">🤝</div>
+            <h3>Dependable</h3>
+            <p>We show up when we say we will and deliver exactly what we promise. Our reputation depends on it.</p>
+        </div>
+    </div>
+</section>
+
+<section class="contact" id="contact">
+    <h2>Ready to Get Started?</h2>
+    <p class="subtitle">Send us your project info for a FREE quote</p>
+    <div class="contact-info">
+        <div class="contact-item">
+            <span class="icon">📧</span>
+            <a href="mailto:dwlandservices9@gmail.com">dwlandservices9@gmail.com</a>
+        </div>
+    </div>
+    <a href="mailto:dwlandservices9@gmail.com?subject=Free%20Quote%20Request" class="quote-btn">Request a Free Quote</a>
+</section>
+
+<footer>
+    <p>&copy; 2026 DW Land Services. All rights reserved. | Alberta, Canada</p>
+</footer>
+
+</body>
+</html>
