@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ninja Home Care | Professional Landscaping in Edmonton</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--green:#1a6b3c;--green-dark:#0d4a28;--green-light:#2a8a50;--black:#0a0a0a;--dark:#111;--gray:#888;--light:#f0f0f0;--white:#fff}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;color:var(--white);background:var(--black);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;transition:background .3s,padding .3s}
+nav.scrolled{background:rgba(10,10,10,.95);backdrop-filter:blur(10px);padding:.7rem 2rem;box-shadow:0 2px 20px rgba(0,0,0,.5)}
+.nav-logo{font-size:1.4rem;font-weight:800;letter-spacing:-.5px}
+.nav-logo span{color:var(--green-light)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:.875rem;font-weight:500;opacity:.8;transition:opacity .3s}
+.nav-links a:hover{opacity:1}
+.nav-phone{display:flex;align-items:center;gap:.5rem;font-size:.875rem;font-weight:600;color:var(--green-light)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:5px}
+.hamburger span{display:block;width:24px;height:2px;background:#fff;transition:.3s}
+
+/* HERO */
+.hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;background:url('assets/ninja-homecare/hero.jpg') center/cover no-repeat}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.7) 0%,rgba(10,10,10,.55) 50%,rgba(10,10,10,.85) 100%)}
+.hero-content{position:relative;text-align:center;max-width:800px;padding:0 2rem}
+.hero-badge{display:inline-block;padding:.4rem 1.2rem;border:1px solid var(--green);border-radius:100px;font-size:.75rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--green-light);margin-bottom:1.5rem}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.05;margin-bottom:1.25rem;letter-spacing:-1px}
+.hero h1 span{color:var(--green-light)}
+.hero p{font-size:clamp(1rem,2vw,1.25rem);opacity:.7;max-width:600px;margin:0 auto 2.5rem;font-weight:300}
+.btn{display:inline-block;padding:.9rem 2.5rem;border-radius:6px;font-weight:600;font-size:.95rem;transition:all .3s;cursor:pointer;border:none}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:var(--green-light);transform:translateY(-2px);box-shadow:0 8px 25px rgba(26,107,60,.4)}
+.btn-outline{border:2px solid rgba(255,255,255,.2);color:#fff;background:transparent}
+.btn-outline:hover{border-color:var(--green-light);color:var(--green-light)}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* SECTIONS */
+section{padding:6rem 2rem}
+.container{max-width:1200px;margin:0 auto}
+.section-label{font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green-light);margin-bottom:.75rem}
+.section-title{font-size:clamp(1.75rem,4vw,2.75rem);font-weight:800;letter-spacing:-.5px;margin-bottom:1rem}
+.section-title span{color:var(--green-light)}
+.section-sub{font-size:1.05rem;opacity:.6;max-width:600px;font-weight:300}
+
+/* SERVICES */
+#services{background:var(--dark)}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-top:3rem}
+.service-card{background:linear-gradient(145deg,rgba(26,107,60,.08),rgba(26,107,60,.02));border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:2.5rem 2rem;transition:all .3s}
+.service-card:hover{border-color:rgba(26,107,60,.3);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.service-icon{width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;margin-bottom:1.5rem;color:#fff}
+.service-card h3{font-size:1.2rem;font-weight:700;margin-bottom:.75rem}
+.service-card p{font-size:.9rem;opacity:.55;line-height:1.7}
+
+/* ABOUT */
+#about{background:var(--black)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-top:3rem}
+.about-img{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/3}
+.about-img img{width:100%;height:100%;object-fit:cover}
+.about-img::after{content:'';position:absolute;inset:0;border-radius:16px;border:1px solid rgba(26,107,60,.2)}
+.about-text h2{font-size:clamp(1.75rem,3vw,2.5rem);font-weight:800;margin-bottom:1.25rem;letter-spacing:-.5px}
+.about-text h2 span{color:var(--green-light)}
+.about-text p{opacity:.6;margin-bottom:1rem;font-size:.95rem;line-height:1.8}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.08)}
+.stat-num{font-size:2rem;font-weight:800;color:var(--green-light)}
+.stat-label{font-size:.8rem;opacity:.45;margin-top:.25rem;text-transform:uppercase;letter-spacing:.5px}
+
+/* WHY CHOOSE US */
+#why{background:var(--dark)}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2.5rem;margin-top:3rem}
+.why-item{text-align:center;padding:2rem 1.5rem}
+.why-icon{width:64px;height:64px;border-radius:50%;border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-weight:800;font-size:1rem;color:var(--green-light)}
+.why-item h3{font-size:1.1rem;font-weight:700;margin-bottom:.75rem}
+.why-item p{font-size:.9rem;opacity:.5;line-height:1.7}
+
+/* CONTACT */
+#contact{background:var(--black)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem}
+.contact-info{display:flex;flex-direction:column;gap:2rem}
+.contact-item{display:flex;gap:1.25rem;align-items:flex-start}
+.contact-item-icon{width:48px;height:48px;border-radius:10px;background:rgba(26,107,60,.15);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:var(--green-light);flex-shrink:0}
+.contact-item h4{font-size:.95rem;font-weight:600;margin-bottom:.25rem}
+.contact-item p{font-size:.9rem;opacity:.55}
+.contact-form{display:flex;flex-direction:column;gap:1rem}
+.contact-form input,.contact-form textarea{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.9rem 1.1rem;color:#fff;font-family:'Inter',sans-serif;font-size:.9rem;transition:border-color .3s;outline:none}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--green)}
+.contact-form textarea{resize:vertical;min-height:120px}
+.contact-form button{align-self:flex-start}
+
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid rgba(255,255,255,.05);padding:3rem 2rem;text-align:center}
+.footer-logo{font-size:1.2rem;font-weight:800;margin-bottom:1rem}
+.footer-logo span{color:var(--green-light)}
+.footer-links{display:flex;justify-content:center;gap:2rem;margin-bottom:1.5rem;list-style:none}
+.footer-links a{font-size:.85rem;opacity:.5;transition:opacity .3s}
+.footer-links a:hover{opacity:1}
+.footer-copy{font-size:.8rem;opacity:.3}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:2rem}
+  .about-img{max-width:500px}
+}
+@media(max-width:768px){
+  .nav-links,.nav-phone{display:none}
+  .hamburger{display:flex}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;width:100%;background:rgba(10,10,10,.98);padding:2rem;gap:1.5rem}
+  section{padding:4rem 1.25rem}
+  .services-grid{grid-template-columns:1fr}
+  .about-stats{grid-template-columns:repeat(3,1fr);gap:1rem}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-logo">NINJA<span>.</span> Home Care</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="tel:5877836343" class="nav-phone">587-783-6343</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Edmonton's Trusted Landscaping Pros</div>
+    <h1>We Make Your Yard <span>Legendary</span></h1>
+    <p>Professional landscaping, yard restoration, and property maintenance for residential and commercial clients across Edmonton.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn btn-primary">Get a Free Quote</a>
+      <a href="#services" class="btn btn-outline">Our Services</a>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="container">
+    <div class="section-label">What We Do</div>
+    <div class="section-title">Full-Service <span>Landscaping</span></div>
+    <div class="section-sub">From design to maintenance, we handle every aspect of your outdoor space with precision and care.</div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">L</div>
+        <h3>Landscaping</h3>
+        <p>Complete landscape design and installation. Patios, walkways, retaining walls, garden beds, and full property transformations built to last.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">R</div>
+        <h3>Yard Restoration</h3>
+        <p>Bring neglected or damaged yards back to life. We clear overgrowth, regrade, reseed, and restore your property to its full potential.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">T</div>
+        <h3>Tree Removal</h3>
+        <p>Safe, efficient tree removal and trimming. We handle hazardous trees, storm damage, and routine maintenance with professional equipment.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">A</div>
+        <h3>Aeration</h3>
+        <p>Core aeration to relieve soil compaction, improve drainage, and promote healthy root growth. Essential for a thriving Edmonton lawn.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">S</div>
+        <h3>Seeding</h3>
+        <p>Professional overseeding and new lawn establishment. We select the right seed blend for Edmonton's climate for maximum germination and coverage.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">F</div>
+        <h3>Fertilizer</h3>
+        <p>Seasonal fertilizer programs tailored to your soil and grass type. Keep your lawn green, healthy, and weed-free all season long.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img">
+        <img src="assets/ninja-homecare/lawn.jpg" alt="Ninja Home Care landscaping work in Edmonton">
+      </div>
+      <div class="about-text">
+        <div class="section-label">About Us</div>
+        <h2>Edmonton's Yard Care <span>Specialists</span></h2>
+        <p>Ninja Home Care is a locally owned and operated landscaping company serving Edmonton and surrounding areas. We take pride in delivering clean, reliable, and professional results on every job.</p>
+        <p>Whether it's a complete yard overhaul or seasonal maintenance, we treat every property like our own. No shortcuts, no surprises — just honest work and yards that speak for themselves.</p>
+        <div class="about-stats">
+          <div>
+            <div class="stat-num">500+</div>
+            <div class="stat-label">Projects Done</div>
+          </div>
+          <div>
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Satisfaction</div>
+          </div>
+          <div>
+            <div class="stat-num">5+Yrs</div>
+            <div class="stat-label">Experience</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Why Choose Us</div>
+    <div class="section-title">The Ninja Home Care <span>Difference</span></div>
+    <div class="section-sub" style="margin:0 auto">We don't cut corners. We cut clean lines, healthy grass, and fair deals.</div>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-icon">01</div>
+        <h3>Locally Owned</h3>
+        <p>Born and raised in Edmonton. We understand the local climate, soil, and what your yard needs to thrive.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">02</div>
+        <h3>Reliable Service</h3>
+        <p>We show up on time, every time. Clear communication from quote to completion with no ghosting.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">03</div>
+        <h3>Fair Pricing</h3>
+        <p>Transparent quotes with no hidden fees. We deliver premium results at competitive Edmonton rates.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Get In Touch</div>
+    <div class="section-title">Ready to <span>Transform</span> Your Yard?</div>
+    <div class="section-sub">Get a free, no-obligation quote. We'll get back to you within 24 hours.</div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-item-icon">E</div>
+          <div>
+            <h4>Email Us</h4>
+            <p>NinjaHomeCare@gmail.com</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">P</div>
+          <div>
+            <h4>Call Us</h4>
+            <p>587-783-6343</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">L</div>
+          <div>
+            <h4>Location</h4>
+            <p>Serving Edmonton &amp; Surrounding Areas<br>Alberta, Canada</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">H</div>
+          <div>
+            <h4>Hours</h4>
+            <p>Mon - Sat: 7:00 AM - 7:00 PM<br>Sun: Closed</p>
+          </div>
+        </div>
+      </div>
+      <form class="contact-form" onsubmit="event.preventDefault();alert('Thank you! We will be in touch shortly.');">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <input type="tel" placeholder="Phone Number">
+        <textarea placeholder="Tell us about your project..." rows="5" required></textarea>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">NINJA<span>.</span> Home Care</div>
+  <ul class="footer-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-copy">&copy; 2026 Ninja Home Care. All rights reserved. Edmonton, Alberta.</div>
+</footer>
+
+<script>
+// Sticky nav
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)});
+
+// Mobile menu
+const hamburger=document.getElementById('hamburger');
+const navLinks=document.getElementById('navLinks');
+hamburger.addEventListener('click',()=>{navLinks.classList.toggle('open')});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
+</script>
+
+</body>
+</html>

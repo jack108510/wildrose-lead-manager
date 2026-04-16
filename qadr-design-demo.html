@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qadr Design &amp; Print | Graphic Design &amp; Printing in Edmonton</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--purple:#2D1B4E;--purple-dark:#1A0F30;--purple-mid:#3E2768;--gold:#D4A843;--gold-light:#E8C76A;--cream:#FAF7F2;--white:#fff;--text:#333;--text-light:#999}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;transition:background .3s,box-shadow .3s;padding:1rem 2rem}
+nav.scrolled{background:rgba(26,15,48,.97);box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:800;font-size:1.4rem;color:var(--white);text-decoration:none;letter-spacing:-.5px}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--white);transition:.3s}
+
+/* HERO */
+.hero{height:100vh;min-height:600px;background:url('assets/qadr-design/hero.jpg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(26,15,48,.82),rgba(45,27,78,.7))}
+.hero-content{position:relative;z-index:1;max-width:800px;padding:0 2rem}
+.hero-content h1{font-size:3.5rem;font-weight:900;color:var(--white);margin-bottom:1rem;letter-spacing:-1px;line-height:1.1}
+.hero-content h1 span{color:var(--gold)}
+.hero-content p{font-size:1.2rem;color:rgba(255,255,255,.8);margin-bottom:2.5rem;font-weight:300}
+.btn{display:inline-block;padding:.9rem 2.4rem;border-radius:50px;text-decoration:none;font-weight:600;font-size:.95rem;transition:.3s;cursor:pointer;border:none}
+.btn-gold{background:var(--gold);color:var(--purple-dark)}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 8px 25px rgba(212,168,67,.4)}
+.btn-outline{background:transparent;color:var(--white);border:2px solid rgba(255,255,255,.4);margin-left:1rem}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+
+/* SERVICES */
+.services{padding:6rem 2rem;background:var(--cream)}
+.section-header{text-align:center;margin-bottom:4rem}
+.section-header h2{font-size:2.4rem;font-weight:800;color:var(--purple-dark);margin-bottom:.5rem;letter-spacing:-.5px}
+.section-header p{color:var(--text-light);font-size:1.05rem}
+.section-header .accent-line{width:60px;height:3px;background:var(--gold);margin:1rem auto 0;border-radius:2px}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;max-width:1100px;margin:0 auto}
+.service-card{background:var(--white);border-radius:16px;padding:2.5rem 2rem;text-align:center;transition:.3s;border:1px solid rgba(0,0,0,.05)}
+.service-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(45,27,78,.1)}
+.service-icon{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,var(--purple),var(--purple-mid));display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem}
+.service-icon span{color:var(--gold);font-weight:800;font-size:1.3rem}
+.service-card h3{font-size:1.15rem;font-weight:700;color:var(--purple-dark);margin-bottom:.6rem}
+.service-card p{color:var(--text-light);font-size:.9rem;line-height:1.5}
+
+/* ABOUT */
+.about{padding:6rem 2rem;background:var(--white)}
+.about-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.about-img{border-radius:20px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.1)}
+.about-img img{width:100%;height:100%;object-fit:cover;display:block;min-height:400px}
+.about-text h2{font-size:2.4rem;font-weight:800;color:var(--purple-dark);margin-bottom:1rem;letter-spacing:-.5px}
+.about-text .accent-line{width:60px;height:3px;background:var(--gold);margin-bottom:1.5rem;border-radius:2px}
+.about-text p{color:#555;font-size:1rem;line-height:1.7;margin-bottom:1rem}
+
+/* WHY CHOOSE US */
+.why{padding:6rem 2rem;background:var(--purple-dark);color:var(--white)}
+.why .section-header h2{color:var(--white)}
+.why .section-header p{color:rgba(255,255,255,.6)}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;max-width:1100px;margin:0 auto}
+.why-card{text-align:center;padding:2rem 1.5rem}
+.why-icon{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem}
+.why-icon span{color:var(--gold);font-weight:700;font-size:1.1rem}
+.why-card h3{font-size:1.05rem;font-weight:600;margin-bottom:.4rem}
+.why-card p{font-size:.88rem;color:rgba(255,255,255,.55);line-height:1.5}
+
+/* CONTACT */
+.contact{padding:6rem 2rem;background:var(--cream)}
+.contact-inner{max-width:700px;margin:0 auto;text-align:center}
+.contact-inner h2{font-size:2.4rem;font-weight:800;color:var(--purple-dark);margin-bottom:.5rem;letter-spacing:-.5px}
+.contact-inner .accent-line{width:60px;height:3px;background:var(--gold);margin:1rem auto 0;border-radius:2px}
+.contact-inner>p{color:var(--text-light);margin:1.5rem 0 2.5rem;font-size:1.05rem}
+.contact-email{display:inline-flex;align-items:center;gap:.75rem;padding:1rem 2.5rem;background:var(--white);border-radius:50px;text-decoration:none;color:var(--purple-dark);font-weight:600;font-size:1.1rem;border:2px solid rgba(45,27,78,.1);transition:.3s}
+.contact-email:hover{border-color:var(--gold);box-shadow:0 8px 25px rgba(212,168,67,.2)}
+.contact-email .mail-icon{width:36px;height:36px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center}
+.contact-email .mail-icon span{color:var(--gold);font-weight:700;font-size:.85rem}
+
+/* FOOTER */
+footer{background:var(--purple-dark);padding:2.5rem 2rem;text-align:center;color:rgba(255,255,255,.5);font-size:.85rem}
+footer strong{color:var(--white);font-weight:600}
+
+/* RESPONSIVE */
+@media(max-width:968px){
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .why-grid{grid-template-columns:repeat(2,1fr)}
+  .about-inner{grid-template-columns:1fr;gap:2.5rem}
+  .about-img{max-width:500px;margin:0 auto}
+}
+@media(max-width:640px){
+  .nav-links{display:none;position:absolute;top:100%;left:0;width:100%;background:rgba(26,15,48,.97);flex-direction:column;padding:1.5rem 2rem;gap:1.2rem}
+  .nav-links.open{display:flex}
+  .hamburger{display:flex}
+  .hero-content h1{font-size:2.2rem}
+  .hero-content p{font-size:1rem}
+  .btn-outline{margin-left:0;margin-top:.75rem}
+  .services-grid{grid-template-columns:1fr;max-width:400px}
+  .why-grid{grid-template-columns:1fr;max-width:350px}
+  .section-header h2{font-size:1.8rem}
+  .about-text h2{font-size:1.8rem}
+  nav{padding:.8rem 1.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">QADR <span>Design</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Creative Design.<br>Professional <span>Print.</span></h1>
+    <p>Edmonton's trusted partner for graphic design, branding, and high-quality printing solutions.</p>
+    <a href="#services" class="btn btn-gold">Our Services</a>
+    <a href="#contact" class="btn btn-outline">Get a Quote</a>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-header">
+    <h2>What We Do</h2>
+    <p>From concept to print, we bring your vision to life.</p>
+    <div class="accent-line"></div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon"><span>L</span></div>
+      <h3>Logo Design</h3>
+      <p>Memorable, versatile logos that capture your brand's identity and leave a lasting impression.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><span>BC</span></div>
+      <h3>Business Cards</h3>
+      <p>Premium business cards with professional finishes that make every introduction count.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><span>FB</span></div>
+      <h3>Flyers &amp; Brochures</h3>
+      <p>Eye-catching marketing materials designed to engage your audience and drive results.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><span>BS</span></div>
+      <h3>Banners &amp; Signage</h3>
+      <p>Large-format prints and signage that demand attention and elevate your presence.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><span>CP</span></div>
+      <h3>Custom Printing</h3>
+      <p>Tailored print solutions for any project, from invitations to packaging and beyond.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><span>BI</span></div>
+      <h3>Brand Identity</h3>
+      <p>Complete branding packages that create a cohesive, professional look across all touchpoints.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-img">
+      <img src="assets/qadr-design/print.jpg" alt="Qadr Design and Print studio">
+    </div>
+    <div class="about-text">
+      <h2>About Qadr Design &amp; Print</h2>
+      <div class="accent-line"></div>
+      <p>Based in Edmonton, Alberta, Qadr Design &amp; Print is a creative studio dedicated to helping businesses stand out through exceptional design and print work.</p>
+      <p>We combine artistic vision with technical precision to deliver materials that look stunning and perform even better. Whether you need a single business card or a full brand overhaul, we approach every project with the same commitment to quality.</p>
+      <p>Our team works closely with each client to understand their goals, ensuring every piece we create is purposeful, polished, and on-brand.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="why" id="why">
+  <div class="section-header">
+    <h2>Why Choose Us</h2>
+    <p>Quality, creativity, and reliability in every project.</p>
+    <div class="accent-line"></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon"><span>Q</span></div>
+      <h3>Top Quality</h3>
+      <p>Premium materials and meticulous attention to detail in every print and design.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><span>F</span></div>
+      <h3>Fast Turnaround</h3>
+      <p>Efficient workflows that deliver your projects on time without sacrificing quality.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><span>C</span></div>
+      <h3>Custom Solutions</h3>
+      <p>Tailored designs built around your specific needs, audience, and brand goals.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><span>E</span></div>
+      <h3>Local &amp; Accessible</h3>
+      <p>Proudly Edmonton-based with personal service and direct communication.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <h2>Let's Work Together</h2>
+    <div class="accent-line"></div>
+    <p>Ready to bring your next project to life? Reach out and let's start the conversation.</p>
+    <a href="mailto:QadrDesignandPrint@gmail.com" class="contact-email">
+      <span class="mail-icon"><span>@</span></span>
+      QadrDesignandPrint@gmail.com
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Qadr Design &amp; Print</strong> &mdash; Edmonton, Alberta</p>
+  <p style="margin-top:.5rem">Professional graphic design and printing services.</p>
+</footer>
+
+<script>
+// Sticky nav
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)});
+
+// Mobile menu
+const hamburger=document.getElementById('hamburger');
+const links=document.getElementById('navLinks');
+hamburger.addEventListener('click',()=>{links.classList.toggle('open')});
+
+// Close mobile menu on link click
+links.querySelectorAll('a').forEach(a=>{a.addEventListener('click',()=>{links.classList.remove('open')})});
+</script>
+</body>
+</html>
