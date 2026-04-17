@@ -1,98 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sunset Maintenance Services | Red Deer AB</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sunset Maintenance Services - Janitorial Services Red Deer</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--teal:#00897B;--white:#FFFFFF;--blue:#4FC3F7;--dark:#004D40;--light:#E0F2F1}
-body{font-family:'Quicksand',sans-serif;background:var(--white);color:#333;background-image:radial-gradient(circle at 10% 20%,rgba(79,195,247,.06) 0%,transparent 40%),radial-gradient(circle at 90% 80%,rgba(0,137,123,.05) 0%,transparent 40%)}
-header{background:linear-gradient(135deg,var(--teal),var(--dark));padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(0,77,64,.2)}
-.logo{font-family:'Poppins',sans-serif;font-weight:800;color:var(--white);font-size:1.3rem}
-.logo span{color:var(--blue)}
-nav a{color:var(--white);text-decoration:none;margin-left:2rem;font-weight:600;transition:color .3s}
-nav a:hover{color:var(--blue)}
-.hero{background:linear-gradient(160deg,var(--dark) 0%,var(--teal) 60%,#26A69A 100%);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(79,195,247,.2),transparent 50%)}
-.hero::after{content:'';position:absolute;bottom:-50px;left:-50px;width:200px;height:200px;border-radius:50%;background:rgba(79,195,247,.08);animation:float 6s ease-in-out infinite}
-.hero h1{font-family:'Poppins',sans-serif;font-weight:800;color:var(--white);font-size:2.8rem;margin-bottom:.5rem;animation:fadeUp .8s}
-.hero p{color:rgba(255,255,255,.8);font-size:1.15rem;max-width:600px;margin:0 auto 2rem;line-height:1.7;animation:fadeUp .8s .15s both}
-.btn{display:inline-block;background:var(--blue);color:var(--dark);padding:1rem 2.5rem;border-radius:30px;text-decoration:none;font-weight:700;transition:all .3s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(79,195,247,.4)}
-.services{padding:4rem 2rem;max-width:1100px;margin:0 auto}
-.services h2{font-family:'Poppins',sans-serif;color:var(--teal);text-align:center;font-size:2rem;margin-bottom:.5rem}
-.section-sub{text-align:center;color:#888;margin-bottom:3rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
-.card{background:var(--white);border-radius:16px;padding:2rem;box-shadow:0 4px 20px rgba(0,137,123,.08);transition:all .4s cubic-bezier(.25,.8,.25,1);border:1px solid rgba(0,137,123,.08)}
-.card:hover{transform:translateY(-8px);box-shadow:0 15px 40px rgba(0,137,123,.15);border-color:var(--blue)}
-.card-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--teal),#26A69A);border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:1.2rem;margin-bottom:1rem}
-.card h3{color:var(--teal);margin-bottom:.4rem;font-family:'Poppins',sans-serif}
-.card p{color:#777;line-height:1.6;font-size:.93rem}
-.stats{background:linear-gradient(135deg,var(--teal),var(--dark));padding:3rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:3rem}
-.stat{text-align:center;color:var(--white)}
-.stat .num{font-family:'Poppins',sans-serif;font-weight:800;font-size:2.5rem;color:var(--blue)}
-.stat .label{font-size:.85rem;opacity:.7;margin-top:.2rem}
-.testimonial{padding:4rem 2rem;max-width:650px;margin:0 auto;text-align:center}
-.testimonial .quote{font-size:1.15rem;font-style:italic;color:var(--dark);line-height:1.8}
-.testimonial .author{color:var(--teal);font-weight:700;margin-top:1rem}
-.testimonial .role{color:#999;font-size:.85rem}
-.contact{background:var(--light);padding:4rem 2rem;text-align:center}
-.contact h2{font-family:'Poppins',sans-serif;color:var(--teal);font-size:2rem;margin-bottom:2rem}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-bottom:2rem}
-.contact-item{background:var(--white);padding:1.3rem 2rem;border-radius:12px;min-width:220px;box-shadow:0 2px 10px rgba(0,137,123,.06)}
-.contact-item strong{color:var(--teal);display:block;margin-bottom:.2rem}
-.contact-item a{color:var(--blue);text-decoration:none}
-footer{background:var(--dark);color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.8rem}
-footer a{color:var(--blue);text-decoration:none}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
-@media(max-width:768px){.hero h1{font-size:1.8rem}nav{display:none}}
-</style>
-</head>
-<body>
-<header>
-<div class="logo">SUNSET <span>MAINTENANCE</span></div>
-<nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
-</header>
-<section class="hero">
-<h1>Where Clean Meets Calm</h1>
-<p>Red Deer's trusted cleaning and maintenance team. We bring the shine so you can enjoy the sunset.</p>
-<a href="#contact" class="btn">Book Your Cleaning</a>
-</section>
-<section class="services" id="services">
-<h2>Our Services</h2>
-<p class="section-sub">Sparkling results, every single time.</p>
-<div class="grid">
-<div class="card"><div class="card-icon">RC</div><h3>Residential Cleaning</h3><p>Weekly, bi-weekly, or one-time deep cleans for homes of every size.</p></div>
-<div class="card"><div class="card-icon">CO</div><h3>Commercial Spaces</h3><p>Office buildings, retail stores, and warehouses kept spotless year-round.</p></div>
-<div class="card"><div class="card-icon">MO</div><h3>Move-Out Cleaning</h3><p>End-of-tenancy deep cleans that satisfy landlords and protect deposits.</p></div>
-<div class="card"><div class="card-icon">DC</div><h3>Deep Cleaning</h3><p>Behind-the-fridge, under-the-couch, baseboards-to-ceiling thorough.</p></div>
-<div class="card"><div class="card-icon">WD</div><h3>Window Cleaning</h3><p>Interior and exterior glass — streak-free and crystal clear.</p></div>
-<div class="card"><div class="card-icon">SN</div><h3>Snow Removal</h3><p>Winter property maintenance to keep your entrances safe and clear.</p></div>
+body{font-family:'Segoe UI',sans-serif;color:#444;background:#fff}
+.header{background:#e65100;color:#fff;padding:10px 30px;display:flex;justify-content:space-between;align-items:center;font-size:.9rem}
+.hero{background:linear-gradient(135deg,#e65100,#ff8f00);padding:80px 20px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:rgba(255,255,255,.05);border-radius:50%}
+.hero h1{font-size:2.8rem;margin-bottom:15px;font-weight:700}
+.hero p{font-size:1.15rem;max-width:500px;margin:0 auto 30px;opacity:.9}
+.hero-btn{background:#fff;color:#e65100;padding:15px 40px;text-decoration:none;font-weight:700;border-radius:6px;display:inline-block;font-size:1rem}
+.section{padding:60px 20px;max-width:900px;margin:0 auto}
+.section h2{font-size:1.8rem;color:#e65100;margin-bottom:20px}
+.section p{line-height:1.8;color:#666;margin-bottom:15px}
+.services-list{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:30px 0}
+.svc-item{background:#fff3e0;padding:20px;border-radius:8px;border-left:4px solid #e65100}
+.svc-item h3{color:#e65100;font-size:1rem;margin-bottom:5px}
+.svc-item p{font-size:.9rem;color:#666;line-height:1.5}
+.split{display:flex;gap:40px;margin-top:40px;align-items:center}
+.split img{width:100%;border-radius:8px;max-width:400px}
+.hours-box{background:#fff8e1;padding:25px;border-radius:8px;margin-top:30px;display:inline-block}
+.hours-box h3{color:#e65100;margin-bottom:10px}
+.hours-box table{width:100%}
+.hours-box td{padding:4px 15px;font-size:.9rem;color:#666}
+.contact-bar{background:#e65100;color:#fff;padding:40px 20px;text-align:center}
+.contact-bar h2{font-size:1.8rem;margin-bottom:15px}
+.contact-bar p{margin-bottom:8px;opacity:.9}
+</style></head><body>
+<div class="header">
+    <span>Sunset Maintenance Services</span>
+    <span>403-346-3465 | bmjserv@telus.net</span>
 </div>
-</section>
-<section class="stats">
-<div class="stat"><div class="num">12</div><div class="label">Years in Red Deer</div></div>
-<div class="stat"><div class="num">900+</div><div class="label">Recurring Clients</div></div>
-<div class="stat"><div class="num">100%</div><div class="label">Satisfaction Guarantee</div></div>
-<div class="stat"><div class="num">50+</div><div class="label">Team Members</div></div>
-</section>
-<section class="testimonial">
-<div class="quote">Our office has never looked better. The Sunset team is thorough, reliable, and always professional. They notice things we didn't even think to ask for. Absolute game-changer for our workspace.</div>
-<div class="author">Tanya W.</div>
-<div class="role">Office Manager, Downtown Red Deer</div>
-</section>
-<section class="contact" id="contact">
-<h2>Let's Get Your Space Clean</h2>
-<div class="contact-info">
-<div class="contact-item"><strong>Email</strong><a href="mailto:bmjserv@telus.net">bmjserv@telus.net</a></div>
-<div class="contact-item"><strong>Phone</strong><a href="tel:+14035550893">(403) 555-0893</a></div>
-<div class="contact-item"><strong>Location</strong>4520 48 Ave, Red Deer AB T4N 1R2</div>
+<div class="hero">
+    <h1>Keeping Red Deer's Businesses Sparkling</h1>
+    <p>We'll make your office and retail space spotless with our commercial and industrial cleaning services.</p>
+    <a href="tel:4033463465" class="hero-btn">Call 403-346-3465</a>
 </div>
-<a href="mailto:bmjserv@telus.net" class="btn">Request A Quote</a>
-</section>
-<footer>Powered by <a href="https://wildroseautomations.ca">Wildrose Automations</a></footer>
-</body>
-</html>
+<div class="section">
+    <h2>About Us</h2>
+    <p>Stop worrying about when you'll have time to clean your space and have Sunset Maintenance Services do it for you! Our top priority is to provide a clean and healthy environment for your employees and customers. We are dedicated to cleaning commercial and industrial properties to the highest standards using top quality cleaning products.</p>
+    <p>As a business owner, you need to concentrate on running your business, not worrying about how to make it clean. Sunset Maintenance Services has experience cleaning a variety of property types throughout Red Deer and the surrounding areas, including office spaces, stores, restaurants, schools and more.</p>
+</div>
+<div class="section">
+    <h2>Our Services</h2>
+    <div class="services-list">
+        <div class="svc-item"><h3>Janitorial Service</h3><p>Regular commercial cleaning tailored to your needs.</p></div>
+        <div class="svc-item"><h3>Floor Cleaning</h3><p>Deep cleaning for all floor types.</p></div>
+        <div class="svc-item"><h3>Construction Cleanups</h3><p>Post-construction cleaning services.</p></div>
+        <div class="svc-item"><h3>Floor Stripping & Refinishing</h3><p>Restore your floors to like-new condition.</p></div>
+        <div class="svc-item"><h3>Daily, Weekly, Monthly</h3><p>Flexible scheduling to suit your business.</p></div>
+        <div class="svc-item"><h3>Deep Cleaning</h3><p>Desks, cubicles, windows, washrooms, flooring and more.</p></div>
+    </div>
+</div>
+<div class="section" style="background:#fff8e1">
+    <h2>Business Hours</h2>
+    <div class="hours-box">
+        <table>
+            <tr><td>Monday - Friday</td><td>10:00 AM - 6:00 PM</td></tr>
+            <tr><td>Saturday - Sunday</td><td>Closed</td></tr>
+        </table>
+    </div>
+</div>
+<div class="contact-bar">
+    <h2>Contact Sunset Maintenance Services</h2>
+    <p>216-3722 57 Ave, Red Deer, AB T4N 4R7</p>
+    <p>403-346-3465 | bmjserv@telus.net</p>
+</div>
+<footer style="background:#1a1a1a;color:#888;padding:24px;text-align:center;font-size:13px;margin-top:auto;">
+        Powered by Wildrose Automations
+    </footer></body></html>

@@ -1,100 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Handyman YYC | Edmonton AB</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Franklin:wght@300;400;600;700&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Colsons Renovation & Repairs - Handyman YYC</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--brown:#3E2723;--cream:#FFF8F0;--orange:#E65100;--dark:#2C1A0E;--rust:#BF360C}
-body{font-family:'Libre Franklin',sans-serif;background:var(--cream);color:#333;background-image:linear-gradient(90deg,rgba(230,81,0,.03) 1px,transparent 1px),linear-gradient(rgba(230,81,0,.03) 1px,transparent 1px);background-size:30px 30px}
-header{background:var(--dark);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:4px solid var(--orange)}
-.logo{font-family:'Bebas Neue',cursive;color:var(--orange);font-size:2rem;letter-spacing:3px}
-.logo span{color:var(--cream);font-size:.6em;letter-spacing:1px;vertical-align:middle}
-nav a{color:var(--cream);text-decoration:none;margin-left:2rem;font-weight:600;transition:color .3s}
-nav a:hover{color:var(--orange)}
-.hero{background:linear-gradient(135deg,var(--dark) 0%,var(--brown) 50%,var(--rust) 100%);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(230,81,0,.15),transparent 60%)}
-.hero h1{font-family:'Bebas Neue',cursive;color:var(--cream);font-size:3.5rem;letter-spacing:2px;margin-bottom:.3rem;animation:zoomIn .6s}
-.hero .tagline{font-family:'Bebas Neue',cursive;color:var(--orange);font-size:1.5rem;letter-spacing:4px;margin-bottom:1.5rem;animation:zoomIn .6s .1s both}
-.hero p{color:rgba(255,248,240,.7);font-size:1.1rem;max-width:550px;margin:0 auto 2rem;line-height:1.7;animation:zoomIn .6s .2s both}
-.btn{display:inline-block;background:var(--orange);color:#fff;padding:1rem 2.5rem;text-decoration:none;font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:2px;border-radius:2px;transition:all .3s}
-.btn:hover{transform:scale(1.05);box-shadow:0 8px 30px rgba(230,81,0,.5)}
-.services{padding:4rem 2rem;max-width:1100px;margin:0 auto}
-.services h2{font-family:'Bebas Neue',cursive;color:var(--brown);font-size:2.2rem;text-align:center;letter-spacing:2px;margin-bottom:.5rem}
-.section-sub{text-align:center;color:#888;margin-bottom:3rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
-.card{background:#fff;border-radius:6px;padding:2rem;box-shadow:0 3px 15px rgba(62,39,35,.06);transition:all .4s;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--orange);transform:scaleY(0);transition:transform .3s;transform-origin:bottom}
-.card:hover::before{transform:scaleY(1)}
-.card:hover{transform:translateY(-6px);box-shadow:0 15px 35px rgba(62,39,35,.12)}
-.card-icon{width:45px;height:45px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Bebas Neue',cursive;font-size:1.3rem;margin-bottom:1rem}
-.card h3{color:var(--brown);margin-bottom:.4rem}
-.card p{color:#777;line-height:1.6;font-size:.93rem}
-.stats{background:var(--dark);padding:3rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:3rem}
-.stat{text-align:center;color:var(--cream)}
-.stat .num{font-family:'Bebas Neue',cursive;font-size:3rem;color:var(--orange)}
-.stat .label{font-size:.85rem;opacity:.7;margin-top:.2rem}
-.testimonial{padding:4rem 2rem;max-width:650px;margin:0 auto;text-align:center}
-.testimonial .quote{font-size:1.15rem;font-style:italic;color:var(--brown);line-height:1.8}
-.testimonial .author{color:var(--orange);font-weight:700;margin-top:1rem}
-.testimonial .role{color:#999;font-size:.85rem}
-.contact{background:#EFEBE9;padding:4rem 2rem;text-align:center}
-.contact h2{font-family:'Bebas Neue',cursive;color:var(--brown);font-size:2.2rem;letter-spacing:2px;margin-bottom:2rem}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-bottom:2rem}
-.contact-item{background:#fff;padding:1.3rem 2rem;border-radius:6px;min-width:220px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.contact-item strong{color:var(--brown);display:block;margin-bottom:.2rem}
-.contact-item a{color:var(--orange);text-decoration:none}
-footer{background:var(--dark);color:rgba(255,248,240,.5);text-align:center;padding:1.2rem;font-size:.8rem}
-footer a{color:var(--orange);text-decoration:none}
-@keyframes zoomIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-@media(max-width:768px){.hero h1{font-size:2.2rem}nav{display:none}}
-</style>
-</head>
-<body>
-<header>
-<div class="logo">HANDYMAN <span>YYC</span></div>
-<nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
-</header>
-<section class="hero">
-<h1>YOUR HOME. OUR HANDS.</h1>
-<div class="tagline">EDMONTON'S GO-TO HANDYMAN TEAM</div>
-<p>Fast, affordable, no-nonsense home repairs and improvements. We show up, we do quality work, we leave your home better than we found it.</p>
-<a href="#contact" class="btn">BOOK TODAY</a>
-</section>
-<section class="services" id="services">
-<h2>WHAT WE DO</h2>
-<p class="section-sub">Every fix, every upgrade — handled.</p>
-<div class="grid">
-<div class="card"><div class="card-icon">FA</div><h3>Faucet & Fixture Install</h3><p>New kitchen faucets, bathroom fixtures, and plumbing upgrades done right.</p></div>
-<div class="card"><div class="card-icon">DW</div><h3>Drywall Repair</h3><p>Holes, cracks, and water damage patched seamless — invisible results.</p></div>
-<div class="card"><div class="card-icon">TN</div><h3>Trim & Moulding</h3><p>Baseboards, casing, crown moulding — installed tight and clean.</p></div>
-<div class="card"><div class="card-icon">SH</div><h3>Shelf & Storage</h3><p>Custom shelving, closet systems, and garage storage solutions.</p></div>
-<div class="card"><div class="card-icon">PT</div><h3>Interior Painting</h3><p>Rooms, accent walls, trim, and ceilings painted with precision edges.</p></div>
-<div class="card"><div class="card-icon">EX</div><h3>Exterior Repairs</h3><p>Siding patches, soffit repair, deck boards, and fence fixes.</p></div>
+body{font-family:'Segoe UI',sans-serif;color:#333;background:#fff}
+.nav-top{background:#0d1b2a;padding:12px 30px;display:flex;justify-content:space-between;align-items:center}
+.nav-top .info{color:#a0aec0;font-size:.85rem}
+.nav-top .info a{color:#4299e1;text-decoration:none}
+.nav-main{background:#fff;padding:15px 30px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:100}
+.nav-main img{height:55px}
+.nav-links a{color:#0d1b2a;text-decoration:none;margin-left:22px;font-weight:600;font-size:.9rem;text-transform:uppercase}
+.hero{background:linear-gradient(rgba(13,27,42,.75),rgba(13,27,42,.85)),url('assets/handyman-yyc/img1.jpg') center/cover;padding:100px 20px;text-align:center;color:#fff}
+.hero h2{font-size:2.8rem;margin-bottom:10px;font-weight:800}
+.hero .sub{font-size:1.2rem;opacity:.85;max-width:550px;margin:0 auto 25px}
+.hero .tag{display:inline-block;background:#4299e1;padding:8px 20px;border-radius:20px;font-size:.85rem;margin-bottom:20px}
+.section{padding:70px 20px;max-width:1100px;margin:0 auto}
+.sec-title{font-size:1.8rem;color:#0d1b2a;margin-bottom:30px;position:relative;padding-bottom:12px}
+.sec-title::after{content:'';position:absolute;bottom:0;left:0;width:50px;height:3px;background:#4299e1}
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.svc-card{background:#f7fafc;padding:30px 20px;border-radius:8px;text-align:center;border:1px solid #e2e8f0}
+.svc-card h3{color:#0d1b2a;margin-bottom:10px;font-size:1rem}
+.svc-card p{color:#718096;font-size:.9rem;line-height:1.6}
+.about-split{display:flex;gap:50px;align-items:center}
+.about-split .text{flex:1}
+.about-split .photo{flex:1}
+.about-split .photo img{width:100%;border-radius:8px}
+.trust-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:25px;margin-top:25px}
+.trust-item{display:flex;gap:15px;align-items:flex-start}
+.trust-icon{width:40px;height:40px;background:#ebf8ff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#4299e1;font-weight:700;flex-shrink:0}
+.trust-item h4{color:#0d1b2a;margin-bottom:3px}
+.trust-item p{color:#718096;font-size:.9rem;line-height:1.5}
+.cta-bar{background:#0d1b2a;padding:50px 20px;text-align:center;color:#fff}
+.cta-bar h2{font-size:2rem;margin-bottom:15px}
+.cta-bar p{opacity:.8;margin-bottom:25px}
+.cta-bar a{background:#4299e1;color:#fff;padding:14px 35px;text-decoration:none;border-radius:5px;font-weight:700;display:inline-block}
+.contact-info{display:flex;justify-content:center;gap:40px;background:#f7fafc;padding:30px;flex-wrap:wrap}
+.contact-info div strong{color:#0d1b2a;display:block;margin-bottom:3px}
+.contact-info div{color:#718096;font-size:.95rem}
+</style></head><body>
+<div class="nav-top">
+    <div class="info">(403) 830-4657 | Monday - Friday 9:00 - 17:00</div>
+    <div class="info"><a href="mailto:info@handymanyyc.ca">info@handymanyyc.ca</a></div>
 </div>
-</section>
-<section class="stats">
-<div class="stat"><div class="num">6</div><div class="label">Years in Business</div></div>
-<div class="stat"><div class="num">1,400+</div><div class="label">Happy Customers</div></div>
-<div class="stat"><div class="num">$0</div><div class="label">Hidden Fees — Ever</div></div>
-<div class="stat"><div class="num">24HR</div><div class="label">Quote Turnaround</div></div>
-</section>
-<section class="testimonial">
-<div class="quote">I had a list of 12 small things that had been bugging me for months. Handyman YYC knocked out every single one in a single afternoon. Fair price, zero hassle. I've already told three neighbors.</div>
-<div class="author">Ryan D.</div>
-<div class="role">Homeowner, Mill Woods</div>
-</section>
-<section class="contact" id="contact">
-<h2>GET IT FIXED</h2>
-<div class="contact-info">
-<div class="contact-item"><strong>Email</strong><a href="mailto:info@handymanyyc.ca">info@handymanyyc.ca</a></div>
-<div class="contact-item"><strong>Phone</strong><a href="tel:+17805550517">(780) 555-0517</a></div>
-<div class="contact-item"><strong>Location</strong>2345 66 St NW, Edmonton AB T6L 1Y2</div>
+<div class="nav-main">
+    <img src="assets/handyman-yyc/logo.png" alt="Colsons Renovation">
+    <div class="nav-links">
+        <a href="#about">About</a><a href="#services">Services</a><a href="#contact">Contact</a>
+    </div>
 </div>
-<a href="mailto:info@handymanyyc.ca" class="btn">SEND A MESSAGE</a>
-</section>
-<footer>Powered by <a href="https://wildroseautomations.ca">Wildrose Automations</a></footer>
-</body>
-</html>
+<div class="hero">
+    <div class="tag">Licensed, Bonded & Insured</div>
+    <h2>Colsons Renovation & Repairs</h2>
+    <p class="sub">Our team of professionals will help you turn your project into a reality fast.</p>
+</div>
+<div id="about" class="section">
+    <div class="about-split">
+        <div class="text">
+            <div class="sec-title">Who We Are</div>
+            <p style="line-height:1.8;color:#4a5568;margin-bottom:20px">With more than 20 years of experience in the industry, Colsons General Contracting delivers service that is fast, guaranteed and affordable. We are a licensed, bonded and insured company that delivers quality you can trust and service you can rely on.</p>
+            <div class="trust-grid">
+                <div class="trust-item"><div class="trust-icon">Q</div><div><h4>We Deliver Quality</h4><p>Quality you can trust and service you can rely on.</p></div></div>
+                <div class="trust-item"><div class="trust-icon">T</div><div><h4>Always On Time</h4><p>Consistent, punctual, superior workmanship.</p></div></div>
+                <div class="trust-item"><div class="trust-icon">C</div><div><h4>Clear Communication</h4><p>Constant communication ensuring above-expectation results.</p></div></div>
+                <div class="trust-item"><div class="trust-icon">20</div><div><h4>20+ Years Experience</h4><p>Industry expertise you can count on.</p></div></div>
+            </div>
+        </div>
+        <div class="photo"><img src="assets/handyman-yyc/img2.jpg" alt="Colsons work"></div>
+    </div>
+</div>
+<div id="services" class="section" style="background:#f7fafc">
+    <div class="sec-title">What We Offer</div>
+    <div class="services">
+        <div class="svc-card"><h3>Commercial Services</h3><p>Office, retail space, rental property improvements.</p></div>
+        <div class="svc-card"><h3>Residential Services</h3><p>Complete interior and exterior renovation.</p></div>
+        <div class="svc-card"><h3>Handyman Services</h3><p>Plumbing fixtures, humidifiers, and general repairs.</p></div>
+        <div class="svc-card"><h3>Basement Development</h3><p>Full basement finishing and remodeling.</p></div>
+    </div>
+</div>
+<div class="cta-bar">
+    <h2>Work With Us</h2>
+    <p>Contact us today for a free estimate on your project.</p>
+    <a href="tel:4038304657">Call (403) 830-4657</a>
+</div>
+<div id="contact" class="contact-info">
+    <div><strong>Phone</strong>(403) 830-4657</div>
+    <div><strong>Email</strong>info@handymanyyc.ca</div>
+    <div><strong>Location</strong>Calgary, AB</div>
+</div>
+<footer style="background:#1a1a1a;color:#888;padding:24px;text-align:center;font-size:13px;margin-top:auto;">
+        Powered by Wildrose Automations
+    </footer></body></html>

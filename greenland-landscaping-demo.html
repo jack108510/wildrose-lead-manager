@@ -1,96 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greenland Landscaping Ltd | Edmonton AB</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Rubik:wght@300;400;500;600&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Greenland Landscaping Ltd. - Edmonton, Alberta</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--green:#2E7D32;--sage:#F1F8E9;--gold:#F9A825;--dark:#1B5E20;--earth:#795548}
-body{font-family:'Rubik',sans-serif;background:var(--sage);color:#333;background-image:linear-gradient(0deg,transparent 49%,rgba(46,125,50,.04) 50%,transparent 51%),linear-gradient(90deg,transparent 49%,rgba(46,125,50,.04) 50%,transparent 51%);background-size:40px 40px}
-header{background:linear-gradient(90deg,var(--dark),var(--green));padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 15px rgba(27,94,32,.2)}
-.logo{font-family:'Lora',serif;font-weight:700;color:#fff;font-size:1.4rem}
-.logo span{color:var(--gold)}
-nav a{color:#fff;text-decoration:none;margin-left:2rem;font-weight:500;transition:color .3s}
-nav a:hover{color:var(--gold)}
-.hero{background:linear-gradient(170deg,#0A2E0C,var(--dark),var(--green));padding:5rem 2rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(249,168,37,.1),transparent 60%)}
-.hero h1{font-family:'Lora',serif;font-weight:700;color:#fff;font-size:2.6rem;margin-bottom:.5rem;animation:fadeUp .7s}
-.hero p{color:rgba(255,255,255,.8);font-size:1.1rem;max-width:580px;margin:0 auto 2rem;line-height:1.7;animation:fadeUp .7s .15s both}
-.btn{display:inline-block;background:var(--gold);color:var(--dark);padding:1rem 2.5rem;border-radius:8px;text-decoration:none;font-weight:600;transition:all .3s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(249,168,37,.4)}
-.services{padding:4rem 2rem;max-width:1100px;margin:0 auto}
-.services h2{font-family:'Lora',serif;color:var(--green);text-align:center;font-size:2rem;margin-bottom:.5rem}
-.section-sub{text-align:center;color:#888;margin-bottom:3rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
-.card{background:#fff;border-radius:12px;padding:2rem;box-shadow:0 3px 15px rgba(46,125,50,.06);transition:all .4s;border-bottom:4px solid var(--green)}
-.card:hover{transform:translateY(-6px);box-shadow:0 12px 35px rgba(46,125,50,.12);border-bottom-color:var(--gold)}
-.card-icon{width:48px;height:48px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:1rem;margin-bottom:1rem}
-.card h3{color:var(--green);margin-bottom:.4rem;font-family:'Lora',serif}
-.card p{color:#777;line-height:1.6;font-size:.93rem}
-.stats{background:var(--dark);padding:3rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:3rem}
-.stat{text-align:center;color:#fff}
-.stat .num{font-family:'Lora',serif;font-weight:700;font-size:2.5rem;color:var(--gold)}
-.stat .label{font-size:.85rem;opacity:.7;margin-top:.2rem}
-.testimonial{padding:4rem 2rem;max-width:650px;margin:0 auto;text-align:center}
-.testimonial .quote{font-size:1.15rem;font-style:italic;color:var(--dark);line-height:1.8}
-.testimonial .author{color:var(--green);font-weight:700;margin-top:1rem}
-.testimonial .role{color:#999;font-size:.85rem}
-.contact{background:#fff;padding:4rem 2rem;text-align:center}
-.contact h2{font-family:'Lora',serif;color:var(--green);font-size:2rem;margin-bottom:2rem}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-bottom:2rem}
-.contact-item{background:var(--sage);padding:1.3rem 2rem;border-radius:10px;min-width:220px;box-shadow:0 2px 8px rgba(46,125,50,.05)}
-.contact-item strong{color:var(--green);display:block;margin-bottom:.2rem}
-.contact-item a{color:var(--gold);text-decoration:none}
-footer{background:var(--dark);color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.8rem}
-footer a{color:var(--gold);text-decoration:none}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:768px){.hero h1{font-size:1.8rem}nav{display:none}}
-</style>
-</head>
-<body>
-<header>
-<div class="logo">Greenland <span>Landscaping</span></div>
-<nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
-</header>
-<section class="hero">
-<h1>Your Yard Is Our Canvas</h1>
-<p>Full-service landscaping for Edmonton homes and businesses. From design to installation to ongoing maintenance — Greenland transforms outdoor spaces.</p>
-<a href="#contact" class="btn">Transform Your Yard</a>
-</section>
-<section class="services" id="services">
-<h2>Landscaping Services</h2>
-<p class="section-sub">From soil to sky, we've got your outdoor space covered.</p>
-<div class="grid">
-<div class="card"><div class="card-icon">LD</div><h3>Landscape Design</h3><p>Custom 3D plans tailored to your property, lifestyle, and budget.</p></div>
-<div class="card"><div class="card-icon">SL</div><h3>Sod & Seeding</h3><p>New lawn installation with premium sod or hydroseeding for instant green.</p></div>
-<div class="card"><div class="card-icon">TR</div><h3>Tree Planting</h3><p>Expert tree and shrub selection, placement, and planting for Alberta climate.</p></div>
-<div class="card"><div class="card-icon">GD</div><h3>Garden Beds</h3><p>Raised beds, flower gardens, and perennial installations that bloom year after year.</p></div>
-<div class="card"><div class="card-icon">IR</div><h3>Irrigation Systems</h3><p>Smart sprinkler systems designed for efficient water use on your property.</p></div>
-<div class="card"><div class="card-icon">MS</div><h3>Maintenance Plans</h3><p>Weekly mowing, seasonal cleanup, and ongoing care to keep it looking sharp.</p></div>
+body{font-family:'Segoe UI',sans-serif;color:#3d3d3d;background:#fff}
+.top-nav{background:#252525;padding:10px 30px;display:flex;justify-content:space-between;align-items:center}
+.top-nav a{color:#fff;text-decoration:none;font-size:.85rem;margin-right:15px}
+.top-nav .phone{color:#7cb342;font-weight:700;font-size:1rem}
+.main-header{padding:15px 30px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:3px solid #7cb342;position:sticky;top:0;z-index:100}
+.main-header img{height:55px}
+.main-header nav a{color:#333;text-decoration:none;margin-left:20px;font-weight:600}
+.hero{background:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.6)),url('assets/greenland-landscaping/img2.jpg') center/cover;padding:100px 20px;text-align:center;color:#fff}
+.hero h1{font-size:2.8rem;margin-bottom:10px}
+.hero h1 span{color:#7cb342}
+.hero .sub{font-size:1.1rem;opacity:.85;margin-bottom:25px}
+.hero-btn{display:inline-block;background:#7cb342;color:#fff;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:5px;font-size:1rem}
+.section{padding:70px 20px;max-width:1100px;margin:0 auto}
+.section h2{font-size:1.8rem;color:#558b2f;margin-bottom:25px}
+.section p{line-height:1.8;color:#666;margin-bottom:15px}
+.services-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:30px}
+.svc{background:#f1f8e9;padding:30px 20px;border-radius:8px;text-align:center;border-bottom:3px solid #7cb342}
+.svc h3{color:#558b2f;margin-bottom:8px;font-size:1rem}
+.svc p{color:#777;font-size:.9rem}
+.about-split{display:flex;gap:50px;align-items:center}
+.about-split>div{flex:1}
+.about-split img{width:100%;border-radius:8px}
+.cta-green{background:#7cb342;padding:50px 20px;text-align:center;color:#fff}
+.cta-green h2{font-size:2rem;margin-bottom:15px}
+.cta-green p{margin-bottom:20px;opacity:.9}
+.cta-green a{background:#fff;color:#558b2f;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:5px;display:inline-block}
+.contact-bar{background:#252525;color:#fff;padding:30px;display:flex;justify-content:space-around;flex-wrap:wrap}
+.contact-bar div{text-align:center}
+.contact-bar strong{color:#7cb342;display:block;margin-bottom:5px}
+</style></head><body>
+<div class="top-nav">
+    <div>
+        <a href="#">Home</a><a href="#">About</a><a href="#">Services</a><a href="#">Contact</a>
+    </div>
+    <div class="phone">(780) 729-7908</div>
 </div>
-</section>
-<section class="stats">
-<div class="stat"><div class="num">25</div><div class="label">Years in Edmonton</div></div>
-<div class="stat"><div class="num">1,200+</div><div class="label">Yards Transformed</div></div>
-<div class="stat"><div class="num">40+</div><div class="label">Crew Members</div></div>
-<div class="stat"><div class="num">5-Star</div><div class="label">Google Rating</div></div>
-</section>
-<section class="testimonial">
-<div class="quote">Our corner lot was an embarrassing weed patch for years. Greenland came in, designed a full plan, and now we have the nicest yard on the block. Neighbors stop to compliment it weekly.</div>
-<div class="author">Amanda & Rick S.</div>
-<div class="role">Homeowners, Leduc</div>
-</section>
-<section class="contact" id="contact">
-<h2>Let's Green Your Space</h2>
-<div class="contact-info">
-<div class="contact-item"><strong>Email</strong><a href="mailto:greenlandcontracting79@gmail.com">greenlandcontracting79@gmail.com</a></div>
-<div class="contact-item"><strong>Phone</strong><a href="tel:+17805550821">(780) 555-0821</a></div>
-<div class="contact-item"><strong>Location</strong>9540 63 Ave NW, Edmonton AB T6E 0G6</div>
+<div class="main-header">
+    <img src="assets/greenland-landscaping/logo.png" alt="Greenland Landscaping">
+    <nav><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
 </div>
-<a href="mailto:greenlandcontracting79@gmail.com" class="btn">Get A Free Estimate</a>
-</section>
-<footer>Powered by <a href="https://wildroseautomations.ca">Wildrose Automations</a></footer>
-</body>
-</html>
+<div class="hero">
+    <h1>We Are a One-Stop-Shop for All Your <span>Landscaping Needs</span></h1>
+    <div class="sub">Offering commercial and residential landscaping services across Edmonton and the surrounding areas.</div>
+    <a href="tel:7807297908" class="hero-btn">Get a Free Estimate</a>
+</div>
+<div id="services" class="section">
+    <h2>Our Services</h2>
+    <div class="services-row">
+        <div class="svc"><h3>Lawn Replacement</h3><p>Complete lawn restoration and sodding.</p></div>
+        <div class="svc"><h3>Paving Stones</h3><p>Patios, walkways, and driveways.</p></div>
+        <div class="svc"><h3>Retaining Walls</h3><p>Functional and decorative walls.</p></div>
+        <div class="svc"><h3>Trees & Shrubs</h3><p>Planting and landscape design.</p></div>
+    </div>
+</div>
+<div id="about" class="section">
+    <div class="about-split">
+        <div>
+            <h2>About Greenland Landscaping</h2>
+            <p>We are a fully licensed and insured company established in 1999. Greenland Landscaping Ltd. is operated out of Edmonton. We are a one-stop shop for all your landscaping needs, dedicated to providing excellent services that meet your expectations.</p>
+        </div>
+        <img src="assets/greenland-landscaping/img1.png" alt="Greenland Landscaping work">
+    </div>
+</div>
+<div class="cta-green">
+    <h2>For a Free Estimate, Contact Greenland Landscaping</h2>
+    <p>Lawn Replacement - Paving Stones - Patios - Firepits - Sodding - Grading - Trees - Rocks - Window Wells - Bobcat and much more</p>
+    <a href="tel:7807297908">Call (780) 729-7908</a>
+</div>
+<div id="contact" class="contact-bar">
+    <div><strong>Phone</strong>(780) 729-7908</div>
+    <div><strong>Email</strong>greenlandcontracting79@gmail.com</div>
+    <div><strong>Location</strong>Edmonton, AB</div>
+</div>
+<footer style="background:#1a1a1a;color:#888;padding:24px;text-align:center;font-size:13px;margin-top:auto;">
+        Powered by Wildrose Automations
+    </footer></body></html>

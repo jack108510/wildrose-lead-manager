@@ -1,98 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Clean Getaway | Red Deer AB</title>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Clean Getaway - Alberta's Event Take-Down Experts</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--teal:#00897B;--white:#FFFFFF;--blue:#4FC3F7;--dark:#004D40;--light:#E0F2F1}
-body{font-family:'DM Sans',sans-serif;background:var(--white);color:#333;background-image:radial-gradient(ellipse at 0% 0%,rgba(79,195,247,.08) 0%,transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(0,137,123,.06) 0%,transparent 50%)}
-header{background:linear-gradient(135deg,var(--teal),#26A69A);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 15px rgba(0,77,64,.15)}
-.logo{color:var(--white);font-size:1.3rem}
-.logo .script{font-family:'Dancing Script',cursive;font-size:1.6rem;font-weight:700}
-.logo .sans{font-family:'DM Sans',sans-serif;font-weight:600;font-size:.85rem;letter-spacing:3px;text-transform:uppercase;opacity:.8}
-nav a{color:var(--white);text-decoration:none;margin-left:2rem;font-weight:600;transition:color .3s}
-nav a:hover{color:var(--blue)}
-.hero{background:linear-gradient(170deg,#003D33,var(--teal));padding:5rem 2rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:250px;height:250px;border-radius:50%;background:rgba(79,195,247,.08)}
-.hero::after{content:'';position:absolute;bottom:-30px;left:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.04)}
-.hero h1{font-family:'Dancing Script',cursive;color:var(--white);font-size:3rem;margin-bottom:.5rem;animation:fadeUp .7s}
-.hero p{color:rgba(255,255,255,.8);font-size:1.1rem;max-width:550px;margin:0 auto 2rem;line-height:1.7;animation:fadeUp .7s .15s both}
-.btn{display:inline-block;background:var(--blue);color:var(--dark);padding:1rem 2.5rem;border-radius:30px;text-decoration:none;font-weight:700;transition:all .3s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(79,195,247,.4)}
-.services{padding:4rem 2rem;max-width:1100px;margin:0 auto}
-.services h2{color:var(--teal);text-align:center;font-size:2rem;margin-bottom:.5rem;font-weight:700}
-.section-sub{text-align:center;color:#888;margin-bottom:3rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
-.card{background:var(--white);border-radius:20px;padding:2rem;box-shadow:0 4px 20px rgba(0,137,123,.07);transition:all .4s;border:1px solid rgba(0,137,123,.06)}
-.card:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 15px 40px rgba(0,137,123,.13);border-color:var(--blue)}
-.card-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--teal),#4DB6AC);border-radius:15px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;margin-bottom:1rem}
-.card h3{color:var(--teal);margin-bottom:.4rem;font-weight:700}
-.card p{color:#777;line-height:1.6;font-size:.93rem}
-.stats{background:linear-gradient(135deg,var(--dark),var(--teal));padding:3rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:3rem}
-.stat{text-align:center;color:var(--white)}
-.stat .num{font-size:2.5rem;font-weight:700;color:var(--blue)}
-.stat .label{font-size:.85rem;opacity:.7;margin-top:.2rem}
-.testimonial{padding:4rem 2rem;max-width:650px;margin:0 auto;text-align:center}
-.testimonial .quote{font-size:1.15rem;font-style:italic;color:var(--dark);line-height:1.8}
-.testimonial .author{color:var(--teal);font-weight:700;margin-top:1rem}
-.testimonial .role{color:#999;font-size:.85rem}
-.contact{background:var(--light);padding:4rem 2rem;text-align:center}
-.contact h2{color:var(--teal);font-size:2rem;margin-bottom:2rem;font-weight:700}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-bottom:2rem}
-.contact-item{background:var(--white);padding:1.3rem 2rem;border-radius:15px;min-width:220px;box-shadow:0 2px 10px rgba(0,137,123,.05)}
-.contact-item strong{color:var(--teal);display:block;margin-bottom:.2rem}
-.contact-item a{color:var(--blue);text-decoration:none}
-footer{background:var(--dark);color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.8rem}
-footer a{color:var(--blue);text-decoration:none}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:768px){.hero h1{font-size:2rem}nav{display:none}}
-</style>
-</head>
-<body>
-<header>
-<div class="logo"><span class="script">The Clean Getaway</span><br><span class="sans">Cleaning Services</span></div>
-<nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
-</header>
-<section class="hero">
-<h1>Escape the Mess. We Handle the Rest.</h1>
-<p>Red Deer's friendliest cleaning service. Whether it's your home, your Airbnb, or your office — we make spaces shine while you focus on what matters.</p>
-<a href="#contact" class="btn">Book Your Clean Getaway</a>
-</section>
-<section class="services" id="services">
-<h2>What We Clean</h2>
-<p class="section-sub">Every space deserves a fresh start.</p>
-<div class="grid">
-<div class="card"><div class="card-icon">HO</div><h3>Home Cleaning</h3><p>Regular and deep cleaning for houses, condos, and apartments across Red Deer.</p></div>
-<div class="card"><div class="card-icon">AB</div><h3>Airbnb Turnover</h3><p>Fast, thorough turnovers between guests — linens, restocking, and deep clean included.</p></div>
-<div class="card"><div class="card-icon">OF</div><h3>Office Cleaning</h3><p>Professional workspace cleaning after hours so your team arrives to freshness.</p></div>
-<div class="card"><div class="card-icon">MV</div><h3>Move In/Out</h3><p>End-of-lease or pre-move deep cleaning that makes transitions stress-free.</p></div>
-<div class="card"><div class="card-icon">PO</div><h3>Post-Construction</h3><p>Dust, debris, and residue removal after renovations and builds.</p></div>
-<div class="card"><div class="card-icon">SC</div><h3>Scheduled Plans</h3><p>Weekly, bi-weekly, or monthly — lock in your clean schedule and forget about it.</p></div>
+body{font-family:Georgia,serif;color:#e0e0e0;background:#373435}
+.nav{padding:20px 30px;display:flex;align-items:center;justify-content:space-between}
+.nav img{height:60px}
+.nav-links a{color:#d4a853;text-decoration:none;margin-left:20px;font-size:.9rem;text-transform:uppercase;letter-spacing:1px}
+.hero{text-align:center;padding:100px 20px;background:linear-gradient(rgba(55,52,53,.3),rgba(55,52,53,.8))}
+.hero h1{font-size:2.5rem;color:#d4a853;margin-bottom:15px;font-weight:400}
+.hero p{font-size:1.2rem;color:#ccc;max-width:500px;margin:0 auto 30px;font-style:italic}
+.hero-btn{display:inline-block;background:#d4a853;color:#373435;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:3px;font-size:1rem}
+.section{padding:70px 30px;max-width:900px;margin:0 auto}
+.section h2{font-size:1.8rem;color:#d4a853;margin-bottom:25px;text-align:center}
+.section p{line-height:1.8;color:#bbb;text-align:center;max-width:650px;margin:0 auto 20px}
+.services-list{max-width:600px;margin:30px auto}
+.services-list li{list-style:none;padding:15px 0;border-bottom:1px solid #4a4748;color:#ccc}
+.services-list li strong{color:#d4a853}
+.gallery-row{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin:30px 0}
+.gallery-row img{height:200px;border-radius:6px;object-fit:cover}
+.cta{background:#d4a853;padding:50px 20px;text-align:center;color:#373435}
+.cta h2{font-size:2rem;margin-bottom:15px}
+.cta p{margin-bottom:20px;font-size:1.05rem}
+.cta a{background:#373435;color:#d4a853;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:3px;display:inline-block}
+.contact-footer{background:#2a2728;padding:30px;text-align:center}
+.contact-footer p{color:#999;margin:5px 0}
+.contact-footer a{color:#d4a853;text-decoration:none}
+</style></head><body>
+<div class="nav">
+    <img src="assets/clean-getaway/logo.png" alt="The Clean Getaway">
+    <div class="nav-links"><a href="#services">Services</a><a href="#contact">Contact</a></div>
 </div>
-</section>
-<section class="stats">
-<div class="stat"><div class="num">7</div><div class="label">Years Serving Red Deer</div></div>
-<div class="stat"><div class="num">800+</div><div class="label">Happy Clients</div></div>
-<div class="stat"><div class="num">4.9</div><div class="label">Google Stars</div></div>
-<div class="stat"><div class="num">24HR</div><div class="label">Booking Response</div></div>
-</section>
-<section class="testimonial">
-<div class="quote">I run three Airbnbs in Red Deer and Michelle's team is the reason my reviews are consistently 5 stars. They're detail-oriented, fast, and my guests always comment on how spotless everything is. Absolute lifesaver.</div>
-<div class="author">James T.</div>
-<div class="role">Airbnb Superhost, Red Deer</div>
-</section>
-<section class="contact" id="contact">
-<h2>Ready for a Clean Getaway?</h2>
-<div class="contact-info">
-<div class="contact-item"><strong>Email</strong><a href="mailto:michelle@thecleangetaway.ca">michelle@thecleangetaway.ca</a></div>
-<div class="contact-item"><strong>Phone</strong><a href="tel:+14035550415">(403) 555-0415</a></div>
-<div class="contact-item"><strong>Location</strong>22 Ross St, Red Deer AB T4N 1T3</div>
+<div class="hero">
+    <h1>Alberta's Event Take-Down Experts</h1>
+    <p>Bringing down the house, so you don't have to!</p>
+    <a href="#contact" class="hero-btn">Get a Custom Quote</a>
 </div>
-<a href="mailto:michelle@thecleangetaway.ca" class="btn">Book Now</a>
-</section>
-<footer>Powered by <a href="https://wildroseautomations.ca">Wildrose Automations</a></footer>
-</body>
-</html>
+<div id="services" class="section">
+    <h2>Don't Stop the Party!</h2>
+    <p>Wouldn't it be nice to have some extra help taking down decor, packing up, and cleaning at the end of your event? Relieve yourself, your friends and your family of this stress; let us step in and take care of it for you!</p>
+    <ul class="services-list">
+        <li><strong>Extra "Hands on Deck" Service</strong> - Hire our team for help with your event in any capacity</li>
+        <li><strong>Unlimited Correspondence</strong> - Via email, plus a meeting or phone call before the big day</li>
+        <li><strong>Flexible Arrival</strong> - We comply with the time limitation of your venue</li>
+        <li><strong>Pack-Up Service</strong> - Collect and pack all your personal/rental decor, centrepieces, signs, gifts, linens, flowers, and more</li>
+    </ul>
+</div>
+<div class="section" style="padding-top:0">
+    <h2>Our Work</h2>
+    <div class="gallery-row">
+        <img src="assets/clean-getaway/img0.png" alt="Event 1">
+        <img src="assets/clean-getaway/img1.png" alt="Event 2">
+        <img src="assets/clean-getaway/img2.png" alt="Event 3">
+    </div>
+</div>
+<div class="cta">
+    <h2>Servicing All of Alberta</h2>
+    <p>After months of planning your big day, you deserve to enjoy it to the very end.</p>
+    <a href="tel:7807092666">Call (780) 709-2666</a>
+</div>
+<div id="contact" class="contact-footer">
+    <p>Phone: <a href="tel:7807092666">(780) 709-2666</a></p>
+    <p>Email: <a href="mailto:michelle@thecleangetaway.ca">michelle@thecleangetaway.ca</a></p>
+    <p style="color:#666;font-size:.85rem;margin-top:15px">Copyright 2023 The Clean Getaway. All Rights Reserved.</p>
+</div>
+<footer style="background:#1a1a1a;color:#888;padding:24px;text-align:center;font-size:13px;margin-top:auto;">
+        Powered by Wildrose Automations
+    </footer></body></html>

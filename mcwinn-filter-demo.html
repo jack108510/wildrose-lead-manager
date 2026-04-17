@@ -1,96 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>McWinn Air Filter Cleaning Service | Red Deer AB</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>McWinn Air Filter Cleaning Systems - Edmonton</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--teal:#00897B;--white:#FFFFFF;--blue:#4FC3F7;--dark:#004D40;--light:#E0F2F1}
-body{font-family:'Inter',sans-serif;background:var(--white);color:#333;background-image:linear-gradient(180deg,rgba(79,195,247,.05) 0%,transparent 20%,transparent 80%,rgba(0,137,123,.05) 100%)}
-header{background:linear-gradient(90deg,var(--dark),var(--teal));padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 15px rgba(0,77,64,.15)}
-.logo{font-family:'Oswald',sans-serif;font-weight:700;color:var(--white);font-size:1.4rem;letter-spacing:1px;text-transform:uppercase}
-.logo span{color:var(--blue)}
-nav a{color:var(--white);text-decoration:none;margin-left:2rem;font-weight:600;transition:color .3s}
-nav a:hover{color:var(--blue)}
-.hero{background:linear-gradient(160deg,#001F1F 0%,var(--dark) 50%,#00796B 100%);padding:5rem 2rem;text-align:center;position:relative}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 80%,rgba(79,195,247,.12),transparent 60%)}
-.hero h1{font-family:'Oswald',sans-serif;font-weight:700;color:var(--white);font-size:2.8rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:.5rem;animation:fadeUp .7s}
-.hero p{color:rgba(255,255,255,.8);font-size:1.1rem;max-width:580px;margin:0 auto 2rem;line-height:1.7;animation:fadeUp .7s .15s both}
-.btn{display:inline-block;background:var(--blue);color:var(--dark);padding:1rem 2.5rem;border-radius:6px;text-decoration:none;font-family:'Oswald',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:1px;transition:all .3s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(79,195,247,.4)}
-.services{padding:4rem 2rem;max-width:1100px;margin:0 auto}
-.services h2{font-family:'Oswald',sans-serif;color:var(--teal);text-align:center;font-size:2rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:.5rem}
-.section-sub{text-align:center;color:#888;margin-bottom:3rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
-.card{background:var(--white);border-radius:8px;padding:2rem;box-shadow:0 3px 15px rgba(0,137,123,.06);transition:all .4s;border-top:4px solid var(--teal)}
-.card:hover{transform:translateY(-6px);box-shadow:0 12px 35px rgba(0,137,123,.12);border-top-color:var(--blue)}
-.card-icon{width:48px;height:48px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:1rem;margin-bottom:1rem}
-.card h3{color:var(--teal);margin-bottom:.4rem;font-family:'Oswald',sans-serif}
-.card p{color:#777;line-height:1.6;font-size:.93rem}
-.stats{background:var(--dark);padding:3rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:3rem}
-.stat{text-align:center;color:var(--white)}
-.stat .num{font-family:'Oswald',sans-serif;font-weight:700;font-size:2.5rem;color:var(--blue)}
-.stat .label{font-size:.85rem;opacity:.7;margin-top:.2rem}
-.testimonial{padding:4rem 2rem;max-width:650px;margin:0 auto;text-align:center}
-.testimonial .quote{font-size:1.15rem;font-style:italic;color:var(--dark);line-height:1.8}
-.testimonial .author{color:var(--teal);font-weight:700;margin-top:1rem}
-.testimonial .role{color:#999;font-size:.85rem}
-.contact{background:var(--light);padding:4rem 2rem;text-align:center}
-.contact h2{font-family:'Oswald',sans-serif;color:var(--teal);font-size:2rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:2rem}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-bottom:2rem}
-.contact-item{background:var(--white);padding:1.3rem 2rem;border-radius:8px;min-width:220px;box-shadow:0 2px 8px rgba(0,137,123,.05)}
-.contact-item strong{color:var(--teal);display:block;margin-bottom:.2rem}
-.contact-item a{color:var(--blue);text-decoration:none}
-footer{background:var(--dark);color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.8rem}
-footer a{color:var(--blue);text-decoration:none}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:768px){.hero h1{font-size:1.8rem}nav{display:none}}
-</style>
-</head>
-<body>
-<header>
-<div class="logo">McWinn <span>Air Filter</span></div>
-<nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
-</header>
-<section class="hero">
-<h1>Breathe Cleaner. Run Better. Last Longer.</h1>
-<p>Professional air filter cleaning that saves you money and keeps your air pure. Red Deer's specialists in industrial and residential filter restoration.</p>
-<a href="#contact" class="btn">Get Your Filters Cleaned</a>
-</section>
-<section class="services" id="services">
-<h2>Filter Cleaning Services</h2>
-<p class="section-sub">Why replace when you can restore for a fraction of the cost?</p>
-<div class="grid">
-<div class="card"><div class="card-icon">IN</div><h3>Industrial Filters</h3><p>Heavy-duty air filter cleaning for compressors, HVAC, and industrial equipment.</p></div>
-<div class="card"><div class="card-icon">HV</div><h3>HVAC Filters</h3><p>Residential and commercial furnace and air handler filter cleaning.</p></div>
-<div class="card"><div class="card-icon">AU</div><h3>Automotive Filters</h3><p>Engine air filters and cabin filters cleaned and restored to like-new flow.</p></div>
-<div class="card"><div class="card-icon">OF</div><h3>Oil Filters</h3><p>Industrial oil filter cleaning service for hydraulic and lubrication systems.</p></div>
-<div class="card"><div class="card-icon">CU</div><h3>Custom Solutions</h3><p>Specialty and oversized filters cleaned to your specifications.</p></div>
-<div class="card"><div class="card-icon">PK</div><h3>Pickup & Delivery</h3><p>We pick up your dirty filters and return them clean — minimum disruption.</p></div>
+body{font-family:'Segoe UI',sans-serif;color:#333;background:#fff}
+.nav{background:#ff6600;padding:12px 30px;display:flex;align-items:center;justify-content:space-between}
+.nav h1{color:#fff;font-size:1.4rem;font-weight:800}
+.nav .contact{color:#fff;font-size:.85rem}
+.nav .contact a{color:#fff}
+.hero{background:linear-gradient(135deg,#333,#555);padding:80px 20px;text-align:center;color:#fff}
+.hero h2{font-size:2.4rem;color:#ff6600;margin-bottom:15px}
+.hero p{font-size:1.1rem;max-width:650px;margin:0 auto 25px;opacity:.9}
+.hero .btns{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
+.btn-org{background:#ff6600;color:#fff;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:4px;display:inline-block}
+.btn-wht{background:#fff;color:#333;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:4px;display:inline-block}
+.section{padding:60px 20px;max-width:1000px;margin:0 auto}
+.section h2{font-size:1.7rem;color:#ff6600;margin-bottom:20px}
+.section p{line-height:1.8;color:#555;margin-bottom:15px}
+.how-it-works{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin:30px 0}
+.step{background:#fff8f0;padding:30px;border-radius:8px;text-align:center;border:1px solid #ffe0cc}
+.step .num{font-size:2rem;color:#ff6600;font-weight:800;margin-bottom:10px}
+.step h3{color:#333;margin-bottom:8px}
+.step p{color:#777;font-size:.9rem}
+.split-section{display:flex;gap:40px;align-items:center;margin-top:40px}
+.split-section img{width:100%;border-radius:8px}
+.split-section>div{flex:1}
+.benefits{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:30px 0}
+.benefit{background:#f9f9f9;padding:25px;border-radius:8px;border-left:4px solid #ff6600}
+.benefit h3{color:#ff6600;margin-bottom:8px;font-size:1rem}
+.benefit p{color:#666;font-size:.9rem;line-height:1.6}
+.cta{background:#ff6600;padding:50px 20px;text-align:center;color:#fff}
+.cta h2{font-size:2rem;margin-bottom:15px}
+.cta p{margin-bottom:20px;opacity:.9}
+.cta a{background:#fff;color:#ff6600;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:4px;display:inline-block}
+.contact-grid{background:#333;color:#fff;padding:30px;display:flex;justify-content:space-around;flex-wrap:wrap}
+.contact-grid div{text-align:center}
+.contact-grid strong{color:#ff6600;display:block;margin-bottom:5px}
+</style></head><body>
+<div class="nav">
+    <h1>McWinn Air Filter Cleaning Systems</h1>
+    <div class="contact">780-483-4193 | <a href="mailto:info@mcwinnfiltercleaningsystems.ca">info@mcwinnfiltercleaningsystems.ca</a></div>
 </div>
-</section>
-<section class="stats">
-<div class="stat"><div class="num">22</div><div class="label">Years in Business</div></div>
-<div class="stat"><div class="num">50K+</div><div class="label">Filters Cleaned</div></div>
-<div class="stat"><div class="num">70%</div><div class="label">Cost Savings vs New</div></div>
-<div class="stat"><div class="num">99%</div><div class="label">Flow Rate Restored</div></div>
-</section>
-<section class="testimonial">
-<div class="quote">We were spending $40,000 a year replacing compressor filters. McWinn cut that to $12,000 and the cleaned filters perform just as well. This is a no-brainer for any operation running heavy equipment.</div>
-<div class="author">Greg H.</div>
-<div class="role">Maintenance Supervisor, Industrial Facility</div>
-</section>
-<section class="contact" id="contact">
-<h2>Stop Throwing Money Away on New Filters</h2>
-<div class="contact-info">
-<div class="contact-item"><strong>Email</strong><a href="mailto:info@mcwinnfiltercleaningsystems.ca">info@mcwinnfiltercleaningsystems.ca</a></div>
-<div class="contact-item"><strong>Phone</strong><a href="tel:+14035550289">(403) 555-0289</a></div>
-<div class="contact-item"><strong>Location</strong>31 Holt Rd, Red Deer AB T4P 1E3</div>
+<div class="hero">
+    <h2>Air Filter Cleaning Services for Clients in Edmonton and Across Canada</h2>
+    <p>Did you know that cleaning your air filter regularly saves you the cost of buying a new filter? We sell air filter cleaning machines for customers across Canada.</p>
+    <div class="btns">
+        <a href="tel:7804834193" class="btn-org">Call 780-483-4193</a>
+        <a href="#" class="btn-wht">Learn More</a>
+    </div>
 </div>
-<a href="mailto:info@mcwinnfiltercleaningsystems.ca" class="btn">Contact Us</a>
-</section>
-<footer>Powered by <a href="https://wildroseautomations.ca">Wildrose Automations</a></footer>
-</body>
-</html>
+<div class="section">
+    <h2>The System</h2>
+    <p>Why throw away your air filter when you can clean it? We have one of the most reliable industrial-strength air filter cleaning systems available. Using a completely dry process, our patented air filter dry cleaning system can clean your filter to perform like new.</p>
+    <div class="split-section">
+        <div><img src="assets/mcwinn-filter/img1.jpg" alt="McWinn Filter System"></div>
+        <div>
+            <p>Our cleaning system combines rapid spinning with injected air and vacuum to clean the filter paper of all restricting particles. The dry process allows you to clean your filter 8-10 times as opposed to the standard procedure of washing.</p>
+            <p>Another reason to invest in our cleaning system is to contribute to the environment. Every year, thousands of air filters are sent to landfills. Our patented process allows you to use your air filter multiple times.</p>
+        </div>
+    </div>
+</div>
+<div class="section" style="background:#fff8f0">
+    <h2>How It Works</h2>
+    <div class="how-it-works">
+        <div class="step"><div class="num">1</div><h3>Purchase Equipment</h3><p>Buy our air filter cleaning machine for your business or personal use.</p></div>
+        <div class="step"><div class="num">2</div><h3>Clean Filters</h3><p>Dry process cleans filters 8-10 times vs. 2-3 with standard washing.</p></div>
+        <div class="step"><div class="num">3</div><h3>Save Money</h3><p>Contribute to the environment while significantly reducing your costs.</p></div>
+    </div>
+</div>
+<div class="cta">
+    <h2>Get Your Air Filter Cleaning System Today</h2>
+    <p>Contact us to learn about purchasing, licensing, or leasing options.</p>
+    <a href="tel:8884837074">Call Toll-Free 888-483-7074</a>
+</div>
+<div class="contact-grid">
+    <div><strong>Local</strong>780-483-4193</div>
+    <div><strong>Toll-Free</strong>888-483-7074</div>
+    <div><strong>Email</strong>info@mcwinnfiltercleaningsystems.ca</div>
+    <div><strong>Location</strong>Edmonton, AB</div>
+</div>
+<footer style="background:#1a1a1a;color:#888;padding:24px;text-align:center;font-size:13px;margin-top:auto;">
+        Powered by Wildrose Automations
+    </footer></body></html>

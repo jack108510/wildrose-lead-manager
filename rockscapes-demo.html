@@ -1,96 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rockscapes Landscaping | Edmonton AB</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rockscapes Landscaping - Edmonton, Leduc, Beaumont</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--green:#2E7D32;--sage:#F1F8E9;--gold:#F9A825;--dark:#1B5E20;--stone:#5D4037}
-body{font-family:'Manrope',sans-serif;background:var(--sage);color:#333;background-image:linear-gradient(135deg,rgba(93,64,55,.04) 25%,transparent 25%,transparent 50%,rgba(93,64,55,.04) 50%,rgba(93,64,55,.04) 75%,transparent 75%);background-size:35px 35px}
-header{background:linear-gradient(135deg,var(--stone),var(--dark));padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 15px rgba(27,94,32,.2)}
-.logo{font-family:'Cinzel',serif;font-weight:900;color:#fff;font-size:1.2rem;letter-spacing:2px}
-.logo span{color:var(--gold)}
-nav a{color:#fff;text-decoration:none;margin-left:2rem;font-weight:500;transition:color .3s}
-nav a:hover{color:var(--gold)}
-.hero{background:linear-gradient(170deg,#1A0E08 0%,var(--stone) 50%,var(--green) 100%);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(60deg,transparent,transparent 30px,rgba(249,168,37,.02) 30px,rgba(249,168,37,.02) 31px)}
-.hero h1{font-family:'Cinzel',serif;font-weight:900;color:#fff;font-size:2.6rem;letter-spacing:2px;margin-bottom:.5rem;animation:fadeUp .7s}
-.hero p{color:rgba(255,255,255,.8);font-size:1.1rem;max-width:580px;margin:0 auto 2rem;line-height:1.7;animation:fadeUp .7s .15s both}
-.btn{display:inline-block;background:var(--gold);color:var(--dark);padding:1rem 2.5rem;border-radius:4px;text-decoration:none;font-weight:700;letter-spacing:1px;transition:all .3s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(249,168,37,.4)}
-.services{padding:4rem 2rem;max-width:1100px;margin:0 auto}
-.services h2{font-family:'Cinzel',serif;color:var(--green);text-align:center;font-size:2rem;letter-spacing:1px;margin-bottom:.5rem}
-.section-sub{text-align:center;color:#888;margin-bottom:3rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
-.card{background:#fff;border-radius:8px;padding:2rem;box-shadow:0 3px 15px rgba(46,125,50,.06);transition:all .4s;border-bottom:4px solid var(--stone)}
-.card:hover{transform:translateY(-6px);box-shadow:0 12px 35px rgba(46,125,50,.12);border-bottom-color:var(--gold)}
-.card-icon{width:48px;height:48px;background:var(--stone);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.9rem;margin-bottom:1rem}
-.card h3{color:var(--green);margin-bottom:.4rem;font-family:'Cinzel',serif;font-weight:700}
-.card p{color:#777;line-height:1.6;font-size:.93rem}
-.stats{background:var(--dark);padding:3rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:3rem}
-.stat{text-align:center;color:#fff}
-.stat .num{font-family:'Cinzel',serif;font-weight:900;font-size:2.5rem;color:var(--gold)}
-.stat .label{font-size:.85rem;opacity:.7;margin-top:.2rem}
-.testimonial{padding:4rem 2rem;max-width:650px;margin:0 auto;text-align:center}
-.testimonial .quote{font-size:1.15rem;font-style:italic;color:var(--dark);line-height:1.8}
-.testimonial .author{color:var(--green);font-weight:700;margin-top:1rem}
-.testimonial .role{color:#999;font-size:.85rem}
-.contact{background:#fff;padding:4rem 2rem;text-align:center}
-.contact h2{font-family:'Cinzel',serif;color:var(--green);font-size:2rem;letter-spacing:1px;margin-bottom:2rem}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-bottom:2rem}
-.contact-item{background:var(--sage);padding:1.3rem 2rem;border-radius:8px;min-width:220px;box-shadow:0 2px 8px rgba(46,125,50,.05)}
-.contact-item strong{color:var(--green);display:block;margin-bottom:.2rem}
-.contact-item a{color:var(--gold);text-decoration:none}
-footer{background:var(--dark);color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.8rem}
-footer a{color:var(--gold);text-decoration:none}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:768px){.hero h1{font-size:1.8rem}nav{display:none}}
-</style>
-</head>
-<body>
-<header>
-<div class="logo">ROCK<span>SCAPES</span></div>
-<nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
-</header>
-<section class="hero">
-<h1>Where Rock Meets Artistry</h1>
-<p>Edmonton's rock landscaping artisans. Boulders, flagstone, river rock, and gabion walls — we sculpt stone into landscapes that command attention.</p>
-<a href="#contact" class="btn">Design Your Rockscape</a>
-</section>
-<section class="services" id="services">
-<h2>Rock & Stone Services</h2>
-<p class="section-sub">Natural stone. Endless possibilities.</p>
-<div class="grid">
-<div class="card"><div class="card-icon">BO</div><h3>Boulder Placement</h3><p>Statement boulders and accent rocks positioned with heavy equipment and artistic eye.</p></div>
-<div class="card"><div class="card-icon">RF</div><h3>River Rock Features</h3><p>Decorative river rock beds, dry creek beds, and drainage solutions.</p></div>
-<div class="card"><div class="card-icon">RW</div><h3>Rock Retaining Walls</h3><p>Natural stone and boulder retaining walls for structure and beauty.</p></div>
-<div class="card"><div class="card-icon">GA</div><h3>Gabion Baskets</h3><p>Modern gabion installations for retaining, seating, and architectural interest.</p></div>
-<div class="card"><div class="card-icon">FS</div><h3>Flagstone Patios</h3><p>Natural flagstone laid in pattern or random cut for timeless outdoor living.</p></div>
-<div class="card"><div class="card-icon">AC</div><h3>Rock Accents</h3><p>Rock gardens, borders, and decorative stone features for curb appeal.</p></div>
+body{font-family:'Segoe UI',sans-serif;color:#212529;background:#fff}
+.nav{background:#ebf3c7;padding:12px 30px;display:flex;align-items:center;justify-content:space-between}
+.nav h1{font-size:1.4rem;color:#558b2f;font-weight:800;letter-spacing:1px}
+.nav .phone{color:#558b2f;font-weight:700;font-size:1.1rem}
+.nav .links a{color:#558b2f;text-decoration:none;margin-left:18px;font-weight:600}
+.hero{background:linear-gradient(135deg,#ebf3c7,#d4e7a5);padding:80px 20px;text-align:center}
+.hero h2{font-size:2.5rem;color:#33691e;margin-bottom:10px;font-weight:700}
+.hero .sub{color:#555;margin-bottom:20px;font-size:1.1rem}
+.hero .area{color:#777;font-size:.95rem;margin-bottom:25px}
+.hero-btn{background:#558b2f;color:#fff;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:5px;display:inline-block}
+.section{padding:70px 20px;max-width:1000px;margin:0 auto}
+.section h2{font-size:1.7rem;color:#558b2f;margin-bottom:20px}
+.section p{line-height:1.8;color:#666;margin-bottom:15px}
+.products-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:30px 0}
+.prod{background:#f1f8e9;padding:15px;border-radius:6px;text-align:center;font-weight:600;color:#558b2f;font-size:.85rem;border:1px solid #d4e7a5}
+.services-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin-top:30px}
+.svc{background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 15px rgba(0,0,0,.08);border-top:4px solid #558b2f}
+.svc h3{color:#33691e;margin-bottom:10px;font-size:1.05rem}
+.svc p{color:#888;font-size:.95rem;line-height:1.6}
+.about-section{background:#f9fbe7;padding:60px 20px}
+.about-inner{max-width:900px;margin:0 auto}
+.about-inner h2{color:#558b2f;font-size:1.7rem;margin-bottom:20px}
+.about-inner p{line-height:1.8;color:#666}
+.cta{background:#558b2f;padding:50px 20px;text-align:center;color:#fff}
+.cta h2{font-size:2rem;margin-bottom:15px}
+.cta a{background:#fff;color:#558b2f;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:5px;display:inline-block}
+.contact-footer{background:#33691e;color:#fff;padding:30px;display:flex;justify-content:space-around;flex-wrap:wrap}
+.contact-footer div{text-align:center}
+.contact-footer strong{display:block;margin-bottom:5px}
+</style></head><body>
+<div class="nav">
+    <h1>ROCKSCAPES</h1>
+    <div class="links"><a href="#products">Products</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></div>
+    <div class="phone">780-235-2829</div>
 </div>
-</section>
-<section class="stats">
-<div class="stat"><div class="num">17</div><div class="label">Years of Experience</div></div>
-<div class="stat"><div class="num">450+</div><div class="label">Rockscapes Created</div></div>
-<div class="stat"><div class="num">3K+</div><div class="label">Tons of Stone Placed</div></div>
-<div class="stat"><div class="num">Zero</div><div class="label">Structural Failures</div></div>
-</section>
-<section class="testimonial">
-<div class="quote">We had a massive slope in our backyard that was unusable. Rockscapes built a terraced boulder wall that turned it into the most dramatic and beautiful part of our property. People genuinely stop and stare.</div>
-<div class="author">Mark & Olivia R.</div>
-<div class="role">Homeowners, Edmonton</div>
-</section>
-<section class="contact" id="contact">
-<h2>Let's Build Something Solid</h2>
-<div class="contact-info">
-<div class="contact-item"><strong>Email</strong><a href="mailto:info.rockscapes@gmail.com">info.rockscapes@gmail.com</a></div>
-<div class="contact-item"><strong>Phone</strong><a href="tel:+17805550987">(780) 555-0987</a></div>
-<div class="contact-item"><strong>Location</strong>3420 99 St NW, Edmonton AB T6E 5R5</div>
+<div class="hero">
+    <h2>Rock Retaining & Garden Walls</h2>
+    <div class="sub">Cobblestone Edging, Patios, Firepits & Outdoor Permanent LED Lighting</div>
+    <div class="area">Serving Edmonton, Leduc, Beaumont & Acreages in Surrounding Areas</div>
+    <a href="tel:7802352829" class="hero-btn">Book a Free Consultation</a>
 </div>
-<a href="mailto:info.rockscapes@gmail.com" class="btn">Get A Rockscape Quote</a>
-</section>
-<footer>Powered by <a href="https://wildroseautomations.ca">Wildrose Automations</a></footer>
-</body>
-</html>
+<div id="products" class="section">
+    <h2>Our Products</h2>
+    <div class="products-grid">
+        <div class="prod">Sodding</div>
+        <div class="prod">Retaining Walls</div>
+        <div class="prod">Paving Stones</div>
+        <div class="prod">Stones & Boulders</div>
+        <div class="prod">Trees & Shrubs</div>
+        <div class="prod">Ground Cover</div>
+        <div class="prod">Water Features</div>
+        <div class="prod">Bobcat Services</div>
+        <div class="prod">Cobblestone Edging</div>
+        <div class="prod">Trimlight LED</div>
+    </div>
+</div>
+<div id="services" class="section">
+    <h2>What We Do</h2>
+    <div class="services-cards">
+        <div class="svc"><h3>Cobblestone Edging</h3><p>Design a flowing pattern with premium landscaping fabric and rundle crush rock.</p></div>
+        <div class="svc"><h3>Brick Installation</h3><p>Patios, circle pads, retaining walls, and planting beds -- anything you can imagine.</p></div>
+        <div class="svc"><h3>Tree & Shrub Planting</h3><p>Beautify your space using greenery perfectly suited to your yard.</p></div>
+    </div>
+</div>
+<div id="about" class="about-section">
+    <div class="about-inner">
+        <h2>About Rockscapes</h2>
+        <p>At ROCKSCAPES, landscaping is more than digging holes and spreading dirt. To us, it is about creating an outdoor living space that you along with your friends & family can fully enjoy. We are here to take your yard and make it beautiful, while also maximizing the usable space.</p>
+        <p>We provide reliable, professional service, unwavering attention to detail and ongoing effective communication with our clients so the job is done right.</p>
+    </div>
+</div>
+<div class="cta">
+    <h2>Book Now for Spring</h2>
+    <a href="tel:7802352829">Call 780-235-2829</a>
+</div>
+<div id="contact" class="contact-footer">
+    <div><strong>Phone</strong>780-235-2829</div>
+    <div><strong>Service Area</strong>Edmonton, Leduc, Beaumont</div>
+</div>
+<footer style="background:#1a1a1a;color:#888;padding:24px;text-align:center;font-size:13px;margin-top:auto;">
+        Powered by Wildrose Automations
+    </footer></body></html>

@@ -1,101 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Handyman Reality | Edmonton AB — No Job Too Small</title>
-<link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Work+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Handyman Reality - Professional Handyman Services</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--brown:#3E2723;--cream:#FFF8F0;--orange:#E65100;--dark:#2C1A0E;--warm:#8D6E63}
-body{font-family:'Work Sans',sans-serif;background:var(--cream);color:#333;background-image:radial-gradient(circle at 20% 50%,rgba(230,81,0,.04) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(93,64,55,.05) 0%,transparent 40%)}
-header{background:linear-gradient(180deg,var(--brown),#4E342E);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 3px 15px rgba(0,0,0,.25)}
-.logo{font-family:'Bungee Shade',cursive;color:var(--orange);font-size:1.3rem;letter-spacing:2px;text-shadow:2px 2px 0 rgba(0,0,0,.3)}
-.logo small{color:var(--cream);font-family:'Work Sans',sans-serif;font-size:.6em;display:block;letter-spacing:3px;font-weight:300}
-nav a{color:var(--cream);text-decoration:none;margin-left:1.8rem;font-weight:600;font-size:.9rem;transition:color .3s}
-nav a:hover{color:var(--orange)}
-.hero{background:linear-gradient(160deg,#4E342E 0%,var(--dark) 50%,#3E2723 100%);padding:6rem 2rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23E65100' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
-.hero h1{font-family:'Bungee Shade',cursive;color:var(--cream);font-size:2.6rem;margin-bottom:.5rem;animation:fadeUp .8s ease-out}
-.hero .tagline{color:var(--orange);font-size:1.4rem;font-weight:700;margin-bottom:1.5rem;animation:fadeUp .8s ease-out .15s both}
-.hero p{color:rgba(255,248,240,.75);font-size:1.1rem;max-width:550px;margin:0 auto 2rem;animation:fadeUp .8s ease-out .3s both;line-height:1.7}
-.btn{display:inline-block;background:var(--orange);color:#fff;padding:.85rem 2.2rem;border-radius:50px;text-decoration:none;font-weight:700;transition:all .3s;box-shadow:0 4px 20px rgba(230,81,0,.35)}
-.btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 8px 30px rgba(230,81,0,.5)}
-.services{padding:4rem 2rem;max-width:1100px;margin:0 auto}
-.services h2{font-family:'Bungee Shade',cursive;color:var(--brown);font-size:1.8rem;text-align:center;margin-bottom:.5rem}
-.section-sub{text-align:center;color:#888;margin-bottom:3rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.8rem}
-.card{background:#fff;border-radius:12px;padding:2rem;box-shadow:0 2px 12px rgba(62,39,35,.06);border-left:5px solid var(--orange);transition:all .4s cubic-bezier(.25,.8,.25,1)}
-.card:hover{transform:translateY(-6px) rotate(-.5deg);box-shadow:0 15px 40px rgba(62,39,35,.12)}
-.card-icon{width:45px;height:45px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.1rem;margin-bottom:1rem}
-.card h3{color:var(--brown);margin-bottom:.4rem;font-size:1.15rem}
-.card p{color:#777;line-height:1.6;font-size:.92rem}
-.stats{background:linear-gradient(90deg,var(--brown),var(--dark));padding:3rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:3rem}
-.stat{text-align:center;color:var(--cream)}
-.stat .num{font-family:'Bungee Shade',cursive;font-size:2.4rem;color:var(--orange)}
-.stat .label{font-size:.85rem;opacity:.7;margin-top:.2rem}
-.testimonial{padding:4rem 2rem;max-width:650px;margin:0 auto;text-align:center}
-.testimonial .quote{font-size:1.2rem;font-style:italic;color:var(--brown);line-height:1.8;position:relative}
-.testimonial .quote::before{content:'\201C';font-size:4rem;color:var(--orange);opacity:.25;line-height:0;vertical-align:middle;margin-right:.3rem}
-.testimonial .author{color:var(--orange);font-weight:700;margin-top:1rem}
-.testimonial .role{color:#999;font-size:.85rem}
-.contact{background:linear-gradient(180deg,#EFEBE9,var(--cream));padding:4rem 2rem;text-align:center}
-.contact h2{font-family:'Bungee Shade',cursive;color:var(--brown);font-size:1.8rem;margin-bottom:2rem}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-bottom:2rem}
-.contact-item{background:#fff;padding:1.3rem 1.8rem;border-radius:10px;min-width:200px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
-.contact-item strong{color:var(--brown);display:block;margin-bottom:.2rem;font-size:.9rem}
-.contact-item a{color:var(--orange);text-decoration:none}
-footer{background:var(--dark);color:rgba(255,248,240,.5);text-align:center;padding:1.2rem;font-size:.8rem}
-footer a{color:var(--orange);text-decoration:none}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:768px){.hero h1{font-size:1.6rem}.logo{font-size:1rem}nav{display:none}.stats{gap:1.5rem}}
-</style>
-</head>
-<body>
+body{font-family:Georgia,serif;background:#f5f0eb;color:#333}
+header{background:#1e3a5f;padding:18px 30px;display:flex;align-items:center;justify-content:space-between}
+header h1{color:#fff;font-size:1.6rem;letter-spacing:1px}
+header nav a{color:#d4a853;text-decoration:none;margin-left:20px;font-size:.9rem}
+.banner{background:linear-gradient(135deg,#1e3a5f 0%,#2c5282 100%);padding:100px 20px;text-align:center;color:#fff}
+.banner h2{font-size:2.8rem;margin-bottom:15px}
+.banner p{font-size:1.2rem;opacity:.85;max-width:600px;margin:0 auto}
+.container{max-width:1000px;margin:0 auto;padding:60px 20px}
+.split{display:flex;gap:50px;align-items:flex-start}
+.split div{flex:1}
+h3{color:#1e3a5f;font-size:1.5rem;margin-bottom:15px;border-bottom:3px solid #d4a853;padding-bottom:8px;display:inline-block}
+p{line-height:1.8;margin-bottom:15px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:40px 0}
+.card{background:#fff;padding:30px;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,.08);text-align:center}
+.card h4{color:#1e3a5f;margin-bottom:10px;font-size:1.1rem}
+.accent{background:#1e3a5f;color:#fff;padding:60px 20px;text-align:center}
+.accent h3{color:#d4a853;border:none;font-size:2rem;margin-bottom:20px}
+.accent p{max-width:600px;margin:0 auto 25px;opacity:.9;font-size:1.1rem}
+.btn{display:inline-block;background:#d4a853;color:#1e3a5f;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:5px;font-size:1rem}
+.contact-row{display:flex;justify-content:space-around;background:#fff;padding:30px;margin-top:0;flex-wrap:wrap}
+.contact-row div{text-align:center}
+.contact-row strong{color:#1e3a5f;display:block;margin-bottom:5px}
+</style></head><body>
 <header>
-<div class="logo">HANDYMAN<small>REALITY</small></div>
-<nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
+    <h1>Handyman Reality</h1>
+    <nav><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
 </header>
-<section class="hero">
-<h1>The Real Deal Handyman</h1>
-<div class="tagline">No Job Too Small. No Runaround. Period.</div>
-<p>Edmonton homeowners deserve a handyman who actually shows up, does quality work, and doesn't ghost. That's the reality we deliver.</p>
-<a href="#contact" class="btn">Call Now — We Actually Answer</a>
-</section>
-<section class="services" id="services">
-<h2>What We Handle</h2>
-<p class="section-sub">Your to-do list is our to-do list.</p>
-<div class="grid">
-<div class="card"><div class="card-icon">F</div><h3>Furniture Assembly</h3><p>IKEA, Wayfair, whatever the box says — we build it fast and sturdy.</p></div>
-<div class="card"><div class="card-icon">T</div><h3>TV Mounting</h3><p>Secure mounting on any wall, with clean cable hiding included.</p></div>
-<div class="card"><div class="card-icon">P</div><h3>Plumbing Fixes</h3><p>Leaky faucets, running toilets, and minor pipe repairs handled same-day.</p></div>
-<div class="card"><div class="card-icon">E</div><h3>Electrical Basics</h3><p>Light fixtures, outlets, switches, and ceiling fans installed safely.</p></div>
-<div class="card"><div class="card-icon">D</div><h3>Door & Window Repair</h3><p>Sticking doors, broken locks, weatherstripping, and screen patches.</p></div>
-<div class="card"><div class="card-icon">M</div><h3>Move-In Prep</h3><p>Patching, painting, and deep cleanup for landlords and new homeowners.</p></div>
+<div class="banner">
+    <h2>Professional Handyman Services Done Right</h2>
+    <p>Reliable, skilled, and committed to getting the job done the way you envision it.</p>
 </div>
-</section>
-<section class="stats">
-<div class="stat"><div class="num">8</div><div class="label">Years Serving Edmonton</div></div>
-<div class="stat"><div class="num">1,800+</div><div class="label">Homes Helped</div></div>
-<div class="stat"><div class="num">Same</div><div class="label">Day Service Available</div></div>
-<div class="stat"><div class="num">5-Star</div><div class="label">Google Rating</div></div>
-</section>
-<section class="testimonial">
-<div class="quote">I've had three different handymen ghost me this year. Handyman Reality showed up 20 minutes early, fixed everything on my list in one visit, and charged less than I expected. This is how it should work.</div>
-<div class="author">Jennifer K.</div>
-<div class="role">Rental Property Owner, Strathcona</div>
-</section>
-<section class="contact" id="contact">
-<h2>Get It Done — For Real</h2>
-<div class="contact-info">
-<div class="contact-item"><strong>Email</strong><a href="mailto:kewlguy@handymanreality.com">kewlguy@handymanreality.com</a></div>
-<div class="contact-item"><strong>Phone</strong><a href="tel:+17805550782">(780) 555-0782</a></div>
-<div class="contact-item"><strong>Location</strong>7815 104 St NW, Edmonton AB T6E 4R3</div>
+<div id="about" class="container">
+    <div class="split">
+        <div>
+            <h3>About Us</h3>
+            <p>Handyman Reality brings professional craftsmanship and dependable service to every project. Whether you need minor repairs or major renovations, our experienced team treats your home with the respect it deserves.</p>
+            <p>From fixing a leaky faucet to completing a full basement renovation, no job is too big or too small. We pride ourselves on clear communication, honest pricing, and quality results.</p>
+        </div>
+        <div>
+            <h3>Our Promise</h3>
+            <p>We show up on time, work efficiently, and clean up after ourselves. Your satisfaction is our top priority, and we stand behind every job we do.</p>
+        </div>
+    </div>
 </div>
-<a href="mailto:kewlguy@handymanreality.com" class="btn">Book Your Handyman</a>
-</section>
-<footer>
-Powered by <a href="https://wildroseautomations.ca">Wildrose Automations</a>
-</footer>
-</body>
-</html>
+<div id="services" class="container" style="padding-top:0">
+    <h3 style="text-align:center;display:block;border:none;margin-bottom:30px">What We Do</h3>
+    <div class="cards">
+        <div class="card"><h4>General Repairs</h4><p>Fixing what's broken, from doors and windows to drywall and trim.</p></div>
+        <div class="card"><h4>Renovations</h4><p>Kitchen, bathroom, and basement renovations tailored to your needs.</p></div>
+        <div class="card"><h4>Painting & Drywall</h4><p>Professional painting, patching, and drywall installation.</p></div>
+        <div class="card"><h4>Carpentry</h4><p>Custom shelving, trim work, and woodworking projects.</p></div>
+        <div class="card"><h4>Flooring</h4><p>Installation of hardwood, laminate, tile, and vinyl flooring.</p></div>
+        <div class="card"><h4>Maintenance</h4><p>Seasonal maintenance and ongoing property upkeep services.</p></div>
+    </div>
+</div>
+<div class="accent">
+    <h3>Ready to Get Started?</h3>
+    <p>Contact us today for a free estimate on your next project.</p>
+    <a href="#" class="btn">Request a Quote</a>
+</div>
+<div id="contact" class="contact-row">
+    <div><strong>Service Area</strong>Serving the greater Edmonton area</div>
+    <div><strong>Email</strong>info@handymanreality.com</div>
+</div>
+<footer style="background:#1a1a1a;color:#888;padding:24px;text-align:center;font-size:13px;margin-top:auto;">
+        Powered by Wildrose Automations
+    </footer></body></html>

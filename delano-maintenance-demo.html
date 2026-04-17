@@ -1,99 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Delano Maintenance Solutions | Edmonton AB</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Delano Maintenance - Property Maintenance Services</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--brown:#3E2723;--cream:#FFF8F0;--orange:#E65100;--dark:#2C1A0E;--copper:#A1887F}
-body{font-family:'Open Sans',sans-serif;background:var(--cream);color:#333;background-image:linear-gradient(0deg,transparent 24%,rgba(62,39,35,.03) 25%,rgba(62,39,35,.03) 26%,transparent 27%,transparent 74%,rgba(62,39,35,.03) 75%,rgba(62,39,35,.03) 76%,transparent 77%),linear-gradient(90deg,transparent 24%,rgba(62,39,35,.03) 25%,rgba(62,39,35,.03) 26%,transparent 27%,transparent 74%,rgba(62,39,35,.03) 75%,rgba(62,39,35,.03) 76%,transparent 77%);background-size:50px 50px}
-header{background:linear-gradient(135deg,var(--brown) 0%,#5D4037 100%);padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(0,0,0,.2)}
-.logo{font-family:'Roboto Slab',serif;font-weight:900;color:var(--cream);font-size:1.3rem;letter-spacing:.5px}
-.logo span{color:var(--orange)}
-nav a{color:var(--cream);text-decoration:none;margin-left:2rem;font-weight:600;transition:color .3s}
-nav a:hover{color:var(--orange)}
-.hero{background:linear-gradient(170deg,var(--dark) 0%,var(--brown) 60%,#6D4C41 100%);padding:5rem 2rem 4rem;position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--orange),#FF6D00,var(--orange))}
-.hero-inner{max-width:700px;margin:0 auto;text-align:center;position:relative;z-index:1}
-.hero h1{font-family:'Roboto Slab',serif;font-weight:900;color:var(--cream);font-size:2.8rem;margin-bottom:.8rem;animation:slideIn .6s ease-out}
-.hero p{color:rgba(255,248,240,.75);font-size:1.15rem;line-height:1.7;margin-bottom:2rem;animation:slideIn .6s ease-out .15s both}
-.btn{display:inline-block;background:var(--orange);color:#fff;padding:1rem 2.5rem;text-decoration:none;font-weight:700;border-radius:4px;transition:all .3s;letter-spacing:.5px}
-.btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(230,81,0,.4)}
-.services{padding:4rem 2rem;max-width:1100px;margin:0 auto}
-.services h2{font-family:'Roboto Slab',serif;color:var(--brown);font-size:2rem;text-align:center;margin-bottom:.5rem}
-.section-sub{text-align:center;color:#888;margin-bottom:3rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
-.card{background:#fff;border-radius:8px;padding:2rem;box-shadow:0 3px 15px rgba(62,39,35,.07);border-bottom:4px solid transparent;border-image:linear-gradient(90deg,var(--orange),transparent) 1;transition:all .4s ease}
-.card:hover{transform:translateY(-6px);box-shadow:0 12px 35px rgba(62,39,35,.14);border-image:linear-gradient(90deg,var(--orange),#FF6D00) 1}
-.card-icon{width:48px;height:48px;background:var(--brown);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--orange);font-family:'Roboto Slab',serif;font-weight:900;font-size:1.3rem;margin-bottom:1rem}
-.card h3{font-family:'Roboto Slab',serif;color:var(--brown);margin-bottom:.4rem}
-.card p{color:#777;line-height:1.6;font-size:.93rem}
-.stats{background:var(--brown);padding:3rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:3rem}
-.stat{text-align:center;color:var(--cream)}
-.stat .num{font-family:'Roboto Slab',serif;font-size:2.5rem;font-weight:900;color:var(--orange)}
-.stat .label{font-size:.85rem;opacity:.7;margin-top:.2rem}
-.testimonial{padding:4rem 2rem;max-width:650px;margin:0 auto;text-align:center}
-.testimonial .quote{font-size:1.15rem;font-style:italic;color:var(--brown);line-height:1.8}
-.testimonial .author{color:var(--orange);font-weight:700;margin-top:1rem}
-.testimonial .role{color:#999;font-size:.85rem}
-.contact{background:#EFEBE9;padding:4rem 2rem;text-align:center}
-.contact h2{font-family:'Roboto Slab',serif;color:var(--brown);font-size:2rem;margin-bottom:2rem}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-bottom:2rem}
-.contact-item{background:#fff;padding:1.3rem 2rem;border-radius:8px;min-width:220px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.contact-item strong{color:var(--brown);display:block;margin-bottom:.2rem}
-.contact-item a{color:var(--orange);text-decoration:none}
-footer{background:var(--dark);color:rgba(255,248,240,.5);text-align:center;padding:1.2rem;font-size:.8rem}
-footer a{color:var(--orange);text-decoration:none}
-@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-@media(max-width:768px){.hero h1{font-size:1.8rem}nav{display:none}}
-</style>
-</head>
-<body>
-<header>
-<div class="logo">DELANO <span>MAINTENANCE</span></div>
-<nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
-</header>
-<section class="hero">
-<div class="hero-inner">
-<h1>Solutions, Not Excuses</h1>
-<p>Edmonton's reliable maintenance partner for residential and commercial properties. We keep your buildings running so you don't have to think about it.</p>
-<a href="#contact" class="btn">Request Maintenance</a>
+body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f8faf9;color:#2d3436}
+.top-bar{background:#00897b;color:#fff;padding:10px 30px;display:flex;justify-content:space-between;font-size:.85rem}
+.header{background:#fff;padding:20px 30px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #00897b}
+.header h1{color:#00897b;font-size:1.8rem;font-weight:300;letter-spacing:2px}
+.header nav a{color:#2d3436;text-decoration:none;margin-left:25px;font-weight:500}
+.hero{background:linear-gradient(rgba(0,137,123,.85),rgba(0,105,92,.9));padding:80px 20px;text-align:center;color:#fff}
+.hero h2{font-size:2.5rem;font-weight:300;margin-bottom:15px}
+.hero p{font-size:1.15rem;max-width:550px;margin:0 auto 30px;opacity:.9}
+.hero-btn{background:#fff;color:#00897b;padding:15px 40px;text-decoration:none;font-weight:700;border-radius:30px;display:inline-block;font-size:1rem}
+.section{padding:70px 20px;max-width:1100px;margin:0 auto}
+.section-title{font-size:1.8rem;color:#00897b;font-weight:300;margin-bottom:40px;text-align:center;letter-spacing:1px}
+.services-row{display:flex;gap:25px;flex-wrap:wrap;justify-content:center}
+.svc{background:#fff;padding:35px 25px;border-radius:12px;flex:1;min-width:250px;max-width:320px;box-shadow:0 2px 20px rgba(0,0,0,.06);border-top:4px solid #00897b}
+.svc h3{color:#00897b;margin-bottom:12px;font-size:1.1rem}
+.svc p{color:#636e72;line-height:1.7;font-size:.95rem}
+.split-section{display:flex;gap:60px;align-items:center;padding:70px 20px;max-width:1100px;margin:0 auto}
+.split-section .text{flex:1}
+.split-section .text h2{color:#00897b;font-size:1.8rem;font-weight:300;margin-bottom:20px}
+.split-section .text p{line-height:1.8;color:#636e72}
+.split-section .visual{flex:1;height:350px;background:linear-gradient(135deg,#e0f2f1,#b2dfdb);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#00897b;font-size:1.2rem;font-weight:600}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:40px 0}
+.feat{text-align:center;padding:25px 15px}
+.feat .num{font-size:2.5rem;color:#00897b;font-weight:700}
+.feat .label{color:#636e72;margin-top:5px;font-size:.9rem}
+.cta-section{background:#00897b;padding:50px 20px;text-align:center;color:#fff}
+.cta-section h2{font-size:2rem;margin-bottom:15px;font-weight:300}
+.cta-section p{margin-bottom:25px;opacity:.9}
+.cta-section a{background:#fff;color:#00897b;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:30px}
+</style></head><body>
+<div class="top-bar"><span>Reliable Property Maintenance</span><span>delanomaintenance.ca</span></div>
+<div class="header">
+    <h1>DELANO MAINTENANCE</h1>
+    <nav><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
 </div>
-</section>
-<section class="services" id="services">
-<h2>Our Maintenance Services</h2>
-<p class="section-sub">Comprehensive property care, one call away.</p>
-<div class="grid">
-<div class="card"><div class="card-icon">PM</div><h3>Property Maintenance</h3><p>Year-round upkeep for residential complexes, commercial spaces, and everything between.</p></div>
-<div class="card"><div class="card-icon">HV</div><h3>HVAC Servicing</h3><p>Filter changes, system checks, and seasonal tune-ups to keep air flowing clean.</p></div>
-<div class="card"><div class="card-icon">PL</div><h3>Plumbing Maintenance</h3><p>Preventive checks, leak repairs, and fixture replacements across your property.</p></div>
-<div class="card"><div class="card-icon">EL</div><h3>Electrical Upkeep</h3><p>Lighting, panel checks, outlet testing, and code-compliant updates.</p></div>
-<div class="card"><div class="card-icon">SN</div><h3>Snow Removal</h3><p>Reliable winter clearing for parking lots, walkways, and entrances.</p></div>
-<div class="card"><div class="card-icon">EM</div><h3>Emergency Response</h3><p>24/7 urgent maintenance when things go wrong outside business hours.</p></div>
+<div class="hero">
+    <h2>Professional Property Maintenance</h2>
+    <p>Keeping your properties in top condition with reliable, thorough maintenance services.</p>
+    <a href="#contact" class="hero-btn">Get a Free Quote</a>
 </div>
-</section>
-<section class="stats">
-<div class="stat"><div class="num">11</div><div class="label">Years in Edmonton</div></div>
-<div class="stat"><div class="num">85+</div><div class="label">Properties Managed</div></div>
-<div class="stat"><div class="num">24/7</div><div class="label">Emergency Line</div></div>
-<div class="stat"><div class="num">15K+</div><div class="label">Work Orders Completed</div></div>
-</section>
-<section class="testimonial">
-<div class="quote">Delano took over maintenance for our 40-unit complex and the difference was immediate. Tenant complaints dropped 70% in the first quarter. They just handle things before they become problems.</div>
-<div class="author">Marcus T.</div>
-<div class="role">Property Manager, West Edmonton</div>
-</section>
-<section class="contact" id="contact">
-<h2>Maintenance Starts Here</h2>
-<div class="contact-info">
-<div class="contact-item"><strong>Email</strong><a href="mailto:info@delanomaintenance.ca">info@delanomaintenance.ca</a></div>
-<div class="contact-item"><strong>Phone</strong><a href="tel:+17805551094">(780) 555-1094</a></div>
-<div class="contact-item"><strong>Office</strong>320 Roper Road, Edmonton AB T6X 0P4</div>
+<div id="services" class="section">
+    <div class="section-title">Our Services</div>
+    <div class="services-row">
+        <div class="svc"><h3>Janitorial Services</h3><p>Comprehensive cleaning for commercial and residential properties.</p></div>
+        <div class="svc"><h3>Property Maintenance</h3><p>Regular upkeep and preventive maintenance programs.</p></div>
+        <div class="svc"><h3>Floor Care</h3><p>Stripping, waxing, and refinishing for all floor types.</p></div>
+    </div>
 </div>
-<a href="mailto:info@delanomaintenance.ca" class="btn">Get In Touch</a>
-</section>
-<footer>Powered by <a href="https://wildroseautomations.ca">Wildrose Automations</a></footer>
-</body>
-</html>
+<div class="split-section">
+    <div class="text">
+        <h2>Why Delano Maintenance?</h2>
+        <p>We take pride in delivering consistent, high-quality maintenance services. Our team is trained, insured, and committed to exceeding your expectations on every visit.</p>
+        <p>Whether you need daily janitorial service, seasonal maintenance, or a one-time deep clean, we customize our approach to fit your needs and budget.</p>
+    </div>
+    <div class="visual">Trusted Since Day One</div>
+</div>
+<div class="section" style="background:#e0f2f1">
+    <div class="features">
+        <div class="feat"><div class="num">100%</div><div class="label">Satisfaction Guarantee</div></div>
+        <div class="feat"><div class="num">24/7</div><div class="label">Emergency Service</div></div>
+        <div class="feat"><div class="num">Licensed</div><div class="label">& Insured</div></div>
+        <div class="feat"><div class="num">Free</div><div class="label">Estimates</div></div>
+    </div>
+</div>
+<div class="cta-section">
+    <h2>Ready for a Cleaner, Better-Maintained Property?</h2>
+    <p>Contact us today for a free consultation and estimate.</p>
+    <a href="#">Contact Us</a>
+</div>
+<div id="contact" style="background:#fff;padding:30px;text-align:center;color:#636e72">
+    <p>Delano Maintenance | Serving Alberta</p>
+</div>
+<footer style="background:#1a1a1a;color:#888;padding:24px;text-align:center;font-size:13px;margin-top:auto;">
+        Powered by Wildrose Automations
+    </footer></body></html>

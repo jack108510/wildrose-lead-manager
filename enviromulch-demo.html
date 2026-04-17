@@ -1,96 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enviromulch | Edmonton AB</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Enviromulch - Premium Mulch & Landscape Supply</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--green:#2E7D32;--sage:#F1F8E9;--gold:#F9A825;--dark:#1B5E20;--earth:#795548}
-body{font-family:'Work Sans',sans-serif;background:var(--sage);color:#333;background-image:radial-gradient(circle at 80% 10%,rgba(121,85,72,.06),transparent 40%),radial-gradient(circle at 20% 90%,rgba(46,125,50,.05),transparent 40%)}
-header{background:linear-gradient(90deg,var(--earth),var(--green));padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 15px rgba(27,94,32,.2)}
-.logo{font-family:'Fraunces',serif;font-weight:900;color:#fff;font-size:1.4rem}
-.logo span{color:var(--gold)}
-nav a{color:#fff;text-decoration:none;margin-left:2rem;font-weight:500;transition:color .3s}
-nav a:hover{color:var(--gold)}
-.hero{background:linear-gradient(160deg,#1A0F00,var(--earth) 40%,var(--green) 100%);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:repeating-conic-gradient(rgba(249,168,37,.03) 0% 25%,transparent 0% 50%) 0 0/50px 50px}
-.hero h1{font-family:'Fraunces',serif;font-weight:900;color:#fff;font-size:2.8rem;margin-bottom:.5rem;animation:fadeUp .7s}
-.hero p{color:rgba(255,255,255,.8);font-size:1.1rem;max-width:580px;margin:0 auto 2rem;line-height:1.7;animation:fadeUp .7s .15s both}
-.btn{display:inline-block;background:var(--gold);color:var(--dark);padding:1rem 2.5rem;border-radius:30px;text-decoration:none;font-weight:600;transition:all .3s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(249,168,37,.4)}
-.services{padding:4rem 2rem;max-width:1100px;margin:0 auto}
-.services h2{font-family:'Fraunces',serif;color:var(--green);text-align:center;font-size:2rem;margin-bottom:.5rem}
-.section-sub{text-align:center;color:#888;margin-bottom:3rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
-.card{background:#fff;border-radius:12px;padding:2rem;box-shadow:0 3px 15px rgba(46,125,50,.06);transition:all .4s;border-top:4px solid var(--green)}
-.card:hover{transform:translateY(-6px);box-shadow:0 12px 35px rgba(46,125,50,.12);border-top-color:var(--gold)}
-.card-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--green),var(--earth));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;margin-bottom:1rem}
-.card h3{color:var(--green);margin-bottom:.4rem;font-family:'Fraunces',serif;font-weight:700}
-.card p{color:#777;line-height:1.6;font-size:.93rem}
-.stats{background:var(--dark);padding:3rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:3rem}
-.stat{text-align:center;color:#fff}
-.stat .num{font-family:'Fraunces',serif;font-weight:900;font-size:2.5rem;color:var(--gold)}
-.stat .label{font-size:.85rem;opacity:.7;margin-top:.2rem}
-.testimonial{padding:4rem 2rem;max-width:650px;margin:0 auto;text-align:center}
-.testimonial .quote{font-size:1.15rem;font-style:italic;color:var(--dark);line-height:1.8}
-.testimonial .author{color:var(--green);font-weight:700;margin-top:1rem}
-.testimonial .role{color:#999;font-size:.85rem}
-.contact{background:#fff;padding:4rem 2rem;text-align:center}
-.contact h2{font-family:'Fraunces',serif;color:var(--green);font-size:2rem;margin-bottom:2rem}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-bottom:2rem}
-.contact-item{background:var(--sage);padding:1.3rem 2rem;border-radius:10px;min-width:220px;box-shadow:0 2px 8px rgba(46,125,50,.05)}
-.contact-item strong{color:var(--green);display:block;margin-bottom:.2rem}
-.contact-item a{color:var(--gold);text-decoration:none}
-footer{background:var(--dark);color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.8rem}
-footer a{color:var(--gold);text-decoration:none}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:768px){.hero h1{font-size:1.8rem}nav{display:none}}
-</style>
-</head>
-<body>
-<header>
-<div class="logo">Enviro<span>mulch</span></div>
-<nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
-</header>
-<section class="hero">
-<h1>Nature's Blanket, Expertly Applied</h1>
-<p>Edmonton's mulch and landscaping specialists. We nourish your soil, suppress weeds naturally, and create outdoor spaces that thrive organically.</p>
-<a href="#contact" class="btn">Get Mulched</a>
-</section>
-<section class="services" id="services">
-<h2>Mulch & Landscaping Services</h2>
-<p class="section-sub">Healthy soil. Beautiful yards. Zero chemicals.</p>
-<div class="grid">
-<div class="card"><div class="card-icon">ML</div><h3>Mulch Supply & Spreading</h3><p>Bulk mulch delivery and professional spreading for beds, trees, and playgrounds.</p></div>
-<div class="card"><div class="card-icon">BL</div><h3>Bark & Wood Chips</h3><p>Premium bark mulch and decorative wood chips in natural and dyed varieties.</p></div>
-<div class="card"><div class="card-icon">CP</div><h3>Compost & Soil</h3><p>Nutrient-rich compost and garden soil blends for planting and top-dressing.</p></div>
-<div class="card"><div class="card-icon">GB</div><h3>Garden Bed Design</h3><p>Custom garden bed creation with proper edging, soil prep, and mulch finish.</p></div>
-<div class="card"><div class="card-icon">TR</div><h3>Tree Mulching</h3><p>Proper tree ring mulching to protect roots, retain moisture, and prevent damage.</p></div>
-<div class="card"><div class="card-icon">PG</div><h3>Playground Surfacing</h3><p>Certified playground mulch that meets CSA safety standards for impact absorption.</p></div>
+body{font-family:'Segoe UI',sans-serif;color:#fff;background:#2d2a26}
+.hero{background:linear-gradient(135deg,#33691e,#558b2f);padding:100px 20px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;bottom:-50px;left:-50px;width:300px;height:300px;background:rgba(255,255,255,.03);border-radius:50%}
+.hero h1{font-size:3rem;font-weight:800;margin-bottom:10px;letter-spacing:2px}
+.hero .tagline{font-size:1.2rem;opacity:.85;margin-bottom:30px}
+.hero-btn{background:#fff;color:#33691e;padding:15px 40px;text-decoration:none;font-weight:700;border-radius:4px;display:inline-block}
+.section{padding:70px 20px;max-width:1000px;margin:0 auto}
+.section h2{font-size:1.8rem;color:#8bc34a;margin-bottom:25px}
+.section p{line-height:1.8;color:#bbb;margin-bottom:15px}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin-top:30px}
+.product{background:#3d3a36;padding:30px;border-radius:8px;border-left:4px solid #8bc34a}
+.product h3{color:#8bc34a;margin-bottom:10px;font-size:1.05rem}
+.product p{color:#999;font-size:.95rem;line-height:1.5}
+.about-split{display:flex;gap:50px;align-items:center;margin-top:40px}
+.about-split>div{flex:1}
+.enviro-badges{display:flex;gap:20px;justify-content:center;margin:40px 0;flex-wrap:wrap}
+.badge{background:#3d3a36;padding:20px 30px;border-radius:8px;text-align:center;border:1px solid #558b2f}
+.badge h3{color:#8bc34a;font-size:1.2rem;margin-bottom:5px}
+.badge p{color:#999;font-size:.85rem}
+.cta{background:#8bc34a;color:#2d2a26;padding:50px 20px;text-align:center}
+.cta h2{font-size:2rem;margin-bottom:15px}
+.cta a{background:#2d2a26;color:#8bc34a;padding:14px 35px;text-decoration:none;font-weight:700;border-radius:4px;display:inline-block}
+.contact-bar{background:#1a1816;padding:30px;display:flex;justify-content:space-around;flex-wrap:wrap;color:#999}
+.contact-bar strong{color:#8bc34a}
+</style></head><body>
+<div class="hero">
+    <h1>Enviromulch</h1>
+    <div class="tagline">Premium Mulch & Landscape Supply</div>
+    <a href="#contact" class="hero-btn">Get a Quote</a>
 </div>
-</section>
-<section class="stats">
-<div class="stat"><div class="num">13</div><div class="label">Years in Business</div></div>
-<div class="stat"><div class="num">8K+</div><div class="label">Cubic Yards Delivered</div></div>
-<div class="stat"><div class="num">700+</div><div class="label">Properties Served</div></div>
-<div class="stat"><div class="num">100%</div><div class="label">Natural Products</div></div>
-</section>
-<section class="testimonial">
-<div class="quote">Shelby and her team transformed our entire front yard with garden beds, proper edging, and beautiful dark mulch. It looks like a magazine cover. Our water bill dropped too because the mulch actually retains moisture like they promised.</div>
-<div class="author">Danielle & Pete K.</div>
-<div class="role">Homeowners, Ottewell</div>
-</section>
-<section class="contact" id="contact">
-<h2>Let's Mulch Your Space</h2>
-<div class="contact-info">
-<div class="contact-item"><strong>Email</strong><a href="mailto:shelby@enviromulch.com">shelby@enviromulch.com</a></div>
-<div class="contact-item"><strong>Phone</strong><a href="tel:+17805550634">(780) 555-0634</a></div>
-<div class="contact-item"><strong>Location</strong>6204 104 St NW, Edmonton AB T6H 2K2</div>
+<div class="section">
+    <h2>Our Products</h2>
+    <div class="products-grid">
+        <div class="product"><h3>Premium Mulch</h3><p>High-quality bark mulch in various colors and textures for any landscape project.</p></div>
+        <div class="product"><h3>Decorative Stone</h3><p>A wide selection of decorative stones, gravel, and river rock.</p></div>
+        <div class="product"><h3>Soil & Compost</h3><p>Enriched topsoil, garden mix, and organic compost for healthy plants.</p></div>
+        <div class="product"><h3>Landscape Fabric</h3><p>Professional-grade weed barrier and landscape fabric.</p></div>
+        <div class="product"><h3>Edging</h3><p>Steel, plastic, and stone edging solutions for clean landscape lines.</p></div>
+        <div class="product"><h3>Bulk Delivery</h3><p>Convenient bulk delivery straight to your home or job site.</p></div>
+    </div>
 </div>
-<a href="mailto:shelby@enviromulch.com" class="btn">Order Mulch Today</a>
-</section>
-<footer>Powered by <a href="https://wildroseautomations.ca">Wildrose Automations</a></footer>
-</body>
-</html>
+<div class="section">
+    <h2>Why Enviromulch?</h2>
+    <div class="about-split">
+        <div>
+            <p>We provide environmentally responsible mulch and landscape products. Our products help conserve moisture, suppress weeds, and enhance the beauty of your outdoor spaces.</p>
+            <p>Whether you're a homeowner tackling a weekend project or a contractor on a large job, we have the materials and expertise to help you succeed.</p>
+        </div>
+        <div class="enviro-badges" style="flex-direction:column">
+            <div class="badge"><h3>Eco-Friendly</h3><p>Sustainable, locally sourced products</p></div>
+            <div class="badge"><h3>Bulk & Bag</h3><p>Available in any quantity</p></div>
+        </div>
+    </div>
+</div>
+<div class="cta">
+    <h2>Ready to Start Your Landscape Project?</h2>
+    <a href="#">Contact Enviromulch Today</a>
+</div>
+<div id="contact" class="contact-bar">
+    <div><strong>Web:</strong> enviromulch.com</div>
+    <div>Serving Alberta</div>
+</div>
+<footer style="background:#1a1a1a;color:#888;padding:24px;text-align:center;font-size:13px;margin-top:auto;">
+        Powered by Wildrose Automations
+    </footer></body></html>
