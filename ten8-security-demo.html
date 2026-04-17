@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ten8 Security | Professional Security Services — Calgary, AB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --navy: #1a1a2e; --navy-light: #16213e; --gold: #D4AF37; --gold-light: #e8c84a; --cream: #faf9f6; --dark: #0f0f1a; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: #1a1a1a; background: var(--cream); -webkit-font-smoothing: antialiased; }
+        nav { background: rgba(26,26,46,0.95); backdrop-filter: blur(20px); padding: 1rem 3rem; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        nav .logo { color: white; font-size: 1.4rem; font-weight: 800; }
+        nav .logo span { color: var(--gold); }
+        nav ul { list-style: none; display: flex; gap: 2.5rem; align-items: center; }
+        nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: color 0.2s; }
+        nav a:hover { color: white; }
+        nav .cta { background: var(--gold); color: var(--dark); padding: 0.6rem 1.5rem; border-radius: 100px; font-weight: 600; }
+        nav .cta:hover { background: var(--gold-light); }
+        .hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--navy) 0%, #111 50%, var(--navy-light) 100%); }
+        .hero-content { position: relative; z-index: 2; text-align: center; color: white; padding: 2rem; max-width: 800px; }
+        .hero-badge { display: inline-block; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); color: var(--gold); padding: 0.4rem 1.2rem; border-radius: 100px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem; letter-spacing: 0.5px; }
+        .hero h1 { font-size: 3.8rem; font-weight: 900; line-height: 1.05; margin-bottom: 1.2rem; letter-spacing: -1.5px; }
+        .hero p { font-size: 1.2rem; opacity: 0.85; line-height: 1.7; margin-bottom: 2.5rem; max-width: 550px; margin-left: auto; margin-right: auto; }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-primary { background: var(--gold); color: var(--dark); padding: 1rem 2.5rem; border-radius: 100px; text-decoration: none; font-weight: 700; font-size: 1rem; transition: all 0.3s; }
+        .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212,175,55,0.3); }
+        .btn-secondary { background: transparent; color: white; padding: 1rem 2.5rem; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: all 0.3s; border: 1.5px solid rgba(255,255,255,0.3); }
+        .btn-secondary:hover { border-color: white; background: rgba(255,255,255,0.1); }
+        .services { padding: 7rem 2rem; background: white; }
+        .section-inner { max-width: 1100px; margin: 0 auto; }
+        .section-label { color: var(--gold); font-weight: 700; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; }
+        .services h2 { font-size: 2.8rem; font-weight: 800; color: var(--dark); margin-bottom: 1rem; letter-spacing: -1px; }
+        .services .subtitle { color: #666; font-size: 1.1rem; margin-bottom: 4rem; max-width: 500px; }
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .service-card { background: var(--cream); border-radius: 16px; padding: 2.5rem 2rem; transition: all 0.3s; border: 1px solid transparent; }
+        .service-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: rgba(212,175,55,0.2); }
+        .service-card .icon { width: 56px; height: 56px; background: var(--navy); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--gold); font-weight: 800; }
+        .service-card h3 { font-size: 1.2rem; font-weight: 700; color: var(--dark); margin-bottom: 0.7rem; }
+        .service-card p { color: #555; line-height: 1.7; font-size: 0.95rem; }
+        .about { background: var(--navy); color: white; padding: 6rem 2rem; }
+        .about-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+        .about h2 { font-size: 2.4rem; font-weight: 800; margin-bottom: 1.2rem; }
+        .about p { opacity: 0.85; line-height: 1.8; margin-bottom: 1rem; max-width: 650px; margin-left: auto; margin-right: auto; }
+        .contact { background: white; padding: 6rem 2rem; }
+        .contact-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        .contact h2 { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; color: var(--dark); }
+        .contact p { color: #666; line-height: 1.7; }
+        .contact-info { display: flex; flex-direction: column; gap: 1.5rem; justify-content: center; }
+        .contact-item { display: flex; align-items: center; gap: 1rem; }
+        .contact-item .icon-box { width: 48px; height: 48px; border-radius: 12px; background: rgba(26,26,46,0.08); display: flex; align-items: center; justify-content: center; color: var(--navy); font-weight: 700; }
+        .contact-item .info-text { font-weight: 600; color: var(--dark); }
+        .contact-item a { color: var(--gold); text-decoration: none; font-weight: 600; }
+        .contact-item a:hover { text-decoration: underline; }
+        .contact-item .info-label { font-size: 0.8rem; opacity: 0.5; margin-top: 0.15rem; }
+        footer { background: var(--dark); color: #666; text-align: center; padding: 2.5rem 2rem; font-size: 0.85rem; }
+        footer a { color: var(--gold); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 2.5rem; }
+            .services-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+            .contact-inner { grid-template-columns: 1fr; text-align: center; }
+            .contact-info { align-items: center; }
+            nav ul { display: none; }
+            nav { padding: 1rem 1.5rem; }
+        }
+        @media (max-width: 600px) { .hero h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo">TEN8 <span>SECURITY</span></div>
+    <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact" class="cta">Request Service</a></li>
+    </ul>
+</nav>
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">CALGARY, ALBERTA</div>
+        <h1>Professional Security<br>You Can Count On</h1>
+        <p>Reliable security services for businesses and events across Calgary. Trained professionals, vigilant protection, total peace of mind.</p>
+        <div class="hero-buttons">
+            <a href="mailto:ten8security@shaw.ca?subject=Security%20Inquiry" class="btn-primary">Request a Quote</a>
+            <a href="#services" class="btn-secondary">View Services</a>
+        </div>
+    </div>
+</section>
+<section class="services" id="services">
+    <div class="section-inner">
+        <div class="section-label">What We Do</div>
+        <h2>Our Services</h2>
+        <p class="subtitle">Comprehensive security solutions tailored to your needs.</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="icon">S</div>
+                <h3>Static Security</h3>
+                <p>On-site security personnel for commercial properties, construction sites, and residential complexes. Visible deterrence and rapid response.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">E</div>
+                <h3>Event Security</h3>
+                <p>Professional security for events of all sizes. Crowd management, access control, and emergency response planning to keep attendees safe.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">M</div>
+                <h3>Mobile Patrols</h3>
+                <p>Regular patrol services across Calgary. Randomized routes and schedules for maximum coverage and deterrent effect on your property.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">C</div>
+                <h3>Corporate Security</h3>
+                <p>Tailored security programs for businesses. Access management, employee safety protocols, and 24/7 monitoring solutions.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="about" id="about">
+    <div class="about-inner">
+        <div class="section-label" style="color: var(--gold);">About Us</div>
+        <h2>Vigilant. Professional. Reliable.</h2>
+        <p>Ten8 Security is a Calgary-based security company providing professional protective services to businesses, property managers, and event organizers. Our team is trained, licensed, and committed to delivering security that goes beyond presence — we deliver peace of mind.</p>
+        <p>Every client receives a customized security plan built around their specific risks and requirements. No cookie-cutter solutions.</p>
+    </div>
+</section>
+<section class="contact" id="contact">
+    <div class="contact-inner">
+        <div>
+            <div class="section-label">Get in Touch</div>
+            <h2>Secure Your Property</h2>
+            <p>Contact us for a free security assessment and custom quote for your property or event.</p>
+        </div>
+        <div class="contact-info">
+            <div class="contact-item">
+                <div class="icon-box">@</div>
+                <div>
+                    <div class="info-label">EMAIL US</div>
+                    <div class="info-text"><a href="mailto:ten8security@shaw.ca">ten8security@shaw.ca</a></div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="icon-box">></div>
+                <div>
+                    <div class="info-label">LOCATION</div>
+                    <div class="info-text">Calgary, Alberta</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer>
+    <p>&copy; 2026 Ten8 Security. All rights reserved. | <a href="https://wildroseautomations.com" target="_blank">Powered by Wildrose Automations</a></p>
+</footer>
+</body>
+</html>
