@@ -1,147 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Mancuso Carpet &amp; Upholstery Cleaning | Professional Services in Red Deer</title>
-<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#1a1a2e;--gold:#D4AF37;--gold-dark:#b8962e;--white:#fff;--bg:#f8f8f8;--text:#333;--muted:#777;--border:#e0e0e0}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
-a{text-decoration:none;color:inherit}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 6%;height:64px;background:var(--navy);border-bottom:3px solid var(--gold)}
-.nav-brand{display:flex;align-items:center;gap:.6rem}
-.nav-icon{width:36px;height:36px;border-radius:4px;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:800;font-size:1.1rem}
-.nav-name{color:var(--white);font-size:.9rem;font-weight:700;letter-spacing:.04em}
-.nav-links{display:flex;gap:1.5rem;list-style:none;align-items:center}
-.nav-links a{color:rgba(255,255,255,.65);font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
-.nav-links a:hover{color:var(--white)}
-.nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:.4rem 1.1rem;border-radius:3px;font-weight:700!important}
-.hero{margin-top:64px;min-height:70vh;display:flex;align-items:center;background:var(--navy);position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;right:-5%;top:-20%;width:50%;height:140%;background:radial-gradient(ellipse,rgba(212,175,55,.08) 0%,transparent 70%);pointer-events:none}
-.hero-inner{padding:5rem 8%;max-width:800px;position:relative;z-index:2}
-.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);color:var(--gold);font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.3rem .8rem;border-radius:2px;margin-bottom:1.5rem}
-.hero h1{font-size:clamp(2.4rem,6vw,4.5rem);font-weight:800;line-height:1.05;color:var(--white);margin-bottom:1rem}
-.hero h1 span{color:var(--gold);display:block}
-.hero p{font-size:.95rem;color:rgba(255,255,255,.55);line-height:1.8;max-width:500px;margin-bottom:2rem}
-.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
-.btn-gold{background:var(--gold);color:var(--navy);padding:.8rem 2rem;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:3px;transition:background .2s;display:inline-block}
-.btn-gold:hover{background:var(--gold-dark)}
-.btn-outline{border:2px solid rgba(255,255,255,.2);color:var(--white);padding:.8rem 2rem;font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:3px;transition:border-color .2s;display:inline-block}
-.btn-outline:hover{border-color:var(--white)}
-.strip{background:var(--gold);padding:.8rem 6%;display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap}
-.strip-item{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy)}
-.strip-div{width:1px;height:14px;background:rgba(26,26,46,.2)}
-section{padding:5rem 8%}
-.sec-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
-.sec-eyebrow::before{content:'';width:24px;height:2px;background:var(--gold)}
-.sec-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:var(--navy);line-height:1.1;margin-bottom:.8rem}
-.sec-sub{color:var(--muted);font-size:.88rem;line-height:1.8;max-width:560px}
-#services{background:var(--white)}
-.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:2.5rem}
-.svc-card{background:var(--bg);border:1px solid var(--border);border-top:3px solid var(--gold);padding:2rem 1.5rem;border-radius:0 0 4px 4px;transition:transform .2s,box-shadow .2s}
-.svc-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
-.svc-icon-letter{width:40px;height:40px;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;border-radius:4px;margin-bottom:1rem}
-.svc-name{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.5rem}
-.svc-desc{font-size:.82rem;color:var(--muted);line-height:1.7}
-#about{background:var(--navy)}
-#about .sec-title{color:var(--white)}
-#about .sec-sub{color:rgba(255,255,255,.5)}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:2.5rem;align-items:center}
-.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.08)}
-.stat-num{font-size:2.2rem;font-weight:800;color:var(--gold);line-height:1}
-.stat-label{font-size:.7rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em;margin-top:.3rem}
-#contact{background:var(--white)}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:2.5rem}
-.fg{margin-bottom:.9rem}
-.fg label{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem}
-.fg input,.fg textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-bottom:2px solid var(--border);padding:.7rem 1rem;font-family:inherit;font-size:.875rem;outline:none;transition:border-color .2s;border-radius:3px}
-.fg input:focus,.fg textarea:focus{border-bottom-color:var(--gold)}
-.fg textarea{height:100px;resize:vertical}
-.fr{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.btn-submit{background:var(--navy);color:var(--white);border:none;width:100%;padding:.9rem;font-family:inherit;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:background .2s}
-.btn-submit:hover{background:#252545}
-.ci{display:flex;gap:.75rem;margin-bottom:1rem;align-items:flex-start}
-.ci-icon{width:32px;height:32px;background:rgba(212,175,55,.12);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;border-radius:50%;flex-shrink:0}
-.ci-label{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.15rem}
-.ci-val{font-size:.88rem;color:var(--text);line-height:1.5}
-footer{background:var(--navy);border-top:3px solid var(--gold);padding:2rem 8%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
-.footer-brand{color:rgba(255,255,255,.5);font-size:.78rem}
-.footer-brand strong{color:var(--gold);font-weight:700}
-.footer-copy{font-size:.7rem;color:rgba(255,255,255,.3)}
-.footer-demo{font-size:.65rem;color:rgba(212,175,55,.4)}
-@media(max-width:860px){nav .nav-links{display:none}section{padding:3.5rem 6%}.about-grid{grid-template-columns:1fr}.contact-grid{grid-template-columns:1fr;gap:2rem}.strip{gap:1rem}.strip-div{display:none}}
-@media(max-width:600px){.hero h1{font-size:2.2rem}.fr{grid-template-columns:1fr}footer{flex-direction:column;align-items:flex-start}.about-stats{grid-template-columns:repeat(3,1fr);gap:1rem}}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mancuso Carpet & Upholstery Cleaning | Red Deer AB</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Karla:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--teal:#00897B;--white:#FFFFFF;--blue:#4FC3F7;--dark:#004D40;--light:#E0F2F1}
+body{font-family:'Karla',sans-serif;background:var(--white);color:#333;background-image:radial-gradient(ellipse at 30% 0%,rgba(79,195,247,.06) 0%,transparent 50%),radial-gradient(ellipse at 70% 100%,rgba(0,137,123,.05) 0%,transparent 50%)}
+header{background:var(--teal);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 15px rgba(0,77,64,.15)}
+.logo{font-family:'Playfair Display',serif;font-weight:900;color:var(--white);font-size:1.3rem}
+.logo span{color:var(--blue);font-style:italic}
+nav a{color:var(--white);text-decoration:none;margin-left:2rem;font-weight:600;transition:color .3s}
+nav a:hover{color:var(--blue)}
+.hero{background:linear-gradient(170deg,#00352E 0%,var(--teal) 100%);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-conic-gradient(rgba(79,195,247,.03) 0% 25%,transparent 0% 50%) 0 0/60px 60px}
+.hero h1{font-family:'Playfair Display',serif;font-weight:900;color:var(--white);font-size:2.8rem;margin-bottom:.5rem;animation:fadeUp .7s}
+.hero p{color:rgba(255,255,255,.8);font-size:1.1rem;max-width:550px;margin:0 auto 2rem;line-height:1.7;animation:fadeUp .7s .15s both}
+.btn{display:inline-block;background:var(--blue);color:var(--dark);padding:1rem 2.5rem;border-radius:30px;text-decoration:none;font-weight:700;transition:all .3s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(79,195,247,.4)}
+.services{padding:4rem 2rem;max-width:1100px;margin:0 auto}
+.services h2{font-family:'Playfair Display',serif;color:var(--teal);text-align:center;font-size:2rem;margin-bottom:.5rem}
+.section-sub{text-align:center;color:#888;margin-bottom:3rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
+.card{background:var(--white);border-radius:16px;padding:2rem;box-shadow:0 4px 20px rgba(0,137,123,.07);transition:all .4s;border-bottom:4px solid transparent}
+.card:hover{transform:translateY(-6px);box-shadow:0 12px 35px rgba(0,137,123,.12);border-bottom-color:var(--blue)}
+.card-icon{width:48px;height:48px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Playfair Display',serif;font-weight:900;font-size:1rem;margin-bottom:1rem}
+.card h3{color:var(--teal);margin-bottom:.4rem;font-family:'Playfair Display',serif}
+.card p{color:#777;line-height:1.6;font-size:.93rem}
+.stats{background:linear-gradient(135deg,var(--dark),var(--teal));padding:3rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:3rem}
+.stat{text-align:center;color:var(--white)}
+.stat .num{font-family:'Playfair Display',serif;font-weight:900;font-size:2.5rem;color:var(--blue)}
+.stat .label{font-size:.85rem;opacity:.7;margin-top:.2rem}
+.testimonial{padding:4rem 2rem;max-width:650px;margin:0 auto;text-align:center}
+.testimonial .quote{font-size:1.15rem;font-style:italic;color:var(--dark);line-height:1.8}
+.testimonial .author{color:var(--teal);font-weight:700;margin-top:1rem}
+.testimonial .role{color:#999;font-size:.85rem}
+.contact{background:var(--light);padding:4rem 2rem;text-align:center}
+.contact h2{font-family:'Playfair Display',serif;color:var(--teal);font-size:2rem;margin-bottom:2rem}
+.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-bottom:2rem}
+.contact-item{background:var(--white);padding:1.3rem 2rem;border-radius:12px;min-width:220px;box-shadow:0 2px 8px rgba(0,137,123,.05)}
+.contact-item strong{color:var(--teal);display:block;margin-bottom:.2rem}
+.contact-item a{color:var(--blue);text-decoration:none}
+footer{background:var(--dark);color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.8rem}
+footer a{color:var(--blue);text-decoration:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){.hero h1{font-size:1.8rem}nav{display:none}}
+</style>
 </head>
 <body>
-<nav>
-<div class="nav-brand"><div class="nav-icon">C</div><div class="nav-name">Mancuso Carpet &amp; Upholstery Cleaning</div></div>
-<ul class="nav-links"><li><a href="#services">Services</a></li><li><a href="#about">About</a></li><li><a href="#contact" class="nav-cta">Contact</a></li></ul>
-</nav>
-<div class="hero">
-<div class="hero-inner">
-<div class="hero-badge">Red Deer, Alberta</div>
-<h1>Deep Clean, Fresh Results</h1>
-<p>Professional carpet cleaning services serving Red Deer and surrounding areas. Quality workmanship, reliable service, and competitive pricing. Get in touch today for a free estimate.</p>
-<div class="hero-btns"><a href="#contact" class="btn-gold">Get a Free Quote</a><a href="#services" class="btn-outline">Our Services</a></div>
-</div>
-</div>
-<div class="strip">
-<div class="strip-item">Licensed &amp; Insured</div><div class="strip-div"></div>
-<div class="strip-item">Free Estimates</div><div class="strip-div"></div>
-<div class="strip-item">Serving Red Deer</div><div class="strip-div"></div>
-<div class="strip-item">Quality Guaranteed</div>
-</div>
-<section id="services">
-<div class="sec-eyebrow">What We Do</div>
-<div class="sec-title">Our Services</div>
-<div class="sec-sub">We provide reliable, professional services tailored to your needs.</div>
-<div class="svc-grid">
-<div class="svc-card"><div class="svc-icon-letter">C</div><div class="svc-name">Carpet Cleaning</div><div class="svc-desc">Professional carpet cleaning services with attention to detail and quality results. Experienced team you can trust.</div></div>
-<div class="svc-card"><div class="svc-icon-letter">U</div><div class="svc-name">Upholstery Cleaning</div><div class="svc-desc">Professional upholstery cleaning services with attention to detail and quality results. Experienced team you can trust.</div></div>
-<div class="svc-card"><div class="svc-icon-letter">S</div><div class="svc-name">Stain Removal</div><div class="svc-desc">Professional stain removal services with attention to detail and quality results. Experienced team you can trust.</div></div>
-<div class="svc-card"><div class="svc-icon-letter">D</div><div class="svc-name">Deodorizing Services</div><div class="svc-desc">Professional deodorizing services services with attention to detail and quality results. Experienced team you can trust.</div></div>
+<header>
+<div class="logo">Mancuso <span>Carpet & Upholstery</span></div>
+<nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
+</header>
+<section class="hero">
+<h1>Your Carpets Deserve Better Than a Rental Machine</h1>
+<p>Professional hot water extraction cleaning that pulls out what vacuums and store rentals leave behind. Red Deer's carpet care specialists since 2009.</p>
+<a href="#contact" class="btn">Book A Deep Clean</a>
+</section>
+<section class="services" id="services">
+<h2>Our Cleaning Services</h2>
+<p class="section-sub">Deep clean. Dry fast. Stay fresh longer.</p>
+<div class="grid">
+<div class="card"><div class="card-icon">CP</div><h3>Carpet Cleaning</h3><p>Hot water extraction that removes deep dirt, allergens, and stubborn stains.</p></div>
+<div class="card"><div class="card-icon">UP</div><h3>Upholstery Cleaning</h3><p>Sofas, chairs, and fabric furniture restored to like-new freshness.</p></div>
+<div class="card"><div class="card-icon">PT</div><h3>Pet Stain Treatment</h3><p>Enzyme-based treatment that eliminates pet stains and odors at the source.</p></div>
+<div class="card"><div class="card-icon">AR</div><h3>Area Rug Cleaning</h3><p>Gentle but thorough cleaning for oriental, Persian, and synthetic rugs.</p></div>
+<div class="card"><div class="card-icon">SC</div><h3>Scotchgard Protection</h3><p>Apply protective coating to keep your freshly cleaned carpets cleaner longer.</p></div>
+<div class="card"><div class="card-icon">TM</div><h3>Tile & Grout</h3><p>Deep cleaning and sealing for tiled floors and grout lines.</p></div>
 </div>
 </section>
-<section id="about">
-<div class="sec-eyebrow">About Us</div>
-<div class="sec-title">Mancuso Carpet &amp; Upholstery Cleaning</div>
-<div class="about-grid">
-<div>
-<p class="sec-sub">Mancuso Carpet &amp; Upholstery Cleaning has been proudly serving the Red Deer area with professional services. Our team is committed to delivering exceptional quality on every project, big or small.</p>
-<p class="sec-sub" style="margin-top:.75rem">We believe in honest pricing, clear communication, and getting the job done right the first time. Our reputation is built on satisfied customers and referrals.</p>
-</div>
-<div>
-<div class="about-stats">
-<div><div class="stat-num">100%</div><div class="stat-label">Satisfaction</div></div>
-<div><div class="stat-num">5+</div><div class="stat-label">Years Experience</div></div>
-<div><div class="stat-num">500+</div><div class="stat-label">Jobs Completed</div></div>
-</div>
-</div>
-</div>
+<section class="stats">
+<div class="stat"><div class="num">15</div><div class="label">Years of Experience</div></div>
+<div class="stat"><div class="num">4,200+</div><div class="label">Carpets Cleaned</div></div>
+<div class="stat"><div class="num">2HR</div><div class="label">Fast Dry Time</div></div>
+<div class="stat"><div class="num">100%</div><div class="label">Satisfaction Guaranteed</div></div>
 </section>
-<section id="contact">
-<div class="sec-eyebrow">Get In Touch</div>
-<div class="sec-title">Contact Us Today</div>
-<div class="sec-sub">Ready to get started? Reach out for a free estimate.</div>
-<div class="contact-grid">
-<div>
-<div class="ci"><div class="ci-icon">E</div><div><div class="ci-label">Email</div><div class="ci-val"><a href="mailto:cynthia@mancuso-cleaning.com">cynthia@mancuso-cleaning.com</a></div></div></div>
-<div class="ci"><div class="ci-icon">L</div><div><div class="ci-label">Location</div><div class="ci-val">Red Deer, Alberta</div></div></div>
-<div class="ci"><div class="ci-icon">S</div><div><div class="ci-label">Service Area</div><div class="ci-val">Red Deer and surrounding areas</div></div></div>
-</div>
-<div>
-<div class="fr"><div class="fg"><label>First Name</label><input type="text" placeholder="Your first name"/></div><div class="fg"><label>Last Name</label><input type="text" placeholder="Your last name"/></div></div>
-<div class="fg"><label>Email</label><input type="email" placeholder="you@example.com"/></div>
-<div class="fg"><label>Phone</label><input type="tel" placeholder="555-000-0000"/></div>
-<div class="fg"><label>Message</label><textarea placeholder="Tell us about your project..."></textarea></div>
-<button class="btn-submit">Send Message</button>
-</div>
-</div>
+<section class="testimonial">
+<div class="quote">Three dogs and two kids destroyed our living room carpet. I was ready to replace it until Cynthia from Mancuso worked her magic. It honestly looks like the day we moved in. Saved us thousands.</div>
+<div class="author">Linda P.</div>
+<div class="role">Homeowner, Red Deer</div>
 </section>
-<footer>
-<div class="footer-brand">Powered by <strong>Wildrose Automations</strong></div>
-<div class="footer-copy">&copy; 2026 Mancuso Carpet &amp; Upholstery Cleaning &middot; Red Deer, AB</div>
-<div class="footer-demo">Demo website &middot; wildroseautomations.com</div>
-</footer>
-</body></html>
+<section class="contact" id="contact">
+<h2>Let's Bring Your Carpets Back to Life</h2>
+<div class="contact-info">
+<div class="contact-item"><strong>Email</strong><a href="mailto:cynthia@mancuso-cleaning.com">cynthia@mancuso-cleaning.com</a></div>
+<div class="contact-item"><strong>Phone</strong><a href="tel:+14035550154">(403) 555-0154</a></div>
+<div class="contact-item"><strong>Location</strong>18 Clearview Rd, Red Deer AB T4P 0C1</div>
+</div>
+<a href="mailto:cynthia@mancuso-cleaning.com" class="btn">Book Your Cleaning</a>
+</section>
+<footer>Powered by <a href="https://wildroseautomations.ca">Wildrose Automations</a></footer>
+</body>
+</html>
