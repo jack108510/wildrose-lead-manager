@@ -3,159 +3,182 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bains Roofing | Edmonton Roofing Services</title>
+  <title>Bains Roofing — Edmonton Roofing Services</title>
   <style>
     :root{
-      --bg:#0f1724;
-      --surface:#121f33;
-      --surface2:#182841;
-      --line:#2a3f5f;
-      --text:#eaf1fb;
-      --muted:#b8c7dc;
-      --accent:#7cc0ff;
-      --btn:#ffffff;
-      --btnText:#163353;
+      --ink:#0f1720;
+      --char:#1a2533;
+      --gold:#f2b705;
+      --gold2:#ffd24d;
+      --light:#f7f9fc;
+      --line:#e4e8ef;
+      --muted:#5f6f85;
+      --white:#ffffff;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-    .container{max-width:1140px;margin:0 auto;padding:0 24px}
+    body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--light);color:var(--char);line-height:1.55}
+    .container{max-width:1180px;margin:0 auto;padding:0 24px}
 
-    .topbar{border-bottom:1px solid var(--line);background:rgba(10,19,32,.9);position:sticky;top:0;z-index:10;backdrop-filter:blur(6px)}
-    .topbar .inner{display:flex;justify-content:space-between;align-items:center;padding:14px 0}
-    .brand{font-weight:700;letter-spacing:.02em}
-    .brand small{display:block;font-size:12px;color:var(--muted);font-weight:500}
-    .nav{display:flex;gap:20px;font-size:14px;color:var(--muted)}
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(15,23,32,.94);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.08)}
+    .topbar .inner{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+    .logo{height:42px;width:auto}
+    .nav{display:flex;gap:24px;color:#d7e0eb;font-size:14px}
 
-    .hero{padding:70px 0 54px;background:linear-gradient(160deg,#11253f 0%, #0f1724 55%)}
-    .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
-    h1{margin:0 0 14px;font-size:54px;line-height:1.05;max-width:900px}
-    .lead{max-width:850px;color:var(--muted);font-size:18px}
-    .ctaRow{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
-    .btn{display:inline-block;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700}
-    .btn.primary{background:var(--btn);color:var(--btnText)}
-    .btn.secondary{border:1px solid #93b7e0;color:var(--text)}
+    .hero{position:relative;min-height:74vh;display:flex;align-items:center;color:#fff;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:0;background:url('https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/BANNER-031bbca6-2880w.jpg') center/cover no-repeat;transform:scale(1.03)}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg, rgba(8,14,22,.86), rgba(8,14,22,.55) 45%, rgba(8,14,22,.65));}
+    .hero .content{position:relative;z-index:2;padding:64px 0;max-width:760px}
+    .eyebrow{display:inline-block;background:rgba(242,183,5,.16);border:1px solid rgba(242,183,5,.55);color:#ffd873;font-size:12px;letter-spacing:.11em;text-transform:uppercase;padding:8px 11px;border-radius:999px;margin-bottom:16px}
+    h1{margin:0 0 12px;font-size:58px;line-height:1.03;font-weight:800;text-shadow:0 4px 28px rgba(0,0,0,.35)}
+    .lead{font-size:19px;color:#e8eef7;max-width:700px}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+    .btn{display:inline-block;padding:13px 18px;border-radius:10px;text-decoration:none;font-weight:700}
+    .btn.primary{background:var(--gold);color:#1a1a1a;box-shadow:0 8px 20px rgba(242,183,5,.35)}
+    .btn.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5)}
 
-    .meta{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:34px}
-    .meta .box{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-    .meta strong{display:block;font-size:13px;color:var(--muted);margin-bottom:3px}
+    .quick{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:26px}
+    .quick .q{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:12px 14px}
+    .quick strong{display:block;color:#fff;font-size:12px;letter-spacing:.05em;text-transform:uppercase;opacity:.9;margin-bottom:4px}
 
-    section{padding:34px 0}
-    .section-title{font-size:32px;margin:0 0 10px}
-    .section-sub{color:var(--muted);max-width:860px}
+    section{padding:48px 0}
+    .sec-title{font-size:38px;line-height:1.15;margin:0 0 10px;color:#0e1826}
+    .sec-sub{color:var(--muted);max-width:860px;margin-bottom:18px}
 
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
-    .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
-    .card h3{margin:0 0 8px;font-size:20px}
-    .card p{margin:0;color:var(--muted)}
+    .services{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .service{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 8px 20px rgba(16,24,40,.04)}
+    .service img{width:100%;height:190px;object-fit:cover;display:block}
+    .service .body{padding:14px}
+    .service h3{margin:0 0 8px;font-size:20px}
+    .service p{margin:0;color:var(--muted)}
 
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
-    .step{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:14px}
-    .step .n{font-size:22px;font-weight:800;color:var(--accent);margin-bottom:6px}
+    .split{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+    .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .step{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+    .num{font-size:22px;font-weight:800;color:#b88700;margin-bottom:4px}
 
-    .compare{background:#0b1320;border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
-    .compare ul{margin:8px 0 0 18px;color:var(--muted)}
+    .beforeafter{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .ba{border-radius:14px;border:1px solid var(--line);padding:16px;background:#fff}
+    .ba h4{margin:0 0 10px}
+    .ba ul{margin:0 0 0 18px;color:var(--muted)}
 
-    .footer{margin:26px 0 40px;padding:16px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02);color:var(--muted)}
-    .footer a{color:#d8ebff}
+    .final{background:#0f1720;color:#dbe5f4;border-radius:16px;padding:22px;border:1px solid #1f2e42}
+    .final a{color:#fff6cc}
 
-    @media (max-width:980px){
-      h1{font-size:42px}
-      .meta{grid-template-columns:repeat(2,1fr)}
-      .cards{grid-template-columns:1fr 1fr}
-      .steps{grid-template-columns:1fr 1fr}
+    footer{padding:28px 0 40px;color:#66788f;font-size:14px}
+
+    @media(max-width:1000px){
+      h1{font-size:46px}
+      .services{grid-template-columns:1fr 1fr}
+      .split{grid-template-columns:1fr}
+      .quick{grid-template-columns:1fr 1fr}
     }
-    @media (max-width:640px){
+    @media(max-width:680px){
       .nav{display:none}
-      h1{font-size:34px}
-      .cards,.steps,.meta{grid-template-columns:1fr}
-      .hero{padding-top:52px}
+      h1{font-size:36px}
+      .services,.steps,.beforeafter,.quick{grid-template-columns:1fr}
+      .hero{min-height:auto}
     }
   </style>
 </head>
 <body>
   <header class="topbar">
     <div class="container inner">
-      <div class="brand">Bains Roofing
-        <small>Edmonton Roofing Services</small>
-      </div>
+      <img class="logo" src="https://irp.cdn-website.com/b4f368e5/dms3rep/multi/Logo.svg" alt="Bains Roofing" />
       <nav class="nav">
-        <span>Services</span>
-        <span>Process</span>
-        <span>Why Us</span>
-        <span>Contact</span>
+        <span>Roof Installation</span>
+        <span>Roof Replacement</span>
+        <span>Roof Repairs</span>
+        <span>Free Quote</span>
       </nav>
     </div>
   </header>
 
   <section class="hero">
-    <div class="container">
-      <div class="eyebrow">Facelift Concept · Based on Existing Site Content</div>
+    <div class="container content">
+      <div class="eyebrow">Facelift Demo · SwiftLocating/CWilde style direction</div>
       <h1>Your Trusted Roofing Contractors in Edmonton, AB</h1>
-      <p class="lead">This redesign keeps Bains Roofing’s current message and services, but presents them in a cleaner, higher-converting format built to drive quote requests.</p>
-      <div class="ctaRow">
-        <a class="btn primary" href="mailto:info@bainsroofing.com">Request Free Quote</a>
-        <a class="btn secondary" href="https://www.bainsroofing.com/edmonton" target="_blank">View Current Website</a>
+      <p class="lead">Same Bains Roofing core messaging, upgraded into a stronger premium layout with industry visuals, clearer sections, and better conversion flow.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:info@bainsroofing.com">Get Free Quote</a>
+        <a class="btn secondary" href="https://www.bainsroofing.com/edmonton" target="_blank">Current Site</a>
       </div>
-
-      <div class="meta">
-        <div class="box"><strong>Email</strong>info@bainsroofing.com</div>
-        <div class="box"><strong>Phone</strong>(587) 415-7670</div>
-        <div class="box"><strong>Service Area</strong>Edmonton, AB</div>
-        <div class="box"><strong>Primary Goal</strong>More Qualified Quote Calls</div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <h2 class="section-title">Our Edmonton Roofing Services</h2>
-      <p class="section-sub">The same core offers from the original site, repackaged with clear hierarchy and stronger conversion flow.</p>
-      <div class="cards">
-        <article class="card">
-          <h3>Roof Installation</h3>
-          <p>Complete roof installations using durable systems built for Alberta weather conditions.</p>
-        </article>
-        <article class="card">
-          <h3>Roof Replacement</h3>
-          <p>End-to-end replacement for aging or damaged roofing with clear scope and timeline.</p>
-        </article>
-        <article class="card">
-          <h3>Roof Repairs</h3>
-          <p>Fast repair support for leaks and damage to protect property and prevent escalation.</p>
-        </article>
+      <div class="quick">
+        <div class="q"><strong>Email</strong>info@bainsroofing.com</div>
+        <div class="q"><strong>Phone</strong>(587) 415-7670</div>
+        <div class="q"><strong>Area</strong>Edmonton, AB</div>
+        <div class="q"><strong>Focus</strong>More quote conversions</div>
       </div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <h2 class="section-title">Your Roofing Project in 4 Easy Steps</h2>
-      <div class="steps">
-        <div class="step"><div class="n">1</div><strong>Inspection</strong><p>Assess the roof and identify needs.</p></div>
-        <div class="step"><div class="n">2</div><strong>Quote</strong><p>Transparent pricing and project scope.</p></div>
-        <div class="step"><div class="n">3</div><strong>Build</strong><p>Professional installation or replacement.</p></div>
-        <div class="step"><div class="n">4</div><strong>Final Check</strong><p>Quality walkthrough and handoff.</p></div>
+      <h2 class="sec-title">Our Edmonton Roofing Services</h2>
+      <p class="sec-sub">Service clarity, stronger visual hierarchy, and instantly scannable cards for homeowners and commercial buyers.</p>
+      <div class="services">
+        <article class="service">
+          <img src="https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/image+27-2880w.jpg" alt="Roof installation" />
+          <div class="body"><h3>Roof Installation</h3><p>Complete installation systems designed for long-term performance in Alberta weather.</p></div>
+        </article>
+        <article class="service">
+          <img src="https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/WHY+US-fa3d6c3e-2880w.jpg" alt="Roof replacement" />
+          <div class="body"><h3>Roof Replacement</h3><p>Clear replacement scope, transparent estimate, and quality-controlled execution.</p></div>
+        </article>
+        <article class="service">
+          <img src="https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/SAFETY-2880w.jpg" alt="Roof repairs" />
+          <div class="body"><h3>Roof Repairs</h3><p>Leak and storm damage repair services to protect structure and reduce future risk.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container split">
+      <div class="panel">
+        <h2 class="sec-title" style="font-size:30px">Your Roofing Project in 4 Steps</h2>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><strong>Inspection</strong><p>Assess roof condition and project needs.</p></div>
+          <div class="step"><div class="num">2</div><strong>Estimate</strong><p>Transparent quote with materials + timeline.</p></div>
+          <div class="step"><div class="num">3</div><strong>Execution</strong><p>Professional installation/replacement work.</p></div>
+          <div class="step"><div class="num">4</div><strong>Quality Handoff</strong><p>Final review and completion confirmation.</p></div>
+        </div>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden">
+        <img src="https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/pexels-caspar-roofing-channel-3522832-5264807-2880w.jpg" alt="Roofing crew" style="width:100%;height:100%;object-fit:cover;min-height:330px" />
       </div>
     </div>
   </section>
 
   <section>
     <div class="container">
-      <h2 class="section-title">Why This Version Performs Better</h2>
-      <div class="compare">
-        <strong>What changed in the facelift:</strong>
-        <ul>
-          <li>Sharper hero messaging and CTA above the fold</li>
-          <li>Clear service cards for faster scanning</li>
-          <li>Simple process section to build trust</li>
-          <li>Persistent contact clarity (email + phone + area)</li>
-          <li>Mobile-first spacing and cleaner visual hierarchy</li>
-        </ul>
+      <h2 class="sec-title">Before vs. After</h2>
+      <div class="beforeafter">
+        <div class="ba">
+          <h4>Current site issues</h4>
+          <ul>
+            <li>Message hierarchy is weaker above the fold</li>
+            <li>CTA intent is less structured</li>
+            <li>Service scanning takes more effort</li>
+          </ul>
+        </div>
+        <div class="ba">
+          <h4>Facelift improvements</h4>
+          <ul>
+            <li>Premium hero + clear conversion path</li>
+            <li>Industry visuals and trust-led presentation</li>
+            <li>Cleaner sectioning for faster decision making</li>
+          </ul>
+        </div>
       </div>
-      <div class="footer">
+      <div class="final" style="margin-top:16px">
         Contact: <a href="mailto:info@bainsroofing.com">info@bainsroofing.com</a> · (587) 415-7670 · Edmonton, AB
       </div>
     </div>
   </section>
+
+  <footer>
+    <div class="container">Demo facelift concept by Wildrose Automations · Based on existing Bains Roofing service content.</div>
+  </footer>
 </body>
 </html>
