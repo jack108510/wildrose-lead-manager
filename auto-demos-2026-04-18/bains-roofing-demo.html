@@ -1,182 +1,336 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bains Roofing | Edmonton Roofing Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
   <style>
-    :root{
-      --navy:#102c47;
-      --navy-2:#153b5f;
-      --gold:#f2b705;
-      --bg:#f7f9fc;
-      --ink:#0e1b2a;
-      --muted:#63748b;
-      --card:#ffffff;
-      --line:#e5eaf1;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #f2b705;
+      --orange-light: #ffd24d;
+      --dark: #0e1724;
+      --charcoal: #152337;
+      --mid: #2e3848;
+      --bg: #f4f5f7;
+      --surface: #ffffff;
+      --border: #dde2ec;
+      --warm: #f0f2f8;
+      --muted: #6a7890;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
-    .container{max-width:1150px;margin:0 auto;padding:0 24px}
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--dark); overflow-x: hidden; }
 
-    /* NAV (SwiftLocating style) */
-    .nav{background:var(--navy);color:#fff;position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(255,255,255,.14)}
-    .nav .inner{display:flex;justify-content:space-between;align-items:center;padding:12px 0}
-    .logo{height:42px;width:auto}
-    .menu{display:flex;gap:22px;font-size:14px;opacity:.95}
-    .menu a{color:#d8e6f7;text-decoration:none}
-
-    /* HERO */
-    .hero{position:relative;overflow:hidden;color:#fff}
-    .hero::before{content:"";position:absolute;inset:0;background:url('https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/BANNER-031bbca6-2880w.jpg') center/cover no-repeat;transform:scale(1.04)}
-    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg, rgba(8,14,22,.85), rgba(16,44,71,.72) 52%, rgba(8,14,22,.82));}
-    .hero .content{position:relative;z-index:2;padding:82px 0 64px}
-    .hero .tag{display:inline-block;background:rgba(242,183,5,.15);border:1px solid rgba(242,183,5,.6);color:#ffd975;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:7px 11px;border-radius:999px;margin-bottom:16px}
-    h1{font-size:56px;line-height:1.04;margin:0 0 14px;max-width:900px}
-    .lead{max-width:760px;font-size:19px;color:#e8eef7}
-    .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-    .btn{display:inline-block;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700}
-    .btn-primary{background:var(--gold);color:#1d1d1d}
-    .btn-secondary{border:1px solid rgba(255,255,255,.5);color:#fff}
-
-    .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:26px}
-    .quick .item{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.24);padding:11px 12px;border-radius:11px}
-    .quick strong{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#dce8f7}
-
-    section{padding:48px 0}
-    .title{font-size:34px;line-height:1.15;margin:0 0 10px}
-    .sub{color:var(--muted);max-width:850px}
-
-    /* SERVICES */
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 8px 20px rgba(16,24,40,.04)}
-    .card img{width:100%;height:188px;object-fit:cover;display:block}
-    .card .body{padding:14px}
-    .card h3{margin:0 0 8px;font-size:20px}
-    .card p{margin:0;color:var(--muted)}
-
-    /* ABOUT + PROCESS */
-    .split{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
-    .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-    .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .step{border:1px solid var(--line);border-radius:12px;padding:12px}
-    .num{font-size:22px;font-weight:800;color:#b78700;margin-bottom:4px}
-
-    /* CREDENTIALS */
-    .cred{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .cred .c{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
-
-    /* GET QUOTE */
-    .quote{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#e7f0fb;border-radius:16px;padding:24px;border:1px solid #254d73}
-    .quote h3{margin:0 0 8px;color:#fff}
-
-    footer{padding:26px 0 40px;color:#72849b;font-size:14px}
-
-    @media(max-width:980px){
-      h1{font-size:44px}
-      .cards{grid-template-columns:1fr 1fr}
-      .split{grid-template-columns:1fr}
-      .quick{grid-template-columns:1fr 1fr}
-      .cred{grid-template-columns:1fr 1fr}
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 66px;
+      background: var(--dark);
+      border-bottom: 2px solid var(--orange);
     }
-    @media(max-width:680px){
-      .menu{display:none}
-      h1{font-size:35px}
-      .cards,.steps,.quick,.cred{grid-template-columns:1fr}
+    .nav-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; color: white; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; }
+    .nav-brand span { color: var(--orange); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: white; }
+    .nav-cta { background: var(--orange) !important; color: var(--dark) !important; padding: 0.42rem 1.2rem; border-radius: 3px; font-weight: 700; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--orange-light) !important; }
+
+    .hero { margin-top: 66px; position: relative; min-height: calc(100vh - 66px); display: flex; align-items: center; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: url('https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/BANNER-031bbca6-2880w.jpg') center/cover no-repeat; filter: brightness(0.25); }
+    .hero-content { position: relative; z-index: 2; padding: 5rem 8%; max-width: 780px; }
+    .hero-eyebrow { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.25rem; }
+    .hero-eyebrow::before { content: ''; display: block; width: 24px; height: 2px; background: var(--orange); }
+    .hero h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(3rem, 6.5vw, 6.5rem); font-weight: 800; text-transform: uppercase; line-height: 0.95; color: white; margin-bottom: 1.25rem; }
+    .hero h1 span { color: var(--orange); display: block; }
+    .hero p { font-size: 0.92rem; color: rgba(255,255,255,0.55); line-height: 1.9; max-width: 480px; margin-bottom: 2rem; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn-orange { background: var(--orange); color: var(--dark); padding: 0.85rem 2rem; text-decoration: none; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 3px; transition: background 0.2s; display: inline-block; }
+    .btn-orange:hover { background: var(--orange-light); }
+    .btn-ghost { border: 2px solid rgba(255,255,255,0.2); color: white; padding: 0.85rem 2rem; text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 3px; transition: border-color 0.2s; display: inline-block; }
+    .btn-ghost:hover { border-color: white; }
+    .hero-trust { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .trust-item { font-size: 0.78rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 0.5rem; }
+    .trust-dot { width: 5px; height: 5px; background: var(--orange); border-radius: 50%; flex-shrink: 0; }
+
+    .orange-strip { background: var(--orange); padding: 1rem 8%; display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .os-item { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dark); }
+    .os-div { width: 1px; height: 14px; background: rgba(0,0,0,0.2); }
+
+    section { padding: 5rem 8%; }
+    .sec-eyebrow { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.75rem; }
+    .sec-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--orange); }
+    .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; text-transform: uppercase; color: var(--dark); line-height: 1; margin-bottom: 1rem; }
+    .sec-sub { color: var(--muted); font-size: 0.88rem; line-height: 1.85; max-width: 560px; }
+
+    #services { background: var(--surface); }
+    .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+    .svc-card { border: 1px solid var(--border); border-top: 3px solid var(--orange); padding: 2rem 1.5rem; border-radius: 0 0 4px 4px; transition: box-shadow 0.2s, transform 0.2s; }
+    .svc-card:hover { box-shadow: 0 6px 20px rgba(14,19,24,0.08); transform: translateY(-3px); }
+    .svc-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .svc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; color: var(--dark); margin-bottom: 0.4rem; }
+    .svc-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+
+    #about { background: var(--charcoal); display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .about-img img { width: 100%; height: 100%; min-height: 480px; object-fit: cover; display: block; filter: brightness(0.75); }
+    .about-body { padding: 5rem 4rem; display: flex; flex-direction: column; justify-content: center; }
+    #about .sec-title { color: white; }
+    #about .sec-sub { color: rgba(255,255,255,0.5); margin-bottom: 0.85rem; }
+    .about-features { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 2rem; }
+    .af { display: flex; gap: 0.75rem; font-size: 0.83rem; color: rgba(255,255,255,0.5); align-items: flex-start; }
+    .af-dot { width: 5px; height: 5px; background: var(--orange); border-radius: 50%; margin-top: 0.4rem; flex-shrink: 0; }
+
+    #certifications { background: var(--warm); text-align: center; }
+    #certifications .sec-sub { margin: 0.5rem auto 2.5rem; }
+    .cert-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 2rem; }
+    .cert-card { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 1.75rem 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+    .cert-icon { font-size: 2.5rem; }
+    .cert-name { font-size: 0.82rem; font-weight: 700; color: var(--dark); text-align: center; }
+    .cert-body { font-size: 0.75rem; color: var(--muted); text-align: center; line-height: 1.55; }
+
+    #contact { background: var(--dark); }
+    #contact .sec-title { color: white; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 2.5rem; }
+    .ci { display: flex; gap: 1rem; margin-bottom: 1.25rem; }
+    .ci-icon { width: 40px; height: 40px; background: rgba(242,183,5,0.12); border: 1px solid rgba(242,183,5,0.25); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .ci-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--orange); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+    .ci-val a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .fg { margin-bottom: 0.9rem; }
+    .fg label { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); display: block; margin-bottom: 0.4rem; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-bottom: 2px solid rgba(255,255,255,0.1); padding: 0.78rem 1rem; color: white; font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-bottom-color: var(--orange); }
+    .fg textarea { height: 110px; resize: vertical; }
+    .fg select option { background: #1a2030; }
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn-submit { background: var(--orange); color: var(--dark); border: none; width: 100%; padding: 1rem; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--orange-light); }
+
+    footer { background: #080c10; padding: 1.5rem 8%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 2px solid var(--orange); }
+    .footer-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; color: white; letter-spacing: 0.05em; }
+    .footer-brand span { color: var(--orange); }
+    .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.2); }
+    .footer-demo { font-size: 0.65rem; color: rgba(242,183,5,0.25); }
+
+    @media (max-width: 1024px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } .cert-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      nav .nav-links { display: none; }
+      section { padding: 4rem 6%; }
+      #about { grid-template-columns: 1fr; }
+      .about-img img { min-height: 260px; height: 260px; }
+      .about-body { padding: 3rem 6%; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .orange-strip { gap: 1.5rem; flex-direction: column; align-items: flex-start; padding: 1rem 6%; }
+      .os-div { display: none; }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 3rem; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .cert-grid { grid-template-columns: 1fr 1fr; }
+      .fr { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="container inner">
-      <img class="logo" src="https://irp.cdn-website.com/b4f368e5/dms3rep/multi/Logo.svg" alt="Bains Roofing" />
-      <nav class="menu">
-        <a href="#services">Services</a>
-        <a href="#about">About</a>
-        <a href="#quote">Get a Quote</a>
-      </nav>
-    </div>
-  </header>
 
-  <section class="hero">
-    <div class="container content">
-      <div class="tag">Edmonton · Trusted Roofing Contractors</div>
-      <h1>Your Trusted Roofing Contractors in Edmonton, AB</h1>
-      <p class="lead">Facelift concept for Bains Roofing based on existing content. Built in the same conversion-first structure as SwiftLocating: clear services, trust signals, and stronger quote flow.</p>
-      <div class="btns">
-        <a class="btn btn-primary" href="mailto:info@bainsroofing.com">Request Free Quote</a>
-        <a class="btn btn-secondary" href="https://www.bainsroofing.com/edmonton" target="_blank">Current Website</a>
+  <nav>
+    <a href="#" class="nav-brand">Bains <span>Roofing</span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Edmonton · Trusted Roofing Contractors</div>
+      <h1>Professional<br /><span>Roofing Services</span></h1>
+      <p>Bains Roofing provides professional roofing installation, replacement, and repair services across Edmonton — built to last, built with safety.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-orange">Get a Quote</a>
+        <a href="#services" class="btn-ghost">Our Services</a>
       </div>
-      <div class="quick">
-        <div class="item"><strong>Email</strong>info@bainsroofing.com</div>
-        <div class="item"><strong>Phone</strong>(587) 415-7670</div>
-        <div class="item"><strong>Service Area</strong>Edmonton, AB</div>
-        <div class="item"><strong>Response</strong>Fast Quote Turnaround</div>
+      <div class="hero-trust">
+        <div class="trust-item"><div class="trust-dot"></div>Licensed & Insured</div>
+        <div class="trust-item"><div class="trust-dot"></strong>Certified Roofers</div>
+        <div class="trust-item"><div class="trust-dot"></div>Edmonton Service Area</div>
       </div>
     </div>
-  </section>
+  </div>
+
+  <div class="orange-strip">
+    <div class="os-item">🏠 Roof Installation</div>
+    <div class="os-div"></div>
+    <div class="os-item">🔄 Roof Replacement</div>
+    <div class="os-div"></div>
+    <div class="os-item">🔧 Roof Repairs</div>
+    <div class="os-div"></div>
+    <div class="os-item">📋 Free Inspections</div>
+    <div class="os-div"></div>
+    <div class="os-item">✅ Quality Guaranteed</div>
+  </div>
 
   <section id="services">
-    <div class="container">
-      <h2 class="title">Our Edmonton Roofing Services</h2>
-      <p class="sub">Professional roofing services designed to protect your property, reduce long-term risk, and deliver consistent quality.</p>
-      <div class="cards">
-        <article class="card">
-          <img src="https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/image+27-2880w.jpg" alt="Roof Installation" />
-          <div class="body"><h3>Roof Installation</h3><p>Full roof installations with durable materials tailored for Alberta climate conditions.</p></div>
-        </article>
-        <article class="card">
-          <img src="https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/WHY+US-fa3d6c3e-2880w.jpg" alt="Roof Replacement" />
-          <div class="body"><h3>Roof Replacement</h3><p>Complete replacement with clear scope, timeline, and quality-controlled execution.</p></div>
-        </article>
-        <article class="card">
-          <img src="https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/SAFETY-2880w.jpg" alt="Roof Repairs" />
-          <div class="body"><h3>Roof Repairs</h3><p>Leak and damage repairs to prevent escalation and keep your structure protected.</p></div>
-        </article>
+    <div class="sec-eyebrow">What We Do</div>
+    <div class="sec-title">Our Services</div>
+    <p class="sec-sub">Professional roofing services to protect your home, your investment, and your peace of mind.</p>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="svc-icon">🏠</div>
+        <div class="svc-name">Roof Installation</div>
+        <p class="svc-desc">Complete roof installations with durable materials built to handle Alberta's toughest weather conditions.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🔄</div>
+        <div class="svc-name">Roof Replacement</div>
+        <p class="svc-desc">Full roof replacement with clear scope, transparent pricing, and quality-controlled execution from start to finish.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🔧</div>
+        <div class="svc-name">Roof Repairs</div>
+        <p class="svc-desc">Leak detection, storm damage repair, and patching services to protect your structure and prevent escalation.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">📋</div>
+        <div class="svc-name">Free Inspections</div>
+        <p class="svc-desc">Thorough roof condition assessments with honest recommendations — no pressure, no hidden costs.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🏗</div>
+        <div class="svc-name">Commercial Roofing</div>
+        <p class="svc-desc">Flat and low-slope commercial roofing systems installed and maintained by experienced crews.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🛡</div>
+        <div class="svc-name">Warranty Protection</div>
+        <p class="svc-desc">Manufacturer and workmanship warranties on every project — quality roofs, guaranteed satisfaction.</p>
       </div>
     </div>
   </section>
 
-  <section id="about">
-    <div class="container split">
-      <div class="panel">
-        <h2 class="title" style="font-size:30px">Why Choose Bains Roofing</h2>
-        <p class="sub">Built around the same trust-first message from the original site, but with clearer hierarchy and better readability.</p>
-        <div class="steps">
-          <div class="step"><div class="num">1</div><strong>Inspection</strong><p>Assess roof condition and identify project requirements.</p></div>
-          <div class="step"><div class="num">2</div><strong>Estimate</strong><p>Transparent pricing with clear deliverables.</p></div>
-          <div class="step"><div class="num">3</div><strong>Build</strong><p>Professional installation/replacement by experienced crew.</p></div>
-          <div class="step"><div class="num">4</div><strong>Final Check</strong><p>Quality walkthrough and completion sign-off.</p></div>
+  <section id="about" style="padding:0;">
+    <div class="about-img">
+      <img src="https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/pexels-caspar-roofing-channel-3522832-5264807-2880w.jpg" alt="Bains Roofing team on site" />
+    </div>
+    <div class="about-body">
+      <div class="sec-eyebrow">About Us</div>
+      <div class="sec-title">Trusted.<br />Experienced. Local.</div>
+      <p class="sec-sub">Bains Roofing was built on a simple principle — quality roofs protect families, prevent damage, and provide lasting peace of mind. We bring craftsmanship, safety, and reliability to every project in Edmonton.</p>
+      <p class="sec-sub" style="margin-top:0.75rem;">Whether you need a new installation, full replacement, or emergency repair, we deliver the workmanship and professionalism your home deserves.</p>
+      <div class="about-features">
+        <div class="af"><div class="af-dot"></div>Licensed and insured roofing professionals</div>
+        <div class="af"><div class="af-dot"></div>Serving residential & commercial clients</div>
+        <div class="af"><div class="af-dot"></div>Free estimates — fast turnaround available</div>
+        <div class="af"><div class="af-dot"></div>Manufacturer-certified installation crews</div>
+        <div class="af"><div class="af-dot"></div>Proudly serving Edmonton and surrounding areas</div>
+        <div class="af"><div class="af-dot"></div>Built to Last, Built with Safety</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="sec-eyebrow">Credentials & Trust</div>
+    <div class="sec-title">Why Edmonton Trusts Us</div>
+    <p class="sec-sub">Our team holds the certifications and industry credentials that back up every roof we build.</p>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <div class="cert-icon">🏅</div>
+        <div class="cert-name">Licensed & Insured</div>
+        <div class="cert-body">Fully licensed roofing contractor with comprehensive liability coverage on every project.</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🛡️</div>
+        <div class="cert-name">BBB Accredited</div>
+        <div class="cert-body">A-rated BBB accreditation reflecting our commitment to quality and customer satisfaction.</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">⚡</div>
+        <div class="cert-name">IKO RoofPro Certified</div>
+        <div class="cert-body">IKO RoofPro Craftsman certified — premium installation standards backed by manufacturer warranties.</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🏠</div>
+        <div class="cert-name">BP Certified Installer</div>
+        <div class="cert-body">BP certified roofing installer — ensuring warranty coverage and proper installation on every project.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="sec-eyebrow">Get in Touch</div>
+    <div class="sec-title" style="color:white;">Request a Free Quote</div>
+    <div class="contact-grid">
+      <div>
+        <div class="ci"><div class="ci-icon">📞</div><div><div class="ci-label">Phone</div><div class="ci-val"><a href="tel:5874157670">(587) 415-7670</a></div></div></div>
+        <div class="ci"><div class="ci-icon">📧</div><div><div class="ci-label">Email</div><div class="ci-val"><a href="mailto:info@bainsroofing.com">info@bainsroofing.com</a></div></div></div>
+        <div class="ci"><div class="ci-icon">📍</div><div><div class="ci-label">Service Area</div><div class="ci-val">Edmonton, AB & Surrounding Areas</div></div></div>
+        <div class="ci"><div class="ci-icon">🕐</div><div><div class="ci-label">Response Time</div><div class="ci-val">Free estimates within 24 hours</div></div></div>
+      </div>
+      <div>
+        <div class="fr">
+          <div class="fg"><label>First Name</label><input type="text" placeholder="John" /></div>
+          <div class="fg"><label>Last Name</label><input type="text" placeholder="Smith" /></div>
         </div>
-      </div>
-      <div class="panel" style="padding:0;overflow:hidden">
-        <img src="https://lirp.cdn-website.com/b4f368e5/dms3rep/multi/opt/pexels-caspar-roofing-channel-3522832-5264807-2880w.jpg" alt="Roofing Team" style="width:100%;height:100%;object-fit:cover;min-height:340px" />
+        <div class="fg"><label>Phone</label><input type="tel" placeholder="780-000-0000" /></div>
+        <div class="fg"><label>Email</label><input type="email" placeholder="you@example.com" /></div>
+        <div class="fg">
+          <label>Service Needed</label>
+          <select>
+            <option value="" disabled selected>Select…</option>
+            <option>Roof Installation</option>
+            <option>Roof Replacement</option>
+            <option>Roof Repair</option>
+            <option>Free Inspection</option>
+            <option>Commercial Roofing</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Project Details</label><textarea placeholder="Tell us about your roofing needs…"></textarea></div>
+        <button class="btn-submit" type="button" onclick="submitForm()">Submit Request →</button>
+        <div id="cf-status" style="margin-top:12px;font-size:0.8rem;display:none;padding:10px 14px;border-radius:4px;"></div>
       </div>
     </div>
   </section>
 
-  <section>
-    <div class="container">
-      <h2 class="title">Credentials & Trust Signals</h2>
-      <div class="cred">
-        <div class="c"><strong>Local Edmonton Focus</strong><p class="sub">Dedicated service for Edmonton residential and commercial projects.</p></div>
-        <div class="c"><strong>Safety-First Workflow</strong><p class="sub">Built to Last, Built with Safety — aligned with current brand messaging.</p></div>
-        <div class="c"><strong>Quote-Ready Process</strong><p class="sub">Simple contact-to-estimate flow designed for fast conversion.</p></div>
-      </div>
-    </div>
-  </section>
+  <script>
+  function submitForm() {
+    const first = document.querySelector('input[placeholder="John"]').value.trim();
+    const last = document.querySelector('input[placeholder="Smith"]').value.trim();
+    const phone = document.querySelector('input[placeholder="780-000-0000"]').value.trim();
+    const email = document.querySelector('input[placeholder="you@example.com"]').value.trim();
+    const service = document.querySelector('select').value;
+    const details = document.querySelector('textarea').value.trim();
+    const status = document.getElementById('cf-status');
 
-  <section id="quote">
-    <div class="container">
-      <div class="quote">
-        <h3>Quality Roofs, Guaranteed Satisfaction — Claim Your Free Quote Now</h3>
-        <p>Email: <a href="mailto:info@bainsroofing.com" style="color:#fff">info@bainsroofing.com</a> · Phone: (587) 415-7670 · Edmonton, AB</p>
-      </div>
-    </div>
-  </section>
+    if (!first || !email || !phone) {
+      status.style.display = 'block';
+      status.style.background = 'rgba(239,68,68,0.1)';
+      status.style.color = '#ef4444';
+      status.style.border = '1px solid rgba(239,68,68,0.3)';
+      status.textContent = 'Please fill in your name, phone, and email.';
+      return;
+    }
+
+    const body = `New Roofing Quote Request\n\nName: ${first} ${last}\nPhone: ${phone}\nEmail: ${email}\nService: ${service}\nDetails:\n${details}`;
+    window.location.href = `mailto:info@bainsroofing.com?subject=${encodeURIComponent('Roofing Quote Request from '+first+' '+last)}&body=${encodeURIComponent(body)}`;
+
+    status.style.display = 'block';
+    status.style.background = 'rgba(34,197,94,0.1)';
+    status.style.color = '#22c55e';
+    status.style.border = '1px solid rgba(34,197,94,0.3)';
+    status.textContent = 'Opening your email app to send the request…';
+  }
+  </script>
 
   <footer>
-    <div class="container">Bains Roofing facelift demo by Wildrose Automations · same content direction, upgraded presentation and conversion layout.</div>
+    <div class="footer-brand">Bains <span>Roofing</span></div>
+    <div class="footer-copy">© 2026 Bains Roofing · Edmonton, AB</div>
+    <div class="footer-demo">Demo by Wildrose Automations</div>
   </footer>
+
 </body>
 </html>
