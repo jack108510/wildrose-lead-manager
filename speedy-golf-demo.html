@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Speedy Golf — Indoor Virtual Golf Simulator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#1a7a3a;--green-light:#22c55e;--dark:#0a1a0f;--charcoal:#0f2818;--bg:#f4f7f5;--surface:#fff;--border:#d4e4da;--warm:#eef5f0;--muted:#5a7a65;--accent:#f59e0b;--accent-dark:#d97706}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--dark);overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 6%;height:68px;background:var(--dark);border-bottom:3px solid var(--green)}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-size:1.35rem;font-weight:800;color:#fff;text-decoration:none;text-transform:uppercase;letter-spacing:.02em}
+.nav-brand span{color:var(--accent)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.78rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--accent)!important;color:var(--dark)!important;padding:.55rem 1.6rem;border-radius:4px;font-weight:700!important;transition:background .2s}
+.nav-cta:hover{background:var(--accent-dark)!important}
+.hero{margin-top:68px;position:relative;min-height:calc(100vh - 68px);display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1535131749006-b7f58c99034a?w=1920&q=80') center/cover no-repeat;filter:brightness(.2)}
+.hero-content{position:relative;z-index:2;padding:5rem 8%;max-width:740px}
+.hero-eyebrow{font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.8rem;margin-bottom:1.5rem}
+.hero-eyebrow::before{content:'';width:24px;height:2px;background:var(--accent)}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:800;text-transform:uppercase;line-height:.95;color:#fff;margin-bottom:1.5rem}
+.hero h1 em{color:var(--accent);font-style:normal;display:block}
+.hero p{font-size:.95rem;color:rgba(255,255,255,.5);line-height:1.85;max-width:500px;margin-bottom:2.5rem}
+.hero-buttons{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-accent{background:var(--accent);color:var(--dark);padding:.9rem 2.2rem;text-decoration:none;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:4px;display:inline-block;transition:background .2s}
+.btn-accent:hover{background:var(--accent-dark)}
+.btn-ghost{border:2px solid rgba(255,255,255,.18);color:#fff;padding:.9rem 2.2rem;text-decoration:none;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:4px;transition:border-color .2s}
+.btn-ghost:hover{border-color:rgba(255,255,255,.4)}
+.hero-trust{display:flex;gap:2.5rem;flex-wrap:wrap;margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.06)}
+.trust-item{font-size:.75rem;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:.6rem}
+.trust-dot{width:5px;height:5px;background:var(--accent);border-radius:50%;flex-shrink:0}
+.accent-strip{background:var(--green);padding:.9rem 8%;display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap}
+.strip-item{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.strip-div{width:1px;height:14px;background:rgba(255,255,255,.2)}
+section{padding:5rem 8%}
+.sec-eyebrow{font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.7rem;margin-bottom:.75rem}
+.sec-eyebrow::before{content:'';width:20px;height:2px;background:var(--accent)}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;text-transform:uppercase;line-height:1;margin-bottom:1rem}
+.sec-sub{color:var(--muted);font-size:.88rem;line-height:1.85;max-width:520px}
+#pricing{background:var(--surface)}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
+.price-card{border:2px solid var(--border);border-radius:8px;padding:2.5rem 2rem;text-align:center;position:relative;transition:transform .2s,box-shadow .2s}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(10,26,15,.1)}
+.price-card.featured{border-color:var(--green);background:var(--warm)}
+.price-tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem 1rem;border-radius:20px}
+.price-name{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;text-transform:uppercase;margin-bottom:.5rem}
+.price-amount{font-size:2.8rem;font-weight:800;color:var(--green);margin-bottom:.25rem}
+.price-amount span{font-size:1rem;font-weight:400;color:var(--muted)}
+.price-per{font-size:.78rem;color:var(--muted);margin-bottom:1.5rem}
+.price-features{list-style:none;text-align:left;margin-bottom:2rem}
+.price-features li{font-size:.82rem;color:var(--muted);padding:.45rem 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.6rem}
+.price-features li::before{content:'✓';color:var(--green);font-weight:700;font-size:.7rem}
+.price-btn{display:block;width:100%;padding:.9rem;background:var(--green);color:#fff;text-decoration:none;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:4px;text-align:center;transition:background .2s}
+.price-btn:hover{background:#15632f}
+.price-btn.secondary{background:var(--dark)}
+.price-btn.secondary:hover{background:#1a3020}
+#how-it-works{background:var(--charcoal)}
+#how-it-works .sec-title{color:#fff}
+#how-it-works .sec-sub{color:rgba(255,255,255,.4)}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem}
+.step-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:2rem 1.5rem;text-align:center}
+.step-num{font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:800;color:var(--accent);margin-bottom:.75rem}
+.step-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;text-transform:uppercase;color:#fff;margin-bottom:.5rem}
+.step-desc{font-size:.78rem;color:rgba(255,255,255,.35);line-height:1.6}
+#features{background:var(--surface)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.feat-card{border:1px solid var(--border);border-top:3px solid var(--green);padding:2.5rem 2rem;border-radius:0 0 6px 6px;transition:box-shadow .2s,transform .2s}
+.feat-card:hover{box-shadow:0 8px 24px rgba(10,26,15,.06);transform:translateY(-3px)}
+.feat-icon{font-size:2rem;margin-bottom:1rem}
+.feat-name{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;margin-bottom:.75rem}
+.feat-desc{font-size:.82rem;color:var(--muted);line-height:1.8}
+#courses{background:var(--warm)}
+.courses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.course-card{background:#fff;border-radius:8px;overflow:hidden;border:1px solid var(--border);transition:transform .2s}
+.course-card:hover{transform:translateY(-3px)}
+.course-img{height:180px;background-size:cover;background-position:center}
+.course-body{padding:1.5rem}
+.course-name{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;text-transform:uppercase}
+.course-location{font-size:.75rem;color:var(--muted);margin-top:.25rem}
+#contact{background:var(--dark)}
+#contact .sec-title{color:#fff}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;margin-top:2.5rem}
+.ci{display:flex;gap:1rem;margin-bottom:1.5rem}
+.ci-icon{width:42px;height:42px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;color:var(--accent);font-weight:700}
+.ci-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:.25rem}
+.ci-val{font-size:.9rem;color:rgba(255,255,255,.55)}
+.ci-val a{color:rgba(255,255,255,.55);text-decoration:none}
+.fg{margin-bottom:1rem}
+.fg label{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);display:block;margin-bottom:.4rem}
+.fg input,.fg textarea,.fg select{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-bottom:2px solid rgba(255,255,255,.08);padding:.8rem 1rem;color:#fff;font-family:'Inter',sans-serif;font-size:.875rem;outline:none}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-bottom-color:var(--accent)}
+.fg textarea{height:100px;resize:vertical}
+.fg select option{background:#1a3020}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.btn-submit{background:var(--accent);color:var(--dark);border:none;width:100%;padding:1rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:4px}
+footer{background:#050d08;padding:1.5rem 8%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:3px solid var(--green)}
+.footer-brand{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;text-transform:uppercase;color:#fff}
+.footer-brand span{color:var(--accent)}
+.footer-copy{font-size:.72rem;color:rgba(255,255,255,.15)}
+.footer-demo{font-size:.65rem;color:rgba(255,255,255,.1)}
+@media(max-width:860px){nav .nav-links{display:none}section{padding:4rem 6%}.pricing-grid{grid-template-columns:1fr}.steps-grid{grid-template-columns:1fr 1fr}.feat-grid{grid-template-columns:1fr 1fr}.courses-grid{grid-template-columns:1fr 1fr}.contact-grid{grid-template-columns:1fr;gap:3rem}.accent-strip{flex-direction:column;align-items:flex-start;padding:1rem 6%}.strip-div{display:none}}
+@media(max-width:600px){.hero h1{font-size:3rem}.feat-grid,.courses-grid,.steps-grid{grid-template-columns:1fr}.fr{grid-template-columns:1fr}footer{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+
+<nav><a href="#" class="nav-brand">Speedy <span>Golf</span></a><ul class="nav-links"><li><a href="#how-it-works">How It Works</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#features">Features</a></li><li><a href="#courses">Courses</a></li><li><a href="#contact" class="nav-cta">Book a Bay</a></li></ul></nav>
+
+<div class="hero"><div class="hero-bg"></div><div class="hero-content"><div class="hero-eyebrow">Greater Toronto Area · Open 24/7</div><h1>Play Golf<em>Year-Round</em></h1><p>Speedy Golf offers cutting-edge indoor golf simulators open 24 hours a day, 365 days a year. Play world-famous courses anytime, no tee time required.</p><div class="hero-buttons"><a href="#pricing" class="btn-accent">View Pricing</a><a href="#how-it-works" class="btn-ghost">How It Works</a></div><div class="hero-trust"><div class="trust-item"><div class="trust-dot"></div>Open 24/7</div><div class="trust-item"><div class="trust-dot"></div>50+ Courses</div><div class="trust-item"><div class="trust-dot"></div>Book Online</div><div class="trust-item"><div class="trust-dot"></div>Free Club Rental</div></div></div></div>
+
+<div class="accent-strip"><div class="strip-item">Virtual Golf</div><div class="strip-div"></div><div class="strip-item">Memberships</div><div class="strip-div"></div><div class="strip-item">24/7 Access</div><div class="strip-div"></div><div class="strip-item">Book Online</div></div>
+
+<section id="pricing"><div class="sec-eyebrow">Simple Pricing</div><div class="sec-title">Choose Your Plan</div><p class="sec-sub">No hidden fees. Prepaid hours never expire. Free club rentals included.</p><div class="pricing-grid"><div class="price-card"><div class="price-name">Non-Member</div><div class="price-amount">$25<span>/hour</span></div><div class="price-per">Per bay, pay as you go</div><ul class="price-features"><li>Access to 50+ courses</li><li>Free club rental</li><li>Rubber tees & balls provided</li><li>Online booking</li><li>10 points per hour</li></ul><a href="#contact" class="price-btn secondary">Book Now</a></div><div class="price-card featured"><div class="price-tag">Best Value</div><div class="price-name">Member</div><div class="price-amount">$18<span>/hour</span></div><div class="price-per">$199/year membership</div><ul class="price-features"><li>$7 off per hour</li><li>2 FREE hours every 30 days</li><li>Double points collection</li><li>Free club rental</li><li>Priority online booking</li><li>Prepaid hours never expire</li></ul><a href="#contact" class="price-btn">Become a Member</a></div></div></section>
+
+<section id="how-it-works"><div class="sec-eyebrow">Getting Started</div><div class="sec-title">Play in 4 Easy Steps</div><p class="sec-sub">From sign-up to tee-off in minutes. Fully automated facility.</p><div class="steps-grid"><div class="step-card"><div class="step-num">01</div><div class="step-title">Create Account</div><div class="step-desc">Register online to become a club member. Purchase hours and book visits.</div></div><div class="step-card"><div class="step-num">02</div><div class="step-title">Deposit Funds</div><div class="step-desc">Buy a prepaid golf card. Member rates start at just $18/hour per bay.</div></div><div class="step-card"><div class="step-num">03</div><div class="step-title">Book a Bay</div><div class="step-desc">Choose your bay online ahead of your visit via the calendar system.</div></div><div class="step-card"><div class="step-num">04</div><div class="step-title">Enter & Play</div><div class="step-desc">Follow step-by-step instructions to enter. Set up and tee off!</div></div></div></div></section>
+
+<section id="features"><div class="sec-eyebrow">The Experience</div><div class="sec-title">Why Choose Speedy Golf</div><p class="sec-sub">A golf experience unlike any other — realistic, convenient, and available on your schedule.</p><div class="feat-grid"><div class="feat-card"><div class="feat-icon">⛳</div><div class="feat-name">Year-Round Play</div><p class="feat-desc">Play past weather conditions and seasonality. Open 24 hours a day, 365 days a year. Your next challenge is always ready.</p></div><div class="feat-card"><div class="feat-icon">🎯</div><div class="feat-name">Realistic Gameplay</div><p class="feat-desc">Foresight FSX 2020 technology provides an unparalleled virtual experience, mimicking real courses with precision tracking.</p></div><div class="feat-card"><div class="feat-icon">📍</div><div class="feat-name">Convenient Access</div><p class="feat-desc">Located in the Greater Toronto Area with easy online booking. Fully automated facility — play anytime, day or night.</p></div><div class="feat-card"><div class="feat-icon">🏌️</div><div class="feat-name">Practice Your Swing</div><p class="feat-desc">Improve your game with realistic challenges — tricky putts, sand traps, water hazards. Prepare for real courses.</p></div><div class="feat-card"><div class="feat-icon">👥</div><div class="feat-name">Social Entertainment</div><p class="feat-desc">Great venue to socialize with friends over a round. Secure, monitored facility for a good time, every time.</p></div><div class="feat-card"><div class="feat-icon">💳</div><div class="feat-name">Flexible Hours</div><p class="feat-desc">Prepaid hours never expire. Book online, play when you want. No tee times, no waiting, no weather delays.</p></div></div></section>
+
+<section id="courses"><div class="sec-eyebrow">Course Selection</div><div class="sec-title">50+ World-Famous Courses</div><p class="sec-sub">From Canadian classics to international destinations — all available from our indoor simulators.</p><div class="courses-grid"><div class="course-card"><div class="course-img" style="background-image:url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=600&q=80')"></div><div class="course-body"><div class="course-name">Glen Abbey</div><div class="course-location">Oakville, Ontario</div></div></div><div class="course-card"><div class="course-img" style="background-image:url('https://images.unsplash.com/photo-1535131749006-b7f58c99034a?w=600&q=80')"></div><div class="course-body"><div class="course-name">Pebble Beach</div><div class="course-location">California, USA</div></div></div><div class="course-card"><div class="course-img" style="background-image:url('https://images.unsplash.com/photo-1526235095402-655d5e283b10?w=600&q=80')"></div><div class="course-body"><div class="course-name">St Andrews</div><div class="course-location">Scotland, UK</div></div></div><div class="course-card"><div class="course-img" style="background-image:url('https://images.unsplash.com/photo-1593111774240-d5295f654b54?w=600&q=80')"></div><div class="course-body"><div class="course-name">Banff Springs</div><div class="course-location">Banff, Alberta</div></div></div><div class="course-card"><div class="course-img" style="background-image:url('https://images.unsplash.com/photo-1568196225946-8f905cd59452?w=600&q=80')"></div><div class="course-body"><div class="course-name">Augusta National</div><div class="course-location">Georgia, USA</div></div></div><div class="course-card"><div class="course-img" style="background-image:url('https://images.unsplash.com/photo-1558469702-aca7ae3c1a58?w=600&q=80')"></div><div class="course-body"><div class="course-name">Cabot Cliffs</div><div class="course-location">Inverness, Nova Scotia</div></div></div></div></section>
+
+<section id="contact"><div class="sec-eyebrow">Get in Touch</div><div class="sec-title" style="color:#fff">Book Your Bay</div><div class="contact-grid"><div><div class="ci"><div class="ci-icon">📍</div><div><div class="ci-label">Location</div><div class="ci-val">Greater Toronto Area</div></div></div><div class="ci"><div class="ci-icon">🕐</div><div><div class="ci-label">Hours</div><div class="ci-val">Open 24/7, 365 days/year</div></div></div><div class="ci"><div class="ci-icon">@</div><div><div class="ci-label">Email</div><div class="ci-val"><a href="mailto:info@speedy.golf">info@speedy.golf</a></div></div></div><div class="ci"><div class="ci-icon">🌐</div><div><div class="ci-label">Website</div><div class="ci-val"><a href="https://www.speedy.golf">speedy.golf</a></div></div></div></div><div><div class="fr"><div class="fg"><label>First Name</label><input type="text" placeholder="John"/></div><div class="fg"><label>Last Name</label><input type="text" placeholder="Smith"/></div></div><div class="fg"><label>Email</label><input type="email" placeholder="you@example.com"/></div><div class="fg"><label>Interest</label><select><option disabled selected value="">Select an option...</option><option>Book a Bay</option><option>Membership Info</option><option>General Inquiry</option></select></div><div class="fg"><label>Message</label><textarea placeholder="When do you want to play?"></textarea></div><button class="btn-submit" onclick="submitForm()">Submit Request</button></div></div></section>
+
+<script>function submitForm(){var f=document.querySelector('input[placeholder="John"]').value;var l=document.querySelector('input[placeholder="Smith"]').value;var e=document.querySelector('input[placeholder="you@example.com"]').value;var s=document.querySelector('select').value;var d=document.querySelector('textarea').value;if(!f||!e){alert('Please fill required fields.');return;}window.location.href='mailto:info@speedy.golf?subject='+encodeURIComponent('Booking - '+f+' '+l)+'&body='+encodeURIComponent('Name: '+f+' '+l+'\nEmail: '+e+'\nInterest: '+s+'\n'+d);}</script>
+<footer><div class="footer-brand">Speedy <span>Golf</span></div><div class="footer-copy">&copy; 2026 Speedy Golf</div><div class="footer-demo">Demo by Wildrose Automations</div></footer>
+</body>
+</html>
